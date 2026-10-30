@@ -1,14 +1,13 @@
+// @ts-check
 import {Handler} from '../../core/Handler.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
-/*
- * Handler.BoxZoom is used to add shift-drag zoom interaction to the map
- * (zoom to a selected bounding box), enabled by default.
- */
+/** @import {Point} from '../../geometry/Point.js' */
 
+// Adds shift-drag zoom interaction to the map (zoom to a selected bounding box), enabled by default.
 export class BoxZoomHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerDown, this);
@@ -27,6 +26,7 @@ export class BoxZoomHandler extends Handler {
 		this._moved = false;
 	}
 
+	/** @param {typeof DomEvent.on} onOff */
 	_toggleListeners(onOff) {
 		onOff(this._map._container, {
 			contextmenu: DomEvent.stop,
@@ -36,6 +36,7 @@ export class BoxZoomHandler extends Handler {
 		onOff(document, 'keydown', this._onKeyDown, this);
 	}
 
+	/** @param {PointerEvent} e */
 	_onPointerDown(e) {
 		if (!e.shiftKey || (e.button !== 0)) { return false; }
 
@@ -46,23 +47,27 @@ export class BoxZoomHandler extends Handler {
 		// suppresses compatibility mouse events, which is fine for a press that is already a box zoom gesture
 		DomEvent.preventDefault(e);
 
+		/** @type {Point} */
 		this._startPoint = this._map.pointerEventToContainerPoint(e);
 
 		this._toggleListeners(DomEvent.on);
 	}
 
+	/** @param {PointerEvent} e */
 	_onPointerMove(e) {
 		const map = this._map;
 
 		if (!this._moved) {
 			this._moved = true;
 
+			/** @type {HTMLDivElement} */
 			this._box = DomUtil.create('div', 'leaflet-zoom-box', map._container);
 			map._container.classList.add('leaflet-crosshair');
 
 			map.fire('boxzoomstart');
 		}
 
+		/** @type {Point} */
 		this._point = map.pointerEventToContainerPoint(e);
 
 		const bounds = new Bounds(this._point, this._startPoint),
@@ -83,6 +88,7 @@ export class BoxZoomHandler extends Handler {
 		this._toggleListeners(DomEvent.off);
 	}
 
+	/** @param {PointerEvent} e */
 	_onPointerUp(e) {
 		if (e.button !== 0) { return; }
 
@@ -105,6 +111,7 @@ export class BoxZoomHandler extends Handler {
 		this._map.fire('boxzoomend', {boxZoomBounds: bounds});
 	}
 
+	/** @param {KeyboardEvent} e */
 	_onKeyDown(e) {
 		if (e.code === 'Escape') {
 			this._finish();

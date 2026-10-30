@@ -1,15 +1,12 @@
+// @ts-check
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
-/*
- * TapHoldHandler is used to simulate `contextmenu` event on long hold,
- * which otherwise is not fired by mobile Safari.
- */
-
 const tapHoldDelay = 600;
 
+// Simulates a `contextmenu` event on long hold, which otherwise is not fired by mobile Safari.
 export class TapHoldHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'pointerdown', this._onDown, this);
@@ -22,10 +19,12 @@ export class TapHoldHandler extends Handler {
 		this._stopPreventingNative();
 	}
 
+	/** @param {PointerEvent} e */
 	_onDown(e) {
 		clearTimeout(this._holdTimeout);
 		if (PointerEvents.getPointers().length !== 1 || e.pointerType === 'mouse') { return; }
 		const el = this._map._container;
+		/** @type {Point} */
 		this._startPos = this._newPos = new Point(e.clientX, e.clientY);
 
 		this._holdTimeout = setTimeout((() => {
@@ -66,7 +65,9 @@ export class TapHoldHandler extends Handler {
 		DomEvent.off(el, 'pointermove', this._onMove, this);
 	}
 
+	/** @param {PointerEvent} e */
 	_onMove(e) {
+		/** @type {Point} */
 		this._newPos = new Point(e.clientX, e.clientY);
 	}
 
@@ -74,8 +75,12 @@ export class TapHoldHandler extends Handler {
 		return this._newPos.distanceTo(this._startPos) <= this._map.options.tapTolerance;
 	}
 
+	/**
+	 * @param {string} type
+	 * @param {PointerEvent} e
+	 */
 	_simulateEvent(type, e) {
-		const simulatedEvent = new MouseEvent(type, {
+		const simulatedEvent = /** @type {MouseEvent & {_simulated?: boolean}} */ (new MouseEvent(type, {
 			bubbles: true,
 			cancelable: true,
 			view: window,
@@ -86,10 +91,10 @@ export class TapHoldHandler extends Handler {
 			clientY: e.clientY,
 			// button: 2,
 			// buttons: 2
-		});
+		}));
 
 		simulatedEvent._simulated = true;
 
-		e.target.dispatchEvent(simulatedEvent);
+		/** @type {EventTarget} */ (e.target).dispatchEvent(simulatedEvent);
 	}
 }

@@ -1,11 +1,11 @@
+// @ts-check
 import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
-/*
- * KeyboardHandler is handling keyboard interaction with the map, enabled by default.
- */
+/** @import {Marker} from '../../layer/marker/Marker.js' */
 
+// Handles keyboard interaction with the map, enabled by default.
 export class KeyboardHandler extends Handler {
 
 	// `KeyboardEvent.key` values, so zoom keys follow the keyboard layout and cover the numpad too;
@@ -80,32 +80,35 @@ export class KeyboardHandler extends Handler {
 	// on the container rather than the document, so that Escape also works when focus is on a marker or
 	// inside the popup, which blurs the container and removes the document listener (#6551); controls are
 	// left out so that e.g. Escape in a geocoder input doesn't close an unrelated popup
+	/** @param {KeyboardEvent} e */
 	_onContainerKeyDown(e) {
 		const map = this._map,
-		popup = map._popup;
+		popup = map._popup,
+		target = /** @type {Node} */ (e.target);
 
 		if (e.key !== 'Escape' || e.defaultPrevented || !popup?.options.closeOnEscapeKey ||
-			map._controlContainer.contains(e.target)) { return; }
+			map._controlContainer.contains(target)) { return; }
 
-		const inPopup = popup._container.contains(e.target),
-		icon = popup._source?._icon;
+		const inPopup = popup._container.contains(target),
+		icon = /** @type {Marker | undefined} */ (popup._source)?._icon;
 
 		map.closePopup();
 		e.preventDefault();
 
 		// closing removes the focused element, which would send focus back to the start of the page
-		if (inPopup) { (icon?.tabIndex >= 0 ? icon : map._container).focus(); }
+		if (inPopup) { (icon && icon.tabIndex >= 0 ? icon : map._container).focus(); }
 	}
 
+	/** @param {KeyboardEvent} e */
 	_onKeyDown(e) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
 		const key = e.key,
 		map = this._map,
 		{left, right, down, up, zoomIn, zoomOut} = KeyboardHandler.keys,
-		x = right.includes(key) - left.includes(key),
-		y = down.includes(key) - up.includes(key),
-		dz = zoomIn.includes(key) - zoomOut.includes(key),
+		x = +right.includes(key) - +left.includes(key),
+		y = +down.includes(key) - +up.includes(key),
+		dz = +zoomIn.includes(key) - +zoomOut.includes(key),
 		k = e.shiftKey ? 3 : 1;
 
 		if (x || y) {

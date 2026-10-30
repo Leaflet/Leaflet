@@ -1,7 +1,11 @@
-
+// @ts-check
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
+/** @import {ControlOptions, Defaults, ScaleControlOptions} from '../types.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
+
+/** @satisfies {Defaults<ControlOptions>} */
 const defaultOptions = {
 	/**
 	 * The position of the control (one of the map corners). Possible values
@@ -28,10 +32,7 @@ const defaultOptions = {
 	updateWhenIdle: false
 };
 
-/**
- * Creates an scale control with the given options.
- * @param {ScaleControlOptions} [options]
- */
+/** @typedef {typeof defaultOptions} ScaleControlDefaults */
 
 /**
  * A simple scale control that shows the scale of the current center of screen
@@ -40,11 +41,18 @@ const defaultOptions = {
  * ```js
  * new ScaleControl().addTo(map);
  * ```
+ * @template {ScaleControlOptions} [O=ScaleControlOptions]
+ * @extends {Control<O>}
  */
 export class ScaleControl extends Control {
 
+	/** @type {Defaults<ScaleControlOptions>} */
 	static defaultOptions = defaultOptions;
 
+	/**
+	 * @param {LeafletMap} map
+	 * @returns {HTMLElement}
+	 */
 	onAdd(map) {
 		const className = 'leaflet-control-scale',
 		container = DomUtil.create('div', className),
@@ -58,15 +66,23 @@ export class ScaleControl extends Control {
 		return container;
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 	}
 
+	/**
+	 * @param {ScaleControlOptions} options
+	 * @param {string} className
+	 * @param {HTMLElement} container
+	 */
 	_addScales(options, className, container) {
 		if (options.metric) {
+			/** @type {HTMLElement} */
 			this._mScale = DomUtil.create('div', className, container);
 		}
 		if (options.imperial) {
+			/** @type {HTMLElement} */
 			this._iScale = DomUtil.create('div', className, container);
 		}
 	}
@@ -82,6 +98,7 @@ export class ScaleControl extends Control {
 		this._updateScales(maxMeters);
 	}
 
+	/** @param {number} maxMeters */
 	_updateScales(maxMeters) {
 		if (this.options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
@@ -91,6 +108,7 @@ export class ScaleControl extends Control {
 		}
 	}
 
+	/** @param {number} maxMeters */
 	_updateMetric(maxMeters) {
 		const meters = this._getRoundNum(maxMeters),
 		label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
@@ -98,6 +116,7 @@ export class ScaleControl extends Control {
 		this._updateScale(this._mScale, label, meters / maxMeters);
 	}
 
+	/** @param {number} maxMeters */
 	_updateImperial(maxMeters) {
 		const maxFeet = maxMeters * 3.2808399;
 		let maxMiles, miles, feet;
@@ -113,11 +132,17 @@ export class ScaleControl extends Control {
 		}
 	}
 
+	/**
+	 * @param {HTMLElement} scale
+	 * @param {string} text
+	 * @param {number} ratio
+	 */
 	_updateScale(scale, text, ratio) {
 		scale.style.width = `${Math.round(this.options.maxWidth * ratio)}px`;
 		scale.innerHTML = text;
 	}
 
+	/** @param {number} num */
 	_getRoundNum(num) {
 		const pow10 = 10 ** ((`${Math.floor(num)}`).length - 1);
 		let d = num / pow10;

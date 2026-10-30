@@ -1,10 +1,15 @@
-
+// @ts-check
 import {Control} from './Control.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
+/** @import {AttributionControlOptions, ControlOptions, Defaults} from '../types.js' */
+/** @import {LayerBase} from '../layer/LayerBase.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
+
 const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
 
+/** @satisfies {Defaults<ControlOptions>} */
 const defaultOptions = {
 	/**
 	 * The position of the control (one of the map corners). Possible values
@@ -12,34 +17,45 @@ const defaultOptions = {
 	 */
 	position: 'bottomright',
 
-	/** The HTML text shown before the attributions. Pass `false` to disable. */
+	/**
+	 * The HTML text shown before the attributions. Pass `false` to disable.
+	 * @type {string | false}
+	 */
 	prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
 };
 
+/** @typedef {typeof defaultOptions} AttributionControlDefaults */
+
 /**
- * The attribution control allows you to display attribution data in a small text box on a
- * map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol)
- * to `false`, and it fetches attribution texts from layers with the [`getAttribution`
- * method](#layer-getattribution) automatically. Extends Control.
+ * The attribution control allows you to display attribution data in a small text box on a map. It is put
+ * on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to
+ * `false`, and it fetches attribution texts from layers with the [`getAttribution`
+ * method](#layer-getattribution) automatically. Extends `Control`.
+ * @template {AttributionControlOptions} [O=AttributionControlOptions]
+ * @extends {Control<O>}
  */
 export class AttributionControl extends Control {
 
 	static initHooks = true;
 
+	/** @type {Defaults<AttributionControlOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
 	 * Creates an attribution control.
-	 * @param {AttributionControlOptions} options
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(options) {
 		super(options);
 
+		/** @type {{[text: string]: number}} */
 		this._attributions = {};
+		/** @type {Map<LayerBase<any, any>, string>} */
 		this._layerAttributions = new Map();
 		this.callInitHooks();
 	}
 
+	/** @param {LeafletMap} map */
 	onAdd(map) {
 		map.attributionControl = this;
 		this._container = DomUtil.create('div', 'leaflet-control-attribution');
@@ -57,6 +73,7 @@ export class AttributionControl extends Control {
 		return this._container;
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		map.off({layeradd: this._addLayer, layerremove: this._removeLayer}, this);
 
@@ -65,6 +82,7 @@ export class AttributionControl extends Control {
 		}
 	}
 
+	/** @param {{layer: LayerBase<any, any>}} e */
 	_addLayer({layer}) {
 		const text = layer.getAttribution?.();
 		if (!text || this._layerAttributions.has(layer)) { return; }
@@ -73,13 +91,15 @@ export class AttributionControl extends Control {
 		this.addAttribution(text);
 	}
 
+	/** @param {{layer: LayerBase<any, any>}} e */
 	_removeLayer({layer}) {
-		this.removeAttribution(this._layerAttributions.get(layer));
+		// a layer without an attribution has no entry here, and `removeAttribution` skips the `undefined`
+		this.removeAttribution(/** @type {string} */ (this._layerAttributions.get(layer)));
 		this._layerAttributions.delete(layer);
 	}
 
 	/**
-	 * The HTML text shown before the attributions. Pass `false` to disable.
+	 * Sets the HTML text shown before the attributions. Pass `false` to disable.
 	 * @param {string | false} prefix
 	 * @returns {this}
 	 */

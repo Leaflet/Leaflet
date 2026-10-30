@@ -1,8 +1,12 @@
-
+// @ts-check
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 
+/** @import {ControlOptions, Defaults, ZoomControlOptions} from '../types.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
+
+/** @satisfies {Defaults<ControlOptions>} */
 const defaultOptions = {
 	/**
 	 * The position of the control (one of the map corners). Possible values
@@ -16,33 +20,39 @@ const defaultOptions = {
 	/** The title set on the 'zoom in' button. */
 	zoomInTitle: 'Zoom in',
 
-	/** </span>' The text set on the 'zoom out' button. */
+	/** The text set on the 'zoom out' button. */
 	zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
 
 	/** The title set on the 'zoom out' button. */
 	zoomOutTitle: 'Zoom out'
 };
 
-/**
- * Creates a zoom control
- * @param {ZoomControlOptions} options
- */
+/** @typedef {typeof defaultOptions} ZoomControlDefaults */
 
 /**
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default
  * unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.
+ * @template {ZoomControlOptions} [O=ZoomControlOptions]
+ * @extends {Control<O>}
  */
 export class ZoomControl extends Control {
 
+	/** @type {Defaults<ZoomControlOptions>} */
 	static defaultOptions = defaultOptions;
 
+	/**
+	 * @param {LeafletMap} map
+	 * @returns {HTMLElement}
+	 */
 	onAdd(map) {
 		const zoomName = 'leaflet-control-zoom',
 		container = DomUtil.create('div', `${zoomName} leaflet-bar`),
 		options = this.options;
 
+		/** @type {HTMLAnchorElement} */
 		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
 			`${zoomName}-in`,  container, e => this._zoom(e, 1));
+		/** @type {HTMLAnchorElement} */
 		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
 			`${zoomName}-out`, container, e => this._zoom(e, -1));
 
@@ -52,22 +62,35 @@ export class ZoomControl extends Control {
 		return container;
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		map.off('zoomend zoomlevelschange', this._updateDisabled, this);
 	}
 
+	/**
+	 * Disables the zoom buttons.
+	 * @returns {this}
+	 */
 	disable() {
 		this._disabled = true;
 		this._updateDisabled();
 		return this;
 	}
 
+	/**
+	 * Enables the zoom buttons again after [`disable`](#zoomcontrol-disable).
+	 * @returns {this}
+	 */
 	enable() {
 		this._disabled = false;
 		this._updateDisabled();
 		return this;
 	}
 
+	/**
+	 * @param {MouseEvent} e
+	 * @param {number} dir
+	 */
 	_zoom(e, dir) {
 		const map = this._map;
 		if (!this._disabled && (dir > 0 ? map._zoom < map.getMaxZoom() : map._zoom > map.getMinZoom())) {
@@ -75,6 +98,13 @@ export class ZoomControl extends Control {
 		}
 	}
 
+	/**
+	 * @param {string} html
+	 * @param {string} title
+	 * @param {string} className
+	 * @param {HTMLElement} container
+	 * @param {(e: MouseEvent) => void} fn
+	 */
 	_createButton(html, title, className, container, fn) {
 		const link = DomUtil.create('a', className, container);
 		link.innerHTML = html;
@@ -99,10 +129,11 @@ export class ZoomControl extends Control {
 
 	_updateDisabled() {
 		const map = this._map;
-		for (const [button, limit] of [[this._zoomInButton, map.getMaxZoom()], [this._zoomOutButton, map.getMinZoom()]]) {
+		for (const [button, limit] of /** @type {[HTMLElement, number][]} */ ([[this._zoomInButton, map.getMaxZoom()],
+			[this._zoomOutButton, map.getMinZoom()]])) {
 			const disabled = this._disabled || map._zoom === limit;
 			button.classList.toggle('leaflet-disabled', disabled);
-			button.setAttribute('aria-disabled', disabled);
+			button.setAttribute('aria-disabled', /** @type {any} */ (disabled));
 		}
 	}
 }

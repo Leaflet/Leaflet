@@ -1,28 +1,43 @@
-
+// @ts-check
 import {Class} from '../core/Class.js';
 import * as Util from '../core/Util.js';
+
+/** @import {ControlOptions, ControlPosition, Defaults} from '../types.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
 
 const defaultOptions = {
 	/**
 	 * The position of the control (one of the map corners). Possible values
 	 * are `'topleft'`, `'topright'`, `'bottomleft'` or `'bottomright'`
+	 * @type {ControlPosition}
 	 */
 	position: 'topright'
 };
+
+/** @typedef {typeof defaultOptions} ControlDefaults */
 
 /**
  * Control is a base class for implementing map controls. Handles
  * positioning. All other controls extend from this class.
  * @categoryDescription Methods
  * Classes extending Control will inherit the following methods:
+ *
+ * @categoryDescription Extension methods
+ * Every control should extend from `Control` and (re-)implement the following methods.
+ * @template {ControlOptions} [O=ControlOptions]
+ * @extends {Class<O>}
  */
 export class Control extends Class {
 
 	static initHooks = true;
 
+	/** @type {Defaults<ControlOptions>} */
 	static defaultOptions = defaultOptions;
 
-
+	/**
+	 * Creates a control with the given options.
+	 * @param {Partial<O>} [options]
+	 */
 	constructor(options) {
 		super();
 		Util.setOptions(this, options);
@@ -31,7 +46,7 @@ export class Control extends Class {
 
 	/**
 	 * Returns the position of the control.
-	 * @returns {string}
+	 * @returns {ControlPosition}
 	 */
 	getPosition() {
 		return this.options.position;
@@ -39,7 +54,7 @@ export class Control extends Class {
 
 	/**
 	 * Sets the position of the control.
-	 * @param {string} position
+	 * @param {ControlPosition} position
 	 * @returns {this}
 	 */
 	setPosition(position) {
@@ -56,7 +71,7 @@ export class Control extends Class {
 
 	/**
 	 * Returns the HTMLElement that contains the control.
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement | undefined}
 	 */
 	getContainer() {
 		return this._container;
@@ -104,11 +119,12 @@ export class Control extends Class {
 		}
 
 		this._map.off('unload', this.remove, this);
-		this._map = null;
+		/** @type {any} */ (this)._map = null;
 
 		return this;
 	}
 
+	/** @param {MouseEvent} [e] */
 	_refocusOnMap(e) {
 		// We exclude keyboard-click event to keep the focus on the control for accessibility.
 		// The position of keyboard-click events are x=0 and y=0.
@@ -117,19 +133,3 @@ export class Control extends Class {
 		}
 	}
 }
-
-/**
- * Should return the container DOM element for the control and add listeners on
- * relevant map events. Called on [`control.addTo(map)`](#control-addTo).
- * @category Extension methods
- * @param {LeafletMap} map
- * @returns {HTMLElement}
- * @uninheritable
- */
-/**
- * Optional method. Should contain all clean up code that removes the listeners previously
- * added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
- * @category Extension methods
- * @param {LeafletMap} map
- * @uninheritable
- */

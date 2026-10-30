@@ -29,7 +29,11 @@ import type {CircleMarker, CircleMarkerDefaults, CircleMarkerEvents} from './lay
 import type {Path, PathDefaults} from './layer/vector/Path.js';
 import type {Polyline, PolylineDefaults} from './layer/vector/Polyline.js';
 import type {Renderer, RendererEvents} from './layer/vector/Renderer.js';
-import type {AttributionControl} from './control/AttributionControl.js';
+import type {AttributionControl, AttributionControlDefaults} from './control/AttributionControl.js';
+import type {ControlDefaults} from './control/Control.js';
+import type {LayersControlDefaults} from './control/LayersControl.js';
+import type {ScaleControlDefaults} from './control/ScaleControl.js';
+import type {ZoomControlDefaults} from './control/ZoomControl.js';
 import type {BoxZoomHandler} from './map/handler/BoxZoomHandler.js';
 import type {DoubleClickZoomHandler} from './map/handler/DoubleClickZoomHandler.js';
 import type {DragHandler} from './map/handler/DragHandler.js';
@@ -37,8 +41,8 @@ import type {KeyboardHandler} from './map/handler/KeyboardHandler.js';
 import type {PinchZoomHandler} from './map/handler/PinchZoomHandler.js';
 import type {ScrollWheelZoomHandler} from './map/handler/ScrollWheelZoomHandler.js';
 import type {TapHoldHandler} from './map/handler/TapHoldHandler.js';
-import type {LeafletMap, MapDefaults, MapInteractionEvents, MapLayerEvents, MapLocationEvents, MapOtherEvents,
-	MapPopupEvents, MapStateEvents, MapTooltipEvents} from './map/Map.js';
+import type {LeafletMap, MapDefaults, MapHandlerEvents, MapInteractionEvents, MapLayerEvents, MapLocationEvents,
+	MapOtherEvents, MapPopupEvents, MapStateEvents, MapTooltipEvents} from './map/Map.js';
 
 export type {Listener, ListenerMap} from './core/Events.js';
 
@@ -238,7 +242,7 @@ export interface MapOptions extends MapDefaults {
 	touchZoom?: boolean | 'center';
 }
 export interface MapEventMap extends MapLayerEvents, MapPopupEvents, MapTooltipEvents, MapStateEvents,
-	MapLocationEvents, MapInteractionEvents, MapOtherEvents {}
+	MapLocationEvents, MapInteractionEvents, MapHandlerEvents, MapOtherEvents {}
 
 /** Options for the `Map` methods that change the zoom level. */
 export interface ZoomOptions {
@@ -365,6 +369,16 @@ export interface LocateOptions {
 	 */
 	enableHighAccuracy?: boolean;
 }
+
+/** One of the map corners a control can be placed in. */
+export type ControlPosition = 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
+
+export interface ControlOptions extends ControlDefaults {}
+export interface ZoomControlOptions extends ControlOptions, Omit<ZoomControlDefaults, keyof ControlOptions> {}
+export interface AttributionControlOptions extends ControlOptions,
+	Omit<AttributionControlDefaults, keyof ControlOptions> {}
+export interface ScaleControlOptions extends ControlOptions, Omit<ScaleControlDefaults, keyof ControlOptions> {}
+export interface LayersControlOptions extends ControlOptions, Omit<LayersControlDefaults, keyof ControlOptions> {}
 
 /** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
 export type PointExpression = Point | [number, number] | {x: number, y: number};
@@ -530,6 +544,13 @@ export interface TooltipEvent extends LeafletEvent {
 export interface DragEndEvent extends LeafletEvent {
 	/** The distance in pixels the draggable element was moved by. */
 	distance: number;
+	/** Whether the drag should end without inertia (set when the draggable is disabled mid-drag). */
+	noInertia?: boolean;
+}
+
+export interface BoxZoomEvent extends LeafletEvent {
+	/** The geographical bounds of the box the map zooms to. */
+	boxZoomBounds: LatLngBounds;
 }
 
 export interface MarkerMoveEvent extends LeafletEvent {
@@ -734,6 +755,12 @@ declare module './map/Map.js' {
 	}
 }
 
+declare module './dom/Draggable.js' {
+	interface Draggable {
+		_absPos?: Point; // the unwrapped position, set by the map drag handler with `worldCopyJump`
+	}
+}
+
 declare module './geometry/Point.js' {
 	interface Point {
 		_code: number; // clipping bit code, set by `PolyUtil.clipPolygon`
@@ -754,6 +781,28 @@ declare module './geo/crs/CRS.js' {
 		let wrapLat: [number, number] | undefined;
 		/** Returns the distance between two geographical coordinates. */
 		function distance(latlng1: LatLng, latlng2: LatLng): number;
+	}
+}
+
+declare module './control/Control.js' {
+	interface Control<O extends ControlOptions = ControlOptions> {
+		_map: LeafletMap;
+		_container: HTMLElement;
+
+		/**
+		 * Should return the container DOM element for the control and add listeners
+		 * on relevant map events. Called on [`control.addTo(map)`](#control-addto).
+		 * @category Extension methods
+		 * @uninheritable
+		 */
+		onAdd(map: LeafletMap): HTMLElement;
+		/**
+		 * Optional method. Should contain all clean up code that removes the listeners previously added in
+		 * [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
+		 * @category Extension methods
+		 * @uninheritable
+		 */
+		onRemove?(map: LeafletMap): void;
 	}
 }
 

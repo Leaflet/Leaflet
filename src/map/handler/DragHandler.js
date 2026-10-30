@@ -1,17 +1,19 @@
+// @ts-check
 import {Handler} from '../../core/Handler.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
-/*
- * Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
- */
+/** @import {DragEndEvent, LeafletEvent} from '../../types.js' */
+/** @import {Point} from '../../geometry/Point.js' */
 
+// Makes the map draggable (with panning inertia), enabled by default.
 export class DragHandler extends Handler {
 	addHooks() {
 		if (!this._draggable) {
 			const map = this._map;
 
+			/** @type {Draggable} */
 			this._draggable = new Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
@@ -28,7 +30,9 @@ export class DragHandler extends Handler {
 		}
 		this._map._container.classList.add('leaflet-grab', 'leaflet-touch-drag');
 		this._draggable.enable();
+		/** @type {Point[]} */
 		this._positions = [];
+		/** @type {number[]} */
 		this._times = [];
 	}
 
@@ -57,11 +61,13 @@ export class DragHandler extends Handler {
 		if (this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
 			const bounds = new LatLngBounds(this._map.options.maxBounds);
 
+			/** @type {Bounds | null} */
 			this._offsetLimit = new Bounds(
 				this._map.latLngToContainerPoint(bounds.getNorthWest()).multiplyBy(-1),
 				this._map.latLngToContainerPoint(bounds.getSouthEast()).multiplyBy(-1)
 					.add(this._map.getSize()));
 
+			/** @type {number} */
 			this._viscosity = Math.min(1.0, Math.max(0.0, this._map.options.maxBoundsViscosity));
 		} else {
 			this._offsetLimit = null;
@@ -77,10 +83,15 @@ export class DragHandler extends Handler {
 		}
 	}
 
+	/** @param {LeafletEvent} e */
 	_onDrag(e) {
 		if (this._map.options.inertia) {
-			const time = this._lastTime = Date.now(),
-			pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
+			const time = Date.now(),
+			pos = this._draggable._absPos || this._draggable._newPos;
+			/** @type {number} */
+			this._lastTime = time;
+			/** @type {Point} */
+			this._lastPos = pos;
 
 			this._positions.push(pos);
 			this._times.push(time);
@@ -93,6 +104,7 @@ export class DragHandler extends Handler {
 			.fire('drag', e);
 	}
 
+	/** @param {number} time */
 	_prunePositions(time) {
 		while (this._positions.length > 1 && time - this._times[0] > 50) {
 			this._positions.shift();
@@ -100,6 +112,10 @@ export class DragHandler extends Handler {
 		}
 	}
 
+	/**
+	 * @param {number} value
+	 * @param {number} threshold
+	 */
 	_viscousLimit(value, threshold) {
 		return value - (value - threshold) * this._viscosity;
 	}
@@ -124,6 +140,7 @@ export class DragHandler extends Handler {
 		draggable._newPos = this._map._wrapWorldCopy(draggable._newPos);
 	}
 
+	/** @param {DragEndEvent} e */
 	_onDragEnd(e) {
 		const map = this._map,
 		options = map.options,

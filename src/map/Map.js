@@ -22,11 +22,11 @@ import {ScrollWheelZoomHandler} from './handler/ScrollWheelZoomHandler.js';
 import {TapHoldHandler} from './handler/TapHoldHandler.js';
 import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 
-/** @import {Defaults, ErrorEvent, FitBoundsOptions, InvalidateSizeOptions, LatLngBoundsExpression, LatLngExpression,
- *    LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent, LeafletPointerEvent, LocateOptions,
- *    LocationEvent, MapEventMap, MapOptions, PanInsideOptions, PanOptions, PointExpression, PopupEvent, PopupOptions,
- *    ResizeEvent, TooltipEvent, TooltipOptions, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions}
- *    from '../types.js' */
+/** @import {BoxZoomEvent, Defaults, DragEndEvent, ErrorEvent, FitBoundsOptions, InvalidateSizeOptions,
+ *    LatLngBoundsExpression, LatLngExpression, LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent,
+ *    LeafletPointerEvent, LocateOptions, LocationEvent, MapEventMap, MapOptions, PanInsideOptions, PanOptions,
+ *    PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent, TooltipOptions, WorldCopyJumpEvent,
+ *    ZoomAnimEvent, ZoomOptions, ZoomPanOptions} from '../types.js' */
 /** @import {CRS} from '../geo/crs/CRS.js' */
 /** @import {Control} from '../control/Control.js' */
 /** @import {Handler} from '../core/Handler.js' */
@@ -384,6 +384,18 @@ const defaultOptions = {
  * @property {LeafletKeyboardEvent} keydown Fired when the user presses a key from the keyboard while the map is focused.
  * @property {LeafletKeyboardEvent} keyup Fired when the user releases a key from the keyboard while the map is focused.
  * @property {LeafletPointerEvent} preclick Fired before pointer click on the map (sometimes useful when you want something to happen on click before any existing click handlers start running).
+ */
+
+/**
+ * Interaction Handler Events
+ * @typedef {Object} MapHandlerEvents
+ * @property {LeafletEvent} dragstart Fired when the user starts dragging the map.
+ * @property {LeafletEvent} drag Fired repeatedly while the user drags the map.
+ * @property {DragEndEvent} dragend Fired when the user stops dragging the map.
+ * @property {LeafletEvent} boxzoomstart Fired when the user starts drawing a [box zoom](#map-boxzoom) rectangle.
+ * @property {BoxZoomEvent} boxzoomend Fired when the user finishes a box zoom, before the map zooms to the box.
+ * @property {LeafletEvent} focus Fired when the map container gets focus (with [`keyboard`](#map-keyboard) on).
+ * @property {LeafletEvent} blur Fired when the map container loses focus (with [`keyboard`](#map-keyboard) on).
  */
 
 /**

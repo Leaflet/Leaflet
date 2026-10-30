@@ -1,14 +1,13 @@
+// @ts-check
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
-/*
- * Handler.ScrollWheelZoom is used by Map to enable mouse scroll wheel zoom on the map.
- */
-
+// Enables mouse scroll wheel zoom on the map, enabled by default.
 export class ScrollWheelZoomHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 
+		/** @type {number} */
 		this._delta = 0;
 	}
 
@@ -17,6 +16,7 @@ export class ScrollWheelZoomHandler extends Handler {
 		clearTimeout(this._timer);
 	}
 
+	/** @param {WheelEvent} e */
 	_onWheelScroll(e) {
 		const delta = DomEvent.getWheelDelta(e);
 
@@ -24,6 +24,7 @@ export class ScrollWheelZoomHandler extends Handler {
 
 		this._delta += delta;
 		// resolving the container point reads layout, so defer it to _performZoom
+		/** @type {WheelEvent} */
 		this._lastEvent = e;
 
 		if (!this._startTime) {

@@ -1,13 +1,13 @@
+// @ts-check
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
-/*
- * Handler.PinchZoom is used by Map to add pinch zoom on supported mobile browsers.
- */
+/** @import {LatLng} from '../../geo/LatLng.js' */
 
+// Adds pinch zoom on touch devices, enabled by default.
 export class PinchZoomHandler extends Handler {
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
@@ -21,6 +21,7 @@ export class PinchZoomHandler extends Handler {
 		DomEvent.off(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
 	}
 
+	/** @param {PointerEvent} e */
 	_onPointerStart(e) {
 		const map = this._map;
 
@@ -32,16 +33,23 @@ export class PinchZoomHandler extends Handler {
 		const {x, y} = DomUtil.getScale(map._container);
 
 		// the container doesn't move during a pinch, so keep its client offset and CSS scale to avoid reading layout on every move
+		/** @type {Point} */
 		this._containerScale = new Point(x, y);
+		/** @type {Point} */
 		this._containerOrigin = new Point(pointers[0].clientX, pointers[0].clientY)._subtract(p1.scaleBy(this._containerScale));
 
+		/** @type {Point} */
 		this._centerPoint = map.getSize()._divideBy(2);
+		/** @type {LatLng} */
 		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
 		if (map.options.pinchZoom !== 'center') {
+			/** @type {LatLng} */
 			this._pinchStartLatLng = map.containerPointToLatLng(p1.add(p2)._divideBy(2));
 		}
 
+		/** @type {number} */
 		this._startDist = p1.distanceTo(p2);
+		/** @type {number} */
 		this._startZoom = map.getZoom();
 
 		this._moved = false;
@@ -55,6 +63,7 @@ export class PinchZoomHandler extends Handler {
 		e.preventDefault();
 	}
 
+	/** @param {PointerEvent} e */
 	_onPointerMove(e) {
 		const pointers = PointerEvents.getPointers();
 		if (pointers.length !== 2 || !this._zooming) { return; }
@@ -64,6 +73,7 @@ export class PinchZoomHandler extends Handler {
 		p2 = this._toContainerPoint(pointers[1]),
 		scale = p1.distanceTo(p2) / this._startDist;
 
+		/** @type {number} */
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
 
 		if (!map.options.bounceAtZoomLimits && (
@@ -73,6 +83,7 @@ export class PinchZoomHandler extends Handler {
 		}
 
 		if (map.options.pinchZoom === 'center') {
+			/** @type {LatLng} */
 			this._center = this._startLatLng;
 			if (scale === 1) { return; }
 		} else {
@@ -90,11 +101,13 @@ export class PinchZoomHandler extends Handler {
 		cancelAnimationFrame(this._animRequest);
 
 		const moveFn = map._move.bind(map, this._center, this._zoom, {pinch: true, round: false}, undefined);
+		/** @type {number} */
 		this._animRequest = requestAnimationFrame(moveFn.bind(this));
 
 		e.preventDefault();
 	}
 
+	/** @param {PointerEvent} e */
 	_toContainerPoint(e) {
 		return new Point(e.clientX, e.clientY)._subtract(this._containerOrigin).unscaleBy(this._containerScale);
 	}
@@ -113,7 +126,7 @@ export class PinchZoomHandler extends Handler {
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map._zoomAnimated) {
-			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, this._map.options.zoomSnap);
+			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, !!this._map.options.zoomSnap);
 		} else {
 			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
 		}
