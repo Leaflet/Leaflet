@@ -5,6 +5,9 @@ import {Point} from '../geometry/Point.js';
 /**
  * Utility functions to work with the [DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model)
  * tree, used by Leaflet internally.
+ *
+ * Most functions expecting or returning a `HTMLElement` also work for SVG elements. The only
+ * difference is that classes refer to CSS classes in HTML and SVG classes in SVG.
  * @module DomUtil
  */
 

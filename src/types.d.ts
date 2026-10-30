@@ -266,9 +266,8 @@ export interface PanOptions {
 	 */
 	duration?: number;
 	/**
-	 * The curvature factor of panning animation easing (third parameter of the [Cubic Bezier
-	 * curve](https://cubic-bezier.com/)). 1.0 means linear animation, and the smaller this number, the more bowed
-	 * the curve.
+	 * The curvature factor of panning animation easing (third parameter of the [Cubic Bezier curve](https://cubic-bezier.com/)).
+	 * 1.0 means linear animation, and the smaller this number, the more bowed the curve.
 	 * @default 0.25
 	 */
 	easeLinearity?: number;
@@ -361,8 +360,7 @@ export interface LocateOptions {
 	 */
 	maximumAge?: number;
 	/**
-	 * Enables high accuracy, see [description in the W3C
-	 * spec](https://w3c.github.io/geolocation-api/#enablehighaccuracy-member).
+	 * Enables high accuracy, see [description in the W3C spec](https://w3c.github.io/geolocation-api/#enablehighaccuracy-member).
 	 * @default false
 	 */
 	enableHighAccuracy?: boolean;

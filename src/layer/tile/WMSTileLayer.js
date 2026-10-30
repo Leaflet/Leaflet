@@ -47,6 +47,10 @@ const defaultOptions = {
 /**
  * Used to display [WMS](https://en.wikipedia.org/wiki/Web_Map_Service)
  * services as tile layers on the map. Extends `TileLayer`.
+ *
+ * If any custom options not documented here are used, they will be sent to the WMS server as extra
+ * parameters in each request URL. This can be useful for [non-standard vendor WMS
+ * parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
  * @example
  * ```js
  * const nexrad = new WMSTileLayer("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {

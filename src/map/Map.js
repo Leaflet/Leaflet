@@ -110,9 +110,8 @@ const defaultOptions = {
 
 	/**
 	 * Won't animate zoom if the zoom difference exceeds this value (or 1 if the user prefers
-	 * [reduced
-	 * motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion) and
-	 * `animate: true` isn't passed).
+	 * [reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)
+	 * and `animate: true` isn't passed).
 	 * @category Animation Options
 	 */
 	zoomAnimationThreshold: 4,
@@ -213,6 +212,7 @@ const defaultOptions = {
 	 */
 	easeLinearity: 0.2,
 
+	// TODO refactor, move to CRS
 	/**
 	 * With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly
 	 * jumps to the original one so that all overlays like markers and vector layers are still visible. A
@@ -478,8 +478,8 @@ export class LeafletMap extends Evented {
 		}
 		if (options.zoomControl) {
 			/**
-			 * The default zoom control (only available if the [`zoomControl`
-			 * option](#map-zoomcontrol) was `true` when creating the map).
+			 * The default zoom control (only available if the
+			 * [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
 			 * @category Controls
 			 * @type {ZoomControl | undefined}
 			 */
@@ -1060,10 +1060,8 @@ export class LeafletMap extends Evented {
 	 * Tries to locate the user using the Geolocation API, firing a [`locationfound`](#map-locationfound) event
 	 * with location data on success or a [`locationerror`](#map-locationerror) event on failure, and optionally
 	 * sets the map view to the user's location with respect to detection accuracy (or to the world view if
-	 * geolocation failed). Note that, if your page doesn't use HTTPS, this method will fail in modern browsers
-	 * ([Chrome 50 and
-	 * newer](https://sites.google.com/a/chromium.org/dev/Home/chromium-security/deprecating-powerful-features-on-insecure-origins))
-	 * See `Locate options` for more details.
+	 * geolocation failed). Note that geolocation only works on pages served over HTTPS. See `LocateOptions`
+	 * for more details.
 	 * @category Geolocation methods
 	 * @param {LocateOptions} [options]
 	 * @returns {this}
@@ -1615,7 +1613,7 @@ export class LeafletMap extends Evented {
 	 * Returns the bounds of the current map view in projected pixel coordinates (sometimes useful in layer and
 	 * overlay implementations). If `center` and `zoom` is omitted, the map's current zoom level and center is used.
 	 * @category Methods for Getting Map State
-	 * @param {LatLng} [center]
+	 * @param {LatLngExpression} [center]
 	 * @param {number} [zoom]
 	 * @returns {Bounds}
 	 */
@@ -1624,6 +1622,8 @@ export class LeafletMap extends Evented {
 		return new Bounds(topLeftPoint, topLeftPoint.add(this.getSize()));
 	}
 
+	// TODO: Check semantics - isn't the pixel origin the 0,0 coord relative to the map pane? "left point of the
+	// map layer" can be confusing, specially since there can be negative offsets.
 	/**
 	 * Returns the projected pixel coordinates of the top left point of the
 	 * map layer (useful in custom layer and overlay implementations).
