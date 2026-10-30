@@ -187,7 +187,7 @@ export class Class {
 
 	/**
 	 * [Includes a mixin](#class-includes) into the current class.
-	 * @template {{prototype: object, mergeOptions: Function}} C
+	 * @template {{prototype: object, mergeOptions: (options: object) => unknown}} C
 	 * @this {C}
 	 * @param {object} properties
 	 * @uninheritable
@@ -225,7 +225,7 @@ export class Class {
 	/**
 	 * Deprecated alias of `mergeOptions`, kept for code written for 2.0.0-alpha.1.
 	 * @deprecated Use `mergeOptions`.
-	 * @template {{defaultOptions?: object, mergeOptions: Function}} C
+	 * @template {{defaultOptions?: object, mergeOptions: (options: object) => C}} C
 	 * @this {C}
 	 * @param {Partial<NonNullable<C['defaultOptions']>>} options
 	 * @returns {C}

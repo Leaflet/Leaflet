@@ -326,16 +326,17 @@ export class Evented extends Class {
 	/**
 	 * Returns `true` if the given listener function (with the given context) is attached to a particular event
 	 * type, optionally checking event parents too.
+	 * @template {string} K
 	 * @overload
-	 * @param {string} type
-	 * @param {Function} fn
+	 * @param {K} type
+	 * @param {Listener<K, E, this>} fn
 	 * @param {unknown} [context]
 	 * @param {boolean} [propagate]
 	 * @returns {boolean}
 	 */
 	/**
 	 * @param {string} type
-	 * @param {Function | boolean} [fn]
+	 * @param {unknown} [fn]
 	 * @param {unknown} [context]
 	 * @param {boolean} [propagate]
 	 */
