@@ -56,7 +56,6 @@ export class CircleMarker extends Path {
 	/**
 	 * Sets the position of a circle marker to a new location.
 	 * @param {LatLngExpression} latlng
-	 * @returns {this}
 	 */
 	setLatLng(latlng) {
 		const oldLatLng = this._latlng;
@@ -66,10 +65,7 @@ export class CircleMarker extends Path {
 		return this.fire('move', {oldLatLng, latlng: this._latlng});
 	}
 
-	/**
-	 * Returns the current geographical position of the circle marker
-	 * @returns {LatLng}
-	 */
+	/** Returns the current geographical position of the circle marker */
 	getLatLng() {
 		return this._latlng;
 	}
@@ -77,25 +73,18 @@ export class CircleMarker extends Path {
 	/**
 	 * Sets the radius of a circle marker. Units are in CSS pixels (meters for a `Circle`).
 	 * @param {number} radius
-	 * @returns {this}
 	 */
 	setRadius(radius) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
 	}
 
-	/**
-	 * Returns the current radius of the circle. Units are in CSS pixels (meters for a `Circle`).
-	 * @returns {number}
-	 */
+	/** Returns the current radius of the circle. Units are in CSS pixels (meters for a `Circle`). */
 	getRadius() {
 		return this._radius;
 	}
 
-	/**
-	 * @param {Partial<O>} options
-	 * @returns {this}
-	 */
+	/** @param {Partial<O>} options */
 	setStyle(options) {
 		super.setStyle(options);
 		if (options?.radius !== undefined) {

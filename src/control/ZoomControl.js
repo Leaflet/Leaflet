@@ -66,20 +66,14 @@ export class ZoomControl extends Control {
 		map.off('zoomend zoomlevelschange', this._updateDisabled, this);
 	}
 
-	/**
-	 * Disables the zoom buttons.
-	 * @returns {this}
-	 */
+	/** Disables the zoom buttons. */
 	disable() {
 		this._disabled = true;
 		this._updateDisabled();
 		return this;
 	}
 
-	/**
-	 * Enables the zoom buttons again after [`disable`](#zoomcontrol-disable).
-	 * @returns {this}
-	 */
+	/** Enables the zoom buttons again after [`disable`](#zoomcontrol-disable). */
 	enable() {
 		this._disabled = false;
 		this._updateDisabled();

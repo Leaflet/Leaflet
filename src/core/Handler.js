@@ -22,10 +22,7 @@ export class Handler extends Class {
 		this.callInitHooks();
 	}
 
-	/**
-	 * Enables the handler
-	 * @returns {this}
-	 */
+	/** Enables the handler */
 	enable() {
 		if (this._enabled) { return this; }
 
@@ -34,10 +31,7 @@ export class Handler extends Class {
 		return this;
 	}
 
-	/**
-	 * Disables the handler
-	 * @returns {this}
-	 */
+	/** Disables the handler */
 	disable() {
 		if (!this._enabled) { return this; }
 
@@ -46,10 +40,7 @@ export class Handler extends Class {
 		return this;
 	}
 
-	/**
-	 * Returns `true` if the handler is enabled
-	 * @returns {boolean}
-	 */
+	/** Returns `true` if the handler is enabled */
 	enabled() {
 		return !!this._enabled;
 	}
@@ -73,7 +64,6 @@ export class Handler extends Class {
 	 * @this {C}
 	 * @param {LeafletMap} map
 	 * @param {string} name
-	 * @returns {C}
 	 */
 	static addTo(map, name) {
 		map.addHandler(name, this);

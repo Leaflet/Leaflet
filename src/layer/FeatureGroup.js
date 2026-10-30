@@ -61,7 +61,6 @@ export class FeatureGroup extends LayerGroup {
 	/**
 	 * Sets the given path options to each layer of the group that has a `setStyle` method.
 	 * @param {object} style
-	 * @returns {this}
 	 */
 	setStyle(style) {
 		for (const layer of Object.values(this._layers)) {
@@ -70,10 +69,7 @@ export class FeatureGroup extends LayerGroup {
 		return this;
 	}
 
-	/**
-	 * Brings the layer group to the top of all other layers
-	 * @returns {this}
-	 */
+	/** Brings the layer group to the top of all other layers */
 	bringToFront() {
 		for (const layer of Object.values(this._layers)) {
 			layer.bringToFront?.();
@@ -81,10 +77,7 @@ export class FeatureGroup extends LayerGroup {
 		return this;
 	}
 
-	/**
-	 * Brings the layer group to the back of all other layers
-	 * @returns {this}
-	 */
+	/** Brings the layer group to the back of all other layers */
 	bringToBack() {
 		for (const layer of Object.values(this._layers)) {
 			layer.bringToBack?.();
@@ -95,7 +88,6 @@ export class FeatureGroup extends LayerGroup {
 	/**
 	 * Returns the LatLngBounds of the Feature Group (created from bounds and coordinates
 	 * of its children, including the layers of nested layer groups).
-	 * @returns {LatLngBounds}
 	 */
 	getBounds() {
 		const bounds = new LatLngBounds();

@@ -59,10 +59,7 @@ function _onDelete(e) {
 	activePointers.delete(e.pointerId);
 }
 
-/**
- * Returns the pointers that are currently active on the document.
- * @returns {PointerEvent[]}
- */
+/** Returns the pointers that are currently active on the document. */
 export function getPointers() {
 	return [...activePointers.values()];
 }

@@ -13,7 +13,6 @@ import {Point} from '../geometry/Point.js';
 /**
  * Returns an element given its DOM id, or returns the element itself if it was passed directly.
  * @param {string | HTMLElement} id
- * @returns {HTMLElement | null}
  */
 export function get(id) {
 	return typeof id === 'string' ? document.getElementById(id) : id;
@@ -117,7 +116,6 @@ export function setPosition(el, point, flat) {
 /**
  * Returns the coordinates of an element previously positioned with setPosition.
  * @param {HTMLElement | SVGElement} el
- * @returns {Point}
  */
 export function getPosition(el) {
 	// this method is only used for elements previously positioned using setPosition,
@@ -138,7 +136,6 @@ export function enableImageDrag() {
 /**
  * Finds the closest parent node which size (width and height) is not null.
  * @param {HTMLElement} element
- * @returns {HTMLElement}
  */
 export function getSizedParentNode(element) {
 	do {
@@ -152,7 +149,6 @@ export function getSizedParentNode(element) {
  * horizontal and vertical scales respectively, and `boundingClientRect` as the result of
  * [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
  * @param {HTMLElement} element
- * @returns {{x: number, y: number, boundingClientRect: DOMRect}}
  */
 export function getScale(element) {
 	const rect = element.getBoundingClientRect();

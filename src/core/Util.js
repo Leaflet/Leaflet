@@ -27,7 +27,6 @@ export function stamp(obj) {
  * @param {(...args: A) => void} fn
  * @param {number} time
  * @param {object} [context]
- * @returns {(...args: A) => void}
  */
 export function throttle(fn, time, context) {
 	/** @type {boolean | undefined} */
@@ -67,7 +66,6 @@ export function throttle(fn, time, context) {
  * @param {number} num
  * @param {number[]} range
  * @param {boolean} [includeMax]
- * @returns {number}
  */
 export function wrapNum(num, range, includeMax) {
 	const max = range[1],
@@ -87,7 +85,6 @@ export function falseFn() { return false; }
  * places. `false` can be passed to skip any processing (can be useful to avoid round-off errors).
  * @param {number} num
  * @param {number | false} [precision]
- * @returns {number}
  */
 export function formatNum(num, precision) {
 	if (precision === false) { return num; }
@@ -100,7 +97,6 @@ const WHITESPACE_RE = /\s+/;
 /**
  * Trims and splits the string on whitespace and returns the array of parts.
  * @param {string} str
- * @returns {string[]}
  */
 export function splitWords(str) {
 	return str.trim().split(WHITESPACE_RE);
@@ -112,7 +108,6 @@ export function splitWords(str) {
  * @template {object} O
  * @param {{options?: O}} obj
  * @param {Partial<O>} [options]
- * @returns {O}
  */
 export function setOptions(obj, options) {
 	if (!Object.hasOwn(obj, 'options')) {
@@ -132,10 +127,7 @@ const chainedDefaults = new WeakMap(); // class -> the defaultOptions object it 
 
 // Links the `defaultOptions` of each class in the chain to its parent's, so defaults are inherited and stay live.
 // Done on first use because a static field can't do it in its initializer and stay tree-shakeable.
-/**
- * @param {Function & {defaultOptions?: object}} cls
- * @returns {object | undefined}
- */
+/** @param {Function & {defaultOptions?: object}} cls */
 function getDefaultOptions(cls) {
 	const defaults = cls?.defaultOptions;
 	if (defaults && chainedDefaults.get(cls) !== defaults) {
@@ -157,7 +149,6 @@ const templateRe = /\{ *([\w_ -]+) *\}/g;
  * instead of strings for data values — they will be evaluated passing `data` as an argument.
  * @param {string} str
  * @param {object} data
- * @returns {string}
  */
 export function template(str, data) {
 	return str.replace(templateRe, (str, key) => {

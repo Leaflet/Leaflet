@@ -69,7 +69,6 @@ export class GeoJSON extends FeatureGroup {
 	/**
 	 * Adds a GeoJSON object to the layer.
 	 * @param {GeoJSONData | GeoJSONData[]} geojson
-	 * @returns {this}
 	 */
 	addData(geojson) {
 		if (Array.isArray(geojson) || 'features' in geojson) {
@@ -104,7 +103,6 @@ export class GeoJSON extends FeatureGroup {
 	 * Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after
 	 * hover events. If `layer` is omitted, the style of all features in the current layer is reset.
 	 * @param {Layer} [layer]
-	 * @returns {this}
 	 */
 	resetStyle(layer) {
 		if (layer === undefined) {
@@ -119,7 +117,6 @@ export class GeoJSON extends FeatureGroup {
 	/**
 	 * Changes styles of GeoJSON vector layers with the given style function.
 	 * @param {Partial<PathOptions> | StyleFunction} style
-	 * @returns {this}
 	 */
 	setStyle(style) {
 		return this.eachLayer(layer => this._setLayerStyle(layer, style));
@@ -230,7 +227,6 @@ export class GeoJSON extends FeatureGroup {
 	 * Creates a `LatLng` object from an array of 2 numbers (longitude, latitude)
 	 * or 3 numbers (longitude, latitude, altitude) used in GeoJSON for points.
 	 * @param {Position} coords
-	 * @returns {LatLng}
 	 */
 	static coordsToLatLng(coords) {
 		return new LatLng(coords[1], coords[0], coords[2]);

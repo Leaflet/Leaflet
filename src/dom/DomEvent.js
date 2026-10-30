@@ -265,7 +265,6 @@ export function stop(e) {
  * (border excluded) or to the whole page if not specified.
  * @param {MouseEvent} e
  * @param {HTMLElement} [container]
- * @returns {Point}
  */
 export function getPointerPosition(e, container) {
 	if (!container) {
@@ -287,7 +286,6 @@ export function getPointerPosition(e, container) {
  * Gets normalized wheel delta from a wheel DOM event, in vertical pixels scrolled (negative if scrolling down).
  * Events from pointing devices without precise scrolling are mapped to a best guess of 60 pixels.
  * @param {WheelEvent} e
- * @returns {number}
  */
 export function getWheelDelta(e) {
 	// a wheel notch gives 100-120px in most browsers, so halving it fits the default 60px per zoom level (see #7403)

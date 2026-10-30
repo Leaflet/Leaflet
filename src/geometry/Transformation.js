@@ -52,7 +52,6 @@ export class Transformation {
 	 * scale. Only accepts actual `Point` instances, not arrays.
 	 * @param {Point} point
 	 * @param {number} [scale]
-	 * @returns {Point}
 	 */
 	transform(point, scale) {
 		return this._transform(point.clone(), scale);
@@ -75,7 +74,6 @@ export class Transformation {
 	 * by the given scale. Only accepts actual `Point` instances, not arrays.
 	 * @param {Point} point
 	 * @param {number} [scale]
-	 * @returns {Point}
 	 */
 	untransform(point, scale) {
 		scale ||= 1;

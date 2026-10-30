@@ -99,7 +99,6 @@ export class Evented extends Class {
 	 * @param {string | ListenerMap<E, this>} types
 	 * @param {any} [fn]
 	 * @param {any} [context]
-	 * @returns {this}
 	 */
 	on(types, fn, context) {
 
@@ -148,7 +147,6 @@ export class Evented extends Class {
 	 * @param {string | ListenerMap<E, this>} [types]
 	 * @param {any} [fn]
 	 * @param {any} [context]
-	 * @returns {this}
 	 */
 	off(types, fn, context) {
 
@@ -279,7 +277,6 @@ export class Evented extends Class {
 	 * @param {string} type
 	 * @param {object} [data]
 	 * @param {boolean} [propagate]
-	 * @returns {this}
 	 */
 	fire(type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
@@ -341,7 +338,6 @@ export class Evented extends Class {
 	 * @param {Function | boolean} [fn]
 	 * @param {any} [context]
 	 * @param {boolean} [propagate]
-	 * @returns {boolean}
 	 */
 	listens(type, fn, context, propagate) {
 		if (typeof type !== 'string') {
@@ -378,7 +374,6 @@ export class Evented extends Class {
 	 * @param {string} type
 	 * @param {unknown} [fn]
 	 * @param {any} [context]
-	 * @returns {number | boolean}
 	 */
 	_listens(type, fn, context) {
 		if (!this._events) {
@@ -419,7 +414,6 @@ export class Evented extends Class {
 	 * @param {string | ListenerMap<E, this>} types
 	 * @param {any} [fn]
 	 * @param {any} [context]
-	 * @returns {this}
 	 */
 	once(types, fn, context) {
 
@@ -444,7 +438,6 @@ export class Evented extends Class {
 	/**
 	 * Adds an event parent - an `Evented` that will receive propagated events
 	 * @param {Evented} obj
-	 * @returns {this}
 	 */
 	addEventParent(obj) {
 		this._eventParents ??= {};
@@ -455,7 +448,6 @@ export class Evented extends Class {
 	/**
 	 * Removes an event parent, so it will stop receiving propagated events
 	 * @param {Evented} obj
-	 * @returns {this}
 	 */
 	removeEventParent(obj) {
 		if (this._eventParents) {

@@ -78,7 +78,6 @@ export class CRS {
 	 * Projects geographical coordinates into pixel coordinates for a given zoom.
 	 * @param {LatLng} latlng
 	 * @param {number} zoom
-	 * @returns {Point}
 	 */
 	static latLngToPoint(latlng, zoom) {
 		const projectedPoint = this.projection.project(latlng),
@@ -91,7 +90,6 @@ export class CRS {
 	 * The inverse of `latLngToPoint`. Projects pixel coordinates on a given zoom into geographical coordinates.
 	 * @param {Point} point
 	 * @param {number} zoom
-	 * @returns {LatLng}
 	 */
 	static pointToLatLng(point, zoom) {
 		const scale = this.scale(zoom),
@@ -104,7 +102,6 @@ export class CRS {
 	 * Projects geographical coordinates into coordinates in units accepted for
 	 * this CRS (e.g. meters for EPSG:3857, for passing it to WMS services).
 	 * @param {LatLng} latlng
-	 * @returns {Point}
 	 */
 	static project(latlng) {
 		return this.projection.project(latlng);
@@ -113,7 +110,6 @@ export class CRS {
 	/**
 	 * Given a projected coordinate returns the corresponding LatLng. The inverse of `project`.
 	 * @param {Point} point
-	 * @returns {LatLng}
 	 */
 	static unproject(point) {
 		return this.projection.unproject(point);
@@ -123,7 +119,6 @@ export class CRS {
 	 * Returns the scale used when transforming projected coordinates into pixel coordinates for
 	 * a particular zoom. For example, it returns `256 * 2^zoom` for Mercator-based CRS.
 	 * @param {number} zoom
-	 * @returns {number}
 	 */
 	static scale(zoom) {
 		return 256 * 2 ** zoom;
@@ -132,7 +127,6 @@ export class CRS {
 	/**
 	 * Inverse of `scale()`, returns the zoom level corresponding to a scale factor of `scale`.
 	 * @param {number} scale
-	 * @returns {number}
 	 */
 	static zoom(scale) {
 		return Math.log(scale / 256) / Math.LN2;
@@ -141,7 +135,6 @@ export class CRS {
 	/**
 	 * Returns the projection's bounds scaled and transformed for the provided `zoom`.
 	 * @param {number} zoom
-	 * @returns {Bounds | null}
 	 */
 	static getProjectedBounds(zoom) {
 		if (this.infinite) { return null; }
@@ -164,7 +157,6 @@ export class CRS {
 	 * Returns a `LatLng` where lat and lng has been wrapped according to the CRS's
 	 * `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	 * @param {LatLngExpression} latlng
-	 * @returns {LatLng}
 	 */
 	static wrapLatLng(latlng) {
 		latlng = new LatLng(latlng);
@@ -179,7 +171,6 @@ export class CRS {
 	 * Returns a `LatLngBounds` with the same size as the given one,
 	 * ensuring that its center is within the CRS's bounds.
 	 * @param {LatLngBoundsExpression} bounds
-	 * @returns {LatLngBounds}
 	 */
 	static wrapLatLngBounds(bounds) {
 		bounds = new LatLngBounds(bounds);

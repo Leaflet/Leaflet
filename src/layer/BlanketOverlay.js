@@ -165,7 +165,6 @@ export class BlanketOverlay extends Layer {
 	 *
 	 * Subclass implementations shall reset container parameters and data structures as needed.
 	 * @category Subclass interface
-	 * @returns {Point}
 	 * @uninheritable
 	 */
 	_resizeContainer() {

@@ -223,10 +223,7 @@ export class GridLayer extends Layer {
 		this._fadePruneFrame = 0;
 	}
 
-	/**
-	 * Brings the tile layer to the top of all tile layers.
-	 * @returns {this}
-	 */
+	/** Brings the tile layer to the top of all tile layers. */
 	bringToFront() {
 		if (this._map) {
 			DomUtil.toFront(this._container);
@@ -235,10 +232,7 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	/**
-	 * Brings the tile layer to the bottom of all tile layers.
-	 * @returns {this}
-	 */
+	/** Brings the tile layer to the bottom of all tile layers. */
 	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._container);
@@ -258,7 +252,6 @@ export class GridLayer extends Layer {
 	/**
 	 * Changes the [opacity](#gridlayer-opacity) of the grid layer.
 	 * @param {number} opacity
-	 * @returns {this}
 	 */
 	setOpacity(opacity) {
 		this.options.opacity = opacity;
@@ -269,7 +262,6 @@ export class GridLayer extends Layer {
 	/**
 	 * Changes the [zIndex](#gridlayer-zindex) of the grid layer.
 	 * @param {number} zIndex
-	 * @returns {this}
 	 */
 	setZIndex(zIndex) {
 		this.options.zIndex = zIndex;
@@ -278,18 +270,12 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	/**
-	 * Returns `true` if any tile in the grid layer has not finished loading.
-	 * @returns {boolean}
-	 */
+	/** Returns `true` if any tile in the grid layer has not finished loading. */
 	isLoading() {
 		return !!this._loading;
 	}
 
-	/**
-	 * Causes the layer to clear all the tiles and request them again.
-	 * @returns {this}
-	 */
+	/** Causes the layer to clear all the tiles and request them again. */
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
@@ -337,15 +323,11 @@ export class GridLayer extends Layer {
 	 * @returns {HTMLElement}
 	 */
 	// no params here: `_addTile` treats a `createTile` that declares `done` as asynchronous
-	/** @returns {HTMLElement} */
 	createTile() {
 		return document.createElement('div');
 	}
 
-	/**
-	 * Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
-	 * @returns {Point}
-	 */
+	/** Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method. */
 	getTileSize() {
 		const s = this.options.tileSize;
 		return s instanceof Point ? s : new Point(s, s);
@@ -520,7 +502,6 @@ export class GridLayer extends Layer {
 	 * @param {number} y
 	 * @param {number} z
 	 * @param {number} minZoom
-	 * @returns {boolean}
 	 */
 	_retainParent(x, y, z, minZoom) {
 		for (z--; z >= minZoom; z--) {
@@ -570,10 +551,7 @@ export class GridLayer extends Layer {
 		this._setView(e.center, e.zoom, true, e.noUpdate);
 	}
 
-	/**
-	 * @param {number} zoom
-	 * @returns {number}
-	 */
+	/** @param {number} zoom */
 	_clampZoom(zoom) {
 		const options = this.options;
 
@@ -710,10 +688,7 @@ export class GridLayer extends Layer {
 		this._tiles = tiles;
 	}
 
-	/**
-	 * @param {LatLng} center
-	 * @returns {Bounds}
-	 */
+	/** @param {LatLng} center */
 	_getTiledPixelBounds(center) {
 		const map = this._map,
 		mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
@@ -799,10 +774,7 @@ export class GridLayer extends Layer {
 		}
 	}
 
-	/**
-	 * @param {Coords} coords
-	 * @returns {boolean}
-	 */
+	/** @param {Coords} coords */
 	_isValidTile(coords) {
 		const crs = this._map.options.crs;
 
@@ -835,10 +807,7 @@ export class GridLayer extends Layer {
 	}
 
 	// converts tile coordinates to its geographical bounds
-	/**
-	 * @param {Coords} coords
-	 * @returns {LatLngBounds}
-	 */
+	/** @param {Coords} coords */
 	_tileCoordsToBounds(coords) {
 		const bp = this._tileCoordsToNwSe(coords);
 		let bounds = new LatLngBounds(bp[0], bp[1]);
@@ -849,10 +818,7 @@ export class GridLayer extends Layer {
 		return bounds;
 	}
 	// converts tile coordinates to key for the tile cache
-	/**
-	 * @param {{x: number, y: number, z: number}} coords
-	 * @returns {string}
-	 */
+	/** @param {{x: number, y: number, z: number}} coords */
 	_tileCoordsToKey(coords) {
 		return `${coords.x}:${coords.y}:${coords.z}`;
 	}
@@ -990,18 +956,12 @@ export class GridLayer extends Layer {
 		});
 	}
 
-	/**
-	 * @param {Point} coords
-	 * @returns {Point}
-	 */
+	/** @param {Point} coords */
 	_getTilePos(coords) {
 		return coords.scaleBy(this.getTileSize()).subtract(this._level.origin);
 	}
 
-	/**
-	 * @param {Coords} coords
-	 * @returns {Coords}
-	 */
+	/** @param {Coords} coords */
 	_wrapCoords(coords) {
 		const newCoords = /** @type {Coords} */ (new Point(
 			this._wrapX ? Util.wrapNum(coords.x, this._wrapX) : coords.x,
@@ -1010,10 +970,7 @@ export class GridLayer extends Layer {
 		return newCoords;
 	}
 
-	/**
-	 * @param {Bounds} bounds
-	 * @returns {Bounds}
-	 */
+	/** @param {Bounds} bounds */
 	_pxBoundsToTileRange(bounds) {
 		const tileSize = this.getTileSize();
 		return new Bounds(

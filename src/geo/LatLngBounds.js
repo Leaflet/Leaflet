@@ -112,7 +112,6 @@ export class LatLngBounds {
 	 * Returns bounds created by extending or retracting the current bounds by a given ratio in each direction. For
 	 * example, a ratio of 0.5 extends the bounds by 50% in each direction. Negative values will retract the bounds.
 	 * @param {number} bufferRatio
-	 * @returns {LatLngBounds}
 	 */
 	pad(bufferRatio) {
 		const sw = this._southWest,
@@ -125,76 +124,49 @@ export class LatLngBounds {
 			new LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
 	}
 
-	/**
-	 * Returns the center point of the bounds.
-	 * @returns {LatLng}
-	 */
+	/** Returns the center point of the bounds. */
 	getCenter() {
 		return new LatLng(
 			(this._southWest.lat + this._northEast.lat) / 2,
 			(this._southWest.lng + this._northEast.lng) / 2);
 	}
 
-	/**
-	 * Returns the south-west point of the bounds.
-	 * @returns {LatLng}
-	 */
+	/** Returns the south-west point of the bounds. */
 	getSouthWest() {
 		return this._southWest;
 	}
 
-	/**
-	 * Returns the north-east point of the bounds.
-	 * @returns {LatLng}
-	 */
+	/** Returns the north-east point of the bounds. */
 	getNorthEast() {
 		return this._northEast;
 	}
 
-	/**
-	 * Returns the north-west point of the bounds.
-	 * @returns {LatLng}
-	 */
+	/** Returns the north-west point of the bounds. */
 	getNorthWest() {
 		return new LatLng(this.getNorth(), this.getWest());
 	}
 
-	/**
-	 * Returns the south-east point of the bounds.
-	 * @returns {LatLng}
-	 */
+	/** Returns the south-east point of the bounds. */
 	getSouthEast() {
 		return new LatLng(this.getSouth(), this.getEast());
 	}
 
-	/**
-	 * Returns the west longitude of the bounds
-	 * @returns {number}
-	 */
+	/** Returns the west longitude of the bounds */
 	getWest() {
 		return this._southWest.lng;
 	}
 
-	/**
-	 * Returns the south latitude of the bounds
-	 * @returns {number}
-	 */
+	/** Returns the south latitude of the bounds */
 	getSouth() {
 		return this._southWest.lat;
 	}
 
-	/**
-	 * Returns the east longitude of the bounds
-	 * @returns {number}
-	 */
+	/** Returns the east longitude of the bounds */
 	getEast() {
 		return this._northEast.lng;
 	}
 
-	/**
-	 * Returns the north latitude of the bounds
-	 * @returns {number}
-	 */
+	/** Returns the north latitude of the bounds */
 	getNorth() {
 		return this._northEast.lat;
 	}
@@ -202,7 +174,6 @@ export class LatLngBounds {
 	/**
 	 * Returns `true` if the rectangle contains the given point or bounds.
 	 * @param {LatLngExpression | LatLngBoundsExpression} obj
-	 * @returns {boolean}
 	 */
 	contains(obj) {
 		const sw = this._southWest,
@@ -223,7 +194,6 @@ export class LatLngBounds {
 	 * Returns `true` if the rectangle intersects the given bounds. Two
 	 * bounds intersect if they have at least one point in common.
 	 * @param {LatLngBoundsExpression} bounds
-	 * @returns {boolean}
 	 */
 	intersects(bounds) {
 		bounds = new LatLngBounds(bounds);
@@ -243,7 +213,6 @@ export class LatLngBounds {
 	 * Returns `true` if the rectangle overlaps the given bounds.
 	 * Two bounds overlap if their intersection is an area.
 	 * @param {LatLngBoundsExpression} bounds
-	 * @returns {boolean}
 	 */
 	overlaps(bounds) {
 		bounds = new LatLngBounds(bounds);
@@ -262,7 +231,6 @@ export class LatLngBounds {
 	/**
 	 * Returns a string with bounding box coordinates in a 'southwest_lng,southwest_lat,northeast_lng,northeast_lat'
 	 * format. Useful for sending requests to web services that return geo data.
-	 * @returns {string}
 	 */
 	toBBoxString() {
 		return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
@@ -273,7 +241,6 @@ export class LatLngBounds {
 	 * bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
 	 * @param {LatLngBoundsExpression} [bounds]
 	 * @param {number} [maxMargin]
-	 * @returns {boolean}
 	 */
 	equals(bounds, maxMargin) {
 		if (!bounds) { return false; }
@@ -284,10 +251,7 @@ export class LatLngBounds {
 		       this._northEast.equals(bounds.getNorthEast(), maxMargin);
 	}
 
-	/**
-	 * Returns `true` if the bounds are properly initialized.
-	 * @returns {boolean}
-	 */
+	/** Returns `true` if the bounds are properly initialized. */
 	isValid() {
 		return !!(this._southWest && this._northEast);
 	}

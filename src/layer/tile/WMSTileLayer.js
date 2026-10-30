@@ -144,7 +144,6 @@ export class WMSTileLayer extends TileLayer {
 	 * on the current screen (unless `noRedraw` was set to true).
 	 * @param {Partial<WMSParams>} params
 	 * @param {boolean} [noRedraw]
-	 * @returns {this}
 	 */
 	setParams(params, noRedraw) {
 

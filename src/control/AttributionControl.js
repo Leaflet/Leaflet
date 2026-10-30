@@ -100,7 +100,6 @@ export class AttributionControl extends Control {
 	/**
 	 * Sets the HTML text shown before the attributions. Pass `false` to disable.
 	 * @param {string | false} prefix
-	 * @returns {this}
 	 */
 	setPrefix(prefix) {
 		this.options.prefix = prefix;
@@ -111,7 +110,6 @@ export class AttributionControl extends Control {
 	/**
 	 * Adds an attribution text (e.g. `'&copy; OpenStreetMap contributors'`).
 	 * @param {string} text
-	 * @returns {this}
 	 */
 	addAttribution(text) {
 		if (!text) { return this; }
@@ -129,7 +127,6 @@ export class AttributionControl extends Control {
 	/**
 	 * Removes an attribution text.
 	 * @param {string} text
-	 * @returns {this}
 	 */
 	removeAttribution(text) {
 		if (!text) { return this; }

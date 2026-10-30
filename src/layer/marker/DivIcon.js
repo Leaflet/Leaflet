@@ -65,7 +65,6 @@ export class DivIcon extends Icon {
 		return div;
 	}
 
-	/** @returns {null} */
 	createShadow() {
 		return null;
 	}

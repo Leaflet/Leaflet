@@ -21,7 +21,6 @@ import {Point} from './Point.js';
  * @param {Point[]} points
  * @param {Bounds} bounds
  * @param {boolean} [round]
- * @returns {Point[]}
  */
 export function clipPolygon(points, bounds, round) {
 	// left, bottom, right, top
@@ -68,7 +67,6 @@ function _isOutside(p, edge, bounds) {
  * of the passed LatLngs (first ring) from a polygon.
  * @param {LatLngExpression[]} latlngs
  * @param {typeof CRS} crs
- * @returns {LatLng}
  */
 export function polygonCenter(latlngs, crs) {
 	// points relative to the first one, to avoid floating point errors on tiny polygons with large projected coordinates
@@ -98,7 +96,6 @@ export function polygonCenter(latlngs, crs) {
 /**
  * Returns the 'center of mass' of the passed LatLngs.
  * @param {LatLngExpression[]} coords
- * @returns {LatLng}
  */
 export function centroid(coords) {
 	let latSum = 0;

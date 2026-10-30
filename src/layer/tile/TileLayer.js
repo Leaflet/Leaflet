@@ -168,7 +168,6 @@ export class TileLayer extends GridLayer {
 	 * does not change, the layer will not be redrawn unless the noRedraw parameter is set to false.
 	 * @param {string} url
 	 * @param {boolean} [noRedraw]
-	 * @returns {this}
 	 */
 	setUrl(url, noRedraw) {
 		url = upgradeOSMUrl(url);
@@ -191,7 +190,6 @@ export class TileLayer extends GridLayer {
 	 * The `done` callback is called when the tile has been loaded.
 	 * @param {Coords} coords
 	 * @param {DoneCallback} done
-	 * @returns {HTMLImageElement}
 	 */
 	createTile(coords, done) {
 		const tile = document.createElement('img');
@@ -225,7 +223,6 @@ export class TileLayer extends GridLayer {
 	 * `TileLayer` can override this function to provide custom tile URL naming schemes.
 	 * @category Extension methods
 	 * @param {Coords} coords
-	 * @returns {string}
 	 * @uninheritable
 	 */
 	getTileUrl(coords) {

@@ -99,7 +99,6 @@ export class Point {
 	/**
 	 * @param {unknown} x
 	 * @param {unknown} [y]
-	 * @returns {boolean}
 	 */
 	static validate(x, y) {
 		if (x instanceof Point || Array.isArray(x)) {
@@ -112,10 +111,7 @@ export class Point {
 		return false;
 	}
 
-	/**
-	 * Returns a copy of the current point.
-	 * @returns {Point}
-	 */
+	/** Returns a copy of the current point. */
 	clone() {
 		// to skip the validation in the constructor we need to initialize with 0 and then set the values later
 		const p = new Point(0, 0);
@@ -127,7 +123,6 @@ export class Point {
 	/**
 	 * Returns the result of addition of the current and the given points.
 	 * @param {PointExpression} point
-	 * @returns {Point}
 	 */
 	add(point) {
 		// non-destructive, returns a new point
@@ -145,7 +140,6 @@ export class Point {
 	/**
 	 * Returns the result of subtraction of the given point from the current.
 	 * @param {PointExpression} point
-	 * @returns {Point}
 	 */
 	subtract(point) {
 		return this.clone()._subtract(new Point(point));
@@ -161,7 +155,6 @@ export class Point {
 	/**
 	 * Returns the result of division of the current point by the given number.
 	 * @param {number} num
-	 * @returns {Point}
 	 */
 	divideBy(num) {
 		return this.clone()._divideBy(num);
@@ -177,7 +170,6 @@ export class Point {
 	/**
 	 * Returns the result of multiplication of the current point by the given number.
 	 * @param {number} num
-	 * @returns {Point}
 	 */
 	multiplyBy(num) {
 		return this.clone()._multiplyBy(num);
@@ -195,7 +187,6 @@ export class Point {
 	 * algebra terms, multiply the point by the [scaling
 	 * matrix](https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation) defined by `scale`.
 	 * @param {Point} scale
-	 * @returns {Point}
 	 */
 	scaleBy(scale) {
 		return new Point(this.x * scale.x, this.y * scale.y);
@@ -204,16 +195,12 @@ export class Point {
 	/**
 	 * Inverse of `scaleBy`. Divide each coordinate of the current point by each coordinate of `scale`.
 	 * @param {Point} scale
-	 * @returns {Point}
 	 */
 	unscaleBy(scale) {
 		return new Point(this.x / scale.x, this.y / scale.y);
 	}
 
-	/**
-	 * Returns a copy of the current point with rounded coordinates.
-	 * @returns {Point}
-	 */
+	/** Returns a copy of the current point with rounded coordinates. */
 	round() {
 		return this.clone()._round();
 	}
@@ -224,10 +211,7 @@ export class Point {
 		return this;
 	}
 
-	/**
-	 * Returns a copy of the current point with floored coordinates (rounded down).
-	 * @returns {Point}
-	 */
+	/** Returns a copy of the current point with floored coordinates (rounded down). */
 	floor() {
 		return this.clone()._floor();
 	}
@@ -238,10 +222,7 @@ export class Point {
 		return this;
 	}
 
-	/**
-	 * Returns a copy of the current point with ceiled coordinates (rounded up).
-	 * @returns {Point}
-	 */
+	/** Returns a copy of the current point with ceiled coordinates (rounded up). */
 	ceil() {
 		return this.clone()._ceil();
 	}
@@ -252,10 +233,7 @@ export class Point {
 		return this;
 	}
 
-	/**
-	 * Returns a copy of the current point with truncated coordinates (rounded towards zero).
-	 * @returns {Point}
-	 */
+	/** Returns a copy of the current point with truncated coordinates (rounded towards zero). */
 	trunc() {
 		return this.clone()._trunc();
 	}
@@ -269,7 +247,6 @@ export class Point {
 	/**
 	 * Returns the cartesian distance between the current and the given points.
 	 * @param {PointExpression} point
-	 * @returns {number}
 	 */
 	distanceTo(point) {
 		point = new Point(point);
@@ -283,7 +260,6 @@ export class Point {
 	/**
 	 * Returns `true` if the given point has the same coordinates.
 	 * @param {PointExpression} point
-	 * @returns {boolean}
 	 */
 	equals(point) {
 		point = new Point(point);
@@ -296,7 +272,6 @@ export class Point {
 	 * Returns `true` if both coordinates of the given point are less than
 	 * the corresponding current point coordinates (in absolute values).
 	 * @param {PointExpression} point
-	 * @returns {boolean}
 	 */
 	contains(point) {
 		point = new Point(point);
@@ -305,10 +280,7 @@ export class Point {
 		       Math.abs(point.y) <= Math.abs(this.y);
 	}
 
-	/**
-	 * Returns a string representation of the point for debugging purposes.
-	 * @returns {string}
-	 */
+	/** Returns a string representation of the point for debugging purposes. */
 	toString() {
 		return `Point(${formatNum(this.x)}, ${formatNum(this.y)})`;
 	}

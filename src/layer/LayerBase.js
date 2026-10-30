@@ -59,7 +59,6 @@ export class LayerBase extends Evented {
 	/**
 	 * Adds the layer to the given map or layer group.
 	 * @param {LeafletMap | LayerGroup} map
-	 * @returns {this}
 	 */
 	addTo(map) {
 		// groups type their members as Layer, which a DivOverlay isn't
@@ -67,10 +66,7 @@ export class LayerBase extends Evented {
 		return this;
 	}
 
-	/**
-	 * Removes the layer from the map it is currently active on.
-	 * @returns {this}
-	 */
+	/** Removes the layer from the map it is currently active on. */
 	remove() {
 		return this.removeFrom(this._map || this._mapToAdd);
 	}
@@ -97,7 +93,6 @@ export class LayerBase extends Evented {
 	 * Returns the `HTMLElement` representing the named pane on the
 	 * map. If `name` is omitted, returns the pane for this layer.
 	 * @param {string} [name]
-	 * @returns {HTMLElement}
 	 */
 	getPane(name) {
 		return this._map.getPane(name ? (/** @type {any} */ (this.options)[name] || name) : this.options.pane);
@@ -115,10 +110,7 @@ export class LayerBase extends Evented {
 		return this;
 	}
 
-	/**
-	 * Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
-	 * @returns {string | null}
-	 */
+	/** Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution). */
 	getAttribution() {
 		return this.options.attribution;
 	}

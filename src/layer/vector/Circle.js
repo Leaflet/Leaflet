@@ -34,10 +34,7 @@ export class Circle extends CircleMarker {
 		this.callInitHooks();
 	}
 
-	/**
-	 * Returns the `LatLngBounds` of the path. When the circle isn't on a map, they're approximated on a sphere.
-	 * @returns {LatLngBounds}
-	 */
+	/** Returns the `LatLngBounds` of the path. When the circle isn't on a map, they're approximated on a sphere. */
 	getBounds() {
 		if (!this._map) { return this._latlng.toBounds(this._radius * 2); }
 

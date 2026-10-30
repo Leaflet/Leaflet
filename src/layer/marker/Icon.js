@@ -136,7 +136,6 @@ export class Icon extends Class {
 	/**
 	 * As `createIcon`, but for the shadow beneath it.
 	 * @param {HTMLElement | null} [oldIcon]
-	 * @returns {HTMLImageElement | null}
 	 */
 	createShadow(oldIcon) {
 		return this._createIcon('shadow', oldIcon);
@@ -220,10 +219,7 @@ export class Icon extends Class {
 		return el;
 	}
 
-	/**
-	 * @param {'icon' | 'shadow'} name
-	 * @returns {string | null}
-	 */
+	/** @param {'icon' | 'shadow'} name */
 	_getIconUrl(name) {
 		return window.devicePixelRatio > 1 && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}

@@ -143,7 +143,6 @@ export class Popup extends DivOverlay {
 	/**
 	 * Alternative to `map.openPopup(popup)`. Adds the popup to the map and closes the previous one.
 	 * @param {LeafletMap} map
-	 * @returns {this}
 	 */
 	openOn(map) {
 		map = arguments.length ? map : /** @type {Layer} */ (this._source)._map; // experimental, not the part of public api

@@ -92,17 +92,13 @@ export class Polyline extends Path {
 	/**
 	 * Replaces all the points in the polyline with the given array of geographical points.
 	 * @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs
-	 * @returns {this}
 	 */
 	setLatLngs(latlngs) {
 		this._setLatLngs(latlngs);
 		return this.redraw();
 	}
 
-	/**
-	 * Returns `true` if the Polyline has no LatLngs.
-	 * @returns {boolean}
-	 */
+	/** Returns `true` if the Polyline has no LatLngs. */
 	isEmpty() {
 		return !this._latlngs.length;
 	}
@@ -111,7 +107,6 @@ export class Polyline extends Path {
 	 * Returns the point closest to `p` on the Polyline, with its `distance` to `p`, or `null` when the polyline
 	 * has no points on the screen.
 	 * @param {Point} p
-	 * @returns {(Point & {distance: number}) | null}
 	 */
 	closestLayerPoint(p) {
 		p = new Point(p);
@@ -137,10 +132,7 @@ export class Polyline extends Path {
 		return minPoint && Object.assign(minPoint, {distance: Math.sqrt(minDistance)});
 	}
 
-	/**
-	 * Returns the center ([centroid](https://en.wikipedia.org/wiki/Centroid)) of the polyline.
-	 * @returns {LatLng}
-	 */
+	/** Returns the center ([centroid](https://en.wikipedia.org/wiki/Centroid)) of the polyline. */
 	getCenter() {
 		// throws error when not yet added to map as this center calculation requires projected coordinates
 		if (!this._map) {
@@ -149,10 +141,7 @@ export class Polyline extends Path {
 		return LineUtil.polylineCenter(this._defaultShape(), this._map.options.crs);
 	}
 
-	/**
-	 * Returns the `LatLngBounds` of the path.
-	 * @returns {LatLngBounds}
-	 */
+	/** Returns the `LatLngBounds` of the path. */
 	getBounds() {
 		return this._bounds;
 	}
@@ -163,7 +152,6 @@ export class Polyline extends Path {
 	 * array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	 * @param {LatLngExpression} latlng
 	 * @param {LatLng[]} [latlngs]
-	 * @returns {this}
 	 */
 	addLatLng(latlng, latlngs) {
 		latlngs ??= this._defaultShape();

@@ -190,7 +190,6 @@ export class Class {
 	 * @template {{prototype: object, mergeOptions: Function}} C
 	 * @this {C}
 	 * @param {object} properties
-	 * @returns {C}
 	 * @uninheritable
 	 */
 	static include(properties) {
@@ -213,7 +212,6 @@ export class Class {
 	 * @template {{defaultOptions?: object}} C
 	 * @this {C}
 	 * @param {Partial<NonNullable<C['defaultOptions']>>} options
-	 * @returns {C}
 	 * @uninheritable
 	 */
 	static mergeOptions(options) {
@@ -244,7 +242,6 @@ export class Class {
 	 * @this {C}
 	 * @param {((this: C['prototype']) => void) | (keyof C['prototype'] & string)} fn
 	 * @param {...any} args
-	 * @returns {C}
 	 * @uninheritable
 	 */
 	static addInitHook(fn, ...args) {

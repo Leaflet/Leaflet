@@ -62,7 +62,6 @@ export class LayerGroup extends Layer {
 	/**
 	 * Adds the given layer to the group.
 	 * @param {Layer} layer
-	 * @returns {this}
 	 */
 	addLayer(layer) {
 		const id = this.getLayerId(layer);
@@ -77,7 +76,6 @@ export class LayerGroup extends Layer {
 	/**
 	 * Removes the given layer, or the layer with the given internal ID, from the group.
 	 * @param {Layer | number} layer
-	 * @returns {this}
 	 */
 	removeLayer(layer) {
 		const id = typeof layer === 'number' ? layer : this.getLayerId(layer);
@@ -94,17 +92,13 @@ export class LayerGroup extends Layer {
 	/**
 	 * Returns `true` if the given layer, or the layer with the given internal ID, is currently added to the group.
 	 * @param {Layer | number} layer
-	 * @returns {boolean}
 	 */
 	hasLayer(layer) {
 		const layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;
 	}
 
-	/**
-	 * Removes all the layers from the group.
-	 * @returns {this}
-	 */
+	/** Removes all the layers from the group. */
 	clearLayers() {
 		return this.eachLayer(this.removeLayer, this);
 	}
@@ -126,7 +120,6 @@ export class LayerGroup extends Layer {
 	 * ```
 	 * @param {(layer: Layer) => void} method
 	 * @param {any} [context]
-	 * @returns {this}
 	 */
 	eachLayer(method, context) {
 		for (const layer of Object.values(this._layers)) {
@@ -158,7 +151,6 @@ export class LayerGroup extends Layer {
 	/**
 	 * Calls `setZIndex` on every layer contained in this group, passing the z-index.
 	 * @param {number} zIndex
-	 * @returns {this}
 	 */
 	setZIndex(zIndex) {
 		for (const layer of Object.values(this._layers)) {
@@ -170,7 +162,6 @@ export class LayerGroup extends Layer {
 	/**
 	 * Returns the internal ID for a layer
 	 * @param {Layer} layer
-	 * @returns {number}
 	 */
 	getLayerId(layer) {
 		return Util.stamp(layer);

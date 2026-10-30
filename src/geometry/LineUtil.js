@@ -23,7 +23,6 @@ import {LatLng} from '../geo/LatLng.js';
  * [Simplify.js](https://mourner.github.io/simplify-js/).
  * @param {Point[]} points
  * @param {number} tolerance
- * @returns {Point[]}
  */
 export function simplify(points, tolerance) {
 	if (!tolerance || !points.length) {
@@ -46,7 +45,6 @@ export function simplify(points, tolerance) {
  * @param {Point} p
  * @param {Point} p1
  * @param {Point} p2
- * @returns {number}
  */
 export function pointToSegmentDistance(p, p1, p2) {
 	return Math.sqrt(_sqClosestPointOnSegment(p, p1, p2, true));
@@ -57,7 +55,6 @@ export function pointToSegmentDistance(p, p1, p2) {
  * @param {Point} p
  * @param {Point} p1
  * @param {Point} p2
- * @returns {Point}
  */
 export function closestPointOnSegment(p, p1, p2) {
 	return _sqClosestPointOnSegment(p, p1, p2);
@@ -285,7 +282,6 @@ function _sqDist(p1, p2) {
  * @param {Point} p1
  * @param {Point} p2
  * @param {boolean} [sqDist]
- * @returns {number | Point}
  */
 export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 	let x = p1.x,
@@ -317,7 +313,6 @@ export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 /**
  * Returns true if `latlngs` is a flat array, false is nested.
  * @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs
- * @returns {boolean}
  */
 export function isFlat(latlngs) {
 	return !Array.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
@@ -328,7 +323,6 @@ export function isFlat(latlngs) {
  * of the passed LatLngs (first ring) from a polyline.
  * @param {LatLngExpression[]} latlngs
  * @param {typeof CRS} crs
- * @returns {LatLng}
  */
 export function polylineCenter(latlngs, crs) {
 	const points = _projectRing(latlngs, crs),
@@ -366,7 +360,6 @@ export function polylineCenter(latlngs, crs) {
 /**
  * @param {LatLngExpression[] | LatLngExpression[][]} latlngs
  * @param {typeof CRS} crs
- * @returns {Point[]}
  */
 export function _projectRing(latlngs, crs) {
 	if (!latlngs || latlngs.length === 0) {

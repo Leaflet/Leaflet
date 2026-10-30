@@ -209,10 +209,7 @@ export class Marker extends Layer {
 		};
 	}
 
-	/**
-	 * Returns the current geographical position of the marker.
-	 * @returns {LatLng}
-	 */
+	/** Returns the current geographical position of the marker. */
 	getLatLng() {
 		return this._latlng;
 	}
@@ -220,7 +217,6 @@ export class Marker extends Layer {
 	/**
 	 * Changes the marker position to the given point.
 	 * @param {LatLngExpression} latlng
-	 * @returns {this}
 	 */
 	setLatLng(latlng) {
 		const oldLatLng = this._latlng;
@@ -233,7 +229,6 @@ export class Marker extends Layer {
 	/**
 	 * Changes the [zIndex offset](#marker-zindexoffset) of the marker.
 	 * @param {number} offset
-	 * @returns {this}
 	 */
 	setZIndexOffset(offset) {
 		this.options.zIndexOffset = offset;
@@ -251,7 +246,6 @@ export class Marker extends Layer {
 	/**
 	 * Changes the marker icon.
 	 * @param {Icon} icon
-	 * @returns {this}
 	 */
 	setIcon(icon) {
 
@@ -268,16 +262,12 @@ export class Marker extends Layer {
 	/**
 	 * Returns the instance of [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement)
 	 * used by Marker layer.
-	 * @returns {HTMLElement | null | undefined}
 	 */
 	getElement() {
 		return this._icon;
 	}
 
-	/**
-	 * Updates the marker position on the map, e.g. after changing its `zIndexOffset` option directly.
-	 * @returns {this}
-	 */
+	/** Updates the marker position on the map, e.g. after changing its `zIndexOffset` option directly. */
 	update() {
 
 		if (this._icon && this._map) {
@@ -469,10 +459,7 @@ export class Marker extends Layer {
 		}
 	}
 
-	/**
-	 * Returns the current [rotation](#marker-rotation) of the marker in degrees.
-	 * @returns {number | null}
-	 */
+	/** Returns the current [rotation](#marker-rotation) of the marker in degrees. */
 	getRotation() {
 		return this.options.rotation;
 	}
@@ -480,7 +467,6 @@ export class Marker extends Layer {
 	/**
 	 * Changes the [rotation](#marker-rotation) of the marker; `null` removes it.
 	 * @param {number | null} rotation
-	 * @returns {this}
 	 */
 	setRotation(rotation) {
 		this.options.rotation = rotation;
@@ -496,7 +482,6 @@ export class Marker extends Layer {
 	/**
 	 * Changes the opacity of the marker.
 	 * @param {number} opacity
-	 * @returns {this}
 	 */
 	setOpacity(opacity) {
 		this.options.opacity = opacity;
@@ -574,7 +559,6 @@ export class Marker extends Layer {
 	/**
 	 * Anchors are offsets from the icon anchor, which is also the rotation origin.
 	 * @param {PointExpression} anchor
-	 * @returns {PointExpression}
 	 */
 	_rotateAnchor(anchor) {
 		const angle = (this.options.rotation ?? 0) * Math.PI / 180;

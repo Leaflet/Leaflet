@@ -206,7 +206,6 @@ export class SVG extends Renderer {
 	 * corresponding to the class name passed. For example, using 'line' will return an instance
 	 * of [SVGLineElement](https://developer.mozilla.org/docs/Web/API/SVGLineElement).
 	 * @param {string} name
-	 * @returns {SVGElement}
 	 */
 	static create(name) {
 		return document.createElementNS('http://www.w3.org/2000/svg', name);
@@ -216,7 +215,6 @@ export class SVG extends Renderer {
 	 * Generates a SVG path string for multiple rings, with each ring turning into "M..L..L.." instructions
 	 * @param {Point[][]} rings
 	 * @param {boolean} [closed]
-	 * @returns {string}
 	 */
 	static pointsToPath(rings, closed) {
 		const str = rings.flatMap(points => [

@@ -48,10 +48,7 @@ export class Control extends Class {
 		this.callInitHooks();
 	}
 
-	/**
-	 * Returns the position of the control.
-	 * @returns {ControlPosition}
-	 */
+	/** Returns the position of the control. */
 	getPosition() {
 		return this.options.position;
 	}
@@ -59,7 +56,6 @@ export class Control extends Class {
 	/**
 	 * Sets the position of the control.
 	 * @param {ControlPosition} position
-	 * @returns {this}
 	 */
 	setPosition(position) {
 		const map = this._map;
@@ -84,7 +80,6 @@ export class Control extends Class {
 	/**
 	 * Adds the control to the given map.
 	 * @param {LeafletMap} map
-	 * @returns {this}
 	 */
 	addTo(map) {
 		this.remove();
@@ -107,10 +102,7 @@ export class Control extends Class {
 		return this;
 	}
 
-	/**
-	 * Removes the control from the map it is currently active on.
-	 * @returns {this}
-	 */
+	/** Removes the control from the map it is currently active on. */
 	remove() {
 		if (!this._map) {
 			return this;

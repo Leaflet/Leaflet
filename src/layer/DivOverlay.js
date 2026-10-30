@@ -99,7 +99,6 @@ export class DivOverlay extends LayerBase {
 	/**
 	 * Adds the overlay to the map. Alternative to `map.openPopup(popup)`/`.openTooltip(tooltip)`.
 	 * @param {LeafletMap} map
-	 * @returns {this}
 	 */
 	openOn(map) {
 		map = arguments.length ? map : /** @type {Layer} */ (this._source)._map; // experimental, not the part of public api
@@ -112,7 +111,6 @@ export class DivOverlay extends LayerBase {
 	/**
 	 * Closes the overlay. Alternative to `map.closePopup(popup)`/`.closeTooltip(tooltip)`
 	 * and `layer.closePopup()`/`.closeTooltip()`.
-	 * @returns {this}
 	 */
 	close() {
 		this._map?.removeLayer(this);
@@ -123,7 +121,6 @@ export class DivOverlay extends LayerBase {
 	 * Opens or closes the overlay bound to layer depending on its current state. Argument may be omitted
 	 * only for overlay bound to layer. Alternative to `layer.togglePopup()`/`.toggleTooltip()`.
 	 * @param {Layer} [layer]
-	 * @returns {this}
 	 */
 	toggle(layer) {
 		if (this._map) {
@@ -184,10 +181,7 @@ export class DivOverlay extends LayerBase {
 		}
 	}
 
-	/**
-	 * Returns the geographical point of the overlay.
-	 * @returns {LatLng | undefined}
-	 */
+	/** Returns the geographical point of the overlay. */
 	getLatLng() {
 		return this._latlng;
 	}
@@ -195,7 +189,6 @@ export class DivOverlay extends LayerBase {
 	/**
 	 * Sets the geographical point where the overlay will open.
 	 * @param {LatLngExpression} latlng
-	 * @returns {this}
 	 */
 	setLatLng(latlng) {
 		this._latlng = new LatLng(latlng);
@@ -206,10 +199,7 @@ export class DivOverlay extends LayerBase {
 		return this;
 	}
 
-	/**
-	 * Returns the content of the overlay.
-	 * @returns {OverlayContent | undefined}
-	 */
+	/** Returns the content of the overlay. */
 	getContent() {
 		return this._content;
 	}
@@ -220,7 +210,6 @@ export class DivOverlay extends LayerBase {
 	 * instead. If a function is passed the source layer will be passed to the function. The function
 	 * should return a `String` or `HTMLElement` to be used in the overlay.
 	 * @param {OverlayContent} content
-	 * @returns {this}
 	 */
 	setContent(content) {
 		this._content = content;
@@ -263,18 +252,12 @@ export class DivOverlay extends LayerBase {
 		};
 	}
 
-	/**
-	 * Returns `true` when the overlay is visible on the map.
-	 * @returns {boolean}
-	 */
+	/** Returns `true` when the overlay is visible on the map. */
 	isOpen() {
 		return !!this._map && this._map.hasLayer(this);
 	}
 
-	/**
-	 * Brings this overlay in front of other overlays (in the same map pane).
-	 * @returns {this}
-	 */
+	/** Brings this overlay in front of other overlays (in the same map pane). */
 	bringToFront() {
 		if (this._map) {
 			DomUtil.toFront(this._container);
@@ -282,10 +265,7 @@ export class DivOverlay extends LayerBase {
 		return this;
 	}
 
-	/**
-	 * Brings this overlay to the back of other overlays (in the same map pane).
-	 * @returns {this}
-	 */
+	/** Brings this overlay to the back of other overlays (in the same map pane). */
 	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._container);

@@ -713,7 +713,6 @@ export class LeafletMap extends Evented {
 	 * @param {LatLngExpression} center
 	 * @param {number} [zoom]
 	 * @param {ZoomPanOptions} [options]
-	 * @returns {this}
 	 */
 	setView(center, zoom, options) {
 
@@ -753,7 +752,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {number} zoom
 	 * @param {ZoomOptions} [options]
-	 * @returns {this}
 	 */
 	setZoom(zoom, options) {
 		if (!this._loaded) {
@@ -768,7 +766,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {number} [delta]
 	 * @param {ZoomOptions} [options]
-	 * @returns {this}
 	 */
 	zoomIn(delta, options) {
 		delta ??= this.options.zoomDelta;
@@ -780,7 +777,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {number} [delta]
 	 * @param {ZoomOptions} [options]
-	 * @returns {this}
 	 */
 	zoomOut(delta, options) {
 		delta ??= this.options.zoomDelta;
@@ -862,7 +858,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {LatLngBoundsExpression} bounds
 	 * @param {FitBoundsOptions} [options]
-	 * @returns {this}
 	 */
 	fitBounds(bounds, options) {
 
@@ -880,7 +875,6 @@ export class LeafletMap extends Evented {
 	 * Sets a map view that mostly contains the whole world with the maximum zoom level possible.
 	 * @category Methods for modifying map state
 	 * @param {FitBoundsOptions} [options]
-	 * @returns {this}
 	 */
 	fitWorld(options) {
 		return this.fitBounds([[-90, -180], [90, 180]], options);
@@ -891,7 +885,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {LatLngExpression} center
 	 * @param {PanOptions} [options]
-	 * @returns {this}
 	 */
 	panTo(center, options) {
 		return this.setView(center, this._zoom, {pan: options});
@@ -903,7 +896,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {PointExpression} offset
 	 * @param {PanOptions} [options]
-	 * @returns {this}
 	 */
 	panBy(offset, options) {
 		offset = new Point(offset).round();
@@ -959,7 +951,6 @@ export class LeafletMap extends Evented {
 	 * @param {LatLngExpression} targetCenter
 	 * @param {number} [targetZoom]
 	 * @param {ZoomPanOptions} [options]
-	 * @returns {this}
 	 */
 	flyTo(targetCenter, targetZoom, options) {
 
@@ -1045,7 +1036,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {LatLngBoundsExpression | {getBounds(): LatLngBounds}} bounds
 	 * @param {FitBoundsOptions} [options]
-	 * @returns {this}
 	 */
 	flyToBounds(bounds, options) {
 		const target = this._getBoundsCenterZoom(bounds, options);
@@ -1057,7 +1047,6 @@ export class LeafletMap extends Evented {
 	 * Call it without arguments to remove the restriction.
 	 * @category Methods for modifying map state
 	 * @param {LatLngBoundsExpression} [bounds]
-	 * @returns {this}
 	 */
 	setMaxBounds(bounds) {
 		// empty (so invalid) when called without bounds
@@ -1085,7 +1074,6 @@ export class LeafletMap extends Evented {
 	 * Sets the lower limit for the available zoom levels (see the [minZoom](#map-minzoom) option).
 	 * @category Methods for modifying map state
 	 * @param {number} zoom
-	 * @returns {this}
 	 */
 	setMinZoom(zoom) {
 		const oldZoom = this.options.minZoom;
@@ -1106,7 +1094,6 @@ export class LeafletMap extends Evented {
 	 * Sets the upper limit for the available zoom levels (see the [maxZoom](#map-maxzoom) option).
 	 * @category Methods for modifying map state
 	 * @param {number} zoom
-	 * @returns {this}
 	 */
 	setMaxZoom(zoom) {
 		const oldZoom = this.options.maxZoom;
@@ -1129,7 +1116,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {LatLngBoundsExpression} bounds
 	 * @param {PanOptions} [options]
-	 * @returns {this}
 	 */
 	panInsideBounds(bounds, options) {
 		this._enforcingBounds = true;
@@ -1151,7 +1137,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 * @param {LatLngExpression} latlng
 	 * @param {PanInsideOptions} [options]
-	 * @returns {this}
 	 */
 	panInside(latlng, options) {
 		options ??= {};
@@ -1184,7 +1169,6 @@ export class LeafletMap extends Evented {
 	 * for `{animate: true}`.
 	 * @category Methods for modifying map state
 	 * @param {InvalidateSizeOptions | boolean} [options]
-	 * @returns {this}
 	 */
 	invalidateSize(options) {
 		if (!this._loaded) { return this; }
@@ -1233,7 +1217,6 @@ export class LeafletMap extends Evented {
 	/**
 	 * Stops the currently running `panTo` or `flyTo` animation, if any.
 	 * @category Methods for modifying map state
-	 * @returns {this}
 	 */
 	stop() {
 		this.setZoom(this._limitZoom(this._zoom));
@@ -1251,7 +1234,6 @@ export class LeafletMap extends Evented {
 	 * for more details.
 	 * @category Geolocation methods
 	 * @param {LocateOptions} [options]
-	 * @returns {this}
 	 */
 	locate(options) {
 
@@ -1293,7 +1275,6 @@ export class LeafletMap extends Evented {
 	 * Stops watching location previously initiated by `map.locate({watch: true})` and
 	 * aborts resetting the map view if map.locate was called with `{setView: true}`.
 	 * @category Geolocation methods
-	 * @returns {this}
 	 */
 	stopLocate() {
 		navigator.geolocation?.clearWatch?.(this._locationWatchId);
@@ -1358,7 +1339,6 @@ export class LeafletMap extends Evented {
 	 * Adds the given layer to the map
 	 * @category Methods for Layers and Controls
 	 * @param {LayerBase<any, any>} layer
-	 * @returns {this}
 	 */
 	addLayer(layer) {
 		if (!layer._layerAdd) {
@@ -1384,7 +1364,6 @@ export class LeafletMap extends Evented {
 	 * Removes the given layer from the map.
 	 * @category Methods for Layers and Controls
 	 * @param {LayerBase<any, any>} layer
-	 * @returns {this}
 	 */
 	removeLayer(layer) {
 		const id = Util.stamp(layer);
@@ -1411,7 +1390,6 @@ export class LeafletMap extends Evented {
 	 * Returns `true` if the given layer is currently added to the map
 	 * @category Methods for Layers and Controls
 	 * @param {LayerBase<any, any>} layer
-	 * @returns {boolean}
 	 */
 	hasLayer(layer) {
 		return Util.stamp(layer) in this._layers;
@@ -1428,7 +1406,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for Layers and Controls
 	 * @param {(layer: LayerBase) => void} method
 	 * @param {any} [context]
-	 * @returns {this}
 	 */
 	eachLayer(method, context) {
 		for (const layer of Object.values(this._layers)) {
@@ -1471,7 +1448,6 @@ export class LeafletMap extends Evented {
 	 * Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
 	 * @category Methods for Layers and Controls
 	 * @param {Popup} [popup]
-	 * @returns {this}
 	 */
 	closePopup(popup) {
 		popup = arguments.length ? popup : this._popup;
@@ -1511,7 +1487,6 @@ export class LeafletMap extends Evented {
 	 * Closes the tooltip given as parameter.
 	 * @category Methods for Layers and Controls
 	 * @param {Tooltip} tooltip
-	 * @returns {this}
 	 */
 	closeTooltip(tooltip) {
 		tooltip.close();
@@ -1538,7 +1513,6 @@ export class LeafletMap extends Evented {
 	 * Adds the given control to the map
 	 * @category Methods for Layers and Controls
 	 * @param {Control} control
-	 * @returns {this}
 	 */
 	addControl(control) {
 		control.addTo(this);
@@ -1549,7 +1523,6 @@ export class LeafletMap extends Evented {
 	 * Removes the given control from the map
 	 * @category Methods for Layers and Controls
 	 * @param {Control} control
-	 * @returns {this}
 	 */
 	removeControl(control) {
 		control.remove();
@@ -1597,7 +1570,6 @@ export class LeafletMap extends Evented {
 	 * @category Other Methods
 	 * @param {string} name
 	 * @param {new (map: LeafletMap) => Handler} HandlerClass
-	 * @returns {this}
 	 */
 	addHandler(name, HandlerClass) {
 		if (HandlerClass) {
@@ -1610,7 +1582,6 @@ export class LeafletMap extends Evented {
 	 * @template {Handler} H
 	 * @param {string} name
 	 * @param {new (map: LeafletMap) => H} HandlerClass
-	 * @returns {H}
 	 */
 	_addHandler(name, HandlerClass) {
 		const handler = new HandlerClass(this);
@@ -1627,7 +1598,6 @@ export class LeafletMap extends Evented {
 	/**
 	 * Destroys the map and clears all related event listeners.
 	 * @category Other Methods
-	 * @returns {this}
 	 */
 	remove() {
 
@@ -1703,7 +1673,6 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns the geographical center of the map view
 	 * @category Methods for Getting Map State
-	 * @returns {LatLng}
 	 */
 	getCenter() {
 		this._checkIfLoaded();
@@ -1717,7 +1686,6 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns the current zoom level of the map view
 	 * @category Methods for Getting Map State
-	 * @returns {number}
 	 */
 	getZoom() {
 		return this._zoom;
@@ -1726,7 +1694,6 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns the geographical bounds visible in the current map view
 	 * @category Methods for Getting Map State
-	 * @returns {LatLngBounds}
 	 */
 	getBounds() {
 		const bounds = this.getPixelBounds(),
@@ -1740,7 +1707,6 @@ export class LeafletMap extends Evented {
 	 * Returns the minimum zoom level of the map (if set in the `minZoom`
 	 * option of the map or of any layers), or `0` by default.
 	 * @category Methods for Getting Map State
-	 * @returns {number}
 	 */
 	getMinZoom() {
 		return this.options.minZoom ?? this._layersMinZoom ?? 0;
@@ -1749,7 +1715,6 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns the maximum zoom level of the map (if set in the `maxZoom` option of the map or of any layers).
 	 * @category Methods for Getting Map State
-	 * @returns {number}
 	 */
 	getMaxZoom() {
 		return this.options.maxZoom ?? this._layersMaxZoom ?? Infinity;
@@ -1763,7 +1728,6 @@ export class LeafletMap extends Evented {
 	 * @param {LatLngBoundsExpression} bounds
 	 * @param {boolean} [inside]
 	 * @param {PointExpression} [padding]
-	 * @returns {number}
 	 */
 	getBoundsZoom(bounds, inside, padding) {
 		bounds = new LatLngBounds(bounds);
@@ -1794,7 +1758,6 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns the current size of the map container (in pixels).
 	 * @category Methods for Getting Map State
-	 * @returns {Point}
 	 */
 	getSize() {
 		if (!this._size || this._sizeChanged) {
@@ -1814,7 +1777,6 @@ export class LeafletMap extends Evented {
 	 * @category Methods for Getting Map State
 	 * @param {LatLngExpression} [center]
 	 * @param {number} [zoom]
-	 * @returns {Bounds}
 	 */
 	getPixelBounds(center, zoom) {
 		const topLeftPoint = this._getTopLeftPoint(center, zoom);
@@ -1827,7 +1789,6 @@ export class LeafletMap extends Evented {
 	 * Returns the projected pixel coordinates of the top left point of the
 	 * map layer (useful in custom layer and overlay implementations).
 	 * @category Methods for Getting Map State
-	 * @returns {Point}
 	 */
 	getPixelOrigin() {
 		this._checkIfLoaded();
@@ -1839,7 +1800,6 @@ export class LeafletMap extends Evented {
 	 * If `zoom` is omitted, the map's current zoom level is used.
 	 * @category Methods for Getting Map State
 	 * @param {number} [zoom]
-	 * @returns {Bounds | null}
 	 */
 	getPixelWorldBounds(zoom) {
 		return this.options.crs.getProjectedBounds(zoom ?? this.getZoom());
@@ -1849,7 +1809,6 @@ export class LeafletMap extends Evented {
 	 * Returns a [map pane](#map-pane), given its name or its HTML element (its identity).
 	 * @category Other Methods
 	 * @param {string | HTMLElement} pane
-	 * @returns {HTMLElement}
 	 */
 	getPane(pane) {
 		return typeof pane === 'string' ? this._panes[pane] : pane;
@@ -1858,7 +1817,6 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns a plain object containing the names of all [panes](#map-pane) as keys and the panes as values.
 	 * @category Other Methods
-	 * @returns {{[name: string]: HTMLElement}}
 	 */
 	getPanes() {
 		return this._panes;
@@ -1880,7 +1838,6 @@ export class LeafletMap extends Evented {
 	 * @category Conversion Methods
 	 * @param {number} toZoom
 	 * @param {number} [fromZoom]
-	 * @returns {number}
 	 */
 	getZoomScale(toZoom, fromZoom) {
 		// TODO replace with universal implementation after refactoring projections
@@ -1895,7 +1852,6 @@ export class LeafletMap extends Evented {
 	 * @category Conversion Methods
 	 * @param {number} scale
 	 * @param {number} [fromZoom]
-	 * @returns {number}
 	 */
 	getScaleZoom(scale, fromZoom) {
 		const crs = this.options.crs;
@@ -1910,7 +1866,6 @@ export class LeafletMap extends Evented {
 	 * @category Conversion Methods
 	 * @param {LatLngExpression} latlng
 	 * @param {number} [zoom]
-	 * @returns {Point}
 	 */
 	project(latlng, zoom) {
 		zoom ??= this._zoom;
@@ -1922,7 +1877,6 @@ export class LeafletMap extends Evented {
 	 * @category Conversion Methods
 	 * @param {PointExpression} point
 	 * @param {number} [zoom]
-	 * @returns {LatLng}
 	 */
 	unproject(point, zoom) {
 		zoom ??= this._zoom;
@@ -1934,7 +1888,6 @@ export class LeafletMap extends Evented {
 	 * the corresponding geographical coordinate (for the current zoom level).
 	 * @category Conversion Methods
 	 * @param {PointExpression} point
-	 * @returns {LatLng}
 	 */
 	layerPointToLatLng(point) {
 		const projectedPoint = new Point(point).add(this.getPixelOrigin());
@@ -1946,7 +1899,6 @@ export class LeafletMap extends Evented {
 	 * coordinate relative to the [origin pixel](#map-getpixelorigin).
 	 * @category Conversion Methods
 	 * @param {LatLngExpression} latlng
-	 * @returns {Point}
 	 */
 	latLngToLayerPoint(latlng) {
 		return this.project(new LatLng(latlng))._subtract(this.getPixelOrigin());
@@ -1958,7 +1910,6 @@ export class LeafletMap extends Evented {
 	 * is wrapped around the dateline so its value is between -180 and +180 degrees.
 	 * @category Conversion Methods
 	 * @param {LatLngExpression} latlng
-	 * @returns {LatLng}
 	 */
 	wrapLatLng(latlng) {
 		return this.options.crs.wrapLatLng(new LatLng(latlng));
@@ -1970,7 +1921,6 @@ export class LeafletMap extends Evented {
 	 * is between -180 and +180 degrees, and the majority of the bounds overlaps the CRS's bounds.
 	 * @category Conversion Methods
 	 * @param {LatLngBoundsExpression} bounds
-	 * @returns {LatLngBounds}
 	 */
 	wrapLatLngBounds(bounds) {
 		return this.options.crs.wrapLatLngBounds(new LatLngBounds(bounds));
@@ -1982,7 +1932,6 @@ export class LeafletMap extends Evented {
 	 * @category Conversion Methods
 	 * @param {LatLngExpression} latlng1
 	 * @param {LatLngExpression} latlng2
-	 * @returns {number}
 	 */
 	distance(latlng1, latlng2) {
 		return this.options.crs.distance(new LatLng(latlng1), new LatLng(latlng2));
@@ -1993,7 +1942,6 @@ export class LeafletMap extends Evented {
 	 * pixel coordinate relative to the [origin pixel](#map-getpixelorigin).
 	 * @category Conversion Methods
 	 * @param {PointExpression} point
-	 * @returns {Point}
 	 */
 	containerPointToLayerPoint(point) {
 		return new Point(point).subtract(this._getMapPanePos());
@@ -2004,7 +1952,6 @@ export class LeafletMap extends Evented {
 	 * returns the corresponding pixel coordinate relative to the map container.
 	 * @category Conversion Methods
 	 * @param {PointExpression} point
-	 * @returns {Point}
 	 */
 	layerPointToContainerPoint(point) {
 		return new Point(point).add(this._getMapPanePos());
@@ -2015,7 +1962,6 @@ export class LeafletMap extends Evented {
 	 * geographical coordinate (for the current zoom level).
 	 * @category Conversion Methods
 	 * @param {PointExpression} point
-	 * @returns {LatLng}
 	 */
 	containerPointToLatLng(point) {
 		const layerPoint = this.containerPointToLayerPoint(new Point(point));
@@ -2026,7 +1972,6 @@ export class LeafletMap extends Evented {
 	 * Given a geographical coordinate, returns the corresponding pixel coordinate relative to the map container.
 	 * @category Conversion Methods
 	 * @param {LatLngExpression} latlng
-	 * @returns {Point}
 	 */
 	latLngToContainerPoint(latlng) {
 		return this.layerPointToContainerPoint(this.latLngToLayerPoint(new LatLng(latlng)));
@@ -2037,7 +1982,6 @@ export class LeafletMap extends Evented {
 	 * to the map container where the event took place.
 	 * @category Conversion Methods
 	 * @param {PointerEvent | MouseEvent} e
-	 * @returns {Point}
 	 */
 	pointerEventToContainerPoint(e) {
 		return DomEvent.getPointerPosition(e, this._container);
@@ -2048,7 +1992,6 @@ export class LeafletMap extends Evented {
 	 * the [origin pixel](#map-getpixelorigin) where the event took place.
 	 * @category Conversion Methods
 	 * @param {PointerEvent | MouseEvent} e
-	 * @returns {Point}
 	 */
 	pointerEventToLayerPoint(e) {
 		return this.containerPointToLayerPoint(this.pointerEventToContainerPoint(e));
@@ -2058,7 +2001,6 @@ export class LeafletMap extends Evented {
 	 * Given a PointerEvent object, returns geographical coordinate where the event took place.
 	 * @category Conversion Methods
 	 * @param {PointerEvent | MouseEvent} e
-	 * @returns {LatLng}
 	 */
 	pointerEventToLatLng(e) {
 		return this.layerPointToLatLng(this.pointerEventToLayerPoint(e));
@@ -2511,7 +2453,6 @@ export class LeafletMap extends Evented {
 	 * @category Other Methods
 	 * @param {(e: {target: LeafletMap}) => void} callback
 	 * @param {any} [context]
-	 * @returns {this}
 	 */
 	whenReady(callback, context) {
 		if (this._loaded) {

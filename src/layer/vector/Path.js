@@ -117,10 +117,7 @@ export class Path extends Layer {
 		this._renderer._removePath(this);
 	}
 
-	/**
-	 * Redraws the layer. Sometimes useful after you changed the coordinates that the path uses.
-	 * @returns {this}
-	 */
+	/** Redraws the layer. Sometimes useful after you changed the coordinates that the path uses. */
 	redraw() {
 		if (this._map) {
 			this._renderer._updatePath(this);
@@ -133,7 +130,6 @@ export class Path extends Layer {
 	 * [`className`](#path-classname) is an exception: it is applied only when the path element is created,
 	 * so passing it here updates the option but leaves the element's class unchanged.
 	 * @param {Partial<O>} style
-	 * @returns {this}
 	 */
 	setStyle(style) {
 		Util.setOptions(this, style);
@@ -146,19 +142,13 @@ export class Path extends Layer {
 		return this;
 	}
 
-	/**
-	 * Brings the layer to the top of all path layers.
-	 * @returns {this}
-	 */
+	/** Brings the layer to the top of all path layers. */
 	bringToFront() {
 		this._renderer?._bringToFront(this);
 		return this;
 	}
 
-	/**
-	 * Brings the layer to the bottom of all path layers.
-	 * @returns {this}
-	 */
+	/** Brings the layer to the bottom of all path layers. */
 	bringToBack() {
 		this._renderer?._bringToBack(this);
 		return this;

@@ -156,10 +156,7 @@ export class LayersControl extends Control {
 		return this._container;
 	}
 
-	/**
-	 * @param {LeafletMap} map
-	 * @returns {this}
-	 */
+	/** @param {LeafletMap} map */
 	addTo(map) {
 		super.addTo(map);
 		// Trigger expand after Layers Control has been inserted into DOM so that is now has an actual height.
@@ -182,7 +179,6 @@ export class LayersControl extends Control {
 	 * Adds a base layer (radio button entry) with the given name to the control.
 	 * @param {Layer} layer
 	 * @param {string} name
-	 * @returns {this}
 	 */
 	addBaseLayer(layer, name) {
 		this._addLayer(layer, name);
@@ -193,7 +189,6 @@ export class LayersControl extends Control {
 	 * Adds an overlay (checkbox entry) with the given name to the control.
 	 * @param {Layer} layer
 	 * @param {string} name
-	 * @returns {this}
 	 */
 	addOverlay(layer, name) {
 		this._addLayer(layer, name, true);
@@ -203,7 +198,6 @@ export class LayersControl extends Control {
 	/**
 	 * Remove the given layer from the control.
 	 * @param {Layer} layer
-	 * @returns {this}
 	 */
 	removeLayer(layer) {
 		layer.off('add remove', this._onLayerChange, this);
@@ -212,10 +206,7 @@ export class LayersControl extends Control {
 		return (this._map) ? this._update() : this;
 	}
 
-	/**
-	 * Expand the control container if collapsed.
-	 * @returns {this}
-	 */
+	/** Expand the control container if collapsed. */
 	expand() {
 		clearTimeout(this._collapseDelayTimeout);
 
@@ -232,10 +223,7 @@ export class LayersControl extends Control {
 		return this;
 	}
 
-	/**
-	 * Collapse the control container if expanded.
-	 * @returns {this}
-	 */
+	/** Collapse the control container if expanded. */
 	collapse() {
 		if (this.options.collapseDelay > 0) {
 			this._collapseDelayTimeout = setTimeout(() => {

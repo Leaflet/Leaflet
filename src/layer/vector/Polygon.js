@@ -65,10 +65,7 @@ export class Polygon extends Polyline {
 		return !this._latlngs.length || !this._latlngs[0].length;
 	}
 
-	/**
-	 * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the Polygon.
-	 * @returns {LatLng}
-	 */
+	/** Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the Polygon. */
 	getCenter() {
 		// throws error when not yet added to map as this center calculation requires projected coordinates
 		if (!this._map) {
@@ -100,10 +97,7 @@ export class Polygon extends Polyline {
 		});
 	}
 
-	/**
-	 * @param {any[]} latlngs
-	 * @returns {any[]}
-	 */
+	/** @param {any[]} latlngs */
 	_convertLatLngs(latlngs) {
 		const result = super._convertLatLngs(latlngs),
 		len = result.length;

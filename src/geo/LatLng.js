@@ -124,7 +124,6 @@ export class LatLng {
 	 * @param {unknown} lat
 	 * @param {unknown} [lng]
 	 * @param {unknown} [alt]
-	 * @returns {boolean}
 	 */
 	static validate(lat, lng, alt) {
 		if (lat instanceof LatLng || (typeof lat === 'object' && lat !== null && 'lat' in lat)) {
@@ -146,7 +145,6 @@ export class LatLng {
 	 * error). The margin of error can be overridden by setting `maxMargin` to a small number.
 	 * @param {LatLngExpression} [obj]
 	 * @param {number} [maxMargin]
-	 * @returns {boolean}
 	 */
 	equals(obj, maxMargin) {
 		if (!obj) { return false; }
@@ -163,7 +161,6 @@ export class LatLng {
 	/**
 	 * Returns a string representation of the point (for debugging purposes).
 	 * @param {number} [precision]
-	 * @returns {string}
 	 */
 	toString(precision) {
 		return `LatLng(${Util.formatNum(this.lat, precision)}, ${Util.formatNum(this.lng, precision)})`;
@@ -173,16 +170,12 @@ export class LatLng {
 	 * Returns the distance (in meters) to the given `LatLng` calculated using the
 	 * [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula).
 	 * @param {LatLngExpression} other
-	 * @returns {number}
 	 */
 	distanceTo(other) {
 		return haversineDistance(this, new LatLng(other), 6371000);
 	}
 
-	/**
-	 * Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
-	 * @returns {LatLng}
-	 */
+	/** Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees. */
 	wrap() {
 		return new LatLng(this.lat, Util.wrapNum(this.lng, [-180, 180], true), this.alt);
 	}
@@ -190,7 +183,6 @@ export class LatLng {
 	/**
 	 * Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters/2` meters apart from the `LatLng`.
 	 * @param {number} sizeInMeters
-	 * @returns {LatLngBounds}
 	 */
 	toBounds(sizeInMeters) {
 		const latAccuracy = 180 * sizeInMeters / 40075017,
@@ -201,10 +193,7 @@ export class LatLng {
 			[this.lat + latAccuracy, this.lng + lngAccuracy]);
 	}
 
-	/**
-	 * Returns a copy of the current LatLng.
-	 * @returns {LatLng}
-	 */
+	/** Returns a copy of the current LatLng. */
 	clone() {
 		// to skip the validation in the constructor we need to initialize with 0 and then set the values later
 		const latlng = new LatLng(0, 0);

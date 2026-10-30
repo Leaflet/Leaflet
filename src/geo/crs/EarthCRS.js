@@ -21,7 +21,6 @@ export class EarthCRS extends CRS {
 	 * Returns the distance in meters between two geographical points, using the Haversine approximation.
 	 * @param {LatLng} latlng1
 	 * @param {LatLng} latlng2
-	 * @returns {number}
 	 */
 	static distance(latlng1, latlng2) {
 		return haversineDistance(latlng1, latlng2, this.R);

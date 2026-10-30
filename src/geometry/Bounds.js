@@ -65,7 +65,6 @@ export class Bounds {
 	/**
 	 * Extends the bounds to contain the given point or bounds.
 	 * @param {PointExpression | BoundsExpression} obj
-	 * @returns {this}
 	 */
 	extend(obj) {
 		let min2, max2;
@@ -101,7 +100,6 @@ export class Bounds {
 	/**
 	 * Returns the center point of the bounds.
 	 * @param {boolean} [round]
-	 * @returns {Point}
 	 */
 	getCenter(round) {
 		return new Point(
@@ -109,42 +107,27 @@ export class Bounds {
 			(this.min.y + this.max.y) / 2, round);
 	}
 
-	/**
-	 * Returns the bottom-left point of the bounds.
-	 * @returns {Point}
-	 */
+	/** Returns the bottom-left point of the bounds. */
 	getBottomLeft() {
 		return new Point(this.min.x, this.max.y);
 	}
 
-	/**
-	 * Returns the top-right point of the bounds.
-	 * @returns {Point}
-	 */
+	/** Returns the top-right point of the bounds. */
 	getTopRight() {
 		return new Point(this.max.x, this.min.y);
 	}
 
-	/**
-	 * Returns the top-left point of the bounds (i.e. [`this.min`](#bounds-min)).
-	 * @returns {Point}
-	 */
+	/** Returns the top-left point of the bounds (i.e. [`this.min`](#bounds-min)). */
 	getTopLeft() {
 		return this.min; // left, top
 	}
 
-	/**
-	 * Returns the bottom-right point of the bounds (i.e. [`this.max`](#bounds-max)).
-	 * @returns {Point}
-	 */
+	/** Returns the bottom-right point of the bounds (i.e. [`this.max`](#bounds-max)). */
 	getBottomRight() {
 		return this.max; // right, bottom
 	}
 
-	/**
-	 * Returns the size of the given bounds
-	 * @returns {Point}
-	 */
+	/** Returns the size of the given bounds */
 	getSize() {
 		return this.max.subtract(this.min);
 	}
@@ -152,7 +135,6 @@ export class Bounds {
 	/**
 	 * Returns `true` if the rectangle contains the given point or bounds.
 	 * @param {PointExpression | BoundsExpression} obj
-	 * @returns {boolean}
 	 */
 	contains(obj) {
 		let min, max;
@@ -173,7 +155,6 @@ export class Bounds {
 	 * Returns `true` if the rectangle intersects the given bounds. Two
 	 * bounds intersect if they have at least one point in common.
 	 * @param {BoundsExpression} bounds
-	 * @returns {boolean}
 	 */
 	intersects(bounds) {
 		bounds = new Bounds(bounds);
@@ -192,7 +173,6 @@ export class Bounds {
 	 * Returns `true` if the rectangle overlaps the given bounds.
 	 * Two bounds overlap if their intersection is an area.
 	 * @param {BoundsExpression} bounds
-	 * @returns {boolean}
 	 */
 	overlaps(bounds) {
 		bounds = new Bounds(bounds);
@@ -207,10 +187,7 @@ export class Bounds {
 		return xOverlaps && yOverlaps;
 	}
 
-	/**
-	 * Returns `true` if the bounds are properly initialized.
-	 * @returns {boolean}
-	 */
+	/** Returns `true` if the bounds are properly initialized. */
 	isValid() {
 		return !!(this.min && this.max);
 	}
@@ -220,7 +197,6 @@ export class Bounds {
 	 * Returns bounds created by extending or retracting the current bounds by a given ratio in each direction. For
 	 * example, a ratio of 0.5 extends the bounds by 50% in each direction. Negative values will retract the bounds.
 	 * @param {number} bufferRatio
-	 * @returns {Bounds}
 	 */
 	pad(bufferRatio) {
 		const min = this.min,
@@ -238,7 +214,6 @@ export class Bounds {
 	/**
 	 * Returns `true` if the rectangle is equivalent to the given bounds.
 	 * @param {BoundsExpression} [bounds]
-	 * @returns {boolean}
 	 */
 	equals(bounds) {
 		if (!bounds) { return false; }

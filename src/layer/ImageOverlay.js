@@ -127,7 +127,6 @@ export class ImageOverlay extends Layer {
 	/**
 	 * Sets the opacity of the overlay.
 	 * @param {number} opacity
-	 * @returns {this}
 	 */
 	setOpacity(opacity) {
 		this.options.opacity = opacity;
@@ -138,10 +137,7 @@ export class ImageOverlay extends Layer {
 		return this;
 	}
 
-	/**
-	 * @param {{opacity?: number}} styleOpts
-	 * @returns {this}
-	 */
+	/** @param {{opacity?: number}} styleOpts */
 	setStyle(styleOpts) {
 		if (styleOpts.opacity) {
 			this.setOpacity(styleOpts.opacity);
@@ -149,10 +145,7 @@ export class ImageOverlay extends Layer {
 		return this;
 	}
 
-	/**
-	 * Brings the layer to the top of all overlays.
-	 * @returns {this}
-	 */
+	/** Brings the layer to the top of all overlays. */
 	bringToFront() {
 		if (this._map) {
 			DomUtil.toFront(this._image);
@@ -160,10 +153,7 @@ export class ImageOverlay extends Layer {
 		return this;
 	}
 
-	/**
-	 * Brings the layer to the bottom of all overlays.
-	 * @returns {this}
-	 */
+	/** Brings the layer to the bottom of all overlays. */
 	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._image);
@@ -174,7 +164,6 @@ export class ImageOverlay extends Layer {
 	/**
 	 * Changes the URL of the image.
 	 * @param {string} url
-	 * @returns {this}
 	 */
 	setUrl(url) {
 		this._url = url;
@@ -188,7 +177,6 @@ export class ImageOverlay extends Layer {
 	/**
 	 * Update the bounds that this ImageOverlay covers.
 	 * @param {LatLngBoundsExpression} bounds
-	 * @returns {this}
 	 */
 	setBounds(bounds) {
 		this._bounds = new LatLngBounds(bounds);
@@ -210,7 +198,6 @@ export class ImageOverlay extends Layer {
 	/**
 	 * Changes the [zIndex](#imageoverlay-zindex) of the image overlay.
 	 * @param {number} value
-	 * @returns {this}
 	 */
 	setZIndex(value) {
 		this.options.zIndex = value;
@@ -218,10 +205,7 @@ export class ImageOverlay extends Layer {
 		return this;
 	}
 
-	/**
-	 * Get the bounds that this ImageOverlay covers.
-	 * @returns {LatLngBounds}
-	 */
+	/** Get the bounds that this ImageOverlay covers. */
 	getBounds() {
 		return this._bounds;
 	}
@@ -229,7 +213,6 @@ export class ImageOverlay extends Layer {
 	/**
 	 * Returns the instance of [`HTMLImageElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)
 	 * used by this overlay (for `VideoOverlay` and `SVGOverlay`, their `<video>` or `<svg>` element).
-	 * @returns {El}
 	 */
 	getElement() {
 		return this._image;
@@ -310,10 +293,7 @@ export class ImageOverlay extends Layer {
 		}
 	}
 
-	/**
-	 * Returns the center of the ImageOverlay.
-	 * @returns {LatLng}
-	 */
+	/** Returns the center of the ImageOverlay. */
 	getCenter() {
 		return this._bounds.getCenter();
 	}

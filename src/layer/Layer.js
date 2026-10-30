@@ -88,7 +88,6 @@ export class Layer extends LayerBase {
 	 * @category Popup methods
 	 * @param {OverlayContent | Popup} content
 	 * @param {Partial<PopupOptions>} [options]
-	 * @returns {this}
 	 */
 	bindPopup(content, options) {
 		/** @type {Popup | null | undefined} */
@@ -105,7 +104,6 @@ export class Layer extends LayerBase {
 	/**
 	 * Removes the popup previously bound with `bindPopup`.
 	 * @category Popup methods
-	 * @returns {this}
 	 */
 	unbindPopup() {
 		if (this._popup) {
@@ -142,7 +140,6 @@ export class Layer extends LayerBase {
 	/**
 	 * Closes the popup bound to this layer if it is open.
 	 * @category Popup methods
-	 * @returns {this}
 	 */
 	closePopup() {
 		this._popup?.close();
@@ -152,7 +149,6 @@ export class Layer extends LayerBase {
 	/**
 	 * Opens or closes the popup bound to this layer depending on its current state.
 	 * @category Popup methods
-	 * @returns {this}
 	 */
 	togglePopup() {
 		this._popup?.toggle(this);
@@ -162,7 +158,6 @@ export class Layer extends LayerBase {
 	/**
 	 * Returns `true` if the popup bound to this layer is currently open.
 	 * @category Popup methods
-	 * @returns {boolean}
 	 */
 	isPopupOpen() {
 		return this._popup?.isOpen() ?? false;
@@ -173,7 +168,6 @@ export class Layer extends LayerBase {
 	 * sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
 	 * @category Popup methods
 	 * @param {OverlayContent} content
-	 * @returns {this}
 	 */
 	setPopupContent(content) {
 		this._popup?.setContent(content);
@@ -225,7 +219,6 @@ export class Layer extends LayerBase {
 	 * @category Tooltip methods
 	 * @param {OverlayContent | Tooltip} content
 	 * @param {Partial<TooltipOptions>} [options]
-	 * @returns {this}
 	 */
 	bindTooltip(content, options) {
 		// an open tooltip is replaced, a closed one reused
@@ -250,7 +243,6 @@ export class Layer extends LayerBase {
 	/**
 	 * Removes the tooltip previously bound with `bindTooltip`.
 	 * @category Tooltip methods
-	 * @returns {this}
 	 */
 	unbindTooltip() {
 		if (this._tooltip) {
@@ -315,7 +307,6 @@ export class Layer extends LayerBase {
 	/**
 	 * Closes the tooltip bound to this layer if it is open.
 	 * @category Tooltip methods
-	 * @returns {this}
 	 */
 	closeTooltip() {
 		this._tooltip?.close();
@@ -325,7 +316,6 @@ export class Layer extends LayerBase {
 	/**
 	 * Opens or closes the tooltip bound to this layer depending on its current state.
 	 * @category Tooltip methods
-	 * @returns {this}
 	 */
 	toggleTooltip() {
 		this._tooltip?.toggle(this);
@@ -335,7 +325,6 @@ export class Layer extends LayerBase {
 	/**
 	 * Returns `true` if the tooltip bound to this layer is currently open.
 	 * @category Tooltip methods
-	 * @returns {boolean}
 	 */
 	isTooltipOpen() {
 		return this._tooltip?.isOpen() ?? false;
@@ -346,7 +335,6 @@ export class Layer extends LayerBase {
 	 * sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
 	 * @category Tooltip methods
 	 * @param {OverlayContent} content
-	 * @returns {this}
 	 */
 	setTooltipContent(content) {
 		this._tooltip?.setContent(content);
@@ -447,7 +435,6 @@ export class Layer extends LayerBase {
 	 * @param {T | null | undefined} old
 	 * @param {OverlayContent | T} content
 	 * @param {object} [options]
-	 * @returns {T}
 	 */
 	_initOverlay(OverlayClass, old, content, options) {
 		let overlay = content;
