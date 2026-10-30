@@ -10,4 +10,6 @@ compatible-v1: true
 compatible-v2: false
 ---
 
-Enables interaction with semi-transparent tiled overlays.
+Enables mouse interactions on raster overlays, making them behave like vector layers.
+
+It samples each tile's alpha channel in order to trigger click and hover events on L.GridLayer class.
