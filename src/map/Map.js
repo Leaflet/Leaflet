@@ -867,9 +867,10 @@ export class LeafletMap extends Evented {
 
 	/**
 	 * Sets the view of the map with a smooth animation like [`flyTo`](#map-flyto),
-	 * but takes a bounds parameter like [`fitBounds`](#map-fitbounds).
+	 * but takes a bounds parameter like [`fitBounds`](#map-fitbounds), or anything with a `getBounds()` method, like a
+	 * `FeatureGroup`.
 	 * @category Methods for modifying map state
-	 * @param {LatLngBoundsExpression} bounds
+	 * @param {LatLngBoundsExpression | {getBounds(): LatLngBounds}} bounds
 	 * @param {FitBoundsOptions} [options]
 	 * @returns {this}
 	 */
@@ -1244,10 +1245,11 @@ export class LeafletMap extends Evented {
 	}
 
 	/**
-	 * Iterates over the layers of the map, optionally specifying context of the iterator function.
+	 * Iterates over the layers of the map, optionally specifying context of the iterator function. Open popups and
+	 * tooltips are included too.
 	 * ```
 	 * map.eachLayer(function(layer){
-	 *     layer.bindPopup('Hello');
+	 *     if (layer instanceof Marker) layer.bindPopup('Hello');
 	 * });
 	 * ```
 	 * @category Methods for Layers and Controls

@@ -77,6 +77,8 @@ export interface InteractiveLayerOptions extends LayerOptions {
 export interface InteractiveLayerEventMap extends LayerEventMap {
 	/** Fired when the user clicks (or taps) the layer. */
 	click: LeafletPointerEvent;
+	/** Fired right before `click`, for something that should happen before any `click` listener runs. */
+	preclick: LeafletPointerEvent;
 	/** Fired when the user double-clicks (or double-taps) the layer. */
 	dblclick: LeafletPointerEvent;
 	/** Fired when the user pushes the pointer on the layer. */
@@ -138,7 +140,6 @@ export interface PathOptions extends InteractiveLayerOptions, PathDefaults {
 	 * [`setStyle`](#path-setstyle) does not update it afterwards.
 	 */
 	className?: string;
-	_dashArray?: number[] | null; // parsed from `dashArray` by `Canvas`
 }
 
 export interface PolylineOptions extends PathOptions, PolylineDefaults {}
@@ -681,6 +682,7 @@ declare module './layer/vector/Path.js' {
 	interface Path {
 		_path: SVGElement; // created by `SVG`
 		_order?: DrawOrder; // created by `Canvas`
+		_dashArray?: number[] | null; // `dashArray` parsed by `Canvas`
 		_pxBounds?: Bounds;
 		// implemented by subclasses
 		_project(): void;

@@ -216,9 +216,9 @@ export class Canvas extends Renderer {
 		if (typeof layer.options.dashArray === 'string') {
 			const parts = layer.options.dashArray.split(DASH_SEPARATOR_RE);
 			// Ignore dash array containing invalid lengths
-			layer.options._dashArray = parts.map(n => Number(n)).filter(n => !isNaN(n));
+			layer._dashArray = parts.map(n => Number(n)).filter(n => !isNaN(n));
 		} else {
-			layer.options._dashArray = layer.options.dashArray;
+			layer._dashArray = layer.options.dashArray;
 		}
 	}
 
@@ -357,7 +357,7 @@ export class Canvas extends Renderer {
 
 		if (options.stroke && options.weight !== 0) {
 			ctx.lineDashOffset = Number(options.dashOffset ?? 0);
-			ctx.setLineDash(options._dashArray ?? []);
+			ctx.setLineDash(layer._dashArray ?? []);
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;

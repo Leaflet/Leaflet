@@ -2,10 +2,10 @@
 import {GridLayer} from './GridLayer.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
+import {Point} from '../../geometry/Point.js';
 
 /** @import {Coords, Defaults, DoneCallback, GridLayerOptions, TileEvent, TileLayerEventMap, TileLayerOptions}
  *    from '../../types.js' */
-/** @import {Point} from '../../geometry/Point.js' */
 
 /** @satisfies {Defaults<GridLayerOptions>} */
 const defaultOptions = {
@@ -137,7 +137,8 @@ export class TileLayer extends GridLayer {
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (this.options.detectRetina && window.devicePixelRatio > 1 && this.options.maxZoom > 0) {
 
-			this.options.tileSize = Math.floor(/** @type {number} */ (this.options.tileSize) / 2);
+			const tileSize = this.options.tileSize;
+			this.options.tileSize = tileSize instanceof Point ? tileSize.divideBy(2).floor() : Math.floor(tileSize / 2);
 
 			if (!this.options.zoomReverse) {
 				this.options.zoomOffset++;

@@ -1,4 +1,4 @@
-import {SimpleCRS, LeafletMap, TileLayer, LatLng} from 'leaflet';
+import {SimpleCRS, LeafletMap, TileLayer, LatLng, Point} from 'leaflet';
 import sinon from 'sinon';
 import {createClock, createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -586,6 +586,18 @@ describe('TileLayer', () => {
 			});
 
 			map.addLayer(kittenLayer).setView([0, 0], 1);
+		});
+
+		it('halves a number or Point tileSize with detectRetina', () => {
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(2);
+			expect(new TileLayer('', {detectRetina: true}).options.tileSize).to.equal(128);
+			expect(new TileLayer('', {detectRetina: true, tileSize: new Point(256, 101)}).options.tileSize)
+				.to.eql(new Point(128, 50));
+			dpr.restore();
+		});
+
+		it('is not loading before it has tiles to load', () => {
+			expect(new TileLayer('').isLoading()).to.equal(false);
 		});
 
 		it('resets invalid min/maxZoom to allow for tiles to be loaded without detectRetina', (done) => {

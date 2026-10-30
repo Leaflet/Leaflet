@@ -11,7 +11,8 @@ import {latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSONU
 /** @import {Layer} from './Layer.js' */
 /** @import {MemberLayer} from './LayerGroup.js' */
 
-// GeoJSON keeps each created layer's own options there, for `resetStyle`
+// GeoJSON keeps each created layer's own options there, for `resetStyle`; plugins like leaflet-realtime set it on
+// layers they create themselves before calling `resetStyle`, so it stays a plain property
 /** @typedef {Layer & {defaultOptions: object}} StyledLayer */
 
 /**
@@ -55,39 +56,33 @@ export class GeoJSON extends FeatureGroup {
 
 	/**
 	 * Adds a GeoJSON object to the layer.
-	 * @overload
 	 * @param {GeoJSONData | GeoJSONData[]} geojson
 	 * @returns {this}
 	 */
-	/** @param {any} geojson */
 	addData(geojson) {
-		const features = Array.isArray(geojson) ? geojson : geojson.features;
-
-		if (features) {
-			for (const feature of features) {
-				// only add this if geometry or geometries are set and not null
-				if (feature.geometries || feature.geometry || feature.features || feature.coordinates) {
-					this.addData(feature);
-				}
+		if (Array.isArray(geojson) || 'features' in geojson) {
+			for (const data of Array.isArray(geojson) ? geojson : geojson.features) {
+				this.addData(data);
 			}
 			return this;
 		}
 
 		const options = this.options;
+		const feature = GeoJSON.asFeature(geojson);
 
-		if (options.filter && !options.filter(geojson)) { return this; }
+		if (!feature.geometry || (options.filter && !options.filter(feature))) { return this; }
 
-		const layer = GeoJSON.geometryToLayer(geojson, options);
+		const layer = GeoJSON.geometryToLayer(feature, options);
 		if (!layer) {
 			return this;
 		}
-		layer.feature = GeoJSON.asFeature(geojson);
+		layer.feature = feature;
 
 		/** @type {StyledLayer} */ (layer).defaultOptions = layer.options;
 		this.resetStyle(layer);
 
 		if (options.onEachFeature) {
-			options.onEachFeature(geojson, layer);
+			options.onEachFeature(feature, layer);
 		}
 
 		return this.addLayer(layer);

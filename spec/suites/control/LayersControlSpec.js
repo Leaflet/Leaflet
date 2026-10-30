@@ -290,6 +290,13 @@ describe('LayersControl', () => {
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
 		});
 
+		it('stops listening to map clicks when removed', () => {
+			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
+			expect(map.listens('click', layersCtrl.collapse, layersCtrl)).to.be.true;
+			layersCtrl.remove();
+			expect(map.listens('click', layersCtrl.collapse, layersCtrl)).to.be.false;
+		});
+
 		it('should collapse with a delay', (done) => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: true, collapseDelay: 8}).addTo(map);
 			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType: 'mouse'});

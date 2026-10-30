@@ -117,7 +117,7 @@ export class Polyline extends Path {
 	closestLayerPoint(p) {
 		p = new Point(p);
 		let minDistance = Infinity,
-		/** @type {(Point & {distance?: number}) | null} */
+		/** @type {Point | null} */
 		minPoint = null,
 		p1, p2;
 		const closest = LineUtil._sqClosestPointOnSegment;
@@ -135,10 +135,7 @@ export class Polyline extends Path {
 				}
 			}
 		}
-		if (minPoint) {
-			minPoint.distance = Math.sqrt(minDistance);
-		}
-		return /** @type {(Point & {distance: number}) | null} */ (minPoint);
+		return minPoint && Object.assign(minPoint, {distance: Math.sqrt(minDistance)});
 	}
 
 	/**

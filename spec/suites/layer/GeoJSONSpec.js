@@ -1,5 +1,6 @@
 import {Circle, CircleMarker, FeatureGroup, GeoJSON, LatLng, Layer, LayerGroup, LeafletMap, Marker, Polygon, Polyline, TileLayer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import sinon from 'sinon';
 
 describe('GeoJSON', () => {
 	describe('addData', () => {
@@ -32,6 +33,17 @@ describe('GeoJSON', () => {
 			const layer = new GeoJSON();
 			layer.addData(geojsonEmpty);
 			expect(layer.getLayers().length).to.eql(0);
+		});
+
+		it('passes features to filter and onEachFeature, skipping null geometries', () => {
+			const filter = sinon.spy(() => true);
+			const onEachFeature = sinon.spy();
+			const layer = new GeoJSON(null, {filter, onEachFeature});
+			layer.addData([geojson.geometry, geojsonEmpty]);
+
+			expect(filter.calledOnceWith(geojson)).to.be.true;
+			expect(onEachFeature.calledOnce).to.be.true;
+			expect(onEachFeature.firstCall.args[0]).to.equal(layer.getLayers()[0].feature);
 		});
 
 		it('makes default marker inherit group options if explicitly requested', () => {
