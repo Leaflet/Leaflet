@@ -23,15 +23,41 @@ import * as Util from '../../core/Util.js';
  */
 export class CRS {
 	/**
+	 * Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`).
+	 * @type {string | undefined}
+	 */
+	static code;
+
+	/**
 	 * The projection the CRS uses to turn geographical coordinates into projected ones.
 	 * @type {Projection}
 	 */
-	static projection = /** @type {any} */ (undefined);
+	static projection;
+
 	/**
 	 * The transformation the CRS uses to turn projected coordinates into pixels at zoom 0.
 	 * @type {Transformation}
 	 */
-	static transformation = /** @type {any} */ (undefined);
+	static transformation;
+
+	/**
+	 * An array of two numbers defining whether the longitude (horizontal) coordinate axis wraps around a given range
+	 * and how. Defaults to `[-180, 180]` in most geographical CRSs. If `undefined`, the longitude axis does not wrap.
+	 * @type {[number, number] | undefined}
+	 */
+	static wrapLng;
+
+	/**
+	 * Like `wrapLng`, but for the latitude (vertical) axis.
+	 * @type {[number, number] | undefined}
+	 */
+	static wrapLat;
+
+	/**
+	 * Returns the distance between two geographical coordinates.
+	 * @type {(latlng1: LatLng, latlng2: LatLng) => number}
+	 */
+	static distance;
 
 	/**
 	 * Projects geographical coordinates into pixel coordinates for a given zoom.

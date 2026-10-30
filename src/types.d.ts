@@ -762,23 +762,6 @@ declare module './dom/Draggable.js' {
 	}
 }
 
-declare module './geo/crs/CRS.js' {
-	namespace CRS {
-		/** Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`). */
-		let code: string | undefined;
-		/**
-		 * An array of two numbers defining whether the longitude (horizontal) coordinate axis wraps around a given
-		 * range and how. Defaults to `[-180, 180]` in most geographical CRSs. If `undefined`, the longitude axis does
-		 * not wrap around.
-		 */
-		let wrapLng: [number, number] | undefined;
-		/** Like `wrapLng`, but for the latitude (vertical) axis. */
-		let wrapLat: [number, number] | undefined;
-		/** Returns the distance between two geographical coordinates. */
-		function distance(latlng1: LatLng, latlng2: LatLng): number;
-	}
-}
-
 declare module './control/Control.js' {
 	interface Control<O extends ControlOptions = ControlOptions> {
 		_map: LeafletMap;
