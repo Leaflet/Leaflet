@@ -2,7 +2,7 @@
 import {Point} from '../geometry/Point.js';
 import * as Util from '../core/Util.js';
 import {getScale} from './DomUtil.js';
-import {stoppedEvents, clickDisabledElements, getWheelPxFactor} from './DomEventUtil.js';
+import {stoppedEvents, clickDisabledElements} from './DomEventUtil.js';
 
 /**
  * Utility functions to work with the
@@ -291,14 +291,13 @@ export function getPointerPosition(e, container) {
  * @returns {number}
  */
 export function getWheelDelta(e) {
-	return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
+	// a wheel notch gives 100-120px in most browsers, so halving it fits the default 60px per zoom level (see #7403)
+	return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / (window.devicePixelRatio * 2) : // Pixels
 		(e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
 		(e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
 		(e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
 		0;
 }
-
-export {enablePointerDetection, disablePointerDetection} from './DomEventUtil.js';
 
 // Double tap support for mobile browsers. Most browsers fire native dblclick, with only a few exceptions
 // (see https://github.com/Leaflet/Leaflet/issues/7012#issuecomment-595087386).

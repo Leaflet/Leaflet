@@ -1,4 +1,4 @@
-import {DomEvent, Draggable, LeafletMap} from 'leaflet';
+import {Draggable, LeafletMap} from 'leaflet';
 import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
 
 describe('Draggable', () => {
@@ -37,7 +37,6 @@ describe('Draggable', () => {
 	it('sets the leaflet-dragging class on the element itself outside a map', async () => {
 		const el = document.createElement('div');
 		document.body.appendChild(el);
-		DomEvent.enablePointerDetection(el);
 		new Draggable(el).enable();
 
 		await drag(el, () => {
@@ -46,7 +45,6 @@ describe('Draggable', () => {
 		});
 		expect(el.classList.contains('leaflet-dragging')).to.be.false;
 
-		DomEvent.disablePointerDetection(el);
 		el.remove();
 	});
 
@@ -54,7 +52,6 @@ describe('Draggable', () => {
 		const el = document.createElement('div');
 		el.style.cssText = 'position: absolute; width: 100px; height: 100px';
 		document.body.appendChild(el);
-		DomEvent.enablePointerDetection(el);
 		const draggable = new Draggable(el);
 		draggable.enable();
 		let dragend;
@@ -78,7 +75,6 @@ describe('Draggable', () => {
 		expect(el.classList.contains('leaflet-dragging')).to.be.false;
 
 		await finger.up();
-		DomEvent.disablePointerDetection(el);
 		el.remove();
 	});
 });

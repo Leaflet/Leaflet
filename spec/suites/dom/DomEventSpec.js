@@ -17,8 +17,8 @@ describe('DomEvent', () => {
 
 	it('exposes only the public functions', () => {
 		expect(Object.keys(DomEvent).sort()).to.eql([
-			'disableClickPropagation', 'disablePointerDetection', 'disableScrollPropagation', 'enablePointerDetection',
-			'getPointerPosition', 'getWheelDelta', 'off', 'on', 'preventDefault', 'stop', 'stopPropagation'
+			'disableClickPropagation', 'disableScrollPropagation', 'getPointerPosition', 'getWheelDelta', 'off', 'on',
+			'preventDefault', 'stop', 'stopPropagation'
 		]);
 	});
 

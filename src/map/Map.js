@@ -7,8 +7,8 @@ import {Bounds} from '../geometry/Bounds.js';
 import {LatLng} from '../geo/LatLng.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 import * as DomEvent from '../dom/DomEvent.js';
-import {stoppedEvents, clickDisabledElements, mapHandlingDisabled, isExternalTarget,
-	enablePointerDetection, disablePointerDetection} from '../dom/DomEventUtil.js';
+import {stoppedEvents, clickDisabledElements, mapHandlingDisabled, enablePointerDetection, disablePointerDetection}
+	from '../dom/DomEventUtil.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {PosAnimation} from '../dom/PosAnimation.js';
 import {AttributionControl} from '../control/AttributionControl.js';
@@ -2219,6 +2219,7 @@ export class LeafletMap extends Evented {
 		src = /** @type {Node | null} */ (e.target),
 		dragging = false;
 		const isHover = type === 'pointerout' || type === 'pointerover';
+		const related = /** @type {Node | null} */ (/** @type {MouseEvent} */ (e).relatedTarget);
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
@@ -2228,7 +2229,8 @@ export class LeafletMap extends Evented {
 				break;
 			}
 			if (target && target.listens(type, true)) {
-				if (isHover && !isExternalTarget(src, /** @type {MouseEvent} */ (e))) { break; }
+				// skip hover events between the target's own descendants
+				if (isHover && src.contains(related)) { break; }
 				targets.push(target);
 				if (isHover) { break; }
 			}

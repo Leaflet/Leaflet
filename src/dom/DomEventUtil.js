@@ -15,24 +15,6 @@ export const clickDisabledElements = new WeakSet();
 /** @type {WeakSet<EventTarget>} */
 export const mapHandlingDisabled = new WeakSet();
 
-/**
- * Gets the wheel pixel factor based on the devicePixelRatio
- * @returns {number}
- */
-export function getWheelPxFactor() {
-	// a wheel notch gives 100-120px in most browsers, so halving it fits the default 60px per zoom level (see #7403)
-	return window.devicePixelRatio * 2;
-}
-
-// check if element really left/entered the event target (for pointerover/pointerout)
-/**
- * @param {Node} el
- * @param {MouseEvent} e
- */
-export function isExternalTarget(el, e) {
-	return !el.contains(/** @type {Node | null} */ (e.relatedTarget));
-}
-
 /** @type {Map<number, PointerEvent>} */
 const activePointers = new Map();
 
