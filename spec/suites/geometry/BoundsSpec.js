@@ -82,6 +82,11 @@ describe('Bounds', () => {
 			expect(a.contains([24, 25])).to.be.true;
 			expect(a.contains([54, 65])).to.be.false;
 		});
+
+		it('accepts a point literal', () => {
+			expect(a.contains({x: 24, y: 25})).to.be.true;
+			expect(a.contains({x: 54, y: 65})).to.be.false;
+		});
 	});
 
 	describe('#isValid', () => {

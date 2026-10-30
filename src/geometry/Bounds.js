@@ -60,19 +60,14 @@ export class Bounds {
 
 	/**
 	 * Extends the bounds to contain the given point or bounds.
-	 * @overload
 	 * @param {PointExpression | BoundsExpression} obj
-	 * @returns {this}
-	 */
-	/**
-	 * @param {any} obj
 	 * @returns {this}
 	 */
 	extend(obj) {
 		let min2, max2;
 		if (!obj) { return this; }
 
-		if (obj instanceof Point || typeof obj[0] === 'number' || 'x' in obj) {
+		if (isPointExpression(obj)) {
 			min2 = max2 = new Point(obj);
 		} else {
 			({min: min2, max: max2} = new Bounds(obj));
@@ -152,28 +147,16 @@ export class Bounds {
 
 	/**
 	 * Returns `true` if the rectangle contains the given point or bounds.
-	 * @overload
 	 * @param {PointExpression | BoundsExpression} obj
-	 * @returns {boolean}
-	 */
-	/**
-	 * @param {any} obj
 	 * @returns {boolean}
 	 */
 	contains(obj) {
 		let min, max;
 
-		if (typeof obj[0] === 'number' || obj instanceof Point) {
-			obj = new Point(obj);
+		if (isPointExpression(obj)) {
+			min = max = new Point(obj);
 		} else {
-			obj = new Bounds(obj);
-		}
-
-		if (obj instanceof Bounds) {
-			min = obj.min;
-			max = obj.max;
-		} else {
-			min = max = obj;
+			({min, max} = new Bounds(obj));
 		}
 
 		return (min.x >= this.min.x) &&
@@ -261,4 +244,12 @@ export class Bounds {
 		return this.min.equals(bounds.getTopLeft()) &&
 			this.max.equals(bounds.getBottomRight());
 	}
+}
+
+/**
+ * @param {PointExpression | BoundsExpression} obj
+ * @returns {obj is PointExpression}
+ */
+function isPointExpression(obj) {
+	return obj instanceof Point || (Array.isArray(obj) ? typeof obj[0] === 'number' : 'x' in obj);
 }

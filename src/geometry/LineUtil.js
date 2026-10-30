@@ -99,7 +99,7 @@ function _simplifyDP(points, sqTolerance) {
 function _simplifyDPStep(points, markers, sqTolerance, first, last) {
 
 	let maxSqDist = 0,
-	index, i, sqDist;
+	index = 0, i, sqDist;
 
 	for (i = first + 1; i <= last - 1; i++) {
 		sqDist = _sqClosestPointOnSegment(points[i], points[first], points[last], true);
@@ -111,10 +111,10 @@ function _simplifyDPStep(points, markers, sqTolerance, first, last) {
 	}
 
 	if (maxSqDist > sqTolerance) {
-		markers[/** @type {number} */ (index)] = 1;
+		markers[index] = 1;
 
-		_simplifyDPStep(points, markers, sqTolerance, first, /** @type {number} */ (index));
-		_simplifyDPStep(points, markers, sqTolerance, /** @type {number} */ (index), last);
+		_simplifyDPStep(points, markers, sqTolerance, first, index);
+		_simplifyDPStep(points, markers, sqTolerance, index, last);
 	}
 }
 
@@ -223,12 +223,12 @@ export function _getEdgeIntersection(a, b, code, bounds, round) {
 		x = max.x;
 		y = a.y + dy * (max.x - a.x) / dx;
 
-	} else if (code & 1) { // left
+	} else { // left
 		x = min.x;
 		y = a.y + dy * (min.x - a.x) / dx;
 	}
 
-	return new Point(/** @type {number} */ (x), /** @type {number} */ (y), round);
+	return new Point(x, y, round);
 }
 
 /**

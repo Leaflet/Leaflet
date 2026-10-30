@@ -70,12 +70,7 @@ export class LatLngBounds {
 
 	/**
 	 * Extend the bounds to contain the given point or bounds.
-	 * @overload
 	 * @param {LatLngExpression | LatLngBoundsExpression} obj
-	 * @returns {this}
-	 */
-	/**
-	 * @param {any} obj
 	 * @returns {this}
 	 */
 	extend(obj) {
@@ -88,7 +83,7 @@ export class LatLngBounds {
 		} else if (obj instanceof LatLngBounds) {
 			({_southWest: sw2, _northEast: ne2} = obj);
 			if (!sw2) { return this; }
-		} else if (LatLng.validate(obj)) {
+		} else if (isLatLngExpression(obj)) {
 			sw2 = ne2 = new LatLng(obj);
 		} else {
 			return this.extend(new LatLngBounds(obj));
@@ -202,30 +197,18 @@ export class LatLngBounds {
 
 	/**
 	 * Returns `true` if the rectangle contains the given point or bounds.
-	 * @overload
 	 * @param {LatLngExpression | LatLngBoundsExpression} obj
 	 * @returns {boolean}
 	 */
-	/**
-	 * @param {any} obj
-	 * @returns {boolean}
-	 */
 	contains(obj) {
-		if (LatLng.validate(obj)) {
-			obj = new LatLng(obj);
-		} else {
-			obj = new LatLngBounds(obj);
-		}
-
 		const sw = this._southWest,
 		ne = this._northEast;
 		let sw2, ne2;
 
-		if (obj instanceof LatLngBounds) {
-			sw2 = obj.getSouthWest();
-			ne2 = obj.getNorthEast();
+		if (isLatLngExpression(obj)) {
+			sw2 = ne2 = new LatLng(obj);
 		} else {
-			sw2 = ne2 = obj;
+			({_southWest: sw2, _northEast: ne2} = new LatLngBounds(obj));
 		}
 
 		return (sw2.lat >= sw.lat) && (ne2.lat <= ne.lat) &&
@@ -304,4 +287,12 @@ export class LatLngBounds {
 	isValid() {
 		return !!(this._southWest && this._northEast);
 	}
+}
+
+/**
+ * @param {LatLngExpression | LatLngBoundsExpression} obj
+ * @returns {obj is LatLngExpression}
+ */
+function isLatLngExpression(obj) {
+	return LatLng.validate(/** @type {LatLngExpression} */ (obj));
 }
