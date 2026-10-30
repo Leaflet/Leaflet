@@ -190,6 +190,21 @@ describe('Class', () => {
 			expect(a.on).to.equal(Evented.prototype.on);
 			expect(a.constructor).to.equal(Klass);
 		});
+
+		it('includes Evented methods that work without its constructor', () => {
+			Klass.include(Evented.prototype);
+
+			const a = new Klass(),
+			spy1 = sinon.spy(),
+			spy2 = sinon.spy();
+
+			a.once('test', spy1);
+			a.on('test', spy2);
+			a.fire('test');
+
+			expect(spy1.calledOnce).to.be.true;
+			expect(spy2.calledOnce).to.be.true;
+		});
 	});
 
 	describe('#addInitHook', () => {

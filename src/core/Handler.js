@@ -56,6 +56,18 @@ export class Handler extends Class {
 	}
 
 	/**
+	 * Called when the handler is enabled, should add event hooks.
+	 * @category Extension methods
+	 */
+	addHooks() {}
+
+	/**
+	 * Called when the handler is disabled, should remove the event hooks added previously.
+	 * @category Extension methods
+	 */
+	removeHooks() {}
+
+	/**
 	 * Adds a new Handler to the given map with the given name.
 	 * @category Functions
 	 * @template {typeof Handler} C

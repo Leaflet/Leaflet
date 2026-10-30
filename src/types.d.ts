@@ -436,11 +436,11 @@ export interface LeafletEvent {
 	 * The object that fired the event. For propagated events, the last object in the propagation chain that fired
 	 * the event.
 	 */
-	target: Evented<any, any>;
+	target: Evented;
 	/** The object that originally fired the event. For non-propagated events, this will be the same as the `target`. */
-	sourceTarget: Evented<any, any>;
+	sourceTarget: Evented;
 	/** For propagated events, the last object that propagated the event to its event parent. */
-	propagatedFrom?: Evented<any, any>;
+	propagatedFrom?: Evented;
 }
 
 export interface LeafletKeyboardEvent extends LeafletEvent {
@@ -573,14 +573,6 @@ export interface ZoomAnimEvent extends LeafletEvent {
 export interface WorldCopyJumpEvent extends LeafletEvent {
 	/** The signed number of world widths by which the map pane moved. */
 	worlds: number;
-}
-
-declare module './core/Events.js' {
-	interface Evented<O extends object = object, E extends object = {}> {
-		_events?: {[type: string]: Array<{fn: Function, ctx: any, once?: boolean}>};
-		_eventParents?: {[id: number]: Evented<any, any>};
-		_firingCount?: number;
-	}
 }
 
 declare module './layer/LayerBase.js' {
@@ -781,20 +773,5 @@ declare module './control/Control.js' {
 		 * @uninheritable
 		 */
 		onRemove?(map: LeafletMap): void;
-	}
-}
-
-declare module './core/Handler.js' {
-	interface Handler {
-		/**
-		 * Called when the handler is enabled, should add event hooks.
-		 * @category Extension methods
-		 */
-		addHooks(): void;
-		/**
-		 * Called when the handler is disabled, should remove the event hooks added previously.
-		 * @category Extension methods
-		 */
-		removeHooks(): void;
 	}
 }

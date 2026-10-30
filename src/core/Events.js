@@ -10,14 +10,14 @@ import * as Util from './Util.js';
  * conditional type, so that `Evented<O, E>` stays covariant in `E` (a `Marker` is assignable to `Layer`).
  * @template {string} K
  * @template {object} E
- * @template [T=Evented<any, any>]
+ * @template [T=Evented]
  * @typedef {(e: (E & {[type: string]: LeafletEvent & {[key: string]: any}})[K] & {target: T}) => void} Listener
  */
 
 /**
  * An object with event types as keys and listeners as values, as taken by [`on`](#evented-on).
  * @template {object} E
- * @template [T=Evented<any, any>]
+ * @template [T=Evented]
  * @typedef {{[K in keyof E]?: (e: E[K] & {target: T}) => void} & {[type: string]: (e: any) => void}} ListenerMap
  */
 
@@ -50,6 +50,18 @@ const warnedEvents = new Set();
  * @extends {Class<O>}
  */
 export class Evented extends Class {
+	static initHooks = true;
+
+	constructor() {
+		super();
+		/** @type {{[type: string]: Array<{fn: Function, ctx: any, once?: boolean}>} | undefined} */
+		this._events = undefined;
+		/** @type {{[id: number]: Evented} | undefined} */
+		this._eventParents = undefined;
+		this._firingCount = 0;
+		this.callInitHooks();
+	}
+
 	/**
 	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the
 	 * context of the listener (object the this keyword will point to). You can also pass several space-separated
@@ -127,7 +139,7 @@ export class Evented extends Class {
 
 		if (!arguments.length) {
 			// clear all listeners if called without arguments
-			delete this._events;
+			this._events = undefined;
 
 		} else if (typeof types === 'object') {
 			for (const [type, f] of Object.entries(types)) {
@@ -262,13 +274,14 @@ export class Evented extends Class {
 			...data,
 			type,
 			target: this,
-			sourceTarget: /** @type {{sourceTarget?: Evented<any, any>}} */ (data)?.sourceTarget || this
+			sourceTarget: /** @type {{sourceTarget?: Evented}} */ (data)?.sourceTarget || this
 		};
 
 		if (this._events) {
 			const listeners = this._events[type];
 			if (listeners) {
-				this._firingCount = (/** @type {number} */ (this._firingCount) + 1) || 1;
+				// stays NaN-safe for classes that include Evented.prototype without running its constructor
+				this._firingCount = (this._firingCount + 1) || 1;
 				for (const l of listeners) {
 					// off overwrites l.fn, so we need to copy fn to a variable
 					const fn = l.fn;
@@ -415,7 +428,7 @@ export class Evented extends Class {
 
 	/**
 	 * Adds an event parent - an `Evented` that will receive propagated events
-	 * @param {Evented<any, any>} obj
+	 * @param {Evented} obj
 	 * @returns {this}
 	 */
 	addEventParent(obj) {
@@ -426,7 +439,7 @@ export class Evented extends Class {
 
 	/**
 	 * Removes an event parent, so it will stop receiving propagated events
-	 * @param {Evented<any, any>} obj
+	 * @param {Evented} obj
 	 * @returns {this}
 	 */
 	removeEventParent(obj) {

@@ -316,8 +316,8 @@ const defaultOptions = {
 
 /**
  * The map or a layer receiving DOM events, duck-typed for markers.
- * @typedef {Evented<any, any> & {getLatLng?(): LatLng, _pxRadius?: number,
- *    dragging?: {enabled(): boolean, moved(): unknown}}} DOMEventTarget
+ * @typedef {Evented<{bubblingPointerEvents?: boolean, bubblingMouseEvents?: boolean}> & {getLatLng?(): LatLng,
+ *    _pxRadius?: number, dragging?: {enabled(): boolean, moved(): unknown}}} DOMEventTarget
  */
 
 /**
