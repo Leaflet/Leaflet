@@ -5,6 +5,7 @@ import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 /** @import {CanvasOptions, Defaults, RendererEventMap} from '../../types.js' */
+/** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Point} from '../../geometry/Point.js' */
 /** @import {CircleMarker} from './CircleMarker.js' */
 /** @import {Path} from './Path.js' */
@@ -63,16 +64,18 @@ export class Canvas extends Renderer {
 		this._postponeUpdatePaths = true;
 	}
 
-	onAdd() {
-		super.onAdd();
+	/** @param {LeafletMap} map */
+	onAdd(map) {
+		super.onAdd(map);
 
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
 		this._draw();
 	}
 
-	onRemove() {
-		super.onRemove();
+	/** @param {LeafletMap} map */
+	onRemove(map) {
+		super.onRemove(map);
 
 		clearTimeout(this._pointerHoverThrottleTimeout);
 	}

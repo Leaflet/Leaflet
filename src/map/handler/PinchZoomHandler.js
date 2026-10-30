@@ -3,7 +3,6 @@ import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
-import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /** @import {LatLng} from '../../geo/LatLng.js' */
 
@@ -25,7 +24,7 @@ export class PinchZoomHandler extends Handler {
 	_onPointerStart(e) {
 		const map = this._map;
 
-		const pointers = PointerEvents.getPointers();
+		const pointers = DomEvent.getPointers();
 		if (pointers.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
 		const p1 = map.pointerEventToContainerPoint(pointers[0]);
@@ -65,7 +64,7 @@ export class PinchZoomHandler extends Handler {
 
 	/** @param {PointerEvent} e */
 	_onPointerMove(e) {
-		const pointers = PointerEvents.getPointers();
+		const pointers = DomEvent.getPointers();
 		if (pointers.length !== 2 || !this._zooming) { return; }
 
 		const map = this._map,

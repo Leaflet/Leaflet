@@ -106,13 +106,15 @@ export class Path extends Layer {
 		this._renderer = map.getRenderer(this);
 	}
 
-	onAdd() {
+	/** @param {LeafletMap} map */
+	onAdd(map) {
 		this._renderer._initPath(this);
 		this._reset();
 		this._renderer._addPath(this);
 	}
 
-	onRemove() {
+	/** @param {LeafletMap} map */
+	onRemove(map) {
 		this._renderer._removePath(this);
 	}
 

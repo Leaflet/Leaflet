@@ -9,7 +9,6 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {PosAnimation} from '../dom/PosAnimation.js';
-import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 import {AttributionControl} from '../control/AttributionControl.js';
 import {ZoomControl} from '../control/ZoomControl.js';
 import {Popup} from '../layer/Popup.js';
@@ -1460,7 +1459,7 @@ export class LeafletMap extends Evented {
 
 		this._stop();
 
-		PointerEvents.disablePointerDetection(this._container);
+		DomEvent.disablePointerDetection(this._container);
 		this._mapPane.remove();
 
 		this._controlContainer.remove();
@@ -1893,7 +1892,7 @@ export class LeafletMap extends Evented {
 		/** @type {HTMLElement & {_leaflet_id?: number}} */
 		this._container = container;
 
-		PointerEvents.enablePointerDetection(container);
+		DomEvent.enablePointerDetection(container);
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
 

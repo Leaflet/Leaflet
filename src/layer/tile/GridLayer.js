@@ -174,13 +174,8 @@ export class GridLayer extends Layer {
 		this.callInitHooks();
 	}
 
-	// an overload, so subclasses can declare the `map` param this one doesn't use
-	/**
-	 * @overload
-	 * @param {LeafletMap} map
-	 * @returns {void}
-	 */
-	onAdd() {
+	/** @param {LeafletMap} map */
+	onAdd(map) {
 		this._initContainer();
 
 		/** @type {{[zoom: string]: GridLevel}} */

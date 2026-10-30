@@ -3,6 +3,7 @@ import {BlanketOverlay} from '../BlanketOverlay.js';
 import * as Util from '../../core/Util.js';
 
 /** @import {LeafletEvent, RendererEventMap, RendererOptions} from '../../types.js' */
+/** @import {LeafletMap} from '../../map/Map.js' */
 
 /**
  * @typedef {Object} RendererEvents
@@ -38,13 +39,15 @@ export class Renderer extends BlanketOverlay {
 		this.callInitHooks();
 	}
 
-	onAdd() {
-		super.onAdd();
+	/** @param {LeafletMap} map */
+	onAdd(map) {
+		super.onAdd(map);
 		this.on('update', this._updatePaths, this);
 	}
 
-	onRemove() {
-		super.onRemove();
+	/** @param {LeafletMap} map */
+	onRemove(map) {
+		super.onRemove(map);
 		this.off('update', this._updatePaths, this);
 	}
 

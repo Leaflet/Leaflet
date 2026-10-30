@@ -34,7 +34,7 @@ export default [
 
 			'curly': 'error',
 			'no-unused-expressions': ['error', {allowShortCircuit: true}],
-			'no-unused-vars': ['error', {caughtErrors: 'none'}],
+			'no-unused-vars': ['error', {caughtErrors: 'none', args: 'none'}],
 
 			'import-x/extensions': ['error', 'ignorePackages'],
 			'import-x/no-unresolved': ['error', {ignore: ['\\.css$', '^leaflet$']}],

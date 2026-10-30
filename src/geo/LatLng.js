@@ -123,7 +123,6 @@ export class LatLng {
 	 * @param {unknown} [alt]
 	 * @returns {boolean}
 	 */
-	// eslint-disable-next-line no-unused-vars
 	static validate(lat, lng, alt) {
 		if (lat instanceof LatLng || (typeof lat === 'object' && lat !== null && 'lat' in lat)) {
 			return true;

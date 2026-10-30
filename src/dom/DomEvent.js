@@ -4,9 +4,6 @@ import * as Util from '../core/Util.js';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
 import {getScale} from './DomUtil.js';
 
-import * as PointerEvents from './DomEvent.PointerEvents.js';
-export {PointerEvents};
-
 /**
  * Utility functions to work with the
  * [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.
@@ -310,4 +307,58 @@ export function getWheelDelta(e) {
  */
 export function isExternalTarget(el, e) {
 	return !el.contains(/** @type {Node | null} */ (e.relatedTarget));
+}
+
+/** @type {Map<number, PointerEvent>} */
+const activePointers = new Map();
+
+/**
+ * Enables pointer detection and capture for the document.
+ * @param {HTMLElement} el
+ */
+export function enablePointerDetection(el) {
+	el.addEventListener('pointerdown', _onSet, {capture: true});
+	el.addEventListener('pointermove', _onUpdate, {capture: true});
+	el.addEventListener('pointerup', _onDelete, {capture: true});
+	el.addEventListener('pointercancel', _onDelete, {capture: true});
+	activePointers.clear();
+}
+
+/**
+ * Disables pointer detection and capture for the document.
+ * @param {HTMLElement} el
+ */
+export function disablePointerDetection(el) {
+	el.removeEventListener('pointerdown', _onSet, {capture: true});
+	el.removeEventListener('pointermove', _onUpdate, {capture: true});
+	el.removeEventListener('pointerup', _onDelete, {capture: true});
+	el.removeEventListener('pointercancel', _onDelete, {capture: true});
+}
+
+// capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones
+/** @param {PointerEvent} e */
+function _onSet(e) {
+	if (e.isTrusted) { /** @type {Element} */ (e.target).setPointerCapture(e.pointerId); }
+	activePointers.set(e.pointerId, e);
+}
+
+/** @param {PointerEvent} e */
+function _onUpdate(e) {
+	if (activePointers.has(e.pointerId)) {
+		activePointers.set(e.pointerId, e);
+	}
+}
+
+/** @param {PointerEvent} e */
+function _onDelete(e) {
+	if (e.isTrusted) { /** @type {Element} */ (e.target).releasePointerCapture(e.pointerId); }
+	activePointers.delete(e.pointerId);
+}
+
+/**
+ * Returns the pointers that are currently active on the document.
+ * @returns {PointerEvent[]}
+ */
+export function getPointers() {
+	return [...activePointers.values()];
 }

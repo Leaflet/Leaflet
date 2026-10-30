@@ -8,6 +8,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 /** @import {Defaults, ImageOverlayEventMap, ImageOverlayOptions, LatLngBoundsExpression, LeafletEvent,
  *    ZoomAnimEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
 
 const defaultOptions = {
 	/** The opacity of the image overlay. */
@@ -97,7 +98,8 @@ export class ImageOverlay extends Layer {
 		this.callInitHooks();
 	}
 
-	onAdd() {
+	/** @param {LeafletMap} map */
+	onAdd(map) {
 		if (!this._image) {
 			this._initImage();
 
@@ -115,7 +117,8 @@ export class ImageOverlay extends Layer {
 		this._reset();
 	}
 
-	onRemove() {
+	/** @param {LeafletMap} map */
+	onRemove(map) {
 		this._image.remove();
 		if (this.options.interactive) {
 			this.removeInteractiveTarget(this._image);

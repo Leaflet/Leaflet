@@ -2,7 +2,6 @@
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
-import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 const tapHoldDelay = 600;
 
@@ -22,7 +21,7 @@ export class TapHoldHandler extends Handler {
 	/** @param {PointerEvent} e */
 	_onDown(e) {
 		clearTimeout(this._holdTimeout);
-		if (PointerEvents.getPointers().length !== 1 || e.pointerType === 'mouse') { return; }
+		if (DomEvent.getPointers().length !== 1 || e.pointerType === 'mouse') { return; }
 		const el = this._map._container;
 		/** @type {Point} */
 		this._startPos = this._newPos = new Point(e.clientX, e.clientY);

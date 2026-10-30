@@ -5,8 +5,9 @@ import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import {Bounds} from '../geometry/Bounds.js';
 
-/** @import {BlanketOverlayOptions, Defaults, LayerEventMap, ZoomAnimEvent} from '../types.js' */
+/** @import {BlanketOverlayOptions, Defaults, LayerEventMap, LeafletEvent, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Point} from '../geometry/Point.js' */
 
 const defaultOptions = {
@@ -52,7 +53,8 @@ export class BlanketOverlay extends Layer {
 		this.callInitHooks();
 	}
 
-	onAdd() {
+	/** @param {LeafletMap} map */
+	onAdd(map) {
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
@@ -65,7 +67,8 @@ export class BlanketOverlay extends Layer {
 		this._onMoveEnd();
 	}
 
-	onRemove() {
+	/** @param {LeafletMap} map */
+	onRemove(map) {
 		this._destroyContainer();
 	}
 
@@ -109,7 +112,8 @@ export class BlanketOverlay extends Layer {
 		DomUtil.setTransform(this._container, topLeftOffset, scale);
 	}
 
-	_onMoveEnd() {
+	/** @param {LeafletEvent} [ev] */
+	_onMoveEnd(ev) {
 		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
 		const p = this.options.padding,
 		size = this._map.getSize(),
@@ -124,7 +128,7 @@ export class BlanketOverlay extends Layer {
 		this._zoom = this._map.getZoom();
 		this._updateTransform(this._center, this._zoom);
 
-		this._onSettled();
+		this._onSettled(ev);
 	}
 
 	_reset() {
@@ -194,7 +198,8 @@ export class BlanketOverlay extends Layer {
 	 * If the `continuous` option is set to `true`, then this also runs on any map state change (including
 	 * *during* pan/zoom animations).
 	 * @category Subclass interface
+	 * @param {LeafletEvent} [ev]
 	 * @uninheritable
 	 */
-	_onSettled() {}
+	_onSettled(ev) {}
 }
