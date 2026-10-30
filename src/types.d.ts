@@ -20,6 +20,9 @@ import type {MarkerDefaults, MarkerDragEvents, MarkerEvents} from './layer/marke
 import type {LayerDefaults, LayerEvents, LayerPopupEvents, LayerTooltipEvents} from './layer/LayerBase.js';
 import type {Popup, PopupDefaults} from './layer/Popup.js';
 import type {VideoOverlayDefaults, VideoOverlayEvents} from './layer/VideoOverlay.js';
+import type {GridLayerDefaults, GridLayerEvents, GridLevel, GridTile} from './layer/tile/GridLayer.js';
+import type {TileLayerDefaults, TileLayerEvents} from './layer/tile/TileLayer.js';
+import type {WMSParamsDefaults, WMSTileLayerDefaults} from './layer/tile/WMSTileLayer.js';
 import type {Tooltip, TooltipDefaults} from './layer/Tooltip.js';
 import type {CanvasDefaults, DrawOrder} from './layer/vector/Canvas.js';
 import type {CircleMarker, CircleMarkerDefaults, CircleMarkerEvents} from './layer/vector/CircleMarker.js';
@@ -194,6 +197,33 @@ export interface GeoJSONOptions extends InteractiveLayerOptions {
 	markersInheritOptions?: boolean;
 }
 
+/** A `Point` with the tile's zoom level as `z`, as `createTile` and `getTileUrl` get it. */
+export interface Coords extends Point {
+	z: number;
+}
+
+/** The callback `createTile` gets: call it once the tile is ready, with an error if it failed to load. */
+export type DoneCallback = (error?: unknown, tile?: HTMLElement) => void;
+
+export interface GridLayerOptions extends LayerOptions, GridLayerDefaults {}
+export interface GridLayerEventMap extends LayerEventMap, GridLayerEvents {}
+
+export interface TileLayerOptions extends GridLayerOptions, Omit<TileLayerDefaults, keyof GridLayerOptions> {
+	/**
+	 * The maximum zoom level up to which this layer will be displayed (inclusive).
+	 * @default 18
+	 */
+	maxZoom: number;
+	[key: string]: unknown; // custom keys of the URL template
+}
+export interface TileLayerEventMap extends GridLayerEventMap, TileLayerEvents {}
+
+/** The WMS request parameters, with any options that `WMSTileLayer` doesn't know. */
+export interface WMSParams extends WMSParamsDefaults {
+	[key: string]: unknown;
+}
+export interface WMSTileLayerOptions extends TileLayerOptions, WMSTileLayerDefaults, Partial<WMSParamsDefaults> {}
+
 /** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
 export type PointExpression = Point | [number, number] | {x: number, y: number};
 
@@ -319,7 +349,7 @@ export interface TileEvent extends LeafletEvent {
 	/** The tile element (image). */
 	tile: HTMLElement;
 	/** Point object with the tile's `x`, `y`, and `z` (zoom level) coordinates. */
-	coords: Point;
+	coords: Coords;
 }
 
 export interface TileErrorEvent extends TileEvent {
@@ -454,6 +484,17 @@ declare module './layer/DivOverlay.js' {
 		_updateLayout(): void;
 		_adjustPan(): void;
 		_animateZoom(e: ZoomAnimEvent): void;
+	}
+}
+
+declare module './layer/tile/GridLayer.js' {
+	interface GridLayer {
+		_abortLoading?(): void; // implemented by `TileLayer`
+		// hooks for subclasses
+		_onUpdateLevel(z: number): void;
+		_onRemoveLevel(z: number): void;
+		_onCreateLevel(level: GridLevel): void;
+		_onOpaqueTile(tile: GridTile): void;
 	}
 }
 

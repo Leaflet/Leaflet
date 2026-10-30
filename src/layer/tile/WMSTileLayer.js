@@ -1,6 +1,12 @@
+// @ts-check
 import {TileLayer} from './TileLayer.js';
 import {EPSG4326} from '../../geo/crs/EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';
+
+/** @import {Coords, Defaults, TileLayerEventMap, TileLayerOptions, WMSParams, WMSTileLayerOptions}
+ *    from '../../types.js' */
+/** @import {CRS} from '../../geo/crs/CRS.js' */
+/** @import {LeafletMap} from '../../map/Map.js' */
 
 const defaultWmsParams = {
 	service: 'WMS',
@@ -22,17 +28,21 @@ const defaultWmsParams = {
 	version: '1.1.1'
 };
 
+/** @typedef {typeof defaultWmsParams} WMSParamsDefaults */
+
 const defaultOptions = {
 	/**
 	 * Coordinate Reference System to use for the WMS requests, defaults
 	 * to map CRS. Don't change this if you're not sure what it means.
-	 * @type {CRS}
+	 * @type {typeof CRS | null}
 	 */
 	crs: null,
 
 	/** If `true`, WMS request parameter keys will be uppercase. */
 	uppercase: false
 };
+
+/** @typedef {typeof defaultOptions} WMSTileLayerDefaults */
 
 /**
  * Used to display [WMS](https://en.wikipedia.org/wiki/Web_Map_Service)
@@ -46,6 +56,9 @@ const defaultOptions = {
  * 	attribution: "Weather data © 2012 IEM Nexrad"
  * });
  * ```
+ * @template {WMSTileLayerOptions} [O=WMSTileLayerOptions]
+ * @template {TileLayerEventMap} [E=TileLayerEventMap]
+ * @extends {TileLayer<O, E>}
  */
 export class WMSTileLayer extends TileLayer {
 
@@ -53,16 +66,18 @@ export class WMSTileLayer extends TileLayer {
 
 	static defaultWmsParams = defaultWmsParams;
 
+	/** @type {Defaults<WMSTileLayerOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
 	 * Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
-	 * @param {string} baseUrl
-	 * @param {WMSTileLayerOptions} options
+	 * @param {string} url
+	 * @param {Partial<O>} options
 	 */
 	constructor(url, options) {
 		super(url, options);
 
+		/** @type {WMSParams} */
 		const wmsParams = {...WMSTileLayer.defaultWmsParams};
 
 		// Options that are unknown in the defaults chain are considered WMS params.
@@ -78,20 +93,24 @@ export class WMSTileLayer extends TileLayer {
 		wmsParams.width = tileSize.x * realRetina;
 		wmsParams.height = tileSize.y * realRetina;
 
+		/** The WMS request parameters. */
 		this.wmsParams = wmsParams;
 
 		this.callInitHooks();
 	}
 
+	/** @param {LeafletMap} map */
 	onAdd(map) {
 
-		this._crs = this.options.crs ?? map.options.crs;
+		/** @type {typeof CRS} */
+		this._crs = this.options.crs ?? /** @type {any} */ (map.options).crs;
 		this._updateCrsParam();
 
 		super.onAdd(map);
 	}
 
 	_updateCrsParam() {
+		/** @type {number} */
 		this._wmsVersion = parseFloat(this.wmsParams.version);
 
 		delete this.wmsParams.srs;
@@ -99,6 +118,7 @@ export class WMSTileLayer extends TileLayer {
 		this.wmsParams[this._wmsVersion >= 1.3 ? 'crs' : 'srs'] = this._crs.code;
 	}
 
+	/** @param {Coords} coords */
 	getTileUrl(coords) {
 
 		const tileBounds = this._tileCoordsToNwSe(coords),
@@ -119,7 +139,7 @@ export class WMSTileLayer extends TileLayer {
 	/**
 	 * Merges an object with the new parameters and re-requests tiles
 	 * on the current screen (unless `noRedraw` was set to true).
-	 * @param {object} params
+	 * @param {Partial<WMSParams>} params
 	 * @param {boolean} [noRedraw]
 	 * @returns {this}
 	 */

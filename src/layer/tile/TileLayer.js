@@ -1,7 +1,13 @@
+// @ts-check
 import {GridLayer} from './GridLayer.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
+/** @import {Coords, Defaults, DoneCallback, GridLayerOptions, TileEvent, TileLayerEventMap, TileLayerOptions}
+ *    from '../../types.js' */
+/** @import {Point} from '../../geometry/Point.js' */
+
+/** @satisfies {Defaults<GridLayerOptions>} */
 const defaultOptions = {
 	/** The minimum zoom level down to which this layer will be displayed (inclusive). */
 	minZoom: 0,
@@ -12,6 +18,7 @@ const defaultOptions = {
 	/**
 	 * Subdomains of the tile service. Can be passed in the form of one string
 	 * (where each letter is a subdomain name) or an array of strings.
+	 * @type {string | string[]}
 	 */
 	subdomains: 'abc',
 
@@ -41,6 +48,7 @@ const defaultOptions = {
 	 * all tiles will have their crossOrigin attribute set to the String provided. This is needed
 	 * if you want to access tile pixel data. Refer to [CORS
 	 * Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+	 * @type {boolean | string}
 	 */
 	crossOrigin: false,
 
@@ -52,21 +60,25 @@ const defaultOptions = {
 	 * Tile providers might require you to use a specific referrer policy (e.g. to verify API tokens or
 	 * prevent abuse). Specifically, if you are using tiles from `tile.openstreetmap.org` or `tile.osm.org`,
 	 * you [should not change this value](https://operations.osmfoundation.org/policies/tiles/).
+	 * @type {ReferrerPolicy | false}
 	 */
 	referrerPolicy: 'strict-origin-when-cross-origin'
 };
+
+/** @typedef {typeof defaultOptions} TileLayerDefaults */
 
 const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
 const hostRe = /^(https?:)?\/\/([^/?#:]*)/i;
 const httpRe = /^http:/i;
 
+/** @param {string} url */
 function isOSMUrl(url) {
 	const host = hostRe.exec(url)?.[2] ?? '';
 	return osmHosts.some(osmHost => host === osmHost || host.endsWith(`.${osmHost}`));
 }
 
 // OSM tiles are upgraded to HTTPS so that the referrer policy works
-const upgradeOSMUrl = url => (isOSMUrl(url) ? url.replace(httpRe, 'https:') : url);
+const upgradeOSMUrl = (/** @type {string} */ url) => (isOSMUrl(url) ? url.replace(httpRe, 'https:') : url);
 
 /**
  * @typedef {Object} TileLayerEvents
@@ -94,18 +106,22 @@ const upgradeOSMUrl = url => (isOSMUrl(url) ? url.replace(httpRe, 'https:') : ur
  * ```
  * new TileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
+ * @template {TileLayerOptions} [O=TileLayerOptions]
+ * @template {TileLayerEventMap} [E=TileLayerEventMap]
+ * @extends {GridLayer<O, E>}
  */
 export class TileLayer extends GridLayer {
 
 	static initHooks = true;
 
+	/** @type {Defaults<TileLayerOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
 	 * Instantiates a tile layer object given a `URL template` and optionally an options object.
 	 * @category URL template
-	 * @param {string} urlTemplate
-	 * @param {TileLayerOptions} [options]
+	 * @param {string} url
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(url, options) {
 		super(options);
@@ -121,7 +137,7 @@ export class TileLayer extends GridLayer {
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (this.options.detectRetina && window.devicePixelRatio > 1 && this.options.maxZoom > 0) {
 
-			this.options.tileSize = Math.floor(this.options.tileSize / 2);
+			this.options.tileSize = Math.floor(/** @type {number} */ (this.options.tileSize) / 2);
 
 			if (!this.options.zoomReverse) {
 				this.options.zoomOffset++;
@@ -173,9 +189,9 @@ export class TileLayer extends GridLayer {
 	 * Called only internally, overrides GridLayer's [`createTile()`](#gridlayer-createtile)
 	 * to return an `<img>` HTML element with the appropriate image URL given `coords`.
 	 * The `done` callback is called when the tile has been loaded.
-	 * @param {object} coords
-	 * @param {Function} [done]
-	 * @returns {HTMLElement}
+	 * @param {Coords} coords
+	 * @param {DoneCallback} done
+	 * @returns {HTMLImageElement}
 	 */
 	createTile(coords, done) {
 		const tile = document.createElement('img');
@@ -184,7 +200,7 @@ export class TileLayer extends GridLayer {
 		DomEvent.on(tile, 'error', this._tileOnError.bind(this, done, tile));
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
-			tile.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
+			tile.crossOrigin = /** @type {HTMLImageElement['crossOrigin']} */ (this.options.crossOrigin === true ? '' : this.options.crossOrigin);
 		}
 
 		// for this new option we follow the documented behavior
@@ -208,7 +224,7 @@ export class TileLayer extends GridLayer {
 	 * Called only internally, returns the URL for a tile given its coordinates. Classes extending
 	 * `TileLayer` can override this function to provide custom tile URL naming schemes.
 	 * @category Extension methods
-	 * @param {object} coords
+	 * @param {Coords} coords
 	 * @returns {string}
 	 * @uninheritable
 	 */
@@ -221,7 +237,7 @@ export class TileLayer extends GridLayer {
 			y: coords.y,
 			z: this._getZoomForUrl()
 		});
-		if (this._map && !this._map.options.crs.infinite) {
+		if (this._map && !(/** @type {any} */ (this._map.options).crs.infinite)) {
 			const invertedY = this._globalTileRange.max.y - coords.y;
 			if (this.options.tms) {
 				data['y'] = invertedY;
@@ -232,10 +248,19 @@ export class TileLayer extends GridLayer {
 		return Util.template(this._url, data);
 	}
 
+	/**
+	 * @param {DoneCallback} done
+	 * @param {HTMLImageElement} tile
+	 */
 	_tileOnLoad(done, tile) {
 		done(null, tile);
 	}
 
+	/**
+	 * @param {DoneCallback} done
+	 * @param {HTMLImageElement} tile
+	 * @param {Event} e
+	 */
 	_tileOnError(done, tile, e) {
 		const errorUrl = this.options.errorTileUrl,
 		src = tile.getAttribute('src');
@@ -247,7 +272,7 @@ export class TileLayer extends GridLayer {
 	}
 
 	_getZoomForUrl() {
-		let zoom = this._tileZoom;
+		let zoom = /** @type {number} */ (this._tileZoom);
 		const maxZoom = this.options.maxZoom,
 		zoomReverse = this.options.zoomReverse,
 		zoomOffset = this.options.zoomOffset;
@@ -259,6 +284,7 @@ export class TileLayer extends GridLayer {
 		return zoom + zoomOffset;
 	}
 
+	/** @param {Point} tilePoint */
 	_getSubdomain(tilePoint) {
 		const {subdomains} = this.options;
 		return subdomains?.[Math.abs(tilePoint.x + tilePoint.y) % subdomains.length];
@@ -269,7 +295,7 @@ export class TileLayer extends GridLayer {
 		let i, tile;
 		for (i of Object.keys(this._tiles)) {
 			if (this._tiles[i].coords.z !== this._tileZoom) {
-				tile = this._tiles[i].el;
+				tile = /** @type {HTMLImageElement} */ (this._tiles[i].el);
 
 				if (!tile.complete) {
 					tile.setAttribute('src', '');
@@ -285,6 +311,7 @@ export class TileLayer extends GridLayer {
 		}
 	}
 
+	/** @param {string} key */
 	_removeTile(key) {
 		const tile = this._tiles[key];
 		if (!tile) { return; }
@@ -295,6 +322,11 @@ export class TileLayer extends GridLayer {
 		return super._removeTile(key);
 	}
 
+	/**
+	 * @param {Coords} coords
+	 * @param {unknown} [err]
+	 * @param {HTMLElement} [tile]
+	 */
 	_tileReady(coords, err, tile) {
 		if (!this._map || (tile && tile.getAttribute('src') === '')) {
 			return;
@@ -303,6 +335,7 @@ export class TileLayer extends GridLayer {
 		return super._tileReady(coords, err, tile);
 	}
 
+	/** @param {number} zoom */
 	_clampZoom(zoom) {
 		return Math.round(super._clampZoom(zoom));
 	}

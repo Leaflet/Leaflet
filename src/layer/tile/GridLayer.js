@@ -1,3 +1,4 @@
+// @ts-check
 import {Layer} from '../Layer.js';
 import * as Util from '../../core/Util.js';
 import * as DomUtil from '../../dom/DomUtil.js';
@@ -5,10 +6,16 @@ import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
+/** @import {Coords, Defaults, DoneCallback, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent,
+ *    TileErrorEvent, TileEvent, WorldCopyJumpEvent, ZoomAnimEvent} from '../../types.js' */
+/** @import {LatLng} from '../../geo/LatLng.js' */
+/** @import {LeafletMap} from '../../map/Map.js' */
+
 const defaultOptions = {
 	/**
 	 * Width and height of tiles in the grid. Use a number if width
 	 * and height are equal, or `Point(width, height)` otherwise.
+	 * @type {number | Point}
 	 */
 	tileSize: 256,
 
@@ -33,7 +40,7 @@ const defaultOptions = {
 
 	/**
 	 * If set, tiles will only be loaded inside the set `LatLngBounds`.
-	 * @type {LatLngBounds}
+	 * @type {LatLngBoundsExpression | null}
 	 */
 	bounds: null,
 
@@ -42,21 +49,21 @@ const defaultOptions = {
 
 	/**
 	 * The maximum zoom level up to which this layer will be displayed (inclusive).
-	 * @type {number}
+	 * @type {number | undefined}
 	 */
 	maxZoom: undefined,
 
 	/**
 	 * Maximum zoom number the tile source has available. If it is specified, the tiles on all zoom levels
 	 * higher than `maxNativeZoom` will be loaded from `maxNativeZoom` level and auto-scaled.
-	 * @type {number}
+	 * @type {number | undefined}
 	 */
 	maxNativeZoom: undefined,
 
 	/**
 	 * Minimum zoom number the tile source has available. If it is specified, the tiles on all zoom levels
 	 * lower than `minNativeZoom` will be loaded from `minNativeZoom` level and auto-scaled.
-	 * @type {number}
+	 * @type {number | undefined}
 	 */
 	minNativeZoom: undefined,
 
@@ -77,6 +84,8 @@ const defaultOptions = {
 	keepBuffer: 2
 };
 
+/** @typedef {typeof defaultOptions} GridLayerDefaults */
+
 /**
  * @typedef {Object} GridLayerEvents
  * @property {LeafletEvent} loading Fired when the grid layer starts loading tiles.
@@ -86,6 +95,9 @@ const defaultOptions = {
  * @property {TileEvent} tileload Fired when a tile loads.
  * @property {LeafletEvent} load Fired when the grid layer loaded all visible tiles.
  */
+
+/** @typedef {{el: HTMLElement, coords: Coords, current: boolean, retain?: boolean, active?: boolean, loaded?: boolean}} GridTile */
+/** @typedef {{el: HTMLElement, origin: Point, zoom: number}} GridLevel */
 
 
 /**
@@ -141,16 +153,20 @@ const defaultOptions = {
  * ```
  * @categoryDescription Extension methods
  * Layers extending `GridLayer` shall reimplement the following method.
+ * @template {GridLayerOptions} [O=GridLayerOptions]
+ * @template {GridLayerEventMap} [E=GridLayerEventMap]
+ * @extends {Layer<O, E>}
  */
 export class GridLayer extends Layer {
 
 	static initHooks = true;
 
+	/** @type {Defaults<GridLayerOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
 	 * Creates a new instance of GridLayer with the supplied options.
-	 * @param {GridLayerOptions} [options]
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(options) {
 		super();
@@ -158,27 +174,38 @@ export class GridLayer extends Layer {
 		this.callInitHooks();
 	}
 
+	// an overload, so subclasses can declare the `map` param this one doesn't use
+	/**
+	 * @overload
+	 * @param {LeafletMap} map
+	 * @returns {void}
+	 */
 	onAdd() {
 		this._initContainer();
 
+		/** @type {{[zoom: string]: GridLevel}} */
 		this._levels = {};
+		/** @type {{[key: string]: GridTile}} */
 		this._tiles = {};
 
 		this._resetView(); // implicit _update() call
 	}
 
+	/** @param {LeafletMap} map */
 	beforeAdd(map) {
 		map._addZoomLimit(this);
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		this._removeAllTiles();
 		this._container.remove();
 		map._removeZoomLimit(this);
-		this._container = null;
+		this._container = /** @type {any} */ (null);
 		this._tileZoom = undefined;
 		clearTimeout(this._pruneTimeout);
 		cancelAnimationFrame(this._fadePruneFrame);
+		/** @type {number} */
 		this._fadePruneFrame = 0;
 	}
 
@@ -207,8 +234,8 @@ export class GridLayer extends Layer {
 	}
 
 	/**
-	 * Returns the HTML element that contains the tiles for this layer.
-	 * @returns {HTMLElement}
+	 * Returns the HTML element that contains the tiles for this layer, or `null` once the layer is removed.
+	 * @returns {HTMLElement | null}
 	 */
 	getContainer() {
 		return this._container;
@@ -252,7 +279,7 @@ export class GridLayer extends Layer {
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
-			const tileZoom = this._clampZoom(Math.round(this._map.getZoom()));
+			const tileZoom = this._clampZoom(Math.round(/** @type {number} */ (this._map.getZoom())));
 			if (tileZoom !== this._tileZoom) {
 				this._tileZoom = tileZoom;
 				this._updateLevels();
@@ -263,6 +290,7 @@ export class GridLayer extends Layer {
 	}
 
 	getEvents() {
+		/** @type {{[type: string]: (e: any) => void}} */
 		const events = {
 			viewprereset: this._invalidateAll,
 			viewreset: this._resetView,
@@ -289,10 +317,13 @@ export class GridLayer extends Layer {
 	 * the `HTMLElement` corresponding to the given `coords`. If the `done` callback is specified,
 	 * it must be called when the tile has finished loading and drawing.
 	 * @category Extension methods
-	 * @param {object} coords
-	 * @param {Function} [done]
+	 * @overload
+	 * @param {Coords} coords
+	 * @param {DoneCallback} done
 	 * @returns {HTMLElement}
 	 */
+	// no params here: `_addTile` treats a `createTile` that declares `done` as asynchronous
+	/** @returns {HTMLElement} */
 	createTile() {
 		return document.createElement('div');
 	}
@@ -312,10 +343,11 @@ export class GridLayer extends Layer {
 		}
 	}
 
+	/** @param {(a: number, b: number) => number} compare */
 	_setAutoZIndex(compare) {
 		// go through all other layers of the same pane, set zIndex to max + 1 (front) or min - 1 (back)
 
-		const layers = this.getPane().children;
+		const layers = /** @type {HTMLCollectionOf<HTMLElement>} */ (this.getPane().children);
 		let edgeZIndex = -compare(-Infinity, Infinity); // -Infinity for max, Infinity for min
 
 		for (const layer of layers) {
@@ -343,6 +375,7 @@ export class GridLayer extends Layer {
 	_initContainer() {
 		if (this._container) { return; }
 
+		/** @type {HTMLElement} */
 		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className ?? ''}`);
 		this._updateZIndex();
 
@@ -356,12 +389,11 @@ export class GridLayer extends Layer {
 	_updateLevels() {
 
 		const zoom = this._tileZoom,
-		maxZoom = this.options.maxZoom;
+		maxZoom = /** @type {number} */ (this.options.maxZoom);
 
 		if (zoom === undefined) { return undefined; }
 
-		for (let z of Object.keys(this._levels)) {
-			z = Number(z);
+		for (const z of Object.keys(this._levels).map(Number)) {
 			if (this._levels[z].el.children.length || z === zoom) {
 				this._levels[z].el.style.zIndex = `${maxZoom - Math.abs(zoom - z)}`;
 				this._onUpdateLevel(z);
@@ -377,7 +409,7 @@ export class GridLayer extends Layer {
 		const map = this._map;
 
 		if (!level) {
-			level = this._levels[zoom] = {};
+			level = this._levels[zoom] = /** @type {GridLevel} */ ({});
 
 			level.el = DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
 			level.el.style.zIndex = `${maxZoom}`;
@@ -385,14 +417,15 @@ export class GridLayer extends Layer {
 			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 			level.zoom = zoom;
 
-			this._setZoomTransform(level, map.getCenter(), map.getZoom());
+			this._setZoomTransform(level, map.getCenter(), /** @type {number} */ (map.getZoom()));
 
 			// force reading offsetWidth so the browser considers the newly added element for transition
-			Util.falseFn(level.el.offsetWidth);
+			/** @type {(...args: unknown[]) => false} */ (Util.falseFn)(level.el.offsetWidth);
 
 			this._onCreateLevel(level);
 		}
 
+		/** @type {GridLevel} */
 		this._level = level;
 
 		return level;
@@ -409,8 +442,8 @@ export class GridLayer extends Layer {
 			return;
 		}
 
-		const zoom = this._map.getZoom();
-		if (zoom > this.options.maxZoom ||
+		const zoom = /** @type {number} */ (this._map.getZoom());
+		if (zoom > /** @type {number} */ (this.options.maxZoom) ||
 			zoom < this.options.minZoom) {
 			this._removeAllTiles();
 			return;
@@ -436,6 +469,7 @@ export class GridLayer extends Layer {
 		}
 	}
 
+	/** @param {number} zoom */
 	_removeTilesAtZoom(zoom) {
 		for (const [key, tile] of Object.entries(this._tiles)) {
 			if (tile.coords.z === zoom) {
@@ -450,6 +484,7 @@ export class GridLayer extends Layer {
 		}
 	}
 
+	/** @param {{center: LatLng, zoom: number}} [e] the `viewprereset` event */
 	_invalidateAll(e) {
 		// a zoom without animation keeps the old levels until new tiles load, like the end of an animated one,
 		// unless the view jumps somewhere else
@@ -466,6 +501,13 @@ export class GridLayer extends Layer {
 		this._tileZoom = undefined;
 	}
 
+	/**
+	 * @param {number} x
+	 * @param {number} y
+	 * @param {number} z
+	 * @param {number} minZoom
+	 * @returns {boolean}
+	 */
 	_retainParent(x, y, z, minZoom) {
 		for (z--; z >= minZoom; z--) {
 			x = Math.floor(x / 2);
@@ -475,6 +517,12 @@ export class GridLayer extends Layer {
 		return false;
 	}
 
+	/**
+	 * @param {number} x
+	 * @param {number} y
+	 * @param {number} z
+	 * @param {number} maxZoom
+	 */
 	_retainChildren(x, y, z, maxZoom) {
 		for (let i = 2 * x; i < 2 * x + 2; i++) {
 			for (let j = 2 * y; j < 2 * y + 2; j++) {
@@ -486,21 +534,32 @@ export class GridLayer extends Layer {
 	}
 
 	// retains the tile if it's loaded; returns true if it's active, so there's no need to look further
+	/**
+	 * @param {number} x
+	 * @param {number} y
+	 * @param {number} z
+	 */
 	_retain(x, y, z) {
 		const tile = this._tiles[this._tileCoordsToKey({x, y, z})];
 		if (tile?.loaded) { tile.retain = true; }
 		return tile?.active;
 	}
 
+	/** @param {{pinch?: boolean, flyTo?: boolean}} [e] */
 	_resetView(e) {
 		const animating = e && (e.pinch || e.flyTo);
-		this._setView(this._map.getCenter(), this._map.getZoom(), animating, animating);
+		this._setView(this._map.getCenter(), /** @type {number} */ (this._map.getZoom()), animating, animating);
 	}
 
+	/** @param {ZoomAnimEvent} e */
 	_animateZoom(e) {
 		this._setView(e.center, e.zoom, true, e.noUpdate);
 	}
 
+	/**
+	 * @param {number} zoom
+	 * @returns {number}
+	 */
 	_clampZoom(zoom) {
 		const options = this.options;
 
@@ -515,7 +574,14 @@ export class GridLayer extends Layer {
 		return zoom;
 	}
 
+	/**
+	 * @param {LatLng} center
+	 * @param {number} zoom
+	 * @param {boolean} [noPrune]
+	 * @param {boolean} [noUpdate]
+	 */
 	_setView(center, zoom, noPrune, noUpdate) {
+		/** @type {number | undefined} */
 		let tileZoom = Math.round(zoom);
 		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
 		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
@@ -528,6 +594,7 @@ export class GridLayer extends Layer {
 
 		if (!noUpdate || tileZoomChanged) {
 
+			/** @type {number | undefined} */
 			this._tileZoom = tileZoom;
 
 			if (this._abortLoading) {
@@ -547,18 +614,28 @@ export class GridLayer extends Layer {
 
 			// Flag to prevent finished tile fades from pruning tiles during
 			// a zoom anim or a pinch gesture
+			/** @type {boolean} */
 			this._noPrune = !!noPrune;
 		}
 
 		this._setZoomTransforms(center, zoom);
 	}
 
+	/**
+	 * @param {LatLng} center
+	 * @param {number} zoom
+	 */
 	_setZoomTransforms(center, zoom) {
 		for (const level of Object.values(this._levels)) {
 			this._setZoomTransform(level, center, zoom);
 		}
 	}
 
+	/**
+	 * @param {GridLevel} level
+	 * @param {LatLng} center
+	 * @param {number} zoom
+	 */
 	_setZoomTransform(level, center, zoom) {
 		const scale = this._map.getZoomScale(zoom, level.zoom),
 		translate = level.origin.multiplyBy(scale)
@@ -569,12 +646,13 @@ export class GridLayer extends Layer {
 
 	_resetGrid() {
 		const map = this._map,
-		crs = map.options.crs,
+		crs = /** @type {any} */ (map.options).crs,
 		tileSize = this._tileSize = this.getTileSize(),
 		tileZoom = this._tileZoom;
 
 		const bounds = this._map.getPixelWorldBounds(this._tileZoom);
 		if (bounds) {
+			/** @type {Bounds} */
 			this._globalTileRange = this._pxBoundsToTileRange(bounds);
 		}
 
@@ -594,11 +672,13 @@ export class GridLayer extends Layer {
 		this._update();
 	}
 
+	/** @param {WorldCopyJumpEvent} e */
 	_onWorldCopyJump({worlds}) {
 		// noWrap tiles cannot be reused in another world copy.
 		if (!this._wrapX) { return; }
 
 		const tileSize = this.getTileSize(),
+		/** @type {{[key: string]: GridTile}} */
 		tiles = {};
 
 		for (const tile of Object.values(this._tiles)) {
@@ -616,9 +696,13 @@ export class GridLayer extends Layer {
 		this._tiles = tiles;
 	}
 
+	/**
+	 * @param {LatLng} center
+	 * @returns {Bounds}
+	 */
 	_getTiledPixelBounds(center) {
 		const map = this._map,
-		mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
+		mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, /** @type {number} */ (map.getZoom())) : map.getZoom(),
 		scale = map.getZoomScale(mapZoom, this._tileZoom),
 		pixelCenter = map.project(center, this._tileZoom).floor(),
 		halfSize = map.getSize().divideBy(scale * 2);
@@ -627,17 +711,19 @@ export class GridLayer extends Layer {
 	}
 
 	// Private method to load tiles in the grid's active zoom level according to map bounds
+	/** @param {LatLng} [center] */
 	_update(center) {
 		const map = this._map;
 		if (!map) { return; }
-		const zoom = this._clampZoom(map.getZoom());
+		const zoom = this._clampZoom(/** @type {number} */ (map.getZoom()));
 
-		if (center === undefined) { center = map.getCenter(); }
+		if (center === undefined) { center = /** @type {LatLng} */ (map.getCenter()); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
 
 		const pixelBounds = this._getTiledPixelBounds(center),
 		tileRange = this._pxBoundsToTileRange(pixelBounds),
 		tileCenter = tileRange.getCenter(),
+		/** @type {Coords[]} */
 		queue = [],
 		margin = this.options.keepBuffer,
 		noPruneRange = new Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
@@ -663,7 +749,7 @@ export class GridLayer extends Layer {
 		// create a queue of coordinates to load tiles from
 		for (let j = tileRange.min.y; j <= tileRange.max.y; j++) {
 			for (let i = tileRange.min.x; i <= tileRange.max.x; i++) {
-				const coords = new Point(i, j);
+				const coords = /** @type {Coords} */ (new Point(i, j));
 				coords.z = this._tileZoom;
 
 				if (!this._isValidTile(coords)) { continue; }
@@ -683,6 +769,7 @@ export class GridLayer extends Layer {
 		if (queue.length !== 0) {
 			// if it's the first batch of tiles to load
 			if (!this._loading) {
+				/** @type {boolean} */
 				this._loading = true;
 				this.fire('loading');
 			}
@@ -698,8 +785,12 @@ export class GridLayer extends Layer {
 		}
 	}
 
+	/**
+	 * @param {Coords} coords
+	 * @returns {boolean}
+	 */
 	_isValidTile(coords) {
-		const crs = this._map.options.crs;
+		const crs = /** @type {any} */ (this._map.options).crs;
 
 		if (!crs.infinite) {
 			// don't load tile if it's out of bounds and not wrapped
@@ -715,6 +806,10 @@ export class GridLayer extends Layer {
 		return new LatLngBounds(this.options.bounds).overlaps(tileBounds);
 	}
 
+	/**
+	 * @param {Coords} coords
+	 * @returns {[LatLng, LatLng]}
+	 */
 	_tileCoordsToNwSe(coords) {
 		const map = this._map,
 		tileSize = this.getTileSize(),
@@ -726,6 +821,10 @@ export class GridLayer extends Layer {
 	}
 
 	// converts tile coordinates to its geographical bounds
+	/**
+	 * @param {Coords} coords
+	 * @returns {LatLngBounds}
+	 */
 	_tileCoordsToBounds(coords) {
 		const bp = this._tileCoordsToNwSe(coords);
 		let bounds = new LatLngBounds(bp[0], bp[1]);
@@ -736,10 +835,15 @@ export class GridLayer extends Layer {
 		return bounds;
 	}
 	// converts tile coordinates to key for the tile cache
+	/**
+	 * @param {{x: number, y: number, z: number}} coords
+	 * @returns {string}
+	 */
 	_tileCoordsToKey(coords) {
 		return `${coords.x}:${coords.y}:${coords.z}`;
 	}
 
+	/** @param {string} key */
 	_removeTile(key) {
 		const tile = this._tiles[key];
 		if (!tile) { return; }
@@ -754,6 +858,7 @@ export class GridLayer extends Layer {
 		});
 	}
 
+	/** @param {HTMLElement} tile */
 	_initTile(tile) {
 		tile.classList.add('leaflet-tile');
 
@@ -762,6 +867,10 @@ export class GridLayer extends Layer {
 		tile.style.height = `${tileSize.y}px`;
 	}
 
+	/**
+	 * @param {Coords} coords
+	 * @param {DocumentFragment} container
+	 */
 	_addTile(coords, container) {
 		const tilePos = this._getTilePos(coords),
 		key = this._tileCoordsToKey(coords);
@@ -795,18 +904,21 @@ export class GridLayer extends Layer {
 		});
 	}
 
-	_tileReady(coords, err, tile) {
+	/**
+	 * @param {Coords} coords
+	 * @param {unknown} [err]
+	 * @param {HTMLElement} [el]
+	 */
+	_tileReady(coords, err, el) {
 		if (err) {
 			this.fire('tileerror', {
 				error: err,
-				tile,
+				tile: el,
 				coords
 			});
 		}
 
-		const key = this._tileCoordsToKey(coords);
-
-		tile = this._tiles[key];
+		const tile = this._tiles[this._tileCoordsToKey(coords)];
 		if (!tile) { return; }
 
 		if (!this._map._fadeAnimated) {
@@ -841,11 +953,13 @@ export class GridLayer extends Layer {
 			} else {
 				// Wait a bit more than 0.2 secs (the duration of the tile fade-in)
 				// to trigger a pruning.
+				/** @type {number | undefined} */
 				this._pruneTimeout = setTimeout(this._pruneTiles.bind(this), 250);
 			}
 		}
 	}
 
+	/** @param {GridTile} tile */
 	_onTileFaded(tile) {
 		tile.el.classList.remove('leaflet-tile-fading');
 		// the tile's key may have changed after a world copy jump, so look it up again
@@ -862,18 +976,30 @@ export class GridLayer extends Layer {
 		});
 	}
 
+	/**
+	 * @param {Point} coords
+	 * @returns {Point}
+	 */
 	_getTilePos(coords) {
 		return coords.scaleBy(this.getTileSize()).subtract(this._level.origin);
 	}
 
+	/**
+	 * @param {Coords} coords
+	 * @returns {Coords}
+	 */
 	_wrapCoords(coords) {
-		const newCoords = new Point(
+		const newCoords = /** @type {Coords} */ (new Point(
 			this._wrapX ? Util.wrapNum(coords.x, this._wrapX) : coords.x,
-			this._wrapY ? Util.wrapNum(coords.y, this._wrapY) : coords.y);
+			this._wrapY ? Util.wrapNum(coords.y, this._wrapY) : coords.y));
 		newCoords.z = coords.z;
 		return newCoords;
 	}
 
+	/**
+	 * @param {Bounds} bounds
+	 * @returns {Bounds}
+	 */
 	_pxBoundsToTileRange(bounds) {
 		const tileSize = this.getTileSize();
 		return new Bounds(
