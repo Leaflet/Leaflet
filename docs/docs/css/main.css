@@ -844,21 +844,25 @@ table.plugins td:first-child a {
 }
 .api-page table td:last-child {
 	color: black;
+	overflow-wrap: anywhere;
 }
 .api-page table td:last-child code {
 	word-break: break-word;
 	white-space: pre-wrap;
 }
+.api-page table td:first-child code {
+	color: #555;
+}
 .api-page table td code i {
-	color: #9a9;
+	color: #999;
 }
 .api-page table td code b {
 	color: black;
-	font-weight: normal;
 }
 .api-page table td,
 .api-page table th {
 	font-size: 14px;
+	vertical-align: top;
 }
 
 main .api-page p {

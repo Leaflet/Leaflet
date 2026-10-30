@@ -58,15 +58,13 @@
 		"LeafletMap": "Map",
 		"LeafletEvent": "Event",
 		"LeafletKeyboardEvent": "KeyboardEvent",
-		"LeafletPointerEvent": "PointerEvent"
-	},
-	"members": {
-		"LeafletMap": {"pane": "MapPanes"}
-	},
-	"aliases": {
+		"LeafletPointerEvent": "PointerEvent",
 		"LatLngExpression": "LatLng",
 		"LatLngBoundsExpression": "LatLngBounds",
 		"PointExpression": "Point",
 		"BoundsExpression": "Bounds"
+	},
+	"members": {
+		"LeafletMap": {"pane": "MapPanes"}
 	}
 }

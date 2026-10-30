@@ -33,8 +33,8 @@ const COLUMNS = {
 	factory: {name: 'Factory', params: true},
 	option: {name: 'Option', type: 'Type', default: 'Default'},
 	event: {name: 'Event', type: 'Data'},
-	method: {name: 'Method', params: true, type: 'Returns', block: true},
-	function: {name: 'Function', params: true, type: 'Returns'},
+	method: {name: 'Method', params: true, returns: true, block: true},
+	function: {name: 'Function', params: true, returns: true},
 	property: {name: 'Property', type: 'Type'},
 	pane: {name: 'Pane', type: 'Type', default: 'Z-index'},
 	projection: {name: 'Projection'},
@@ -49,13 +49,25 @@ const liquid = new Liquid({root: 'build/reference', extname: '.liquid'});
 // links a type name that has an anchor on the page
 const link = str => (str in akas ? `<a href='#${akas[str]}'>${str}</a>` : str);
 
-// unions may only wrap after a `|`, so a long one doesn't force a wide signature column; `pre`/`post` (the param
-// type's angle brackets) stay attached to the first and last member
-liquid.registerFilter('type', (str, pre = '', post = '') => {
+// unions may only wrap after a `|`, so a long one doesn't force a wide signature column; `pre`/`post` (a param's
+// name, a trailing comma) stay attached to the first and last member
+function type(str, pre = '', post = '') {
 	if (!str) { return ''; }
 	if (!pre && (str in akas || !str.includes('|'))) { return link(str); }
 	const members = str in akas ? [str] : str.split('|');
 	return members.map((m, i) => `<nobr>${i ? '' : pre}${link(m)}${i < members.length - 1 ? '|' : post}</nobr>`).join('<wbr>');
+}
+liquid.registerFilter('type', type);
+
+// params wrap only between each other; the closing paren stays with the last one
+liquid.registerFilter('signature', (item, returns) => {
+	const ret = returns && item.type ? type(item.type, ': ') : '';
+	const params = item.params.map((p, i) => {
+		const post = i < item.params.length - 1 ? ',' : ')';
+		const name = `<i>${p.name}</i>`;
+		return p.type ? type(p.type, `${name}: `, post) : `<nobr>${name}${post}</nobr>`;
+	});
+	return `(${params.length ? params.join(' ') : ')'}${ret}`;
 });
 
 // `block` keeps the paragraphs; otherwise the first paragraph's tags are dropped so a one-liner sits in a table cell

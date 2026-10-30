@@ -167,8 +167,8 @@ function inherit(ns, name) {
 	if (name && name !== ns.name && !ns.inherits.includes(name)) { ns.inherits.push(name); }
 }
 
-// What a link name points to: page names, their TS names, aliases (to their class's page), `members` interfaces
-// (to their supersection), `X options` and the `x-options`-style supersection names
+// What a link name points to: page names, their TS names, `members` interfaces (to their supersection), `X options`
+// and the `x-options`-style supersection names
 function akasOf(raws) {
 	const akas = {};
 	for (const ns of raws) {
@@ -181,7 +181,6 @@ function akasOf(raws) {
 			}
 		}
 	}
-	for (const [alias, page] of Object.entries(config.aliases)) { akas[alias] = akas[page]; }
 	for (const [page, kinds] of Object.entries(config.members)) {
 		for (const [kind, iface] of Object.entries(kinds)) { akas[iface] = normalizeName(config.display[page] ?? page, kind); }
 	}
@@ -611,7 +610,7 @@ function referenceParts(node, ctx, seen) {
 	// `XOptions` of a page: its options section
 	const owner = ownerOfInterface.get(name);
 	if (owner && OPTIONS_SUFFIX.test(name) && !pages.has(name)) { return [`${config.display[owner] ?? owner} options`]; }
-	if (pages.has(name) || Object.hasOwn(config.aliases, name)) { return [name]; }
+	if (pages.has(name)) { return [name]; }
 
 	const decl = ctx.synthetic ? lookup(name) : declOf(resolveAlias(checker.getSymbolAtLocation(nameNode)));
 	if (decl?.kind === SK.ClassDeclaration) { return [pageOfClass(decl) ?? name]; }

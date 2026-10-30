@@ -26,10 +26,7 @@
 	{%- for item in section.items %}
 	<tr id='{{ item.id }}'>
 		<td><a class='permalink' href='#{{ item.id }}' aria-label='Permalink'></a><code><b>{% if kind == 'constructor' %}new {% endif %}{{ item.name | escape }}</b>
-			{%- if c.params %}(
-				{%- for p in item.params %}{% if p.type %}{{ p.type | type: '&lt;', '&gt;' }} {% endif %}<i>{{ p.name }}</i>
-				{%- unless forloop.last %}, {% endunless %}{% endfor -%}
-			){% endif %}</code></td>
+			{%- if c.params %}{{ item | signature: c.returns }}{% endif %}</code></td>
 		{%- if c.type %}
 		<td><code>{{ item.type | type }}</code></td>
 		{%- endif %}
