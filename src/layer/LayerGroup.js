@@ -49,7 +49,7 @@ export class LayerGroup extends Layer {
 
 		Util.setOptions(this, options);
 
-		/** @type {{[id: number]: Layer}} */
+		/** @type {{[id: number]: MemberLayer}} */
 		this._layers = {};
 
 		for (const layer of layers ?? []) {
@@ -161,7 +161,10 @@ export class LayerGroup extends Layer {
 	 * @returns {this}
 	 */
 	setZIndex(zIndex) {
-		return this.eachLayer(l => /** @type {MemberLayer} */ (l).setZIndex?.(zIndex));
+		for (const layer of Object.values(this._layers)) {
+			layer.setZIndex?.(zIndex);
+		}
+		return this;
 	}
 
 	/**
@@ -210,7 +213,7 @@ export class LayerGroup extends Layer {
 		/** @type {any[]} */
 		jsons = [];
 
-		this.eachLayer((/** @type {MemberLayer} */ layer) => {
+		for (const layer of Object.values(this._layers)) {
 			if (layer.toGeoJSON) {
 				const json = layer.toGeoJSON(precision);
 				if (isGeometryCollection) {
@@ -225,7 +228,7 @@ export class LayerGroup extends Layer {
 					}
 				}
 			}
-		});
+		}
 
 		if (isGeometryCollection) {
 			return getFeature(this, {

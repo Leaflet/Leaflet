@@ -3,7 +3,6 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 /** @import {FeatureGroupEventMap, InteractiveLayerOptions, LayerEvent} from '../types.js' */
 /** @import {Layer} from './Layer.js' */
-/** @import {MemberLayer} from './LayerGroup.js' */
 
 /**
  * @typedef {Object} FeatureGroupEvents
@@ -65,7 +64,10 @@ export class FeatureGroup extends LayerGroup {
 	 * @returns {this}
 	 */
 	setStyle(style) {
-		return this.eachLayer(l => /** @type {MemberLayer} */ (l).setStyle?.(style));
+		for (const layer of Object.values(this._layers)) {
+			layer.setStyle?.(style);
+		}
+		return this;
 	}
 
 	/**
@@ -73,7 +75,10 @@ export class FeatureGroup extends LayerGroup {
 	 * @returns {this}
 	 */
 	bringToFront() {
-		return this.eachLayer(l => /** @type {MemberLayer} */ (l).bringToFront?.());
+		for (const layer of Object.values(this._layers)) {
+			layer.bringToFront?.();
+		}
+		return this;
 	}
 
 	/**
@@ -81,7 +86,10 @@ export class FeatureGroup extends LayerGroup {
 	 * @returns {this}
 	 */
 	bringToBack() {
-		return this.eachLayer(l => /** @type {MemberLayer} */ (l).bringToBack?.());
+		for (const layer of Object.values(this._layers)) {
+			layer.bringToBack?.();
+		}
+		return this;
 	}
 
 	/**
@@ -92,7 +100,7 @@ export class FeatureGroup extends LayerGroup {
 	getBounds() {
 		const bounds = new LatLngBounds();
 
-		for (const layer of /** @type {MemberLayer[]} */ (Object.values(this._layers))) {
+		for (const layer of Object.values(this._layers)) {
 			if (layer.getBounds) {
 				bounds.extend(layer.getBounds());
 			} else if (layer.getLatLng) {
