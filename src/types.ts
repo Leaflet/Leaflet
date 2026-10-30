@@ -340,15 +340,15 @@ declare module './Leaflet.js' {
 	interface Renderer {
 		_layers: {[id: number]: Path}; // created lazily
 		// implemented by `SVG` and `Canvas`, called by paths
-		_initPath(layer: Path<any, any>): void;
-		_addPath(layer: Path<any, any>): void;
-		_removePath(layer: Path<any, any>): void;
-		_updatePath(layer: Path<any, any>): void;
-		_updateStyle(layer: Path<any, any>): void;
-		_bringToFront(layer: Path<any, any>): void;
-		_bringToBack(layer: Path<any, any>): void;
-		_updatePoly(layer: Polyline<any, any, any>, closed?: boolean): void;
-		_updateCircle(layer: CircleMarker<any, any>): void;
+		_initPath(layer: Path): void;
+		_addPath(layer: Path): void;
+		_removePath(layer: Path): void;
+		_updatePath(layer: Path): void;
+		_updateStyle(layer: Path): void;
+		_bringToFront(layer: Path): void;
+		_bringToBack(layer: Path): void;
+		_updatePoly(layer: Polyline<PolylineOptions, InteractiveLayerEventMap, Geometry>, closed?: boolean): void;
+		_updateCircle(layer: CircleMarker): void;
 	}
 }
 

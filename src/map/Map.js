@@ -1338,7 +1338,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Adds the given layer to the map
 	 * @category Methods for Layers and Controls
-	 * @param {LayerBase<any, any>} layer
+	 * @param {LayerBase} layer
 	 */
 	addLayer(layer) {
 		if (!layer._layerAdd) {
@@ -1363,7 +1363,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Removes the given layer from the map.
 	 * @category Methods for Layers and Controls
-	 * @param {LayerBase<any, any>} layer
+	 * @param {LayerBase} layer
 	 */
 	removeLayer(layer) {
 		const id = Util.stamp(layer);
@@ -1389,7 +1389,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns `true` if the given layer is currently added to the map
 	 * @category Methods for Layers and Controls
-	 * @param {LayerBase<any, any>} layer
+	 * @param {LayerBase} layer
 	 */
 	hasLayer(layer) {
 		return Util.stamp(layer) in this._layers;
@@ -1533,7 +1533,7 @@ export class LeafletMap extends Evented {
 	 * Returns the instance of `Renderer` that should be used to render the given `Path`. It will ensure that the
 	 * `renderer` options of the map and paths are respected, and that the renderers do exist on the map.
 	 * @category Methods for Layers and Controls
-	 * @param {Path<any, any>} layer
+	 * @param {Path} layer
 	 * @returns {Renderer}
 	 */
 	getRenderer(layer) {
@@ -1546,7 +1546,7 @@ export class LeafletMap extends Evented {
 		return renderer;
 	}
 
-	/** @param {Path<any, any>} layer */
+	/** @param {Path} layer */
 	_getPaneRenderer(layer) {
 		const name = layer.options.pane;
 		if (name === 'overlayPane' || name === undefined) {

@@ -49,7 +49,7 @@ export class AttributionControl extends Control {
 
 		/** @type {{[text: string]: number}} */
 		this._attributions = {};
-		/** @type {Map<LayerBase<any, any>, string>} */
+		/** @type {Map<LayerBase, string>} */
 		this._layerAttributions = new Map();
 		this.callInitHooks();
 	}
@@ -81,7 +81,7 @@ export class AttributionControl extends Control {
 		}
 	}
 
-	/** @param {{layer: LayerBase<any, any>}} e */
+	/** @param {{layer: LayerBase}} e */
 	_addLayer({layer}) {
 		const text = layer.getAttribution?.();
 		if (!text || this._layerAttributions.has(layer)) { return; }
@@ -90,7 +90,7 @@ export class AttributionControl extends Control {
 		this.addAttribution(text);
 	}
 
-	/** @param {{layer: LayerBase<any, any>}} e */
+	/** @param {{layer: LayerBase}} e */
 	_removeLayer({layer}) {
 		// a layer without an attribution has no entry here, and `removeAttribution` skips the `undefined`
 		this.removeAttribution(/** @type {string} */ (this._layerAttributions.get(layer)));

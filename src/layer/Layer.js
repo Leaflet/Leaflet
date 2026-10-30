@@ -4,13 +4,21 @@ import {Tooltip} from './Tooltip.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
-/** @import {LatLngExpression, LayerEventMap, LayerOptions, LeafletEvent, LeafletPointerEvent, PopupOptions, TooltipOptions} from '../types.js' */
+/** @import {LatLngExpression, LayerEventMap, LayerOptions, LeafletEvent, LeafletPointerEvent, MarkerMoveEvent, PopupOptions, TooltipOptions} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {OverlayContent} from './DivOverlay.js' */
 
 // the focus listener a tooltip added to each layer element, to remove it when the tooltip is unbound or rebound
 /** @type {WeakMap<Element, () => void>} */
 const focusHandlers = new WeakMap();
+
+/**
+ * Events that bound popups and tooltips listen to, with the event objects they expect if a layer fires them.
+ * @typedef {Object} OverlayTriggerEvents
+ * @property {LeafletPointerEvent} [click]
+ * @property {LeafletPointerEvent} [pointermove]
+ * @property {MarkerMoveEvent} [move]
+ */
 
 /**
  * @typedef {Object} InteractiveLayerProps
@@ -75,7 +83,7 @@ const focusHandlers = new WeakMap();
  * Every layer should extend from `Layer` and (re-)implement the following methods.
  *
  * @template {LayerOptions} [O=LayerOptions]
- * @template {LayerEventMap} [E=LayerEventMap]
+ * @template {LayerEventMap & OverlayTriggerEvents} [E=LayerEventMap]
  * @extends {LayerBase<O, E>}
  */
 export class Layer extends LayerBase {
@@ -92,7 +100,7 @@ export class Layer extends LayerBase {
 	bindPopup(content, options) {
 		/** @type {Popup | null | undefined} */
 		this._popup = this._initOverlay(Popup, this._popup, content, options);
-		/** @type {Layer<any, any>} */ (this).on({
+		this.on({
 			click: this._openPopup,
 			remove: this.closePopup,
 			move: this._movePopup
@@ -107,7 +115,7 @@ export class Layer extends LayerBase {
 	 */
 	unbindPopup() {
 		if (this._popup) {
-			/** @type {Layer<any, any>} */ (this).off({
+			this.off({
 				click: this._openPopup,
 				remove: this.closePopup,
 				move: this._movePopup
@@ -275,7 +283,7 @@ export class Layer extends LayerBase {
 		if (sticky) {
 			events.pointermove = this._moveTooltip;
 		}
-		/** @type {Layer<any, any>} */ (this)[remove ? 'off' : 'on'](events);
+		this[remove ? 'off' : 'on'](events);
 	}
 
 	/**

@@ -6,18 +6,21 @@ import * as Util from './Util.js';
 /**
  * A listener for the event type `K` of an object with the event map `E` that fired it as `T`. Events that aren't
  * in the map (space-separated types, events of plugins) get a plain event object. An indexed access rather than a
- * conditional type, so that `Evented<O, E>` stays covariant in `E` (a `Marker` is assignable to `Layer`).
+ * conditional type, so that `Evented<O, E>` stays covariant in `E` (a `Marker` is assignable to `Layer`); into
+ * `Pick<E, …>` rather than `E`, so that `this` of a generic subclass is too (`map.addLayer(this)` in `Popup`).
  * @template {string} K
  * @template {object} E
  * @template [T=Evented]
- * @typedef {(e: (E & {[type: string]: LeafletEvent & {[key: string]: any}})[K] & {target: T}) => void} Listener
+ * @typedef {(e: (Pick<E, K & keyof E> & {[type: string]: LeafletEvent & {[key: string]: any}})[K] & {target: T}) => void} Listener
  */
 
 /**
- * An object with event types as keys and listeners as values, as taken by [`on`](#evented-on).
+ * An object with event types as keys and listeners as values, as taken by [`on`](#evented-on). `M` is the object
+ * itself, inferred at the call, so that each listener is checked against the event type of its key.
+ * @template M
  * @template {object} E
  * @template [T=Evented]
- * @typedef {{[K in keyof E]?: (e: E[K] & {target: T}) => void} & {[type: string]: (e: any) => void}} ListenerMap
+ * @typedef {{[K in keyof M]: Listener<K & string, E, T>}} ListenerMap
  */
 
 /**
@@ -90,13 +93,14 @@ export class Evented extends Class {
 	 */
 	/**
 	 * Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
+	 * @template M
 	 * @overload
-	 * @param {ListenerMap<E, this>} eventMap
+	 * @param {ListenerMap<M, E, this>} eventMap
 	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
 	/**
-	 * @param {string | ListenerMap<E, this>} types
+	 * @param {string | object} types
 	 * @param {any} [fn]
 	 * @param {unknown} [context]
 	 */
@@ -133,8 +137,9 @@ export class Evented extends Class {
 	 */
 	/**
 	 * Removes a set of type/listener pairs.
+	 * @template M
 	 * @overload
-	 * @param {ListenerMap<E, this>} eventMap
+	 * @param {ListenerMap<M, E, this>} eventMap
 	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
@@ -144,7 +149,7 @@ export class Evented extends Class {
 	 * @returns {this}
 	 */
 	/**
-	 * @param {string | ListenerMap<E, this>} [types]
+	 * @param {string | object} [types]
 	 * @param {any} [fn]
 	 * @param {unknown} [context]
 	 */
@@ -406,13 +411,14 @@ export class Evented extends Class {
 	 * @returns {this}
 	 */
 	/**
+	 * @template M
 	 * @overload
-	 * @param {ListenerMap<E, this>} eventMap
+	 * @param {ListenerMap<M, E, this>} eventMap
 	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
 	/**
-	 * @param {string | ListenerMap<E, this>} types
+	 * @param {string | object} types
 	 * @param {any} [fn]
 	 * @param {unknown} [context]
 	 */
