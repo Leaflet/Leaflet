@@ -18,6 +18,7 @@ const focusHandlers = new WeakMap();
  * @property {LeafletPointerEvent} [click]
  * @property {LeafletPointerEvent} [pointermove]
  * @property {MarkerMoveEvent} [move]
+ * @property {LeafletPointerEvent} [preclick]
  */
 
 /**
@@ -137,7 +138,7 @@ export class Layer extends LayerBase {
 			if (this._getOverlaySource() === this) {
 				this._popup._source = this;
 			}
-			if (this._popup._prepareOpen(latlng || this._latlng)) {
+			if (this._popup._prepareOpen(latlng)) {
 				// open the popup on the map
 				this._popup.openOn(this._map);
 			}

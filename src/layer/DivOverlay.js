@@ -4,10 +4,10 @@ import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {Defaults, DivOverlayEventMap, DivOverlayOptions, LatLngExpression, LeafletEvent, PointExpression, ZoomAnimEvent} from '../types.js' */
+/** @import {Defaults, DivOverlayEventMap, DivOverlayOptions, LatLngExpression, LayerEventMap, LayerOptions, LeafletEvent, PointExpression, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLngBounds} from '../geo/LatLngBounds.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
-/** @import {Layer} from './Layer.js' */
+/** @import {Layer, OverlayTriggerEvents} from './Layer.js' */
 
 /**
  * Content of a popup or tooltip: HTML, an element, or a function that gets the layer it's bound to and returns
@@ -85,7 +85,7 @@ export class DivOverlay extends LayerBase {
 			Util.setOptions(this, source);
 		} else {
 			Util.setOptions(this, options);
-			/** @type {Layer | undefined} */
+			/** @type {Layer<LayerOptions, LayerEventMap & OverlayTriggerEvents> | undefined} */
 			this._source = source;
 		}
 		if (this.options.content) {

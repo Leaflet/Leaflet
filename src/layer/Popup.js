@@ -3,8 +3,7 @@ import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {Point} from '../geometry/Point.js';
 
-/** @import {Defaults, DivOverlayEventMap, InteractiveLayerEventMap, LayerOptions, PointExpression, PopupOptions, ZoomAnimEvent}
- *    from '../types.js' */
+/** @import {Defaults, DivOverlayEventMap, PointExpression, PopupOptions, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Layer} from './Layer.js' */
@@ -166,7 +165,7 @@ export class Popup extends DivOverlay {
 			// For non-path layers, we toggle the popup when clicking
 			// again the layer, so prevent the map to reopen it.
 			if (this._source._togglesPopupOnClick()) {
-				/** @type {Layer<LayerOptions, InteractiveLayerEventMap>} */ (this._source).on('preclick', DomEvent.stopPropagation);
+				this._source.on('preclick', DomEvent.stopPropagation);
 			}
 		}
 	}
@@ -180,7 +179,7 @@ export class Popup extends DivOverlay {
 		if (this._source) {
 			this._source.fire('popupclose', {popup: this}, true);
 			if (this._source._togglesPopupOnClick()) {
-				/** @type {Layer<LayerOptions, InteractiveLayerEventMap>} */ (this._source).off('preclick', DomEvent.stopPropagation);
+				this._source.off('preclick', DomEvent.stopPropagation);
 			}
 		}
 	}

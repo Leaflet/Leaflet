@@ -300,12 +300,29 @@ declare module './layer/LayerBase.js' {
 declare module './Leaflet.js' {
 	interface Layer {
 		// implemented by subclasses, checked by bound popups and tooltips
-		_latlng?: LatLng;
 		_getPopupAnchor?(): PointExpression;
 		_getTooltipAnchor?(): PointExpression;
+
+		/**
+		 * Optional method. Should return the layer's main element. A layer that has one gets keyboard access to its
+		 * bound tooltip: the tooltip opens when the element is focused, and the element is described by it.
+		 * @category Extension methods
+		 * @uninheritable
+		 */
 		getElement?(): Element | null | undefined;
+		/**
+		 * Optional method. Should call `fn` on each of the layer's member layers. A layer without its own
+		 * [`getElement`](#layer-getelement) that has it gives keyboard access to its bound tooltip through the
+		 * elements of its members instead.
+		 * @category Extension methods
+		 * @uninheritable
+		 */
 		eachLayer?(fn: (layer: Layer) => void, context?: unknown): unknown;
-		feature?: Feature; // set by `GeoJSON` on the layers it creates
+		/**
+		 * The GeoJSON feature the layer was created from, set by [`GeoJSON`](#geojson) on each layer it creates and
+		 * used by [`toGeoJSON`](#geojson-togeojson) to keep its `properties`.
+		 */
+		feature?: Feature;
 	}
 }
 
