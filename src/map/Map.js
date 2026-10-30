@@ -25,8 +25,8 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 /** @import {BoxZoomEvent, Defaults, DragEndEvent, ErrorEvent, FitBoundsOptions, InvalidateSizeOptions,
  *    LatLngBoundsExpression, LatLngExpression, LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent,
  *    LeafletPointerEvent, LocateOptions, LocationEvent, MapEventMap, MapOptions, PanInsideOptions, PanOptions,
- *    PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent, TooltipOptions, WorldCopyJumpEvent,
- *    ZoomAnimEvent, ZoomOptions, ZoomPanOptions} from '../types.js' */
+ *    PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent, TooltipOptions, ViewPreResetEvent,
+ *    WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions} from '../types.js' */
 /** @import {CRS} from '../geo/crs/CRS.js' */
 /** @import {Control} from '../control/Control.js' */
 /** @import {Handler} from '../core/Handler.js' */
@@ -351,6 +351,7 @@ const defaultOptions = {
  * @typedef {Object} MapStateEvents
  * @property {ResizeEvent} resize Fired when the map is resized.
  * @property {LeafletEvent} unload Fired when the map is destroyed with [remove](#map-remove) method.
+ * @property {ViewPreResetEvent} viewprereset Fired right before `viewreset`, while the map still has its old view, with the new center and zoom.
  * @property {LeafletEvent} viewreset Fired when the map needs to redraw its content (this usually happens on map zoom or load). Very useful for creating custom overlays.
  * @property {LeafletEvent} load Fired when the map is initialized (when its center and zoom are set for the first time).
  * @property {LeafletEvent} zoomstart Fired when the map zoom is about to change (e.g. before zoom animation).
@@ -525,6 +526,12 @@ const defaultOptions = {
  * @property {LatLng} center The current center of the map.
  * @property {number} zoom The current zoom level of the map.
  * @property {boolean} noUpdate Whether layers should update their contents due to this event.
+ */
+
+/**
+ * @typedef {Object} ViewPreResetEventProps
+ * @property {LatLng} center The center of the new view.
+ * @property {number} zoom The zoom level of the new view.
  */
 
 /**

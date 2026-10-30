@@ -12,9 +12,10 @@ export class EarthCRS extends CRS {
 	/** @type {[number, number]} */
 	static wrapLng = [-180, 180];
 
-	// Mean Earth Radius, as recommended for use by
-	// the International Union of Geodesy and Geophysics,
-	// see https://rosettacode.org/wiki/Haversine_formula
+	/**
+	 * The mean Earth radius in meters used by [`distance`](#earthcrs-distance), as recommended by the International
+	 * Union of Geodesy and Geophysics (see https://rosettacode.org/wiki/Haversine_formula).
+	 */
 	static R = 6371000;
 
 	/**

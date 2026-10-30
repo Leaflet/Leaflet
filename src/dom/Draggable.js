@@ -211,7 +211,11 @@ export class Draggable extends Evented {
 		this.finishDrag();
 	}
 
-	/** @param {boolean} [noInertia] */
+	/**
+	 * Ends the current drag, firing `dragend` if the element was moved. `noInertia` is passed on in the event, so
+	 * that the map doesn't keep panning after a drag ended this way.
+	 * @param {boolean} [noInertia]
+	 */
 	finishDrag(noInertia) {
 		this._draggingContainer?.classList.remove('leaflet-dragging');
 		this._draggingContainer = null;

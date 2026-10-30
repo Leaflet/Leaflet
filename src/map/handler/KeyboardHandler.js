@@ -7,8 +7,11 @@ import {Point} from '../../geometry/Point.js';
 // Handles keyboard interaction with the map, enabled by default.
 export class KeyboardHandler extends Handler {
 
-	// `KeyboardEvent.key` values, so zoom keys follow the keyboard layout and cover the numpad too;
-	// `=` and `_` keep the US `+` and `-` keys working both with and without Shift
+	/**
+	 * The [`KeyboardEvent.key`](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/key) values for each action,
+	 * which can be changed to rebind keys. Zoom keys follow the keyboard layout and cover the numpad, and `=`/`_` keep
+	 * the US `+`/`-` keys working both with and without Shift.
+	 */
 	static keys = {
 		left: ['ArrowLeft'],
 		right: ['ArrowRight'],

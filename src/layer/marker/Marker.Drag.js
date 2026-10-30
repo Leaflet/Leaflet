@@ -47,6 +47,7 @@ export class MarkerDrag extends Handler {
 		this._marker._icon?.classList.remove('leaflet-marker-draggable');
 	}
 
+	/** Returns `true` if the current or last drag moved the marker, e.g. to ignore the click that ends a drag. */
 	moved() {
 		return this._draggable?._moved;
 	}

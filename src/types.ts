@@ -47,8 +47,8 @@ import type {TapHoldHandler} from './map/handler/TapHoldHandler.js';
 import type {ErrorEventProps, FitBoundsProps, InvalidateSizeProps, LayerEventProps, LeafletKeyboardEventProps,
 	LeafletMap, LeafletPointerEventProps, LocateProps, LocationEventProps, MapDefaults, MapHandlerEvents,
 	MapInteractionEvents, MapLayerEvents, MapLocationEvents, MapOtherEvents, MapPopupEvents, MapStateEvents,
-	MapTooltipEvents, PaddingProps, PanProps, ResizeEventProps, WorldCopyJumpEventProps, ZoomAnimEventProps, ZoomPanProps,
-	ZoomProps} from './map/Map.js';
+	MapTooltipEvents, PaddingProps, PanProps, ResizeEventProps, ViewPreResetEventProps, WorldCopyJumpEventProps,
+	ZoomAnimEventProps, ZoomPanProps, ZoomProps} from './map/Map.js';
 
 export type {Defaults} from './core/Class.js';
 export type {LeafletEventHandlerFn, Listener, ListenerMap} from './core/Events.js';
@@ -258,6 +258,7 @@ export interface DragEndEvent extends LeafletEvent, DragEndEventProps {}
 export interface BoxZoomEvent extends LeafletEvent, BoxZoomEventProps {}
 export interface MarkerMoveEvent extends LeafletEvent, MarkerMoveEventProps {}
 export interface ZoomAnimEvent extends LeafletEvent, ZoomAnimEventProps {}
+export interface ViewPreResetEvent extends LeafletEvent, ViewPreResetEventProps {}
 export interface WorldCopyJumpEvent extends LeafletEvent, WorldCopyJumpEventProps {}
 
 // Members the classes can't declare in JS, added through `./Leaflet.js`, which plugins augment as `'leaflet'`:

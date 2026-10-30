@@ -40,10 +40,12 @@ export class DragHandler extends Handler {
 		this._draggable.disable();
 	}
 
+	/** Returns `true` if the current or last drag moved the map, e.g. to ignore the click that ends a drag. */
 	moved() {
 		return this._draggable?._moved;
 	}
 
+	/** Returns `true` while the map is being dragged. */
 	moving() {
 		return this._draggable?._moving;
 	}

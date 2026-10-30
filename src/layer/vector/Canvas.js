@@ -4,7 +4,7 @@ import {mapHandlingDisabled} from '../../dom/DomEventUtil.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
-/** @import {CanvasOptions, Defaults, MapListeners, RendererEventMap} from '../../types.js' */
+/** @import {CanvasOptions, Defaults, RendererEventMap} from '../../types.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Point} from '../../geometry/Point.js' */
 /** @import {CircleMarker} from './CircleMarker.js' */
@@ -53,7 +53,6 @@ export class Canvas extends Renderer {
 	static defaultOptions = defaultOptions;
 
 	getEvents() {
-		/** @type {MapListeners & {viewprereset?: () => void}} */
 		const events = super.getEvents();
 		events.viewprereset = this._onViewPreReset;
 		return events;

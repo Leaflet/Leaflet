@@ -168,6 +168,8 @@ export class LayerGroup extends Layer {
 	}
 
 	/**
+	 * Returns a GeoJSON `MultiPoint` feature with the positions of the group's markers. `precision` is the number of
+	 * decimal places for coordinates, as in [`toGeoJSON`](#layergroup-togeojson).
 	 * @param {number | false} [precision]
 	 * @returns {Feature<MultiPoint>}
 	 */

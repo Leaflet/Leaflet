@@ -21,6 +21,7 @@ export class BoxZoomHandler extends Handler {
 		DomEvent.off(this._map._container, 'pointerdown', this._onPointerDown, this);
 	}
 
+	/** Returns `true` if a box is being drawn or was just drawn, e.g. to ignore the click that ends it. */
 	moved() {
 		return this._moved;
 	}

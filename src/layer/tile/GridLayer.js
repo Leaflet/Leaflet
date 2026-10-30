@@ -6,7 +6,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 /** @import {Defaults, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent, MapListeners,
- *    TileErrorEvent, TileEvent, WorldCopyJumpEvent, ZoomAnimEvent} from '../../types.js' */
+ *    TileErrorEvent, TileEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent} from '../../types.js' */
 /** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 
@@ -290,7 +290,7 @@ export class GridLayer extends Layer {
 	}
 
 	getEvents() {
-		/** @type {MapListeners & {viewprereset: (e: {center: LatLng, zoom: number}) => void}} */
+		/** @type {MapListeners} */
 		const events = {
 			viewprereset: this._invalidateAll,
 			viewreset: this._resetView,
@@ -480,7 +480,7 @@ export class GridLayer extends Layer {
 		}
 	}
 
-	/** @param {{center: LatLng, zoom: number}} [e] the `viewprereset` event */
+	/** @param {ViewPreResetEvent} [e] */
 	_invalidateAll(e) {
 		// a zoom without animation keeps the old levels until new tiles load, like the end of an animated one,
 		// unless the view jumps somewhere else
