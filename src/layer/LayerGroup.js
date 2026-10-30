@@ -119,7 +119,7 @@ export class LayerGroup extends Layer {
 	 * group.eachLayer(layer => layer.bindPopup('Hello'));
 	 * ```
 	 * @param {(layer: Layer) => void} method
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 */
 	eachLayer(method, context) {
 		for (const layer of Object.values(this._layers)) {

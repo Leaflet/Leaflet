@@ -1405,7 +1405,7 @@ export class LeafletMap extends Evented {
 	 * ```
 	 * @category Methods for Layers and Controls
 	 * @param {(layer: LayerBase) => void} method
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 */
 	eachLayer(method, context) {
 		for (const layer of Object.values(this._layers)) {
@@ -2452,7 +2452,7 @@ export class LeafletMap extends Evented {
 	 * one layer, or immediately if it's already initialized, optionally passing a function context.
 	 * @category Other Methods
 	 * @param {(e: {target: LeafletMap}) => void} callback
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 */
 	whenReady(callback, context) {
 		if (this._loaded) {

@@ -304,7 +304,7 @@ declare module './Leaflet.js' {
 		_getPopupAnchor?(): PointExpression;
 		_getTooltipAnchor?(): PointExpression;
 		getElement?(): Element | null | undefined;
-		eachLayer?(fn: (layer: Layer) => void, context?: any): unknown;
+		eachLayer?(fn: (layer: Layer) => void, context?: unknown): unknown;
 		feature?: Feature; // set by `GeoJSON` on the layers it creates
 	}
 }

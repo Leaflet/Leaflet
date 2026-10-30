@@ -40,7 +40,7 @@ import {stoppedEvents, clickDisabledElements} from './DomEventUtil.js';
  * @param {EventTarget} el
  * @param {K} types
  * @param {DomEventListener<K>} fn
- * @param {any} [context]
+ * @param {unknown} [context]
  * @returns {void}
  */
 /**
@@ -48,14 +48,14 @@ import {stoppedEvents, clickDisabledElements} from './DomEventUtil.js';
  * @overload
  * @param {EventTarget} el
  * @param {DomEventListenerMap} eventMap
- * @param {any} [context]
+ * @param {unknown} [context]
  * @returns {void}
  */
 /**
  * @param {any} obj
  * @param {any} types
  * @param {any} [fn]
- * @param {any} [context]
+ * @param {unknown} [context]
  */
 export function on(obj, types, fn, context) {
 
@@ -82,7 +82,7 @@ const handlers = new WeakMap();
  * @param {EventTarget} el
  * @param {K} types
  * @param {DomEventListener<K>} fn
- * @param {any} [context]
+ * @param {unknown} [context]
  * @returns {void}
  */
 /**
@@ -90,7 +90,7 @@ const handlers = new WeakMap();
  * @overload
  * @param {EventTarget} el
  * @param {DomEventListenerMap} eventMap
- * @param {any} [context]
+ * @param {unknown} [context]
  * @returns {void}
  */
 /**
@@ -110,7 +110,7 @@ const handlers = new WeakMap();
  * @param {any} obj
  * @param {any} [types]
  * @param {any} [fn]
- * @param {any} [context]
+ * @param {unknown} [context]
  */
 export function off(obj, types, fn, context) {
 
@@ -155,7 +155,7 @@ function batchRemove(obj, filterFn) {
  * @param {EventTarget} obj
  * @param {string} type
  * @param {any} fn
- * @param {any} [context]
+ * @param {unknown} [context]
  */
 function addOne(obj, type, fn, context) {
 	const id = type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
@@ -185,7 +185,7 @@ function addOne(obj, type, fn, context) {
  * @param {EventTarget} obj
  * @param {string} type
  * @param {any} fn
- * @param {any} context
+ * @param {unknown} context
  * @param {string} [id]
  */
 function removeOne(obj, type, fn, context, id) {

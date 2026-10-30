@@ -85,20 +85,20 @@ export class Evented extends Class {
 	 * @overload
 	 * @param {K} type
 	 * @param {Listener<K, E, this>} fn
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
 	/**
 	 * Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
 	 * @overload
 	 * @param {ListenerMap<E, this>} eventMap
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
 	/**
 	 * @param {string | ListenerMap<E, this>} types
 	 * @param {any} [fn]
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 */
 	on(types, fn, context) {
 
@@ -128,14 +128,14 @@ export class Evented extends Class {
 	 * @overload
 	 * @param {K} type
 	 * @param {Listener<K, E, this>} [fn]
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
 	/**
 	 * Removes a set of type/listener pairs.
 	 * @overload
 	 * @param {ListenerMap<E, this>} eventMap
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
 	/**
@@ -146,7 +146,7 @@ export class Evented extends Class {
 	/**
 	 * @param {string | ListenerMap<E, this>} [types]
 	 * @param {any} [fn]
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 */
 	off(types, fn, context) {
 
@@ -187,7 +187,7 @@ export class Evented extends Class {
 	/**
 	 * @param {string} type
 	 * @param {unknown} fn
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @param {boolean} [_once]
 	 */
 	_on(type, fn, context, _once) {
@@ -226,7 +226,7 @@ export class Evented extends Class {
 	/**
 	 * @param {string} type
 	 * @param {unknown} [fn]
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 */
 	_off(type, fn, context) {
 		if (!this._events) {
@@ -329,14 +329,14 @@ export class Evented extends Class {
 	 * @overload
 	 * @param {string} type
 	 * @param {Function} fn
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @param {boolean} [propagate]
 	 * @returns {boolean}
 	 */
 	/**
 	 * @param {string} type
 	 * @param {Function | boolean} [fn]
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @param {boolean} [propagate]
 	 */
 	listens(type, fn, context, propagate) {
@@ -373,7 +373,7 @@ export class Evented extends Class {
 	/**
 	 * @param {string} type
 	 * @param {unknown} [fn]
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 */
 	_listens(type, fn, context) {
 		if (!this._events) {
@@ -401,19 +401,19 @@ export class Evented extends Class {
 	 * @overload
 	 * @param {K} type
 	 * @param {Listener<K, E, this>} fn
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
 	/**
 	 * @overload
 	 * @param {ListenerMap<E, this>} eventMap
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 * @returns {this}
 	 */
 	/**
 	 * @param {string | ListenerMap<E, this>} types
 	 * @param {any} [fn]
-	 * @param {any} [context]
+	 * @param {unknown} [context]
 	 */
 	once(types, fn, context) {
 
