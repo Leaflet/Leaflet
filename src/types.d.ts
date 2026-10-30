@@ -762,12 +762,6 @@ declare module './dom/Draggable.js' {
 	}
 }
 
-declare module './geometry/Point.js' {
-	interface Point {
-		_code: number; // clipping bit code, set by `PolyUtil.clipPolygon`
-	}
-}
-
 declare module './geo/crs/CRS.js' {
 	namespace CRS {
 		/** Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`). */

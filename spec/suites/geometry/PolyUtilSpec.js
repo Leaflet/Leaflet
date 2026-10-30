@@ -15,10 +15,6 @@ describe('PolyUtil', () => {
 			// check clip without rounding
 			const clipped = PolyUtil.clipPolygon(points, bounds);
 
-			for (const c of clipped) {
-				delete c._code;
-			}
-
 			expect(clipped).to.eql([
 				new Point(7.5, 10),
 				new Point(5, 5),
@@ -28,10 +24,6 @@ describe('PolyUtil', () => {
 
 			// check clip with rounding
 			const clippedRounded = PolyUtil.clipPolygon(points, bounds, true);
-
-			for (const c of clippedRounded) {
-				delete c._code;
-			}
 
 			expect(clippedRounded).to.eql([
 				new Point(8, 10),

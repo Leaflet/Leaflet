@@ -25,46 +25,43 @@ import {Point} from './Point.js';
  * @returns {Point[]}
  */
 export function clipPolygon(points, bounds, round) {
-	let clippedPoints,
-	i, j, k,
-	a, b,
-	len, edge, p;
-	const edges = [1, 4, 2, 8];
+	// left, bottom, right, top
+	for (const edge of [1, 4, 2, 8]) {
+		if (!points.length) { break; }
 
-	for (i = 0, len = points.length; i < len; i++) {
-		points[i]._code = LineUtil._getBitCode(points[i], bounds);
-	}
+		/** @type {Point[]} */
+		const clippedPoints = [];
+		let b = points[points.length - 1],
+		bOut = _isOutside(b, edge, bounds);
 
-	// for each edge (left, bottom, right, top)
-	for (k = 0; k < 4; k++) {
-		edge = edges[k];
-		clippedPoints = [];
-
-		for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
-			a = points[i];
-			b = points[j];
-
-			// if a is inside the clip window
-			if (!(a._code & edge)) {
-				// if b is outside the clip window (a->b goes out of screen)
-				if (b._code & edge) {
-					p = LineUtil._getEdgeIntersection(b, a, edge, bounds, round);
-					p._code = LineUtil._getBitCode(p, bounds);
-					clippedPoints.push(p);
-				}
-				clippedPoints.push(a);
-
-			// else if b is inside the clip window (a->b enters the screen)
-			} else if (!(b._code & edge)) {
-				p = LineUtil._getEdgeIntersection(b, a, edge, bounds, round);
-				p._code = LineUtil._getBitCode(p, bounds);
-				clippedPoints.push(p);
+		for (const a of points) {
+			const aOut = _isOutside(a, edge, bounds);
+			// a->b crosses the edge
+			if (aOut !== bOut) {
+				clippedPoints.push(LineUtil._getEdgeIntersection(b, a, edge, bounds, round));
 			}
+			if (!aOut) {
+				clippedPoints.push(a);
+			}
+			b = a;
+			bOut = aOut;
 		}
 		points = clippedPoints;
 	}
 
 	return points;
+}
+
+/**
+ * Whether the point is outside the given edge of the bounds; the edge is a `LineUtil` clipping bit code.
+ * @param {Point} p
+ * @param {number} edge
+ * @param {Bounds} bounds
+ */
+function _isOutside(p, edge, bounds) {
+	return edge === 1 ? p.x < bounds.min.x :
+		edge === 2 ? p.x > bounds.max.x :
+		edge === 4 ? p.y < bounds.min.y : p.y > bounds.max.y;
 }
 
 /**
