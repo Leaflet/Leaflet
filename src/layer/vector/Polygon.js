@@ -1,5 +1,4 @@
 import {Polyline} from './Polyline.js';
-import {LatLng} from '../../geo/LatLng.js';
 import * as LineUtil from '../../geometry/LineUtil.js';
 import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
@@ -7,7 +6,8 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
 import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
 
 /** @import {Feature, MultiPolygon, Polygon as GeoJSONPolygon} from 'geojson' */
-/** @import {Defaults, InteractiveLayerEventMap, LatLngExpression, PolylineOptions} from '../../types.js' */
+/** @import {LatLng} from '../../geo/LatLng.js' */
+/** @import {Defaults, InteractiveLayerEventMap, LatLngExpression, NestedCoords, PolylineOptions} from '../../types.js' */
 
 /** @satisfies {Defaults<PolylineOptions>} */
 const defaultOptions = {
@@ -83,36 +83,32 @@ export class Polygon extends Polyline {
 	 */
 	toGeoJSON(precision) {
 		const holes = !LineUtil.isFlat(this._latlngs),
-		multi = holes && !LineUtil.isFlat(this._latlngs[0]);
+		multi = holes && !LineUtil.isFlat(this._latlngs[0]),
+		coords = latLngsToCoords(this._latlngs, 0, true, precision);
 
-		let coords = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
-
-		if (!holes) {
-			coords = [coords];
-		}
-
-		return getFeature(this, {
+		return getFeature(this, /** @type {GeoJSONPolygon | MultiPolygon} */ ({
 			type: `${multi ? 'Multi' : ''}Polygon`,
-			coordinates: coords
-		});
+			coordinates: holes ? coords : [coords]
+		}));
 	}
 
-	/** @param {any[]} latlngs */
+	/** @param {NestedCoords<LatLngExpression>} latlngs */
 	_convertLatLngs(latlngs) {
 		const result = super._convertLatLngs(latlngs),
 		len = result.length;
 
 		// remove last point if it equals first one
-		if (len >= 2 && result[0] instanceof LatLng && result[0].equals(result[len - 1])) {
+		if (len >= 2 && LineUtil.isFlat(result) && result[0].equals(result[len - 1])) {
 			result.pop();
 		}
 		return result;
 	}
 
-	/** @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs */
+	/** @param {NestedCoords<LatLngExpression>} latlngs */
 	_setLatLngs(latlngs) {
 		super._setLatLngs(latlngs);
 		if (LineUtil.isFlat(this._latlngs)) {
+			/** @type {LatLng[][] | LatLng[][][]} */
 			this._latlngs = [this._latlngs];
 		}
 	}

@@ -55,6 +55,7 @@ export type {LeafletEventHandlerFn, Listener, ListenerMap} from './core/Events.j
 export type {PointExpression} from './geometry/Point.js';
 export type {BoundsExpression} from './geometry/Bounds.js';
 export type {LatLngExpression} from './geo/LatLng.js';
+export type {NestedCoords} from './geometry/LineUtil.js';
 export type {LatLngBoundsExpression} from './geo/LatLngBounds.js';
 export type {Projection} from './geo/crs/CRS.js';
 export type {Coords, DoneCallback} from './layer/tile/GridLayer.js';

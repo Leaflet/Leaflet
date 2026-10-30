@@ -6,7 +6,7 @@ import {LatLng} from '../geo/LatLng.js';
 import {latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSONUtil.js';
 
 /** @import {Feature, GeoJSON as GeoJSONData, Geometry, Point as GeoJSONPoint, Position} from 'geojson' */
-/** @import {FeatureGroupEventMap, GeoJSONOptions, PathOptions} from '../types.js' */
+/** @import {FeatureGroupEventMap, GeoJSONOptions, NestedCoords, PathOptions} from '../types.js' */
 /** @import {Layer} from './Layer.js' */
 /** @import {MemberLayer} from './LayerGroup.js' */
 
@@ -236,15 +236,17 @@ export class GeoJSON extends FeatureGroup {
 	 * Creates a multidimensional array of `LatLng`s from a GeoJSON coordinates array. `levelsDeep` specifies
 	 * the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by
 	 * default). Can use a custom [`coordsToLatLng`](#geojson-coordstolatlng) function.
-	 * @param {any[]} coords
+	 * @param {NestedCoords<Position>} coords
 	 * @param {number} [levelsDeep]
 	 * @param {(coords: Position) => LatLng} [coordsToLatLng]
-	 * @returns {any[]}
+	 * @returns {NestedCoords<LatLng>}
 	 */
 	static coordsToLatLngs(coords, levelsDeep, coordsToLatLng) {
-		return coords.map(coord => (levelsDeep ?
+		// typed by hand since the depth comes from `levelsDeep`: recursing on `LineUtil.isFlat` like `latLngsToCoords`
+		// does types itself but runs 2x slower on large multipolygons, as V8 inlines the split `map`s worse
+		return /** @type {NestedCoords<LatLng>} */ (coords.map((/** @type {any} */ coord) => (levelsDeep ?
 			GeoJSON.coordsToLatLngs(coord, levelsDeep - 1, coordsToLatLng) :
-			(coordsToLatLng || GeoJSON.coordsToLatLng)(coord)));
+			(coordsToLatLng || GeoJSON.coordsToLatLng)(coord))));
 	}
 
 	/**
@@ -254,9 +256,10 @@ export class GeoJSON extends FeatureGroup {
 	static latLngToCoords = latLngToCoords;
 
 	/**
-	 * Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs) `close` determines whether the first point
-	 * should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0.
-	 * False by default. Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
+	 * Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs), with the nesting detected from the array, so
+	 * `levelsDeep` is ignored. `close` determines whether the first point should be appended to the end of each
+	 * flat array to close the feature. False by default. Coordinates values are rounded with
+	 * [`formatNum`](#util-formatnum) function.
 	 */
 	static latLngsToCoords = latLngsToCoords;
 

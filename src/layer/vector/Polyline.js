@@ -8,7 +8,7 @@ import {Point} from '../../geometry/Point.js';
 import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
 
 /** @import {Feature, Geometry, LineString, MultiLineString} from 'geojson' */
-/** @import {Defaults, InteractiveLayerEventMap, LatLngExpression, PolylineOptions} from '../../types.js' */
+/** @import {Defaults, InteractiveLayerEventMap, LatLngExpression, NestedCoords, PolylineOptions} from '../../types.js' */
 
 const defaultOptions = {
 	/**
@@ -69,7 +69,7 @@ export class Polyline extends Path {
 	 * Instantiates a polyline object given an array of geographical points and optionally an options object. You
 	 * can create a `Polyline` object with multiple separate lines (`MultiPolyline`) by passing an array of arrays
 	 * of geographic points.
-	 * @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs
+	 * @param {NestedCoords<LatLngExpression>} latlngs
 	 * @param {Partial<O>} [options]
 	 */
 	constructor(latlngs, options) {
@@ -83,7 +83,7 @@ export class Polyline extends Path {
 
 	/**
 	 * Returns an array of the points in the path, or nested arrays of points in case of multi-polyline.
-	 * @returns {LatLng[] | LatLng[][] | LatLng[][][]}
+	 * @returns {NestedCoords<LatLng>}
 	 */
 	getLatLngs() {
 		return this._latlngs;
@@ -91,7 +91,7 @@ export class Polyline extends Path {
 
 	/**
 	 * Replaces all the points in the polyline with the given array of geographical points.
-	 * @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs
+	 * @param {NestedCoords<LatLngExpression>} latlngs
 	 */
 	setLatLngs(latlngs) {
 		this._setLatLngs(latlngs);
@@ -171,47 +171,42 @@ export class Polyline extends Path {
 	toGeoJSON(precision) {
 		const multi = !LineUtil.isFlat(this._latlngs);
 
-		const coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
+		const coords = latLngsToCoords(this._latlngs, 0, false, precision);
 
-		return getFeature(this, /** @type {any} */ ({
+		return getFeature(this, /** @type {G} */ ({
 			type: `${multi ? 'Multi' : ''}LineString`,
 			coordinates: coords
 		}));
 	}
 
-	/** @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs */
+	/** @param {NestedCoords<LatLngExpression>} latlngs */
 	_setLatLngs(latlngs) {
 		/** @type {LatLngBounds} */
 		this._bounds = new LatLngBounds();
-		// nested LatLng arrays, as `getLatLngs` returns
-		/** @type {any[]} */
+		/** @type {NestedCoords<LatLng>} */
 		this._latlngs = this._convertLatLngs(latlngs);
 	}
 
 	/** @returns {LatLng[]} */
 
 	_defaultShape() {
-		return LineUtil.isFlat(this._latlngs) ? this._latlngs : this._latlngs[0];
+		return LineUtil.isFlat(this._latlngs) ? this._latlngs : /** @type {LatLng[]} */ (this._latlngs[0]);
 	}
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	/**
-	 * @param {any[]} latlngs
-	 * @returns {any[]}
+	 * @param {NestedCoords<LatLngExpression>} latlngs
+	 * @returns {NestedCoords<LatLng>}
 	 */
 	_convertLatLngs(latlngs) {
-		const result = [],
-		flat = LineUtil.isFlat(latlngs);
-
-		for (let i = 0, len = latlngs.length; i < len; i++) {
-			if (flat) {
-				result[i] = new LatLng(latlngs[i]);
-				this._bounds.extend(result[i]);
-			} else {
-				result[i] = this._convertLatLngs(latlngs[i]);
-			}
+		if (!LineUtil.isFlat(latlngs)) {
+			return /** @type {NestedCoords<LatLng>} */ (latlngs.map(ring => this._convertLatLngs(ring)));
 		}
-
+		const result = [];
+		for (let i = 0, len = latlngs.length; i < len; i++) {
+			result[i] = new LatLng(latlngs[i]);
+			this._bounds.extend(result[i]);
+		}
 		return result;
 	}
 
@@ -244,14 +239,12 @@ export class Polyline extends Path {
 
 	// recursively turns latlngs into a set of rings with projected coordinates
 	/**
-	 * @param {any[]} latlngs
+	 * @param {NestedCoords<LatLng>} latlngs
 	 * @param {Point[][]} result
 	 * @param {Bounds} projectedBounds
 	 */
 	_projectLatlngs(latlngs, result, projectedBounds) {
-		const flat = latlngs[0] instanceof LatLng;
-
-		if (flat) {
+		if (LineUtil.isFlat(latlngs)) {
 			const ring = latlngs.map(latlng => this._map.latLngToLayerPoint(latlng));
 			ring.forEach(r => projectedBounds.extend(r));
 			result.push(ring);

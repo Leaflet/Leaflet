@@ -1,5 +1,5 @@
 // Typings of a plugin: `declare module 'leaflet'` merges into the classes, options and event maps it augments.
-import {FeatureGroup, LayerGroup, Map, Marker, Polygon, Popup, Tooltip} from 'leaflet';
+import {FeatureGroup, GeoJSON, LayerGroup, LineUtil, Map, Marker, Polygon, Polyline, Popup, Tooltip} from 'leaflet';
 import type {LeafletEvent, LeafletPointerEvent, MarkerEventMap, MarkerOptions} from 'leaflet';
 
 declare module 'leaflet' {
@@ -61,5 +61,16 @@ new Popup().addTo(map).removeFrom(map);
 new Popup().addTo(group);
 // @ts-expect-error a tooltip in a group
 new Tooltip().removeFrom(group);
+
+// nested latlngs: GeoJSON coordinates convert into polyline input, and `isFlat` tells a line from nested ones
+const line = new Polyline(GeoJSON.coordsToLatLngs([[[0, 0], [1, 1]], [[2, 2], [3, 3]]], 1));
+const latlngs = line.getLatLngs();
+if (LineUtil.isFlat(latlngs)) {
+	void latlngs[0].lat;
+} else {
+	// @ts-expect-error a line, not a point
+	void latlngs[0].lat;
+}
+new Polygon([[[0, 0], [1, 1], [1, 0]], [[0.2, 0.2], [0.8, 0.8], [0.8, 0.2]]]).toGeoJSON().geometry.coordinates[0];
 
 void glow;

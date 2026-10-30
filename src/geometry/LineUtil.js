@@ -311,8 +311,17 @@ export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 
 
 /**
+ * An array of `T`s, nested up to 3 levels deep, like the points of a line, the rings of a polygon or the polygons
+ * of a multipolygon.
+ * @template T
+ * @typedef {T[] | T[][] | T[][][]} NestedCoords
+ */
+
+/**
  * Returns true if `latlngs` is a flat array, false is nested.
- * @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs
+ * @template {object} T
+ * @param {NestedCoords<T>} latlngs
+ * @returns {latlngs is T[]}
  */
 export function isFlat(latlngs) {
 	return !Array.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
@@ -358,8 +367,9 @@ export function polylineCenter(latlngs, crs) {
 
 // Projects the first ring of the given latlngs.
 /**
- * @param {LatLngExpression[] | LatLngExpression[][]} latlngs
+ * @param {NestedCoords<LatLngExpression>} latlngs
  * @param {typeof CRS} crs
+ * @returns {Point[]}
  */
 export function _projectRing(latlngs, crs) {
 	if (!latlngs || latlngs.length === 0) {
@@ -368,8 +378,8 @@ export function _projectRing(latlngs, crs) {
 
 	if (!isFlat(latlngs)) {
 		console.warn('latlngs are not flat! Only the first ring will be used');
-		latlngs = /** @type {LatLngExpression[]} */ (latlngs[0]);
+		return _projectRing(latlngs[0], crs);
 	}
 
-	return /** @type {LatLngExpression[]} */ (latlngs).map(latlng => crs.project(new LatLng(latlng)));
+	return latlngs.map(latlng => crs.project(new LatLng(latlng)));
 }

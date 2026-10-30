@@ -3,7 +3,7 @@ import {LatLng} from '../geo/LatLng.js';
 import * as LineUtil from '../geometry/LineUtil.js';
 
 /** @import {Feature, FeatureCollection, GeoJsonObject, Geometry, Point, Position} from 'geojson' */
-/** @import {LatLngExpression} from '../types.js' */
+/** @import {LatLngExpression, NestedCoords} from '../types.js' */
 
 // Shared by `GeoJSON` and the `toGeoJSON` methods of the layers it creates, which can't import `GeoJSON.js` without a cycle.
 
@@ -20,19 +20,19 @@ export function latLngToCoords(latlng, precision) {
 }
 
 /**
- * @param {any[]} latlngs
+ * @param {NestedCoords<LatLngExpression>} latlngs
  * @param {number} [levelsDeep]
  * @param {boolean} [close]
  * @param {number | false} [precision]
- * @returns {any[]}
+ * @returns {NestedCoords<Position>}
  */
 export function latLngsToCoords(latlngs, levelsDeep, close, precision) {
-	// Check for flat arrays required to ensure unbalanced arrays are correctly converted in recursion
-	const coords = latlngs.map(latlng => (levelsDeep ?
-		latLngsToCoords(latlng, LineUtil.isFlat(latlng) ? 0 : levelsDeep - 1, close, precision) :
-		latLngToCoords(latlng, precision)));
+	if (!LineUtil.isFlat(latlngs)) {
+		return /** @type {NestedCoords<Position>} */ (latlngs.map(ring => latLngsToCoords(ring, levelsDeep, close, precision)));
+	}
+	const coords = latlngs.map(latlng => latLngToCoords(latlng, precision));
 
-	if (!levelsDeep && close && coords.length > 0) {
+	if (close && coords.length > 0) {
 		coords.push(coords[0].slice());
 	}
 
