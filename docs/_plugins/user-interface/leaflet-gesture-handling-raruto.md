@@ -1,5 +1,5 @@
 ---
-name: leaflet-gesture-handling (Raruto)
+name: leaflet-gesture-handling
 category: user-interface
 repo: https://github.com/Raruto/leaflet-gesture-handling
 author: Raruto
@@ -10,4 +10,6 @@ compatible-v1: true
 compatible-v2: false
 ---
 
-Prevents unwanted map scroll and touch interactions.
+Prevents users from getting trapped on the map when scrolling a long page.
+
+Forked from <a href="https://github.com/elmarquis/Leaflet.GestureHandling/">Leaflet.GestureHandling</a>. 
