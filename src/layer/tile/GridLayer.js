@@ -5,106 +5,94 @@ import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
-// @namespace GridLayer
-
-// @section
-// @aka GridLayer options
 const defaultOptions = {
-	// @option tileSize: Number|Point = 256
-	// Width and height of tiles in the grid. Use a number if width and height are equal, or `Point(width, height)` otherwise.
+	/**
+	 * Width and height of tiles in the grid. Use a number if width
+	 * and height are equal, or `Point(width, height)` otherwise.
+	 */
 	tileSize: 256,
 
-	// @option opacity: Number = 1.0
-	// Opacity of the tiles. Can be used in the `createTile()` function.
+	/** Opacity of the tiles. Can be used in the `createTile()` function. */
 	opacity: 1,
 
-	// @option updateWhenIdle: Boolean = false
-	// Load new tiles only when panning ends.
+	/** Load new tiles only when panning ends. */
 	updateWhenIdle: false,
 
-	// @option updateWhenZooming: Boolean = true
-	// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
+	/**
+	 * By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto))
+	 * will update grid layers every integer zoom level. Setting this option to `false` will
+	 * update the grid layer only when the smooth animation ends.
+	 */
 	updateWhenZooming: true,
 
-	// @option updateInterval: Number = 200
-	// Tiles will not update more than once every `updateInterval`
-	// milliseconds when panning.
+	/** Tiles will not update more than once every `updateInterval` milliseconds when panning. */
 	updateInterval: 200,
 
-	// @option zIndex: Number = 1
-	// The explicit zIndex of the tile layer.
+	/** The explicit zIndex of the tile layer. */
 	zIndex: 1,
 
-	// @option bounds: LatLngBounds = undefined
-	// If set, tiles will only be loaded inside the set `LatLngBounds`.
+	/**
+	 * If set, tiles will only be loaded inside the set `LatLngBounds`.
+	 * @type {LatLngBounds}
+	 */
 	bounds: null,
 
-	// @option minZoom: Number = 0
-	// The minimum zoom level down to which this layer will be displayed (inclusive).
+	/** The minimum zoom level down to which this layer will be displayed (inclusive). */
 	minZoom: 0,
 
-	// @option maxZoom: Number = undefined
-	// The maximum zoom level up to which this layer will be displayed (inclusive).
+	/**
+	 * The maximum zoom level up to which this layer will be displayed (inclusive).
+	 * @type {number}
+	 */
 	maxZoom: undefined,
 
-	// @option maxNativeZoom: Number = undefined
-	// Maximum zoom number the tile source has available. If it is specified,
-	// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
-	// from `maxNativeZoom` level and auto-scaled.
+	/**
+	 * Maximum zoom number the tile source has available. If it is specified, the tiles on all zoom levels
+	 * higher than `maxNativeZoom` will be loaded from `maxNativeZoom` level and auto-scaled.
+	 * @type {number}
+	 */
 	maxNativeZoom: undefined,
 
-	// @option minNativeZoom: Number = undefined
-	// Minimum zoom number the tile source has available. If it is specified,
-	// the tiles on all zoom levels lower than `minNativeZoom` will be loaded
-	// from `minNativeZoom` level and auto-scaled.
+	/**
+	 * Minimum zoom number the tile source has available. If it is specified, the tiles on all zoom levels
+	 * lower than `minNativeZoom` will be loaded from `minNativeZoom` level and auto-scaled.
+	 * @type {number}
+	 */
 	minNativeZoom: undefined,
 
-	// @option noWrap: Boolean = false
-	// Whether the layer is wrapped around the antimeridian. If `true`, the
-	// GridLayer will only be displayed once at low zoom levels. Has no
-	// effect when the [map CRS](#map-crs) doesn't wrap around. Can be used
-	// in combination with [`bounds`](#gridlayer-bounds) to prevent requesting
-	// tiles outside the CRS limits.
+	/**
+	 * Whether the layer is wrapped around the antimeridian. If `true`, the GridLayer will only be displayed once
+	 * at low zoom levels. Has no effect when the [map CRS](#map-crs) doesn't wrap around. Can be used in combination
+	 * with [`bounds`](#gridlayer-bounds) to prevent requesting tiles outside the CRS limits.
+	 */
 	noWrap: false,
 
-	// @option pane: String = 'tilePane'
-	// `Map pane` where the grid layer will be added.
+	/** `Map pane` where the grid layer will be added. */
 	pane: 'tilePane',
 
-	// @option className: String = ''
-	// A custom class name to assign to the tile layer. Empty by default.
+	/** A custom class name to assign to the tile layer. Empty by default. */
 	className: '',
 
-	// @option keepBuffer: Number = 2
-	// When panning the map, keep this many rows and columns of tiles before unloading them.
+	/** When panning the map, keep this many rows and columns of tiles before unloading them. */
 	keepBuffer: 2
 };
 
-// @section
-// @event loading: Event
-// Fired when the grid layer starts loading tiles.
-// @event tileunload: TileEvent
-// Fired when a tile is removed (e.g. when a tile goes off the screen).
-// @event tileloadstart: TileEvent
-// Fired when a tile is requested and starts loading.
-// @event tileerror: TileErrorEvent
-// Fired when there is an error loading a tile.
-// @event tileload: TileEvent
-// Fired when a tile loads.
-// @event load: Event
-// Fired when the grid layer loaded all visible tiles.
+/**
+ * @typedef {Object} GridLayerEvents
+ * @property {LeafletEvent} loading Fired when the grid layer starts loading tiles.
+ * @property {TileEvent} tileunload Fired when a tile is removed (e.g. when a tile goes off the screen).
+ * @property {TileEvent} tileloadstart Fired when a tile is requested and starts loading.
+ * @property {TileErrorEvent} tileerror Fired when there is an error loading a tile.
+ * @property {TileEvent} tileload Fired when a tile loads.
+ * @property {LeafletEvent} load Fired when the grid layer loaded all visible tiles.
+ */
 
-/*
- * @class GridLayer
- * @inherits Layer
- *
- * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and replaces `TileLayer.Canvas`.
- * GridLayer can be extended to create a tiled grid of HTML elements like `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
- *
- *
- * @section Synchronous usage
+
+/**
+ * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and
+ * replaces `TileLayer.Canvas`. GridLayer can be extended to create a tiled grid of HTML elements like
+ * `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
  * @example
- *
  * To create a custom layer, extend GridLayer and implement the `createTile()` method, which will be passed a `Point` object with the `x`, `y`, and `z` (zoom level) coordinates to draw your tile.
  *
  * ```js
@@ -126,10 +114,7 @@ const defaultOptions = {
  *     }
  * }
  * ```
- *
- * @section Asynchronous usage
  * @example
- *
  * Tile creation can also be asynchronous, this is useful when using a third-party drawing library. Once the tile is finished drawing it can be passed to the `done()` callback.
  *
  * ```js
@@ -154,20 +139,19 @@ const defaultOptions = {
  *     }
  * }
  * ```
- *
- * @section
+ * @categoryDescription Extension methods
+ * Layers extending `GridLayer` shall reimplement the following method.
  */
-
-
-// @constructor GridLayer(options?: GridLayer options)
-// Creates a new instance of GridLayer with the supplied options.
-
 export class GridLayer extends Layer {
 
 	static initHooks = true;
 
 	static defaultOptions = defaultOptions;
 
+	/**
+	 * Creates a new instance of GridLayer with the supplied options.
+	 * @param {GridLayerOptions} [options]
+	 */
 	constructor(options) {
 		super();
 		Util.setOptions(this, options);
@@ -198,8 +182,10 @@ export class GridLayer extends Layer {
 		this._fadePruneFrame = 0;
 	}
 
-	// @method bringToFront(): this
-	// Brings the tile layer to the top of all tile layers.
+	/**
+	 * Brings the tile layer to the top of all tile layers.
+	 * @returns {this}
+	 */
 	bringToFront() {
 		if (this._map) {
 			DomUtil.toFront(this._container);
@@ -208,8 +194,10 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method bringToBack(): this
-	// Brings the tile layer to the bottom of all tile layers.
+	/**
+	 * Brings the tile layer to the bottom of all tile layers.
+	 * @returns {this}
+	 */
 	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._container);
@@ -218,22 +206,30 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method getContainer(): HTMLElement
-	// Returns the HTML element that contains the tiles for this layer.
+	/**
+	 * Returns the HTML element that contains the tiles for this layer.
+	 * @returns {HTMLElement}
+	 */
 	getContainer() {
 		return this._container;
 	}
 
-	// @method setOpacity(opacity: Number): this
-	// Changes the [opacity](#gridlayer-opacity) of the grid layer.
+	/**
+	 * Changes the [opacity](#gridlayer-opacity) of the grid layer.
+	 * @param {number} opacity
+	 * @returns {this}
+	 */
 	setOpacity(opacity) {
 		this.options.opacity = opacity;
 		this._updateOpacity();
 		return this;
 	}
 
-	// @method setZIndex(zIndex: Number): this
-	// Changes the [zIndex](#gridlayer-zindex) of the grid layer.
+	/**
+	 * Changes the [zIndex](#gridlayer-zindex) of the grid layer.
+	 * @param {number} zIndex
+	 * @returns {this}
+	 */
 	setZIndex(zIndex) {
 		this.options.zIndex = zIndex;
 		this._updateZIndex();
@@ -241,14 +237,18 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method isLoading(): Boolean
-	// Returns `true` if any tile in the grid layer has not finished loading.
+	/**
+	 * Returns `true` if any tile in the grid layer has not finished loading.
+	 * @returns {boolean}
+	 */
 	isLoading() {
 		return this._loading;
 	}
 
-	// @method redraw(): this
-	// Causes the layer to clear all the tiles and request them again.
+	/**
+	 * Causes the layer to clear all the tiles and request them again.
+	 * @returns {this}
+	 */
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
@@ -284,19 +284,23 @@ export class GridLayer extends Layer {
 		return events;
 	}
 
-	// @section Extension methods
-	// Layers extending `GridLayer` shall reimplement the following method.
-	// @method createTile(coords: Object, done?: Function): HTMLElement
-	// Called only internally, must be overridden by classes extending `GridLayer`.
-	// Returns the `HTMLElement` corresponding to the given `coords`. If the `done` callback
-	// is specified, it must be called when the tile has finished loading and drawing.
+	/**
+	 * Called only internally, must be overridden by classes extending `GridLayer`. Returns
+	 * the `HTMLElement` corresponding to the given `coords`. If the `done` callback is specified,
+	 * it must be called when the tile has finished loading and drawing.
+	 * @category Extension methods
+	 * @param {object} coords
+	 * @param {Function} [done]
+	 * @returns {HTMLElement}
+	 */
 	createTile() {
 		return document.createElement('div');
 	}
 
-	// @section
-	// @method getTileSize(): Point
-	// Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
+	/**
+	 * Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
+	 * @returns {Point}
+	 */
 	getTileSize() {
 		const s = this.options.tileSize;
 		return s instanceof Point ? s : new Point(s, s);
