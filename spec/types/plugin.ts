@@ -1,5 +1,5 @@
 // Typings of a plugin: `declare module 'leaflet'` merges into the classes, options and event maps it augments.
-import {Map, Marker, Polygon} from 'leaflet';
+import {FeatureGroup, LayerGroup, Map, Marker, Polygon, Popup, Tooltip} from 'leaflet';
 import type {LeafletEvent, LeafletPointerEvent, MarkerEventMap, MarkerOptions} from 'leaflet';
 
 declare module 'leaflet' {
@@ -46,8 +46,20 @@ class PulseMarker<O extends MarkerOptions = MarkerOptions, E extends MarkerEvent
 		this.on({click: this._onClick, add: () => {}});
 		if (!m.hasLayer(this)) { m.addLayer(this); }
 	}
+	group(g: FeatureGroup) {
+		this.addTo(g).removeFrom(g);
+	}
 	_onClick(e: LeafletPointerEvent) { void e.latlng; }
 }
 new PulseMarker([0, 0]).pulse(map);
+
+// groups hold layers that popups and tooltips can bind to, which those aren't
+const group = new LayerGroup().addTo(map);
+new Marker([0, 0]).addTo(group).removeFrom(group);
+new Popup().addTo(map).removeFrom(map);
+// @ts-expect-error a popup in a group
+new Popup().addTo(group);
+// @ts-expect-error a tooltip in a group
+new Tooltip().removeFrom(group);
 
 void glow;

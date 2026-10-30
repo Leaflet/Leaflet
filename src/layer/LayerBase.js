@@ -3,7 +3,6 @@ import * as Util from '../core/Util.js';
 
 /** @import {Defaults, LayerEventMap, LayerOptions, LeafletEvent, PopupEvent, TooltipEvent} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
-/** @import {LayerGroup} from './LayerGroup.js' */
 
 // Classes extending `Layer` will inherit the following options:
 const defaultOptions = {
@@ -25,6 +24,13 @@ const defaultOptions = {
 };
 
 /** @typedef {typeof defaultOptions} LayerDefaults */
+
+/**
+ * A `LayerGroup` that can hold layers of type `L`: groups type their members as `Layer`, so a popup or a tooltip
+ * isn't one.
+ * @template L
+ * @typedef {{addLayer(layer: L): unknown, removeLayer(layer: L): unknown}} LayerContainer
+ */
 
 /**
  * @typedef {Object} LayerEvents
@@ -58,11 +64,10 @@ export class LayerBase extends Evented {
 
 	/**
 	 * Adds the layer to the given map or layer group.
-	 * @param {LeafletMap | LayerGroup} map
+	 * @param {LeafletMap | LayerContainer<this>} map
 	 */
 	addTo(map) {
-		// groups type their members as Layer, which a DivOverlay isn't
-		map.addLayer(/** @type {any} */ (this));
+		map.addLayer(this);
 		return this;
 	}
 
@@ -80,12 +85,12 @@ export class LayerBase extends Evented {
 	/**
 	 * Removes the layer from the given `LayerGroup`
 	 * @overload
-	 * @param {LayerGroup} group
+	 * @param {LayerContainer<this>} group
 	 * @returns {this}
 	 */
-	/** @param {LeafletMap | LayerGroup} [obj] */
+	/** @param {LeafletMap | LayerContainer<this>} [obj] */
 	removeFrom(obj) {
-		obj?.removeLayer(/** @type {any} */ (this));
+		obj?.removeLayer(this);
 		return this;
 	}
 
