@@ -39,7 +39,8 @@
 	<link rel="stylesheet" href="{{ root }}docs/css/reference.css" />
 	{% endif %}
 
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,300' rel='stylesheet' type='text/css'>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap">
 
 	<script src="{{ root }}docs/highlight/highlight.pack.js"></script>
 	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
@@ -135,23 +136,6 @@
 		</svg>
 	</button>
 </footer>
-
-<script>
-	var _gaq = _gaq || [];
-	_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
-	_gaq.push([ '_trackPageview' ]);
-
-	(function() {
-		var ga = document.createElement('script');
-		ga.type = 'text/javascript';
-		ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl'
-				: 'http://www')
-				+ '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(ga, s);
-	})();
-</script>
 
 <script src="{{ root }}dialog/dialog.js"></script>
 <script src="{{ root }}docs/js/docs.js"></script>

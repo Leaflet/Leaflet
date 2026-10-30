@@ -8,20 +8,11 @@ tocCopy.id = 'toc-copy';
 const toc = document.querySelector('#toc');
 
 if (toc) {
-	// top menu
-	let menus = document.querySelectorAll('#toc a');
-
-	for (const menu of menus) {
-		menu.addEventListener('click', (e) => {
-			clickOnAnchor(e);
-		});
-	}
-
 	// sidebar menu
 	tocCopy.innerHTML = toc.innerHTML;
 	document.getElementsByClassName('container')[0].appendChild(tocCopy);
 
-	menus = document.querySelectorAll('#toc-copy ul');
+	const menus = document.querySelectorAll('#toc-copy ul');
 
 	for (const menu of menus) {
 		menu.addEventListener('pointerover', function () {
@@ -30,10 +21,6 @@ if (toc) {
 
 		menu.addEventListener('pointerout', function () {
 			this.previousElementSibling.classList.remove('hover');
-		});
-
-		menu.addEventListener('click', (e) => {
-			clickOnAnchor(e);
 		});
 	}
 
@@ -66,60 +53,6 @@ if (toc) {
 	window.addEventListener('scroll', () => {
 		scrollPos();
 	});
-
-	window.addEventListener('load', () => {
-		const currentHash = window.location.hash;
-		if (!currentHash) { return; }
-		const elem = document.querySelector(currentHash);
-
-		if (elem.tagName === 'H2' || elem.tagName === 'H4') {
-			setTimeout(() => {
-				scrollToHeader(elem, true);
-			}, 10);
-		}
-	}, false);
-}
-
-let currentAnchor = '';
-
-function clickOnAnchor(e) {
-	// if the parent element of <a> is clicked we ignore it
-	if (e.target.tagName !== 'A') {
-		return;
-	}
-
-	const anchor = `#${e.target.href.split('#')[1]}`;
-	const elemHeader = document.querySelector(anchor);
-
-	scrollToHeader(elemHeader, `#${elemHeader.id}` === currentAnchor);
-
-	// prevent default browser anchor scroll
-	e.preventDefault();
-}
-
-function userAgentContains(str) {
-	if (typeof navigator === 'undefined' || typeof navigator.userAgent === 'undefined') {
-		return false;
-	}
-	return navigator.userAgent.toLowerCase().includes(str);
-}
-const chromeBrowser = userAgentContains('chrome');
-
-function scrollToHeader(elemHeader, sameAnchor) {
-	let scrollBy = elemHeader.nextSibling.offsetTop;
-
-	if (chromeBrowser && sameAnchor) {
-		// chromium remove the anchor element from the scroll-position
-		// we check with sameAnchor if the User has clicked on the same anchor link again
-		scrollBy = scrollBy - elemHeader.offsetHeight;
-	} else {
-		// we scroll a little bit more down to get the element already sticky
-		scrollBy += 5;
-	}
-	// scroll to the anchor
-	window.scrollTo(0, scrollBy);
-	// apply the new anchor to the location url
-	currentAnchor = window.location.hash = `#${elemHeader.id}`;
 }
 
 const backToTop = document.querySelector('#back-to-top');

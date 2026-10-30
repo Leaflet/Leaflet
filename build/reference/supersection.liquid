@@ -1,0 +1,10 @@
+<section>
+<h3 id='{{ ss.id }}'>{{ ss.label | escape }}</h3>
+{%- for section in ss.sections %}{% render 'section', section: section, kind: ss.kind, columns: columns %}{% endfor %}
+{%- for group in ss.inherited %}
+<details class='inherited'>
+	<summary>{{ group.name | escape }} inherited from {{ group.ancestor | type }}</summary>
+	{% render 'section', section: group, kind: ss.kind, columns: columns, inherited: true %}
+</details>
+{%- endfor %}
+</section>

@@ -1,5 +1,5 @@
 html {
-	scroll-padding-top: 5em;
+	scroll-padding-top: 5rem;
 	overflow: auto;
 }
 
@@ -7,28 +7,23 @@ h2 {
     margin-top: 2em;
 }
 
+/* class headings are sticky, so a linked one scrolls to the very top to cover the one stuck there */
+#toc ~ h2 {
+    scroll-margin-top: -5rem;
+}
+
 h3 {
     margin-top: 1em;
     margin-bottom: .5em;
 }
 
-div.accordion {
-    width: 100%;
-/* 		overflow: hidden; */
-}
-
-div.accordion-overflow {
-    width: 100%;
-    overflow: hidden;
-}
-
-label,
+details.inherited > summary,
 section > h4 {
     display: block;
     font-weight: 500;
     margin: 1em 0 0.25em;
 }
-div.accordion.expanded label,
+details.inherited[open] > summary,
 section > h4 {
     margin: 0.75em 0 0;
     padding: 0.25em 0;
@@ -38,56 +33,23 @@ section > h4 {
     border-bottom: 1px solid #eee;
 }
 
-label {
+details.inherited > summary {
     cursor: pointer;
+    list-style: none;
 }
-
-div.accordion > div.accordion-overflow > div.accordion-content {
-    max-height: 0;
+details.inherited > summary::-webkit-details-marker {
     display: none;
 }
-
-div.accordion.collapsed > div.accordion-overflow > div.accordion-content {
-    animation-duration: 0.4s;
-    animation-name: collapse;
-/* 		height: 0; */
-    max-height: 0;
-    display: block;
-    overflow: hidden;
+details.inherited > summary::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: 0.3em;
+    font-size: 12px;
+    transition: transform 0.4s ease-out;
 }
-
-div.accordion.expanded > div.accordion-overflow > div.accordion-content {
-    animation-duration: 0.4s;
-    animation-name: expand;
-/* 		height: auto; */
-    max-height: none;
-    display: block;
-}
-
-@keyframes collapse {
-    0% { max-height: 100vh; }
-    100% { max-height: 0; }
-}
-
-@keyframes expand {
-    0% { max-height: 0; }
-    100% { max-height: 100vh; }
-}
-
-/*	div.accordion > div.accordion-content {
-    transition: max-height 0.4s ease-out 0s;
-}*/
-
-div.accordion.expanded > label > span.expander {
+details.inherited[open] > summary::before {
     transform: rotate(90deg);
 }
-
-div.accordion > label > span.expander {
-    transition: transform 0.4s ease-out 0s;
-    display: inline-block;
-    font-size: 12px;
-}
-
 
 table {
     margin-bottom: 0;

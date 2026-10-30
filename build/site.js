@@ -9,7 +9,7 @@ import {Liquid} from 'liquidjs';
 import {Marked} from 'marked';
 import {markedSmartypants} from 'marked-smartypants';
 import {parse as parseYaml} from '@mourner/yeahml';
-import LeafDoc from 'leafdoc';
+import {buildReference} from './reference.js';
 
 const SITE_DIR = 'docs';
 const DEST = '_site';
@@ -78,7 +78,7 @@ for (const post of site.posts) {
 }
 for (const [out, {path, site}] of outputs) {
 	const page = readPage(path);
-	if (page?.data.reference) { page.data.api = buildReference(config.refs[page.data.reference]); }
+	if (page?.data.reference) { page.data.api = buildReference(treeDir(config.refs[page.data.reference])); }
 	if (page) {
 		const content = engine.renderContent(page.body, MARKDOWN_EXT.test(path), {site, page: page.data});
 		write(join(DEST, out), engine.renderLayouts(content, page.data, site));
@@ -165,19 +165,6 @@ function treeDir(sha) {
 		renameSync(tmp, dir);
 	}
 	return dir;
-}
-
-// The API reference of a pinned commit: Leafdoc over its sources and class order, with the checkout's templates
-function buildReference(sha) {
-	const dir = treeDir(sha);
-	const doc = new LeafDoc({templateDir: 'build/leafdoc-templates', showInheritancesWhenEmpty: true, leadingCharacter: '@'});
-	doc.registerDocumentable('pane', 'Map panes');
-	doc.registerDocumentable('projection', 'Defined projections');
-	doc.registerDocumentable('crs', 'Defined CRSs');
-	doc.addFile(join(dir, 'build/docs-index.leafdoc'), false);
-	doc.addDir(join(dir, 'src'));
-	doc.addFile(join(dir, 'build/docs-misc.leafdoc'), false);
-	return doc.outputStr();
 }
 
 function matches(file, paths) {
