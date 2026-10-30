@@ -1,7 +1,10 @@
 // @ts-check
 import {formatNum} from '../core/Util.js';
 
-/** @import {PointExpression} from '../types.js' */
+/**
+ * A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form.
+ * @typedef {Point | [number, number] | {x: number, y: number}} PointExpression
+ */
 
 /**
  * Represents a point with `x` and `y` coordinates in pixels.

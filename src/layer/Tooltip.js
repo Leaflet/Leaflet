@@ -37,6 +37,10 @@ const defaultOptions = {
 
 /** @typedef {typeof defaultOptions} TooltipDefaults */
 
+/**
+ * @typedef {Object} TooltipEventProps
+ * @property {Tooltip} tooltip The tooltip that was opened or closed.
+ */
 
 /**
  * Used to display small texts on top of map layers.

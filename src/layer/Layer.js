@@ -14,6 +14,30 @@ import * as Util from '../core/Util.js';
 const focusHandlers = new WeakMap();
 
 /**
+ * @typedef {Object} InteractiveLayerProps
+ * @property {boolean} interactive If `false`, the layer will not emit pointer events and will
+ *   act as a part of the underlying map.
+ * @property {boolean} bubblingPointerEvents When `true`, a pointer event on this layer will trigger the
+ *   same event on the map (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+ */
+
+/**
+ * @category Pointer events
+ * @typedef {Object} InteractiveLayerEvents
+ * @property {LeafletPointerEvent} click Fired when the user clicks (or taps) the layer.
+ * @property {LeafletPointerEvent} preclick Fired right before `click`, for something that
+ *   should happen before any `click` listener runs.
+ * @property {LeafletPointerEvent} dblclick Fired when the user double-clicks (or double-taps) the layer.
+ * @property {LeafletPointerEvent} pointerdown Fired when the user pushes the pointer on the layer.
+ * @property {LeafletPointerEvent} pointerup Fired when the user releases the pointer pushed on the layer.
+ * @property {LeafletPointerEvent} pointerover Fired when the pointer enters the layer.
+ * @property {LeafletPointerEvent} pointerout Fired when the pointer leaves the layer.
+ * @property {LeafletPointerEvent} contextmenu Fired when the user right-clicks on the layer,
+ *   prevents default browser context menu from showing if there are listeners on this event. Also
+ *   fired on mobile when the user holds a single touch for a second (also called long press).
+ */
+
+/**
  * A set of methods from the Layer base class that all Leaflet layers use. Inherits all methods, options and events
  * from `Evented`.
  *

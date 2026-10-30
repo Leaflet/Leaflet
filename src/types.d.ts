@@ -1,29 +1,32 @@
-// Public types that JSDoc can't express. Options and event maps are interfaces rather than JSDoc typedefs (type
-// aliases), since only interfaces merge with a plugin's `declare module 'leaflet'` augmentation.
+// Public types that JSDoc can't express. Options, event maps and event objects are interfaces rather than JSDoc
+// typedefs (type aliases), since only interfaces merge with a plugin's `declare module 'leaflet'` augmentation;
+// their members are documented in typedefs next to the code they belong to, and the interfaces here only extend them.
 
 import type {Feature, Geometry, Point as GeoJSONPoint, Position} from 'geojson';
-import type {Evented} from './core/Events.js';
-import type {DraggableDefaults, DraggableEvents} from './dom/Draggable.js';
+import type {Evented, LeafletEventProps} from './core/Events.js';
+import type {DragEndEventProps, DraggableDefaults, DraggableEvents} from './dom/Draggable.js';
 import type {LatLng} from './geo/LatLng.js';
 import type {LatLngBounds} from './geo/LatLngBounds.js';
 import type {Bounds} from './geometry/Bounds.js';
-import type {Point} from './geometry/Point.js';
+import type {Point, PointExpression} from './geometry/Point.js';
 import type {BlanketOverlayDefaults} from './layer/BlanketOverlay.js';
 import type {DivOverlayDefaults, DivOverlayEvents} from './layer/DivOverlay.js';
 import type {ImageOverlayDefaults, ImageOverlayEvents} from './layer/ImageOverlay.js';
-import type {Layer} from './layer/Layer.js';
+import type {InteractiveLayerEvents, InteractiveLayerProps, Layer} from './layer/Layer.js';
 import type {FeatureGroupEvents} from './layer/FeatureGroup.js';
+import type {GeoJSONEventProps, StyleFunction} from './layer/GeoJSON.js';
 import type {DefaultIconDefaults} from './layer/marker/DefaultIcon.js';
 import type {DivIconDefaults} from './layer/marker/DivIcon.js';
 import type {IconDefaults} from './layer/marker/Icon.js';
-import type {MarkerDefaults, MarkerDragEvents, MarkerEvents} from './layer/marker/Marker.js';
+import type {MarkerDefaults, MarkerDragEvents, MarkerEvents, MarkerMoveEventProps} from './layer/marker/Marker.js';
 import type {LayerDefaults, LayerEvents, LayerPopupEvents, LayerTooltipEvents} from './layer/LayerBase.js';
-import type {Popup, PopupDefaults} from './layer/Popup.js';
+import type {Popup, PopupDefaults, PopupEventProps, PopupProps} from './layer/Popup.js';
 import type {VideoOverlayDefaults, VideoOverlayEvents} from './layer/VideoOverlay.js';
-import type {GridLayerDefaults, GridLayerEvents, GridLevel, GridTile} from './layer/tile/GridLayer.js';
+import type {GridLayerDefaults, GridLayerEvents, GridLevel, GridTile, TileErrorEventProps, TileEventProps}
+	from './layer/tile/GridLayer.js';
 import type {TileLayerDefaults, TileLayerEvents} from './layer/tile/TileLayer.js';
 import type {WMSParamsDefaults, WMSTileLayerDefaults} from './layer/tile/WMSTileLayer.js';
-import type {Tooltip, TooltipDefaults} from './layer/Tooltip.js';
+import type {Tooltip, TooltipDefaults, TooltipEventProps} from './layer/Tooltip.js';
 import type {CanvasDefaults, DrawOrder} from './layer/vector/Canvas.js';
 import type {CircleMarker, CircleMarkerDefaults, CircleMarkerEvents} from './layer/vector/CircleMarker.js';
 import type {Path, PathDefaults} from './layer/vector/Path.js';
@@ -31,23 +34,32 @@ import type {Polyline, PolylineDefaults} from './layer/vector/Polyline.js';
 import type {Renderer, RendererEvents} from './layer/vector/Renderer.js';
 import type {AttributionControl, AttributionControlDefaults} from './control/AttributionControl.js';
 import type {ControlDefaults} from './control/Control.js';
-import type {LayersControlDefaults} from './control/LayersControl.js';
+import type {LayersControlDefaults, LayersControlEventProps} from './control/LayersControl.js';
 import type {ScaleControlDefaults} from './control/ScaleControl.js';
 import type {ZoomControlDefaults} from './control/ZoomControl.js';
-import type {BoxZoomHandler} from './map/handler/BoxZoomHandler.js';
+import type {BoxZoomEventProps, BoxZoomHandler} from './map/handler/BoxZoomHandler.js';
 import type {DoubleClickZoomHandler} from './map/handler/DoubleClickZoomHandler.js';
 import type {DragHandler} from './map/handler/DragHandler.js';
 import type {KeyboardHandler} from './map/handler/KeyboardHandler.js';
 import type {PinchZoomHandler} from './map/handler/PinchZoomHandler.js';
 import type {ScrollWheelZoomHandler} from './map/handler/ScrollWheelZoomHandler.js';
 import type {TapHoldHandler} from './map/handler/TapHoldHandler.js';
-import type {LeafletMap, MapDefaults, MapHandlerEvents, MapInteractionEvents, MapLayerEvents, MapLocationEvents,
-	MapOtherEvents, MapPopupEvents, MapStateEvents, MapTooltipEvents} from './map/Map.js';
+import type {ErrorEventProps, FitBoundsProps, InvalidateSizeProps, LayerEventProps, LeafletKeyboardEventProps,
+	LeafletMap, LeafletPointerEventProps, LocateProps, LocationEventProps, MapDefaults, MapHandlerEvents,
+	MapInteractionEvents, MapLayerEvents, MapLocationEvents, MapOtherEvents, MapPopupEvents, MapStateEvents,
+	MapTooltipEvents, PaddingProps, PanProps, ResizeEventProps, WorldCopyJumpEventProps, ZoomAnimEventProps, ZoomPanProps,
+	ZoomProps} from './map/Map.js';
 
-export type {Listener, ListenerMap} from './core/Events.js';
-
-/** The type of a class's `static defaultOptions`: some of its options, plus anything a subclass adds. */
-export type Defaults<O> = Partial<O> & {[key: string]: unknown};
+export type {Defaults} from './core/Class.js';
+export type {LeafletEventHandlerFn, Listener, ListenerMap} from './core/Events.js';
+export type {PointExpression} from './geometry/Point.js';
+export type {BoundsExpression} from './geometry/Bounds.js';
+export type {LatLngExpression} from './geo/LatLng.js';
+export type {LatLngBoundsExpression} from './geo/LatLngBounds.js';
+export type {Projection} from './geo/crs/CRS.js';
+export type {Coords, DoneCallback} from './layer/tile/GridLayer.js';
+export type {StyleFunction} from './layer/GeoJSON.js';
+export type {ControlPosition} from './control/Control.js';
 
 export interface DraggableOptions extends DraggableDefaults {}
 export interface DraggableEventMap extends DraggableEvents {}
@@ -59,55 +71,14 @@ export interface LayerEventMap extends LayerEvents, LayerPopupEvents, LayerToolt
  * Some `Layer`s can be made interactive - when the user interacts with such a layer, pointer events like `click`
  * and `pointerover` can be handled. Use the [event handling methods](#evented-method) to handle these events.
  */
-export interface InteractiveLayerOptions extends LayerOptions {
-	/**
-	 * If `false`, the layer will not emit pointer events and will act as a part of the underlying map.
-	 * @default true
-	 */
-	interactive: boolean;
-	/**
-	 * When `true`, a pointer event on this layer will trigger the same event on the map (unless
-	 * [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-	 * @default true
-	 */
-	bubblingPointerEvents: boolean;
-}
+export interface InteractiveLayerOptions extends LayerOptions, InteractiveLayerProps {}
 
-/** @category Pointer events */
-export interface InteractiveLayerEventMap extends LayerEventMap {
-	/** Fired when the user clicks (or taps) the layer. */
-	click: LeafletPointerEvent;
-	/** Fired right before `click`, for something that should happen before any `click` listener runs. */
-	preclick: LeafletPointerEvent;
-	/** Fired when the user double-clicks (or double-taps) the layer. */
-	dblclick: LeafletPointerEvent;
-	/** Fired when the user pushes the pointer on the layer. */
-	pointerdown: LeafletPointerEvent;
-	/** Fired when the user releases the pointer pushed on the layer. */
-	pointerup: LeafletPointerEvent;
-	/** Fired when the pointer enters the layer. */
-	pointerover: LeafletPointerEvent;
-	/** Fired when the pointer leaves the layer. */
-	pointerout: LeafletPointerEvent;
-	/**
-	 * Fired when the user right-clicks on the layer, prevents default browser context menu from showing if there
-	 * are listeners on this event. Also fired on mobile when the user holds a single touch for a second (also
-	 * called long press).
-	 */
-	contextmenu: LeafletPointerEvent;
-}
+export interface InteractiveLayerEventMap extends LayerEventMap, InteractiveLayerEvents {}
 
 export interface DivOverlayOptions extends InteractiveLayerOptions, DivOverlayDefaults {}
 export interface DivOverlayEventMap extends InteractiveLayerEventMap, DivOverlayEvents {}
 
-export interface PopupOptions extends DivOverlayOptions, PopupDefaults {
-	/**
-	 * Set it if you want to override the default behavior of the popup closing when user clicks on the map.
-	 * Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
-	 * @default *
-	 */
-	closeOnClick?: boolean;
-}
+export interface PopupOptions extends DivOverlayOptions, PopupDefaults, PopupProps {}
 
 export interface TooltipOptions extends DivOverlayOptions, TooltipDefaults {}
 
@@ -151,9 +122,6 @@ export interface CircleOptions extends CircleMarkerOptions {
 	/** Radius of the circle, in meters. */
 	radius: number;
 }
-
-/** A function returning the `Path` options for a GeoJSON feature. */
-export type StyleFunction = (feature: Feature<Geometry, any>) => Partial<PathOptions>;
 
 // The callbacks use method syntax, so a callback typed with the user's own feature properties is accepted.
 export interface GeoJSONOptions extends InteractiveLayerOptions {
@@ -211,14 +179,6 @@ export interface GeoJSONOptions extends InteractiveLayerOptions {
 	markersInheritOptions?: boolean;
 }
 
-/** A `Point` with the tile's zoom level as `z`, as `createTile` and `getTileUrl` get it. */
-export interface Coords extends Point {
-	z: number;
-}
-
-/** The callback `createTile` gets: call it once the tile is ready, with an error if it failed to load. */
-export type DoneCallback = (error?: unknown, tile?: HTMLElement) => void;
-
 export interface GridLayerOptions extends LayerOptions, GridLayerDefaults {}
 export interface GridLayerEventMap extends LayerEventMap, GridLayerEvents {}
 
@@ -246,133 +206,17 @@ export interface MapEventMap extends MapLayerEvents, MapPopupEvents, MapTooltipE
 	MapLocationEvents, MapInteractionEvents, MapHandlerEvents, MapOtherEvents {}
 
 /** Options for the `Map` methods that change the zoom level. */
-export interface ZoomOptions {
-	/**
-	 * If not specified, zoom animation will happen if the zoom origin is inside the current view, and if the user
-	 * prefers reduced motion, only when zooming by at most one level. If `true`, the map will attempt animating
-	 * zoom disregarding where zoom origin is and the user's reduced motion preference. Setting `false` will make it
-	 * always reset the view completely without animation.
-	 */
-	animate?: boolean;
-}
-
+export interface ZoomOptions extends ZoomProps {}
 /** Options for the `Map` methods that change the center of the map. */
-export interface PanOptions {
-	/**
-	 * If `true`, panning will always be animated if possible, even if the user prefers reduced motion. If `false`,
-	 * it will not animate panning, either resetting the map view if panning more than a screen away, or just
-	 * setting a new offset for the map pane (except for `panBy` which always does the latter). If not specified,
-	 * panning is animated, except for pans longer than half the map size when the user prefers reduced motion.
-	 */
-	animate?: boolean;
-	/**
-	 * Duration of animated panning, in seconds.
-	 * @default 0.25
-	 */
-	duration?: number;
-	/**
-	 * The curvature factor of panning animation easing (third parameter of the [Cubic Bezier curve](https://cubic-bezier.com/)).
-	 * 1.0 means linear animation, and the smaller this number, the more bowed the curve.
-	 * @default 0.25
-	 */
-	easeLinearity?: number;
-	/**
-	 * If `true`, panning won't fire `movestart` event on start (used internally for panning inertia).
-	 * @default false
-	 */
-	noMoveStart?: boolean;
-}
-
+export interface PanOptions extends PanProps {}
 /** Options for the `Map` methods that change both the center and the zoom level. */
-export interface ZoomPanOptions extends ZoomOptions, PanOptions {
-	/** If `true`, the view is reset without animation. */
-	reset?: boolean;
-	/** Options for the zoom part of the change, taking precedence over `animate`. */
-	zoom?: ZoomOptions;
-	/** Options for the pan part of the change, taking precedence over `animate` and `duration`. */
-	pan?: PanOptions;
-}
-
-export interface InvalidateSizeOptions extends ZoomOptions, PanOptions {
-	/**
-	 * If `false`, panning will not occur.
-	 * @default true
-	 */
-	pan?: boolean;
-	/**
-	 * If `true`, it will delay `moveend` event so that it doesn't happen often even if the method is called many
-	 * times in a row.
-	 * @default false
-	 */
-	debounceMoveend?: boolean;
-}
-
-export interface PaddingOptions {
-	/**
-	 * Sets the amount of padding in the top left corner of a map container that shouldn't be accounted for when
-	 * setting the view to fit bounds. Useful if you have some control overlays on the map like a sidebar and you
-	 * don't want them to obscure objects you're zooming to.
-	 * @default [0, 0]
-	 */
-	paddingTopLeft?: PointExpression;
-	/**
-	 * The same for the bottom right corner of the map.
-	 * @default [0, 0]
-	 */
-	paddingBottomRight?: PointExpression;
-	/**
-	 * Equivalent of setting both top left and bottom right padding to the same value.
-	 * @default [0, 0]
-	 */
-	padding?: PointExpression;
-}
-
+export interface ZoomPanOptions extends ZoomOptions, PanOptions, ZoomPanProps {}
+export interface InvalidateSizeOptions extends ZoomOptions, PanOptions, InvalidateSizeProps {}
+export interface PaddingOptions extends PaddingProps {}
 export interface PanInsideOptions extends PanOptions, PaddingOptions {}
-
-export interface FitBoundsOptions extends ZoomPanOptions, PaddingOptions {
-	/** The maximum possible zoom to use. */
-	maxZoom?: number;
-}
-
+export interface FitBoundsOptions extends ZoomPanOptions, PaddingOptions, FitBoundsProps {}
 /** Options for `Map`'s geolocation methods. */
-export interface LocateOptions {
-	/**
-	 * If `true`, starts continuous watching of location changes (instead of detecting it once) using W3C
-	 * `watchPosition` method. You can later stop watching using `map.stopLocate()` method.
-	 * @default false
-	 */
-	watch?: boolean;
-	/**
-	 * If `true`, automatically sets the map view to the user location with respect to detection accuracy, or to
-	 * world view if geolocation failed.
-	 * @default false
-	 */
-	setView?: boolean;
-	/**
-	 * The maximum zoom for automatic view setting when using `setView` option.
-	 * @default Infinity
-	 */
-	maxZoom?: number;
-	/**
-	 * Number of milliseconds to wait for a response from geolocation before firing a `locationerror` event.
-	 * @default 10000
-	 */
-	timeout?: number;
-	/**
-	 * Maximum age of detected location. If less than this amount of milliseconds passed since last geolocation
-	 * response, `locate` will return a cached location.
-	 * @default 0
-	 */
-	maximumAge?: number;
-	/**
-	 * Enables high accuracy, see [description in the W3C spec](https://w3c.github.io/geolocation-api/#enablehighaccuracy-member).
-	 * @default false
-	 */
-	enableHighAccuracy?: boolean;
-}
-
-/** One of the map corners a control can be placed in. */
-export type ControlPosition = 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
+export interface LocateOptions extends LocateProps {}
 
 export interface ControlOptions extends ControlDefaults {}
 export interface ZoomControlOptions extends ControlOptions, Omit<ZoomControlDefaults, keyof ControlOptions> {}
@@ -380,42 +224,6 @@ export interface AttributionControlOptions extends ControlOptions,
 	Omit<AttributionControlDefaults, keyof ControlOptions> {}
 export interface ScaleControlOptions extends ControlOptions, Omit<ScaleControlDefaults, keyof ControlOptions> {}
 export interface LayersControlOptions extends ControlOptions, Omit<LayersControlDefaults, keyof ControlOptions> {}
-
-/** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
-export type PointExpression = Point | [number, number] | {x: number, y: number};
-
-/** A `Bounds`, or an array of the points it should contain (usually two opposite corners). */
-export type BoundsExpression = Bounds | PointExpression[];
-
-/** A `LatLng`, or its array (`[lat, lng]`, `[lat, lng, alt]`) or object (`{lat, lng}`, `{lat, lon}`) form. */
-export type LatLngExpression = LatLng | [number, number, number?] |
-	{lat: number, lng: number, alt?: number} | {lat: number, lon: number, alt?: number};
-
-/** A `LatLngBounds`, or an array of the points it should contain (usually two opposite corners). */
-export type LatLngBoundsExpression = LatLngBounds | LatLngExpression[];
-
-/**
- * An object with methods for projecting geographical coordinates of the world onto a flat surface (and back). See
- * [Map projection](https://en.wikipedia.org/wiki/Map_projection). Leaflet comes with `LonLatProjection`,
- * `MercatorProjection` and `SphericalMercatorProjection` out of the box.
- *
- * Note that the projection instances do not inherit from Leaflet's `Class` object, and can't be instantiated. Also,
- * new classes can't inherit from them, and methods can't be added to them with the `include` function.
- */
-export interface Projection {
-	/** The bounds (specified in CRS units) where the projection is valid. */
-	bounds: Bounds;
-	/** Projects geographical coordinates into a 2D point. Only accepts actual `LatLng` instances, not arrays. */
-	project(latlng: LatLng): Point;
-	/**
-	 * The inverse of `project`. Projects a 2D point into a geographical location. Only accepts actual `Point`
-	 * instances, not arrays.
-	 */
-	unproject(point: Point): LatLng;
-}
-
-/** A listener for an event without a known event object type. */
-export type LeafletEventHandlerFn = (event: LeafletEvent & {[key: string]: any}) => void;
 
 /**
  * Whenever a class inheriting from `Evented` fires an event, a listener function will be called with an event
@@ -430,151 +238,24 @@ export type LeafletEventHandlerFn = (event: LeafletEvent & {[key: string]: any})
  * The information available depends on the event type. This is the base event object: all other event objects
  * contain these properties too.
  */
-export interface LeafletEvent {
-	/** The event type (e.g. `'click'`). */
-	type: string;
-	/**
-	 * The object that fired the event. For propagated events, the last object in the propagation chain that fired
-	 * the event.
-	 */
-	target: Evented;
-	/** The object that originally fired the event. For non-propagated events, this will be the same as the `target`. */
-	sourceTarget: Evented;
-	/** For propagated events, the last object that propagated the event to its event parent. */
-	propagatedFrom?: Evented;
-}
-
-export interface LeafletKeyboardEvent extends LeafletEvent {
-	/**
-	 * The original [DOM `KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) that
-	 * triggered this Leaflet event.
-	 */
-	originalEvent: KeyboardEvent;
-}
-
-export interface LeafletPointerEvent extends LeafletEvent {
-	/** The geographical point where the pointer event occurred. */
-	latlng: LatLng;
-	/** Pixel coordinates of the point where the pointer event occurred relative to the map layer. */
-	layerPoint: Point;
-	/** Pixel coordinates of the point where the pointer event occurred relative to the map container. */
-	containerPoint: Point;
-	/**
-	 * The original [DOM `MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or
-	 * [DOM `PointerEvent`](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent) that triggered this
-	 * Leaflet event.
-	 */
-	originalEvent: PointerEvent | MouseEvent;
-}
-
-export interface LocationEvent extends LeafletEvent {
-	/** Detected geographical location of the user. */
-	latlng: LatLng;
-	/** Geographical bounds of the area user is located in (with respect to the accuracy of location). */
-	bounds: LatLngBounds;
-	/** Accuracy of location in meters. */
-	accuracy: number;
-	/** Height of the position above the WGS84 ellipsoid in meters. */
-	altitude: number | null;
-	/** Accuracy of altitude in meters. */
-	altitudeAccuracy: number | null;
-	/** The direction of travel in degrees counting clockwise from true North. */
-	heading: number | null;
-	/** Current velocity in meters per second. */
-	speed: number | null;
-	/** The time when the position was acquired. */
-	timestamp: number;
-}
-
-export interface ErrorEvent extends LeafletEvent {
-	/** Error message. */
-	message: string;
-	/** Error code (if applicable). */
-	code: number;
-}
-
-export interface LayerEvent extends LeafletEvent {
-	/** The layer that was added or removed. */
-	layer: Layer;
-}
-
-export interface LayersControlEvent extends LayerEvent {
-	/** The name of the layer that was added or removed. */
-	name: string;
-}
-
-export interface TileEvent extends LeafletEvent {
-	/** The tile element (image). */
-	tile: HTMLElement;
-	/** Point object with the tile's `x`, `y`, and `z` (zoom level) coordinates. */
-	coords: Coords;
-}
-
-export interface TileErrorEvent extends TileEvent {
-	/** Error passed to the tile's `done()` callback. */
-	error: unknown;
-}
-
-export interface ResizeEvent extends LeafletEvent {
-	/** The old size before resize event. */
-	oldSize: Point;
-	/** The new size after the resize event. */
-	newSize: Point;
-}
-
-export interface GeoJSONEvent extends LeafletEvent {
-	/** The layer for the GeoJSON feature that is being added to the map. */
-	layer: Layer;
-	/** GeoJSON properties of the feature. */
-	properties: {[name: string]: any} | null;
-	/** GeoJSON geometry type of the feature. */
-	geometryType: string;
-	/** GeoJSON ID of the feature (if present). */
-	id?: string | number;
-}
-
-export interface PopupEvent extends LeafletEvent {
-	/** The popup that was opened or closed. */
-	popup: Popup;
-}
-
-export interface TooltipEvent extends LeafletEvent {
-	/** The tooltip that was opened or closed. */
-	tooltip: Tooltip;
-}
-
-export interface DragEndEvent extends LeafletEvent {
-	/** The distance in pixels the draggable element was moved by. */
-	distance: number;
-	/** Whether the drag should end without inertia (set when the draggable is disabled mid-drag). */
-	noInertia?: boolean;
-}
-
-export interface BoxZoomEvent extends LeafletEvent {
-	/** The geographical bounds of the box the map zooms to. */
-	boxZoomBounds: LatLngBounds;
-}
-
-export interface MarkerMoveEvent extends LeafletEvent {
-	/** The previous position of the marker. */
-	oldLatLng: LatLng;
-	/** The new position of the marker. */
-	latlng: LatLng;
-}
-
-export interface ZoomAnimEvent extends LeafletEvent {
-	/** The current center of the map. */
-	center: LatLng;
-	/** The current zoom level of the map. */
-	zoom: number;
-	/** Whether layers should update their contents due to this event. */
-	noUpdate: boolean;
-}
-
-export interface WorldCopyJumpEvent extends LeafletEvent {
-	/** The signed number of world widths by which the map pane moved. */
-	worlds: number;
-}
+export interface LeafletEvent extends LeafletEventProps {}
+export interface LeafletKeyboardEvent extends LeafletEvent, LeafletKeyboardEventProps {}
+export interface LeafletPointerEvent extends LeafletEvent, LeafletPointerEventProps {}
+export interface LocationEvent extends LeafletEvent, LocationEventProps {}
+export interface ErrorEvent extends LeafletEvent, ErrorEventProps {}
+export interface LayerEvent extends LeafletEvent, LayerEventProps {}
+export interface LayersControlEvent extends LayerEvent, LayersControlEventProps {}
+export interface TileEvent extends LeafletEvent, TileEventProps {}
+export interface TileErrorEvent extends TileEvent, TileErrorEventProps {}
+export interface ResizeEvent extends LeafletEvent, ResizeEventProps {}
+export interface GeoJSONEvent extends LeafletEvent, GeoJSONEventProps {}
+export interface PopupEvent extends LeafletEvent, PopupEventProps {}
+export interface TooltipEvent extends LeafletEvent, TooltipEventProps {}
+export interface DragEndEvent extends LeafletEvent, DragEndEventProps {}
+export interface BoxZoomEvent extends LeafletEvent, BoxZoomEventProps {}
+export interface MarkerMoveEvent extends LeafletEvent, MarkerMoveEventProps {}
+export interface ZoomAnimEvent extends LeafletEvent, ZoomAnimEventProps {}
+export interface WorldCopyJumpEvent extends LeafletEvent, WorldCopyJumpEventProps {}
 
 declare module './layer/LayerBase.js' {
 	interface LayerBase {

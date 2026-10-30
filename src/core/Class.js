@@ -1,6 +1,12 @@
 // @ts-check
 import * as Util from './Util.js';
 
+/**
+ * The type of a class's `static defaultOptions`: some of its options, plus anything a subclass adds.
+ * @template O
+ * @typedef {Partial<O> & {[key: string]: unknown}} Defaults
+ */
+
 let hooksVersion = 0;
 /** @type {WeakMap<object, Function[]>} */
 const ownHooks = new WeakMap(); // class -> hooks added to that class directly

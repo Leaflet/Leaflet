@@ -5,6 +5,11 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
+/**
+ * @typedef {Object} BoxZoomEventProps
+ * @property {LatLngBounds} boxZoomBounds The geographical bounds of the box the map zooms to.
+ */
+
 /** @import {Point} from '../../geometry/Point.js' */
 
 // Adds shift-drag zoom interaction to the map (zoom to a selected bounding box), enabled by default.

@@ -21,7 +21,23 @@ import * as Util from './Util.js';
  * @typedef {{[K in keyof E]?: (e: E[K] & {target: T}) => void} & {[type: string]: (e: any) => void}} ListenerMap
  */
 
+/**
+ * A listener for an event without a known event object type.
+ * @typedef {(event: LeafletEvent & {[key: string]: any}) => void} LeafletEventHandlerFn
+ */
+
 const warnedEvents = new Set();
+
+/**
+ * @typedef {Object} LeafletEventProps
+ * @property {string} type The event type (e.g. `'click'`).
+ * @property {Evented} target The object that fired the event. For propagated events, the last
+ *   object in the propagation chain that fired the event.
+ * @property {Evented} sourceTarget The object that originally fired the event. For
+ *   non-propagated events, this will be the same as the `target`.
+ * @property {Evented} [propagatedFrom] For propagated events, the last object that propagated
+ *   the event to its event parent.
+ */
 
 /**
  * A set of methods shared between event-powered classes (like `Map` and `Marker`). Generally, events allow

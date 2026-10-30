@@ -1,7 +1,12 @@
 // @ts-check
 import {LatLng} from './LatLng.js';
 
-/** @import {LatLngBoundsExpression, LatLngExpression} from '../types.js' */
+/** @import {LatLngExpression} from './LatLng.js' */
+
+/**
+ * A `LatLngBounds`, or an array of the points it should contain (usually two opposite corners).
+ * @typedef {LatLngBounds | LatLngExpression[]} LatLngBoundsExpression
+ */
 
 // TODO International date line?
 

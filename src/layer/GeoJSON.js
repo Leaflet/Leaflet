@@ -6,14 +6,27 @@ import {Polygon} from './vector/Polygon.js';
 import {LatLng} from '../geo/LatLng.js';
 import {latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSONUtil.js';
 
-/** @import {Feature, GeoJSON as GeoJSONData, Point as GeoJSONPoint, Position} from 'geojson' */
-/** @import {FeatureGroupEventMap, GeoJSONOptions, PathOptions, StyleFunction} from '../types.js' */
+/** @import {Feature, GeoJSON as GeoJSONData, Geometry, Point as GeoJSONPoint, Position} from 'geojson' */
+/** @import {FeatureGroupEventMap, GeoJSONOptions, PathOptions} from '../types.js' */
 /** @import {Layer} from './Layer.js' */
 /** @import {MemberLayer} from './LayerGroup.js' */
 
 // GeoJSON keeps each created layer's own options there, for `resetStyle`; plugins like leaflet-realtime set it on
 // layers they create themselves before calling `resetStyle`, so it stays a plain property
 /** @typedef {Layer & {defaultOptions: object}} StyledLayer */
+
+/**
+ * A function returning the `Path` options for a GeoJSON feature.
+ * @typedef {(feature: Feature<Geometry, any>) => Partial<PathOptions>} StyleFunction
+ */
+
+/**
+ * @typedef {Object} GeoJSONEventProps
+ * @property {Layer} layer The layer for the GeoJSON feature that is being added to the map.
+ * @property {{[name: string]: any} | null} properties GeoJSON properties of the feature.
+ * @property {string} geometryType GeoJSON geometry type of the feature.
+ * @property {string | number} [id] GeoJSON ID of the feature (if present).
+ */
 
 /**
  * Represents a GeoJSON object or an array of GeoJSON objects. Allows you to

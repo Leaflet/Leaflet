@@ -1,7 +1,12 @@
 // @ts-check
 import {Point} from './Point.js';
 
-/** @import {BoundsExpression, PointExpression} from '../types.js' */
+/** @import {PointExpression} from './Point.js' */
+
+/**
+ * A `Bounds`, or an array of the points it should contain (usually two opposite corners).
+ * @typedef {Bounds | PointExpression[]} BoundsExpression
+ */
 
 /**
  * Represents a rectangular area in pixel coordinates.

@@ -406,6 +406,134 @@ const defaultOptions = {
  */
 
 /**
+ * @typedef {Object} ZoomProps
+ * @property {boolean} [animate] If not specified, zoom animation will happen if the zoom origin is inside
+ *   the current view, and if the user prefers reduced motion, only when zooming by at most one level. If
+ *   `true`, the map will attempt animating zoom disregarding where zoom origin is and the user's reduced
+ *   motion preference. Setting `false` will make it always reset the view completely without animation.
+ */
+
+/**
+ * @typedef {Object} PanProps
+ * @property {boolean} [animate] If `true`, panning will always be animated if possible, even if
+ *   the user prefers reduced motion. If `false`, it will not animate panning, either resetting
+ *   the map view if panning more than a screen away, or just setting a new offset for the map
+ *   pane (except for `panBy` which always does the latter). If not specified, panning is
+ *   animated, except for pans longer than half the map size when the user prefers reduced motion.
+ * @property {number} [duration=0.25] Duration of animated panning, in seconds.
+ * @property {number} [easeLinearity=0.25] The curvature factor of panning animation easing
+ *   (third parameter of the [Cubic Bezier curve](https://cubic-bezier.com/)). 1.0 means linear
+ *   animation, and the smaller this number, the more bowed the curve.
+ * @property {boolean} [noMoveStart=false] If `true`, panning won't fire `movestart` event on
+ *   start (used internally for panning inertia).
+ */
+
+/**
+ * @typedef {Object} ZoomPanProps
+ * @property {boolean} [reset] If `true`, the view is reset without animation.
+ * @property {ZoomOptions} [zoom] Options for the zoom part of the change, taking precedence over `animate`.
+ * @property {PanOptions} [pan] Options for the pan part of the change, taking precedence over
+ *   `animate` and `duration`.
+ */
+
+/**
+ * @typedef {Object} InvalidateSizeProps
+ * @property {boolean} [pan=true] If `false`, panning will not occur.
+ * @property {boolean} [debounceMoveend=false] If `true`, it will delay `moveend` event so that
+ *   it doesn't happen often even if the method is called many times in a row.
+ */
+
+/**
+ * @typedef {Object} PaddingProps
+ * @property {PointExpression} [paddingTopLeft=[0, 0]] Sets the amount of padding in the top left corner of a
+ *   map container that shouldn't be accounted for when setting the view to fit bounds. Useful if you have some
+ *   control overlays on the map like a sidebar and you don't want them to obscure objects you're zooming to.
+ * @property {PointExpression} [paddingBottomRight=[0, 0]] The same for the bottom right corner of the map.
+ * @property {PointExpression} [padding=[0, 0]] Equivalent of setting both top left and bottom
+ *   right padding to the same value.
+ */
+
+/**
+ * @typedef {Object} FitBoundsProps
+ * @property {number} [maxZoom] The maximum possible zoom to use.
+ */
+
+/**
+ * @typedef {Object} LocateProps
+ * @property {boolean} [watch=false] If `true`, starts continuous watching of location changes (instead of detecting
+ *   it once) using W3C `watchPosition` method. You can later stop watching using `map.stopLocate()` method.
+ * @property {boolean} [setView=false] If `true`, automatically sets the map view to the user
+ *   location with respect to detection accuracy, or to world view if geolocation failed.
+ * @property {number} [maxZoom=Infinity] The maximum zoom for automatic view setting when using `setView` option.
+ * @property {number} [timeout=10000] Number of milliseconds to wait for a response from
+ *   geolocation before firing a `locationerror` event.
+ * @property {number} [maximumAge=0] Maximum age of detected location. If less than this amount of
+ *   milliseconds passed since last geolocation response, `locate` will return a cached location.
+ * @property {boolean} [enableHighAccuracy=false] Enables high accuracy, see [description in
+ *   the W3C spec](https://w3c.github.io/geolocation-api/#enablehighaccuracy-member).
+ */
+
+/**
+ * @typedef {Object} LeafletKeyboardEventProps
+ * @property {KeyboardEvent} originalEvent The original
+ *   [DOM `KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) that triggered this event.
+ */
+
+/**
+ * @typedef {Object} LeafletPointerEventProps
+ * @property {LatLng} latlng The geographical point where the pointer event occurred.
+ * @property {Point} layerPoint Pixel coordinates of the point where the pointer event
+ *   occurred relative to the map layer.
+ * @property {Point} containerPoint Pixel coordinates of the point where the pointer event
+ *   occurred relative to the map container.
+ * @property {PointerEvent | MouseEvent} originalEvent The original
+ *   [DOM `MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or
+ *   [DOM `PointerEvent`](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent) that triggered this event.
+ */
+
+/**
+ * @typedef {Object} LocationEventProps
+ * @property {LatLng} latlng Detected geographical location of the user.
+ * @property {LatLngBounds} bounds Geographical bounds of the area user is located in (with
+ *   respect to the accuracy of location).
+ * @property {number} accuracy Accuracy of location in meters.
+ * @property {number | null} altitude Height of the position above the WGS84 ellipsoid in meters.
+ * @property {number | null} altitudeAccuracy Accuracy of altitude in meters.
+ * @property {number | null} heading The direction of travel in degrees counting clockwise from true North.
+ * @property {number | null} speed Current velocity in meters per second.
+ * @property {number} timestamp The time when the position was acquired.
+ */
+
+/**
+ * @typedef {Object} ErrorEventProps
+ * @property {string} message Error message.
+ * @property {number} code Error code (if applicable).
+ */
+
+/**
+ * @typedef {Object} LayerEventProps
+ * @property {Layer} layer The layer that was added or removed.
+ */
+
+/**
+ * @typedef {Object} ResizeEventProps
+ * @property {Point} oldSize The old size before resize event.
+ * @property {Point} newSize The new size after the resize event.
+ */
+
+/**
+ * @typedef {Object} ZoomAnimEventProps
+ * @property {LatLng} center The current center of the map.
+ * @property {number} zoom The current zoom level of the map.
+ * @property {boolean} noUpdate Whether layers should update their contents due to this event.
+ */
+
+/**
+ * @typedef {Object} WorldCopyJumpEventProps
+ * @property {number} worlds The signed number of world widths by which the map pane moved.
+ */
+
+/**
  * The central class of the API — it is used to create a map on a page and manipulate it.
  * @example
  * ```js

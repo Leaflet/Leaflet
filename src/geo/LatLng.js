@@ -2,7 +2,11 @@
 import * as Util from '../core/Util.js';
 import {LatLngBounds} from './LatLngBounds.js';
 
-/** @import {LatLngExpression} from '../types.js' */
+/**
+ * A `LatLng`, or its array (`[lat, lng]`, `[lat, lng, alt]`) or object (`{lat, lng}`, `{lat, lon}`) form.
+ * @typedef {LatLng | [number, number, number?] | {lat: number, lng: number, alt?: number} |
+ *   {lat: number, lon: number, alt?: number}} LatLngExpression
+ */
 
 /**
  * Represents a geographical point with a certain latitude and longitude.

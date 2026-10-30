@@ -127,6 +127,12 @@ const defaultOptions = {
  */
 
 /**
+ * @typedef {Object} MarkerMoveEventProps
+ * @property {LatLng} oldLatLng The previous position of the marker.
+ * @property {LatLng} latlng The new position of the marker.
+ */
+
+/**
  * Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
  * @example
  * ```js

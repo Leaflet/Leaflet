@@ -29,6 +29,13 @@ const defaultOptions = {
  */
 
 /**
+ * @typedef {Object} DragEndEventProps
+ * @property {number} distance The distance in pixels the draggable element was moved by.
+ * @property {boolean} [noInertia] Whether the drag should end without inertia (set when the
+ *   draggable is disabled mid-drag).
+ */
+
+/**
  * A class for making DOM elements draggable. Used internally
  * for map and marker dragging. Works on any DOM element
  * @example

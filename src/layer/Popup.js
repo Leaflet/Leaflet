@@ -84,6 +84,16 @@ const defaultOptions = {
 
 /** @typedef {typeof defaultOptions} PopupDefaults */
 
+/**
+ * @typedef {Object} PopupProps
+ * @property {boolean} [closeOnClick] Set it if you want to override the default behavior of the popup closing
+ *   when user clicks on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
+ */
+
+/**
+ * @typedef {Object} PopupEventProps
+ * @property {Popup} popup The popup that was opened or closed.
+ */
 
 /**
  * Used to open popups in certain places of the map. Use [Map.openPopup](#map-openpopup)

@@ -7,7 +7,23 @@ import * as Util from '../../core/Util.js';
 /**
  * @import {Point} from '../../geometry/Point.js'
  * @import {Transformation} from '../../geometry/Transformation.js'
- * @import {LatLngBoundsExpression, LatLngExpression, Projection} from '../../types.js'
+ * @import {LatLngExpression} from '../LatLng.js'
+ * @import {LatLngBoundsExpression} from '../LatLngBounds.js'
+ */
+
+/**
+ * An object with methods for projecting geographical coordinates of the world onto a flat surface (and back). See
+ * [Map projection](https://en.wikipedia.org/wiki/Map_projection). Leaflet comes with `LonLatProjection`,
+ * `MercatorProjection` and `SphericalMercatorProjection` out of the box.
+ *
+ * Note that the projection instances do not inherit from Leaflet's `Class` object, and can't be instantiated. Also,
+ * new classes can't inherit from them, and methods can't be added to them with the `include` function.
+ * @typedef {Object} Projection
+ * @property {Bounds} bounds The bounds (specified in CRS units) where the projection is valid.
+ * @property {(latlng: LatLng) => Point} project Projects geographical coordinates into a 2D point. Only accepts
+ *   actual `LatLng` instances, not arrays.
+ * @property {(point: Point) => LatLng} unproject The inverse of `project`. Projects a 2D point into a geographical
+ *   location. Only accepts actual `Point` instances, not arrays.
  */
 
 /**

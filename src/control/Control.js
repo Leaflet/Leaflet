@@ -2,7 +2,7 @@
 import {Class} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 
-/** @import {ControlOptions, ControlPosition, Defaults} from '../types.js' */
+/** @import {ControlOptions, Defaults} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
 const defaultOptions = {
@@ -15,6 +15,11 @@ const defaultOptions = {
 };
 
 /** @typedef {typeof defaultOptions} ControlDefaults */
+
+/**
+ * One of the map corners a control can be placed in.
+ * @typedef {'topleft' | 'topright' | 'bottomleft' | 'bottomright'} ControlPosition
+ */
 
 /**
  * Control is a base class for implementing map controls. Handles

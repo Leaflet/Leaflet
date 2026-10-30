@@ -6,8 +6,8 @@ import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
-/** @import {Coords, Defaults, DoneCallback, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent,
- *    TileErrorEvent, TileEvent, WorldCopyJumpEvent, ZoomAnimEvent} from '../../types.js' */
+/** @import {Defaults, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent, TileErrorEvent,
+ *    TileEvent, WorldCopyJumpEvent, ZoomAnimEvent} from '../../types.js' */
 /** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 
@@ -99,6 +99,26 @@ const defaultOptions = {
 /** @typedef {{el: HTMLElement, coords: Coords, current: boolean, retain?: boolean, active?: boolean, loaded?: boolean}} GridTile */
 /** @typedef {{el: HTMLElement, origin: Point, zoom: number}} GridLevel */
 
+/**
+ * A `Point` with the tile's zoom level as `z`, as `createTile` and `getTileUrl` get it.
+ * @typedef {Point & {z: number}} Coords
+ */
+
+/**
+ * The callback `createTile` gets: call it once the tile is ready, with an error if it failed to load.
+ * @typedef {(error?: unknown, tile?: HTMLElement) => void} DoneCallback
+ */
+
+/**
+ * @typedef {Object} TileEventProps
+ * @property {HTMLElement} tile The tile element (image).
+ * @property {Coords} coords Point object with the tile's `x`, `y`, and `z` (zoom level) coordinates.
+ */
+
+/**
+ * @typedef {Object} TileErrorEventProps
+ * @property {unknown} error Error passed to the tile's `done()` callback.
+ */
 
 /**
  * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and
