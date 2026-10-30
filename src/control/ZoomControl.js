@@ -126,7 +126,7 @@ export class ZoomControl extends Control {
 			[this._zoomOutButton, map.getMinZoom()]])) {
 			const disabled = this._disabled || map._zoom === limit;
 			button.classList.toggle('leaflet-disabled', disabled);
-			button.setAttribute('aria-disabled', /** @type {any} */ (disabled));
+			button.setAttribute('aria-disabled', `${disabled}`);
 		}
 	}
 }

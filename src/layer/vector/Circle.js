@@ -38,7 +38,8 @@ export class Circle extends CircleMarker {
 	getBounds() {
 		if (!this._map) { return this._latlng.toBounds(this._radius * 2); }
 
-		const half = /** @type {PointExpression} */ ([this._pxRadius, this._pxRadiusY ?? this._pxRadius]);
+		/** @type {PointExpression} */
+		const half = [this._pxRadius, this._pxRadiusY ?? this._pxRadius];
 
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),

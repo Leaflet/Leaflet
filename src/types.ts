@@ -22,7 +22,7 @@ import type {MarkerDefaults, MarkerDragEvents, MarkerEvents, MarkerMoveEventProp
 import type {LayerDefaults, LayerEvents, LayerPopupEvents, LayerTooltipEvents} from './layer/LayerBase.js';
 import type {Popup, PopupDefaults, PopupEventProps, PopupProps} from './layer/Popup.js';
 import type {VideoOverlayDefaults, VideoOverlayEvents} from './layer/VideoOverlay.js';
-import type {GridLayerDefaults, GridLayerEvents, GridLevel, GridTile, TileErrorEventProps, TileEventProps}
+import type {GridLayerDefaults, GridLayerEvents, TileErrorEventProps, TileEventProps}
 	from './layer/tile/GridLayer.js';
 import type {TileLayerDefaults, TileLayerEvents} from './layer/tile/TileLayer.js';
 import type {WMSParamsDefaults, WMSTileLayerDefaults} from './layer/tile/WMSTileLayer.js';
@@ -349,11 +349,6 @@ declare module './Leaflet.js' {
 declare module './Leaflet.js' {
 	interface GridLayer {
 		_abortLoading?(): void; // implemented by `TileLayer`
-		// hooks for subclasses
-		_onUpdateLevel(z: number): void;
-		_onRemoveLevel(z: number): void;
-		_onCreateLevel(level: GridLevel): void;
-		_onOpaqueTile(tile: GridTile): void;
 	}
 }
 

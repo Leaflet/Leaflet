@@ -366,7 +366,8 @@ export class GridLayer extends Layer {
 		this._container.style.opacity = `${this.options.opacity}`;
 	}
 
-	_onOpaqueTile() {}
+	/** @param {GridTile} tile */
+	_onOpaqueTile(tile) {}
 
 	_initContainer() {
 		if (this._container) { return; }
@@ -427,11 +428,14 @@ export class GridLayer extends Layer {
 		return level;
 	}
 
-	_onUpdateLevel() {}
+	/** @param {number} z */
+	_onUpdateLevel(z) {}
 
-	_onRemoveLevel() {}
+	/** @param {number} z */
+	_onRemoveLevel(z) {}
 
-	_onCreateLevel() {}
+	/** @param {GridLevel} level */
+	_onCreateLevel(level) {}
 
 	_pruneTiles() {
 		if (!this._map) {
