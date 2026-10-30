@@ -17,7 +17,6 @@
 - [ ] Make a new branch for the update
 - [ ] Write a blog post about the new release and put it in `/docs/_posts/`
 - [ ] Run `npm run pin-release` to update the version, integrity hashes and the API reference commit in `build/site.json`
-- [ ] Update the table of contents in `docs/reference-2.0.0.html` if classes were added, removed or renamed
 - [ ] Update link to latest release in `docs/download.md` and the announcement section in `docs/index.html`
 (until 2.0 is released, the site takes these two pages from the `v1` branch: change them there and update `refs.v1` in `build/site.json` to the new commit)
 - [ ] Commit all the changes and submit a PR for someone to review

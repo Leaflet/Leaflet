@@ -82,10 +82,10 @@
 			{% endif %}
 		</li>
 		<li>
-			{% if page.title == 'Documentation' %}
+			{% if page.url == '/reference.html' %}
 				<span>Docs</span>
 			{% else %}
-				<a href="{{ root }}reference.html">Docs</a>
+				<a href="{{ root }}reference.html"{% if page.bodyclass == 'api-page' %} class="active"{% endif %}>Docs</a>
 			{% endif %}
 		</li>
 		<li>

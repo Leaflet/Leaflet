@@ -24,9 +24,9 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 
 /** @import {BoxZoomEvent, Defaults, DragEndEvent, ErrorEvent, FitBoundsOptions, InvalidateSizeOptions,
  *    LatLngBoundsExpression, LatLngExpression, LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent,
- *    LeafletPointerEvent, LocateOptions, LocationEvent, MapEventMap, MapOptions, PanInsideOptions, PanOptions,
- *    PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent, TooltipOptions, ViewPreResetEvent,
- *    WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions} from '../types.js' */
+ *    LeafletPointerEvent, LocateOptions, LocationEvent, MapEventMap, MapOptions, MapPanes, PanInsideOptions,
+ *    PanOptions, PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent, TooltipOptions,
+ *    ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions} from '../types.js' */
 /** @import {CRS} from '../geo/crs/CRS.js' */
 /** @import {Control} from '../control/Control.js' */
 /** @import {Handler} from '../core/Handler.js' */
@@ -147,7 +147,7 @@ const defaultOptions = {
 
 	/**
 	 * Controls how much the map's zoom level will change after a [`zoomIn()`](#map-zoomin),
-	 * [`zoomOut()`](#map-zoomout), pressing `+` or `-` on the keyboard, or using the [zoom controls](#control-zoom).
+	 * [`zoomOut()`](#map-zoomout), pressing `+` or `-` on the keyboard, or using the [zoom controls](#zoomcontrol).
 	 * Values smaller than `1` (e.g. `0.5`) allow for greater granularity.
 	 * @category Interaction Options
 	 */
@@ -301,13 +301,13 @@ const defaultOptions = {
 	bounceAtZoomLimits: true,
 
 	/**
-	 * Whether a [zoom control](#control-zoom) is added to the map by default.
+	 * Whether a [zoom control](#zoomcontrol) is added to the map by default.
 	 * @category Control options
 	 */
 	zoomControl: true,
 
 	/**
-	 * Whether a [attribution control](#control-attribution) is added to the map by default.
+	 * Whether an [attribution control](#attributioncontrol) is added to the map by default.
 	 * @category Control options
 	 */
 	attributionControl: true
@@ -322,17 +322,17 @@ const defaultOptions = {
  */
 
 /**
- * Layer events
+ * @category Layer events
  * @typedef {Object} MapLayerEvents
- * @property {LayersControlEvent} baselayerchange Fired when the base layer is changed through the [layers control](#control-layers).
- * @property {LayersControlEvent} overlayadd Fired when an overlay is selected through the [layers control](#control-layers).
- * @property {LayersControlEvent} overlayremove Fired when an overlay is deselected through the [layers control](#control-layers).
+ * @property {LayersControlEvent} baselayerchange Fired when the base layer is changed through the [layers control](#layerscontrol).
+ * @property {LayersControlEvent} overlayadd Fired when an overlay is selected through the [layers control](#layerscontrol).
+ * @property {LayersControlEvent} overlayremove Fired when an overlay is deselected through the [layers control](#layerscontrol).
  * @property {LayerEvent} layeradd Fired when a new layer is added to the map.
  * @property {LayerEvent} layerremove Fired when some layer is removed from the map
  */
 
 /**
- * Popup events
+ * @category Popup events
  * @typedef {Object} MapPopupEvents
  * @property {PopupEvent} popupopen Fired when a popup is opened in the map
  * @property {PopupEvent} popupclose Fired when a popup in the map is closed
@@ -340,14 +340,14 @@ const defaultOptions = {
  */
 
 /**
- * Tooltip events
+ * @category Tooltip events
  * @typedef {Object} MapTooltipEvents
  * @property {TooltipEvent} tooltipopen Fired when a tooltip is opened in the map.
  * @property {TooltipEvent} tooltipclose Fired when a tooltip in the map is closed.
  */
 
 /**
- * Map state change events
+ * @category Map state change events
  * @typedef {Object} MapStateEvents
  * @property {ResizeEvent} resize Fired when the map is resized.
  * @property {LeafletEvent} unload Fired when the map is destroyed with [remove](#map-remove) method.
@@ -365,14 +365,14 @@ const defaultOptions = {
  */
 
 /**
- * Location events
+ * @category Location events
  * @typedef {Object} MapLocationEvents
  * @property {ErrorEvent} locationerror Fired when geolocation (using the [`locate`](#map-locate) method) failed.
  * @property {LocationEvent} locationfound Fired when geolocation (using the [`locate`](#map-locate) method) went successfully.
  */
 
 /**
- * Interaction events
+ * @category Interaction events
  * @typedef {Object} MapInteractionEvents
  * @property {LeafletPointerEvent} click Fired when the user clicks (or taps) the map.
  * @property {LeafletPointerEvent} dblclick Fired when the user double-clicks (or double-taps) the map.
@@ -388,7 +388,7 @@ const defaultOptions = {
  */
 
 /**
- * Interaction Handler Events
+ * @category Interaction Handler Events
  * @typedef {Object} MapHandlerEvents
  * @property {LeafletEvent} dragstart Fired when the user starts dragging the map.
  * @property {LeafletEvent} drag Fired repeatedly while the user drags the map.
@@ -400,7 +400,7 @@ const defaultOptions = {
  */
 
 /**
- * Other Events
+ * @category Other Events
  * @typedef {Object} MapOtherEvents
  * @property {ZoomAnimEvent} zoomanim Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
  */
@@ -556,22 +556,12 @@ const defaultOptions = {
  * ```js
  * map.doubleClickZoom.disable();
  * ```
- * @categoryDescription Panes
+ * @categoryDescription Map panes
  * Panes are DOM elements used to control the ordering of layers on the map. You can access panes with
  * [`map.getPane`](#map-getpane) or [`map.getPanes`](#map-getpanes) methods. New panes can be created with the
  * [`map.createPane`](#map-createpane) method.
  *
- * Every map has the following default panes that differ only in zIndex.
- *
- * | Pane | zIndex | Description |
- * | --- | --- | --- |
- * | `mapPane` | `'auto'` | Pane that contains all other map panes |
- * | `tilePane` | `200` | Pane for `GridLayer`s and `TileLayer`s |
- * | `overlayPane` | `400` | Pane for vectors (`Path`s, like `Polyline`s and `Polygon`s), `ImageOverlay`s and `VideoOverlay`s |
- * | `shadowPane` | `500` | Pane for overlay shadows (e.g. `Marker` shadows) |
- * | `markerPane` | `600` | Pane for `Icon`s of `Marker`s |
- * | `tooltipPane` | `650` | Pane for `Tooltip`s |
- * | `popupPane` | `700` | Pane for `Popup`s |
+ * Every map has the following default panes that differ only in z-index.
  * @extends {Evented<MapOptions, MapEventMap>}
  */
 export class LeafletMap extends Evented {
@@ -1653,7 +1643,7 @@ export class LeafletMap extends Evented {
 
 
 		this._layers = {};
-		this._panes = {};
+		this._panes = /** @type {MapPanes} */ ({});
 		delete this._renderer;
 
 		return this;
@@ -1824,6 +1814,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns a plain object containing the names of all [panes](#map-pane) as keys and the panes as values.
 	 * @category Other Methods
+	 * @returns {MapPanes}
 	 */
 	getPanes() {
 		return this._panes;
@@ -1855,7 +1846,7 @@ export class LeafletMap extends Evented {
 
 	/**
 	 * Returns the zoom level that the map would end up at, if it is at `fromZoom` level and everything
-	 * is scaled by a factor of `scale`. Inverse of [`getZoomScale`](#map-getZoomScale).
+	 * is scaled by a factor of `scale`. Inverse of [`getZoomScale`](#map-getzoomscale).
 	 * @category Conversion Methods
 	 * @param {number} scale
 	 * @param {number} [fromZoom]
@@ -2076,9 +2067,8 @@ export class LeafletMap extends Evented {
 	}
 
 	_initPanes() {
-		/** @type {{[name: string]: HTMLElement}} */
-		const panes = {};
-		/** @type {{[name: string]: HTMLElement}} */
+		const panes = /** @type {MapPanes} */ ({});
+		/** @type {MapPanes} */
 		this._panes = panes;
 		/** @type {{[pane: string]: Renderer}} */
 		this._paneRenderers = {};

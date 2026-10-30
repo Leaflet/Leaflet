@@ -149,7 +149,7 @@ export interface GeoJSONOptions extends InteractiveLayerOptions {
 	/**
 	 * A function that will be called once for each created `Feature`, after it has been created and styled.
 	 * Useful for attaching events and popups to features. It will receive the `feature` as the first argument and
-	 * its corresponding spawned `layer` from [`asFeature`](#geojson-asFeature) as the second. The default is to do
+	 * its corresponding spawned `layer` from [`asFeature`](#geojson-asfeature) as the second. The default is to do
 	 * nothing with the newly created layers:
 	 * ```js
 	 * function (feature, layer) {}
@@ -207,6 +207,46 @@ export interface MapEventMap extends MapLayerEvents, MapPopupEvents, MapTooltipE
 	MapLocationEvents, MapInteractionEvents, MapHandlerEvents, MapOtherEvents {}
 /** Listeners of map events, as returned by [`getEvents`](#layer-getevents). */
 export type MapListeners = {[K in keyof MapEventMap]?: Listener<K, MapEventMap, LeafletMap>};
+
+/** The panes of a map by name: the default ones, which differ only in z-index, and those added with `createPane`. */
+export interface MapPanes {
+	/**
+	 * Pane that contains all other map panes
+	 * @default 'auto'
+	 */
+	mapPane: HTMLElement;
+	/**
+	 * Pane for `GridLayer`s and `TileLayer`s
+	 * @default 200
+	 */
+	tilePane: HTMLElement;
+	/**
+	 * Pane for vectors (`Path`s, like `Polyline`s and `Polygon`s), `ImageOverlay`s and `VideoOverlay`s
+	 * @default 400
+	 */
+	overlayPane: HTMLElement;
+	/**
+	 * Pane for overlay shadows (e.g. `Marker` shadows)
+	 * @default 500
+	 */
+	shadowPane: HTMLElement;
+	/**
+	 * Pane for `Icon`s of `Marker`s
+	 * @default 600
+	 */
+	markerPane: HTMLElement;
+	/**
+	 * Pane for `Tooltip`s
+	 * @default 650
+	 */
+	tooltipPane: HTMLElement;
+	/**
+	 * Pane for `Popup`s
+	 * @default 700
+	 */
+	popupPane: HTMLElement;
+	[name: string]: HTMLElement;
+}
 
 /** Options for the `Map` methods that change the zoom level. */
 export interface ZoomOptions extends ZoomProps {}

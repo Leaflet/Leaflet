@@ -1,0 +1,9 @@
+{% assign current = page.reference | default: 'older' -%}
+<nav class="reference-versions" aria-label="API reference versions">
+	<ul>
+		<li>{% if current == 'v1' %}<span aria-current="page">{% else %}<a href="reference.html">{% endif %}{{ site.refVersions.v1 }} <small>stable</small>{% if current == 'v1' %}</span>{% else %}</a>{% endif %}</li>
+		<li>{% if current == 'v2' %}<span aria-current="page">{% else %}<a href="reference-2.0.0.html">{% endif %}{{ site.refVersions.v2 }} <small>prerelease</small>{% if current == 'v2' %}</span>{% else %}</a>{% endif %}</li>
+		<li>{% if current == 'main' %}<span aria-current="page">{% else %}<a href="reference-preview.html">{% endif %}Development <small>main</small>{% if current == 'main' %}</span>{% else %}</a>{% endif %}</li>
+		<li>{% if current == 'older' %}<span aria-current="page">{% else %}<a href="reference-versions.html">{% endif %}Older versions{% if current == 'older' %}</span>{% else %}</a>{% endif %}</li>
+	</ul>
+</nav>

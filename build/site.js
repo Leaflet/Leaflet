@@ -20,6 +20,8 @@ const MARKDOWN_EXT = /\.md$/;
 const FRONT_MATTER = /^---\r?\n([\s\S]*?\r?\n)?---\r?\n/;
 const HTML_TAG = /<[^>]*>/g;
 const NON_ID_CHAR = /[^\p{L}\p{N}\p{M}_\- ]/gu;
+const ID_ATTR = /\sid=['"]([^'"]+)['"]/g;
+const HASH_LINK = /\shref=['"]#([^'"]+)['"]/g;
 
 // GitHub-style header ids, which the site's anchors link to
 let headerIds;
@@ -38,6 +40,9 @@ const marked = new Marked({
 const start = performance.now();
 const config = JSON.parse(readFileSync('build/site.json', 'utf8'));
 const site = {...config.site, ...config.versions[config.version], time: new Date()};
+// the release each pinned ref is at, for the references' version links: `v2` follows `version`, `v1` its mounts
+site.refVersions = {v2: config.version};
+for (const {ref, version} of config.mounts) { if (ref) { site.refVersions[ref] = version; } }
 
 // every page renders with the checkout's layouts and includes, so pinned pages share the current shell
 const engine = createEngine(SITE_DIR);
@@ -78,10 +83,13 @@ for (const post of site.posts) {
 }
 for (const [out, {path, site}] of outputs) {
 	const page = readPage(path);
-	if (page?.data.reference) { page.data.api = buildReference(treeDir(config.refs[page.data.reference])); }
+	if (page?.data.reference) { Object.assign(page.data, buildReference(treeDir(config.refs[page.data.reference]))); }
 	if (page) {
+		page.data.url = `/${out}`;
 		const content = engine.renderContent(page.body, MARKDOWN_EXT.test(path), {site, page: page.data});
-		write(join(DEST, out), engine.renderLayouts(content, page.data, site));
+		const html = engine.renderLayouts(content, page.data, site);
+		if (page.data.reference) { checkLinks(out, html, !config.refs[page.data.reference]); }
+		write(join(DEST, out), html);
 	} else {
 		mkdirSync(dirname(join(DEST, out)), {recursive: true});
 		copyFileSync(path, join(DEST, out));
@@ -165,6 +173,16 @@ function treeDir(sha) {
 		renameSync(tmp, dir);
 	}
 	return dir;
+}
+
+// In-page links without a target fail the build for a reference from the checkout; a pinned ref only warns, since
+// fixing it takes a new commit to pin
+function checkLinks(out, html, strict) {
+	const ids = new Set(Array.from(html.matchAll(ID_ATTR), m => m[1]));
+	const dead = new Set(Array.from(html.matchAll(HASH_LINK), m => decodeURIComponent(m[1])).filter(id => !ids.has(id)));
+	if (!dead.size) { return; }
+	console.warn(`${strict ? 'Error' : 'Warning'}: ${out} links to missing anchors: ${Array.from(dead, id => `#${id}`).join(', ')}`);
+	if (strict) { process.exitCode = 1; }
 }
 
 function matches(file, paths) {

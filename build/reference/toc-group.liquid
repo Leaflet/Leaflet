@@ -1,0 +1,9 @@
+
+		<div class='toc-group'>
+			<h4>{{ group.label }}</h4>
+			<ul>
+			{%- for link in group.links %}
+				<li><a href='#{{ link.id }}'>{{ link.label }}</a></li>
+			{%- endfor %}
+			</ul>
+		</div>

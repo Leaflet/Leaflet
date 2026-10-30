@@ -91,7 +91,7 @@ const upgradeOSMUrl = (/** @type {string} */ url) => (isOSMUrl(url) ? url.replac
  * ```js
  * new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
  * ```
- * @example
+ * @example <caption>URL template</caption>
  * A string of the following form:
  *
  * ```

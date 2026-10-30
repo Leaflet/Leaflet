@@ -518,6 +518,49 @@ table.plugins td:first-child a {
 	right: -1.5em;
 }
 
+/* the generated TOC: Map's column, then the groups flowing through the rest */
+.api-page .toc-flow {
+	display: flex;
+}
+.api-page .toc-flow > .map-col {
+	flex: none;
+}
+#toc .toc-groups {
+	flex: 1;
+	columns: 4;
+	column-gap: 1em;
+	margin-left: 1.5em;
+}
+#toc .toc-group {
+	break-inside: avoid;
+}
+
+.reference-versions ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .5em;
+	padding: 0;
+	margin: 0 0 1.5em;
+	list-style: none;
+}
+.reference-versions li > * {
+	display: inline-block;
+	padding: .2em .8em;
+	border: 1px solid #ddd;
+	border-radius: 1em;
+	text-decoration: none;
+}
+.reference-versions [aria-current] {
+	border-color: #555;
+	color: #333;
+	font-weight: 700;
+}
+.reference-versions small {
+	font-size: 85%;
+	font-weight: 400;
+	color: #999;
+}
+
 .api-page #toc ~ article > h2 {
 	font-weight: 700;
 	font-size: 1.75em;
@@ -897,6 +940,19 @@ tr:target {
 
 	.toc-col.last-col {
 		clear: both;
+	}
+
+	.api-page .toc-flow {
+		display: block;
+	}
+	#toc.toc-flow > .map-col {
+		width: 100%;
+		margin-bottom: 25px;
+		columns: 2;
+	}
+	#toc .toc-groups {
+		columns: 2;
+		margin: 0;
 	}
 
 	th,

@@ -1,0 +1,8 @@
+<div id='toc' class='toc-flow'>
+	<div class='toc-col map-col'>
+	{%- for group in toc.pinned %}{% render 'toc-group', group: group %}{% endfor %}
+	</div>
+	<div class='toc-groups'>
+	{%- for group in toc.groups %}{% render 'toc-group', group: group %}{% endfor %}
+	</div>
+</div>

@@ -1,0 +1,72 @@
+{
+	"groups": [
+		{"label": "Map", "entries": ["LeafletMap"], "toc": [
+			{"label": "Map", "links": [
+				{"id": "map-example", "label": "Usage example"},
+				{"id": "map-constructor", "label": "Creation"},
+				{"id": "map-option", "label": "Options"},
+				{"id": "map-event", "label": "Events"}
+			]},
+			{"label": "Map Methods", "links": [
+				{"id": "map-methods-for-modifying-map-state", "label": "Modifying map state"},
+				{"id": "map-methods-for-getting-map-state", "label": "Getting map state"},
+				{"id": "map-methods-for-layers-and-controls", "label": "Layers and controls"},
+				{"id": "map-conversion-methods", "label": "Conversion methods"},
+				{"id": "map-other-methods", "label": "Other methods"}
+			]},
+			{"label": "Map Misc", "links": [
+				{"id": "map-property", "label": "Properties"},
+				{"id": "map-pane", "label": "Panes"}
+			]}
+		]},
+		{"label": "UI Layers", "entries": ["Marker", "DivOverlay", "Popup", "Tooltip"]},
+		{"label": "Raster Layers", "entries": ["TileLayer", "WMSTileLayer", "ImageOverlay", "VideoOverlay", "SVGOverlay"]},
+		{"label": "Vector Layers", "entries": ["Path", "Polyline", "Polygon", "Rectangle", "Circle", "CircleMarker", "SVG", "Canvas"]},
+		{"label": "Other Layers", "entries": ["LayerGroup", "FeatureGroup", "GeoJSON", "GridLayer"]},
+		{"label": "Basic Types", "entries": ["LatLng", "LatLngBounds", "Point", "Bounds", "Icon", "DivIcon"]},
+		{"label": "Controls", "entries": [
+			{"name": "ZoomControl", "label": "Zoom"},
+			{"name": "AttributionControl", "label": "Attribution"},
+			{"name": "LayersControl", "label": "Layers"},
+			{"name": "ScaleControl", "label": "Scale"}
+		]},
+		{"label": "Utility", "entries": ["Util", "Transformation", "LineUtil", "PolyUtil"]},
+		{"label": "DOM Utility", "entries": ["DomEvent", "DomUtil", "Draggable"]},
+		{"label": "Base Classes", "entries": ["Class", "Evented", "Layer", "Interactive layer", "Control", "Handler", "Projection", "CRS", "BlanketOverlay", "Renderer"]},
+		{"label": "Misc", "entries": ["Event objects", "version"]}
+	],
+	"unlisted": [],
+	"pseudo": {
+		"Interactive layer": ["InteractiveLayerOptions", "InteractiveLayerEventMap"]
+	},
+	"fold": {
+		"LayerBase": "Layer"
+	},
+	"headers": {
+		"Event objects": "LeafletEvent"
+	},
+	"miniclasses": {
+		"LeafletMap": ["ZoomOptions", "PanOptions", "ZoomPanOptions", "InvalidateSizeOptions", "PaddingOptions", "PanInsideOptions", "FitBoundsOptions", "LocateOptions"],
+		"Icon": ["DefaultIcon"],
+		"Event objects": ["LeafletEvent", "LeafletKeyboardEvent", "LeafletPointerEvent", "LocationEvent", "ErrorEvent", "LayerEvent", "LayersControlEvent", "TileEvent", "TileErrorEvent", "ResizeEvent", "GeoJSONEvent", "PopupEvent", "TooltipEvent", "DragEndEvent", "BoxZoomEvent", "MarkerMoveEvent", "ZoomAnimEvent", "ViewPreResetEvent", "WorldCopyJumpEvent"]
+	},
+	"tables": {
+		"Projection": {"projection": ["LonLatProjection", "MercatorProjection", "SphericalMercatorProjection"]},
+		"CRS": {"crs": ["EPSG3395", "EPSG3857", "EPSG4326", "EarthCRS", "SimpleCRS"]}
+	},
+	"display": {
+		"LeafletMap": "Map",
+		"LeafletEvent": "Event",
+		"LeafletKeyboardEvent": "KeyboardEvent",
+		"LeafletPointerEvent": "PointerEvent"
+	},
+	"members": {
+		"LeafletMap": {"pane": "MapPanes"}
+	},
+	"aliases": {
+		"LatLngExpression": "LatLng",
+		"LatLngBoundsExpression": "LatLngBounds",
+		"PointExpression": "Point",
+		"BoundsExpression": "Bounds"
+	}
+}

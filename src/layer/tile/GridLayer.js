@@ -123,7 +123,7 @@ const defaultOptions = {
  * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and
  * replaces `TileLayer.Canvas`. GridLayer can be extended to create a tiled grid of HTML elements like
  * `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
- * @example
+ * @example <caption>Synchronous usage</caption>
  * To create a custom layer, extend GridLayer and implement the `createTile()` method, which will be passed a `Point` object with the `x`, `y`, and `z` (zoom level) coordinates to draw your tile.
  *
  * ```js
@@ -145,7 +145,7 @@ const defaultOptions = {
  *     }
  * }
  * ```
- * @example
+ * @example <caption>Asynchronous usage</caption>
  * Tile creation can also be asynchronous, this is useful when using a third-party drawing library. Once the tile is finished drawing it can be passed to the `done()` callback.
  *
  * ```js

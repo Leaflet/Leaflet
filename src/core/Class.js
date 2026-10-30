@@ -186,7 +186,7 @@ export class Class {
 	static initHooks = true;
 
 	/**
-	 * [Includes a mixin](#class-includes) into the current class.
+	 * [Includes a mixin](#class-mixins) into the current class.
 	 * @template {{prototype: object, mergeOptions: (options: object) => unknown}} C
 	 * @this {C}
 	 * @param {object} properties
