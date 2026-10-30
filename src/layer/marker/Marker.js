@@ -9,8 +9,8 @@ import {MarkerDrag} from './Marker.Drag.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 /** @import {Feature, Point as GeoJSONPoint} from 'geojson' */
-/** @import {Defaults, DragEndEvent, LatLngExpression, LeafletEvent, MarkerEventMap, MarkerMoveEvent, MarkerOptions,
- *    PointExpression, ZoomAnimEvent} from '../../types.js' */
+/** @import {Defaults, DragEndEvent, LatLngExpression, LeafletEvent, MapListeners, MarkerEventMap,
+ *    MarkerMoveEvent, MarkerOptions, PointExpression, ZoomAnimEvent} from '../../types.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Icon} from './Icon.js' */
 
@@ -201,7 +201,7 @@ export class Marker extends Layer {
 		this._removeShadow();
 	}
 
-	/** @returns {{[type: string]: (e: any) => void}} */
+	/** @returns {MapListeners} */
 	getEvents() {
 		return {
 			zoom: this.update,

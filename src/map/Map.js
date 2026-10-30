@@ -1621,8 +1621,9 @@ export class LeafletMap extends Evented {
 		this._mapPane.remove();
 
 		this._controlContainer.remove();
-		delete /** @type {any} */ (this)._controlCorners;
-		delete /** @type {any} */ (this)._controlContainer;
+		// detach the corners so the controls' DOM can be collected while the removed map is still referenced
+		this._controlContainer.replaceChildren();
+		this._controlCorners = {};
 		cancelAnimationFrame(this._resizeRequest);
 
 		for (const handler of this._handlers) {
@@ -1646,7 +1647,6 @@ export class LeafletMap extends Evented {
 
 		this._layers = {};
 		this._panes = {};
-		delete /** @type {any} */ (this)._mapPane;
 		delete this._renderer;
 
 		return this;
@@ -2724,7 +2724,8 @@ export class LeafletMap extends Evented {
 	 * @param {boolean} [noUpdate]
 	 */
 	_animateZoom(center, zoom, startAnim, noUpdate) {
-		if (!this._mapPane) { return; }
+		// the map was removed (not just detached from the document)
+		if (!this._mapPane.parentNode) { return; }
 
 		if (startAnim) {
 			this._animatingZoom = true;
@@ -2757,7 +2758,7 @@ export class LeafletMap extends Evented {
 	_onZoomTransitionEnd() {
 		if (!this._animatingZoom) { return; }
 
-		this._mapPane?.classList.remove('leaflet-zoom-anim');
+		this._mapPane.classList.remove('leaflet-zoom-anim');
 
 		this._animatingZoom = false;
 

@@ -3,7 +3,7 @@
 // their members are documented in typedefs next to the code they belong to, and the interfaces here only extend them.
 
 import type {Feature, Geometry, Point as GeoJSONPoint, Position} from 'geojson';
-import type {Evented, LeafletEventProps} from './core/Events.js';
+import type {Evented, LeafletEventProps, Listener} from './core/Events.js';
 import type {DragEndEventProps, DraggableDefaults, DraggableEvents} from './dom/Draggable.js';
 import type {LatLng} from './geo/LatLng.js';
 import type {LatLngBounds} from './geo/LatLngBounds.js';
@@ -205,6 +205,8 @@ export interface MapOptions extends MapDefaults {
 }
 export interface MapEventMap extends MapLayerEvents, MapPopupEvents, MapTooltipEvents, MapStateEvents,
 	MapLocationEvents, MapInteractionEvents, MapHandlerEvents, MapOtherEvents {}
+/** Listeners of map events, as returned by [`getEvents`](#layer-getevents). */
+export type MapListeners = {[K in keyof MapEventMap]?: Listener<K, MapEventMap, LeafletMap>};
 
 /** Options for the `Map` methods that change the zoom level. */
 export interface ZoomOptions extends ZoomProps {}
@@ -286,7 +288,7 @@ declare module './layer/LayerBase.js' {
 		 * @category Extension methods
 		 * @uninheritable
 		 */
-		getEvents?(): {[type: string]: (e: any) => void};
+		getEvents?(): MapListeners;
 		/**
 		 * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the layer is added to the map,
 		 * before events are initialized, without waiting until the map is in a usable state. Use for early

@@ -5,8 +5,8 @@ import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
-/** @import {Defaults, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent, TileErrorEvent,
- *    TileEvent, WorldCopyJumpEvent, ZoomAnimEvent} from '../../types.js' */
+/** @import {Defaults, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent, MapListeners,
+ *    TileErrorEvent, TileEvent, WorldCopyJumpEvent, ZoomAnimEvent} from '../../types.js' */
 /** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 
@@ -290,7 +290,7 @@ export class GridLayer extends Layer {
 	}
 
 	getEvents() {
-		/** @type {{[type: string]: (e: any) => void}} */
+		/** @type {MapListeners & {viewprereset: (e: {center: LatLng, zoom: number}) => void}} */
 		const events = {
 			viewprereset: this._invalidateAll,
 			viewreset: this._resetView,
@@ -540,7 +540,7 @@ export class GridLayer extends Layer {
 		return tile?.active;
 	}
 
-	/** @param {{pinch?: boolean, flyTo?: boolean}} [e] */
+	/** @param {LeafletEvent & {pinch?: boolean, flyTo?: boolean}} [e] */
 	_resetView(e) {
 		const animating = e && (e.pinch || e.flyTo);
 		this._setView(this._map.getCenter(), this._map.getZoom(), animating, animating);

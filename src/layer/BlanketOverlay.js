@@ -4,7 +4,7 @@ import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import {Bounds} from '../geometry/Bounds.js';
 
-/** @import {BlanketOverlayOptions, Defaults, LayerEventMap, LeafletEvent, ZoomAnimEvent} from '../types.js' */
+/** @import {BlanketOverlayOptions, Defaults, LayerEventMap, LeafletEvent, MapListeners, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Point} from '../geometry/Point.js' */
@@ -72,7 +72,7 @@ export class BlanketOverlay extends Layer {
 	}
 
 	getEvents() {
-		/** @type {{[type: string]: (e: any) => void}} */
+		/** @type {MapListeners} */
 		const events = {
 			viewreset: this._reset,
 			zoom: this._onZoom,

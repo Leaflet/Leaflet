@@ -4,7 +4,7 @@ import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {Defaults, DivOverlayEventMap, DivOverlayOptions, LatLngExpression, LayerEventMap, LayerOptions, LeafletEvent, PointExpression, ZoomAnimEvent} from '../types.js' */
+/** @import {Defaults, DivOverlayEventMap, DivOverlayOptions, LatLngExpression, LayerEventMap, LayerOptions, LeafletEvent, MapListeners, PointExpression, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLngBounds} from '../geo/LatLngBounds.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Layer, OverlayTriggerEvents} from './Layer.js' */
@@ -243,7 +243,7 @@ export class DivOverlay extends LayerBase {
 		this._adjustPan();
 	}
 
-	/** @returns {{[type: string]: (e: any) => void}} */
+	/** @returns {MapListeners} */
 	getEvents() {
 		return {
 			zoom: this._updatePosition,

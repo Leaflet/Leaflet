@@ -1,6 +1,6 @@
 // Typings of a plugin: `declare module 'leaflet'` merges into the classes, options and event maps it augments.
-import {FeatureGroup, GeoJSON, LayerGroup, LineUtil, Map, Marker, Polygon, Polyline, Popup, Tooltip} from 'leaflet';
-import type {LeafletEvent, LeafletPointerEvent, MarkerEventMap, MarkerOptions} from 'leaflet';
+import {FeatureGroup, GeoJSON, Layer, LayerGroup, LineUtil, Map, Marker, Polygon, Polyline, Popup, Tooltip} from 'leaflet';
+import type {LeafletEvent, LeafletPointerEvent, MarkerEventMap, MarkerOptions, ZoomAnimEvent} from 'leaflet';
 
 declare module 'leaflet' {
 	interface Map {
@@ -52,6 +52,24 @@ class PulseMarker<O extends MarkerOptions = MarkerOptions, E extends MarkerEvent
 	_onClick(e: LeafletPointerEvent) { void e.latlng; }
 }
 new PulseMarker([0, 0]).pulse(map);
+
+// map listeners of a layer are checked against the map events, including the augmented ones
+class DrawLayer extends Layer {
+	getEvents() {
+		return {'pm:create': this._onCreate, zoomanim: this._onZoomAnim};
+	}
+	_onCreate(e: {shape: string}) { void e.shape; }
+	_onZoomAnim(e: ZoomAnimEvent) { void e.center; }
+}
+class BadLayer extends Layer {
+	// @ts-expect-error not a zoomend event
+	getEvents() {
+		return {zoomend: this._onZoomEnd};
+	}
+	_onZoomEnd(e: {shape: string}) { void e.shape; }
+}
+new DrawLayer().addTo(map);
+new BadLayer().addTo(map);
 
 // groups hold layers that popups and tooltips can bind to, which those aren't
 const group = new LayerGroup().addTo(map);
