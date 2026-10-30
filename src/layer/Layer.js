@@ -386,7 +386,7 @@ export class Layer extends LayerBase {
 		}
 
 		// If the map is moving, we will show the tooltip after it's done.
-		if (/** @type {any} */ (this._map).dragging?.moving()) {
+		if (this._map.dragging?.moving()) {
 			if (e.type === 'add' && !this._moveEndOpensTooltip) {
 				this._moveEndOpensTooltip = true;
 				this._map.once('moveend', () => {

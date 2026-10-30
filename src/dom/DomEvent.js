@@ -305,7 +305,7 @@ export function getWheelDelta(e) {
 
 // check if element really left/entered the event target (for pointerover/pointerout)
 /**
- * @param {Element} el
+ * @param {Node} el
  * @param {MouseEvent} e
  */
 export function isExternalTarget(el, e) {

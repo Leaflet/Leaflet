@@ -75,7 +75,7 @@ export class Polygon extends Polyline {
 		if (!this._map) {
 			throw new Error('Must add layer to map before using getCenter()');
 		}
-		return PolyUtil.polygonCenter(this._defaultShape(), /** @type {any} */ (this._map.options).crs);
+		return PolyUtil.polygonCenter(this._defaultShape(), this._map.options.crs);
 	}
 
 	/**

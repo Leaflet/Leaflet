@@ -279,7 +279,7 @@ export class GridLayer extends Layer {
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
-			const tileZoom = this._clampZoom(Math.round(/** @type {number} */ (this._map.getZoom())));
+			const tileZoom = this._clampZoom(Math.round(this._map.getZoom()));
 			if (tileZoom !== this._tileZoom) {
 				this._tileZoom = tileZoom;
 				this._updateLevels();
@@ -417,7 +417,7 @@ export class GridLayer extends Layer {
 			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 			level.zoom = zoom;
 
-			this._setZoomTransform(level, map.getCenter(), /** @type {number} */ (map.getZoom()));
+			this._setZoomTransform(level, map.getCenter(), map.getZoom());
 
 			// force reading offsetWidth so the browser considers the newly added element for transition
 			/** @type {(...args: unknown[]) => false} */ (Util.falseFn)(level.el.offsetWidth);
@@ -442,7 +442,7 @@ export class GridLayer extends Layer {
 			return;
 		}
 
-		const zoom = /** @type {number} */ (this._map.getZoom());
+		const zoom = this._map.getZoom();
 		if (zoom > /** @type {number} */ (this.options.maxZoom) ||
 			zoom < this.options.minZoom) {
 			this._removeAllTiles();
@@ -548,7 +548,7 @@ export class GridLayer extends Layer {
 	/** @param {{pinch?: boolean, flyTo?: boolean}} [e] */
 	_resetView(e) {
 		const animating = e && (e.pinch || e.flyTo);
-		this._setView(this._map.getCenter(), /** @type {number} */ (this._map.getZoom()), animating, animating);
+		this._setView(this._map.getCenter(), this._map.getZoom(), animating, animating);
 	}
 
 	/** @param {ZoomAnimEvent} e */
@@ -646,7 +646,7 @@ export class GridLayer extends Layer {
 
 	_resetGrid() {
 		const map = this._map,
-		crs = /** @type {any} */ (map.options).crs,
+		crs = map.options.crs,
 		tileSize = this._tileSize = this.getTileSize(),
 		tileZoom = this._tileZoom;
 
@@ -683,7 +683,7 @@ export class GridLayer extends Layer {
 
 		for (const tile of Object.values(this._tiles)) {
 			const {coords, el} = tile,
-			dx = worlds * this._map.getPixelWorldBounds(coords.z).getSize().x;
+			dx = worlds * /** @type {Bounds} */ (this._map.getPixelWorldBounds(coords.z)).getSize().x;
 
 			// tiles can't be shifted by a fraction of a column, so leave those to be reloaded
 			if (dx % tileSize.x === 0) {
@@ -702,7 +702,7 @@ export class GridLayer extends Layer {
 	 */
 	_getTiledPixelBounds(center) {
 		const map = this._map,
-		mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, /** @type {number} */ (map.getZoom())) : map.getZoom(),
+		mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
 		scale = map.getZoomScale(mapZoom, this._tileZoom),
 		pixelCenter = map.project(center, this._tileZoom).floor(),
 		halfSize = map.getSize().divideBy(scale * 2);
@@ -715,9 +715,9 @@ export class GridLayer extends Layer {
 	_update(center) {
 		const map = this._map;
 		if (!map) { return; }
-		const zoom = this._clampZoom(/** @type {number} */ (map.getZoom()));
+		const zoom = this._clampZoom(map.getZoom());
 
-		if (center === undefined) { center = /** @type {LatLng} */ (map.getCenter()); }
+		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
 
 		const pixelBounds = this._getTiledPixelBounds(center),
@@ -790,7 +790,7 @@ export class GridLayer extends Layer {
 	 * @returns {boolean}
 	 */
 	_isValidTile(coords) {
-		const crs = /** @type {any} */ (this._map.options).crs;
+		const crs = this._map.options.crs;
 
 		if (!crs.infinite) {
 			// don't load tile if it's out of bounds and not wrapped

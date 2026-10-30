@@ -384,7 +384,7 @@ export class Canvas extends Renderer {
 
 	/** @param {PointerEvent} e */
 	_onPointerMove(e) {
-		if (!this._map || /** @type {any} */ (this._map).dragging.moving() || this._map._animatingZoom) { return; }
+		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		const point = this._map.pointerEventToLayerPoint(e);
 		this._handlePointerHover(e, point);

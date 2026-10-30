@@ -91,7 +91,7 @@ export class BlanketOverlay extends Layer {
 	}
 
 	_onZoom() {
-		this._updateTransform(this._map.getCenter(), /** @type {number} */ (this._map.getZoom()));
+		this._updateTransform(this._map.getCenter(), this._map.getZoom());
 	}
 
 	/**
@@ -121,7 +121,7 @@ export class BlanketOverlay extends Layer {
 		/** @type {LatLng} */
 		this._center = this._map.getCenter();
 		/** @type {number} */
-		this._zoom = /** @type {number} */ (this._map.getZoom());
+		this._zoom = this._map.getZoom();
 		this._updateTransform(this._center, this._zoom);
 
 		this._onSettled();

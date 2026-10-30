@@ -5,6 +5,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
 
 /** @import {Defaults, DivOverlayEventMap, PointExpression, TooltipOptions, ZoomAnimEvent} from '../types.js' */
+/** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
 const defaultOptions = {
@@ -190,7 +191,7 @@ export class Tooltip extends DivOverlay {
 	}
 
 	_updatePosition() {
-		const pos = this._map.latLngToLayerPoint(this._latlng)._round();
+		const pos = this._map.latLngToLayerPoint(/** @type {LatLng} */ (this._latlng))._round();
 		this._setPosition(pos);
 	}
 
@@ -205,7 +206,7 @@ export class Tooltip extends DivOverlay {
 
 	/** @param {ZoomAnimEvent} e */
 	_animateZoom(e) {
-		const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
+		const pos = this._map._latLngToNewLayerPoint(/** @type {LatLng} */ (this._latlng), e.zoom, e.center);
 		this._setPosition(pos);
 	}
 

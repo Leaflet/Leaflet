@@ -103,7 +103,7 @@ export class WMSTileLayer extends TileLayer {
 	onAdd(map) {
 
 		/** @type {typeof CRS} */
-		this._crs = this.options.crs ?? /** @type {any} */ (map.options).crs;
+		this._crs = this.options.crs ?? map.options.crs;
 		this._updateCrsParam();
 
 		super.onAdd(map);

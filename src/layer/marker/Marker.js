@@ -169,7 +169,7 @@ export class Marker extends Layer {
 
 	/** @param {LeafletMap} map */
 	onAdd(map) {
-		this._zoomAnimated = this._zoomAnimated && /** @type {any} */ (map.options).markerZoomAnimation;
+		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
 		if (this._zoomAnimated) {
 			map.on('zoomanim', this._animateZoom, this);

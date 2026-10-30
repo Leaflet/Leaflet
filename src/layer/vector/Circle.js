@@ -54,7 +54,7 @@ export class Circle extends CircleMarker {
 		const lng = this._latlng.lng,
 		lat = this._latlng.lat,
 		map = this._map,
-		crs = /** @type {any} */ (map.options).crs;
+		crs = map.options.crs;
 
 		if (crs.distance === EarthCRS.distance) {
 			const d = Math.PI / 180,

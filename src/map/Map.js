@@ -1,3 +1,4 @@
+// @ts-check
 import * as Util from '../core/Util.js';
 import {Evented} from '../core/Events.js';
 import {EPSG3857} from '../geo/crs/EPSG3857.js';
@@ -21,6 +22,20 @@ import {ScrollWheelZoomHandler} from './handler/ScrollWheelZoomHandler.js';
 import {TapHoldHandler} from './handler/TapHoldHandler.js';
 import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 
+/** @import {Defaults, ErrorEvent, FitBoundsOptions, InvalidateSizeOptions, LatLngBoundsExpression, LatLngExpression,
+ *    LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent, LeafletPointerEvent, LocateOptions,
+ *    LocationEvent, MapEventMap, MapOptions, PanInsideOptions, PanOptions, PointExpression, PopupEvent, PopupOptions,
+ *    ResizeEvent, TooltipEvent, TooltipOptions, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions}
+ *    from '../types.js' */
+/** @import {CRS} from '../geo/crs/CRS.js' */
+/** @import {Control} from '../control/Control.js' */
+/** @import {Handler} from '../core/Handler.js' */
+/** @import {Layer} from '../layer/Layer.js' */
+/** @import {LayerBase} from '../layer/LayerBase.js' */
+/** @import {GridLayer} from '../layer/tile/GridLayer.js' */
+/** @import {Path} from '../layer/vector/Path.js' */
+/** @import {Renderer} from '../layer/vector/Renderer.js' */
+
 // matches the zoom transition in leaflet.css
 const zoomAnimDuration = 250;
 
@@ -28,20 +43,21 @@ const defaultOptions = {
 	/**
 	 * The [Coordinate Reference System](#crs) to use. Don't change this if you're not sure what it means.
 	 * @category Map State Options
+	 * @type {typeof CRS}
 	 */
 	crs: EPSG3857,
 
 	/**
 	 * Initial geographic center of the map
 	 * @category Map State Options
-	 * @type {LatLng}
+	 * @type {LatLngExpression | undefined}
 	 */
 	center: undefined,
 
 	/**
 	 * Initial map zoom level
 	 * @category Map State Options
-	 * @type {number}
+	 * @type {number | undefined}
 	 */
 	zoom: undefined,
 
@@ -49,7 +65,7 @@ const defaultOptions = {
 	 * Minimum zoom level of the map. If not specified and at least one `GridLayer` or `TileLayer`
 	 * is in the map, the lowest of their `minZoom` options will be used instead.
 	 * @category Map State Options
-	 * @type {number}
+	 * @type {number | undefined}
 	 */
 	minZoom: undefined,
 
@@ -57,7 +73,7 @@ const defaultOptions = {
 	 * Maximum zoom level of the map. If not specified and at least one `GridLayer` or `TileLayer`
 	 * is in the map, the highest of their `maxZoom` options will be used instead.
 	 * @category Map State Options
-	 * @type {number}
+	 * @type {number | undefined}
 	 */
 	maxZoom: undefined,
 
@@ -73,15 +89,15 @@ const defaultOptions = {
 	 * bouncing the user back if the user tries to pan outside the view. To set the restriction
 	 * dynamically, use [`setMaxBounds`](#map-setmaxbounds) method.
 	 * @category Map State Options
-	 * @type {LatLngBounds}
+	 * @type {LatLngBoundsExpression | null}
 	 */
-	maxBounds: undefined,
+	maxBounds: null,
 
 	/**
 	 * The default method for drawing vector layers on the map. A new `SVG` renderer
 	 * by default; pass `new Canvas()` to draw them on a canvas instead.
 	 * @category Map State Options
-	 * @type {Renderer}
+	 * @type {Renderer | undefined}
 	 */
 	renderer: undefined,
 
@@ -162,6 +178,7 @@ const defaultOptions = {
 	 * double clicking while holding shift. If passed `'center'`, double-click zoom
 	 * will zoom to the center of the view regardless of where the pointer was.
 	 * @category Interaction Options
+	 * @type {boolean | 'center'}
 	 */
 	doubleClickZoom: true,
 
@@ -176,7 +193,6 @@ const defaultOptions = {
 	 * momentum while dragging and continues moving in the same direction for some
 	 * time. Feels especially nice on touch devices. Enabled by default.
 	 * @category Panning Inertia Options
-	 * @type {boolean}
 	 */
 	inertia: true,
 
@@ -231,6 +247,7 @@ const defaultOptions = {
 	 * on a given layout, so `true` uses the names for a US English layout, which can be wrong for pages
 	 * in other languages; pass a string to set the value for your audience's layout instead.
 	 * @category Keyboard Navigation Options
+	 * @type {boolean | string}
 	 */
 	ariaKeyShortcuts: false,
 
@@ -238,6 +255,7 @@ const defaultOptions = {
 	 * Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
 	 * it will zoom to the center of the view regardless of where the pointer was.
 	 * @category Mouse wheel options
+	 * @type {boolean | 'center'}
 	 */
 	scrollWheelZoom: true,
 
@@ -272,7 +290,7 @@ const defaultOptions = {
 	 * center of the view regardless of where the touch events (fingers) were. Enabled for touch-capable web
 	 * browsers.
 	 * @category Touch interaction options
-	 * @type {boolean | string}
+	 * @type {boolean | 'center'}
 	 */
 	pinchZoom: true,
 
@@ -295,9 +313,17 @@ const defaultOptions = {
 	attributionControl: true
 };
 
+/** @typedef {typeof defaultOptions} MapDefaults */
+
+/**
+ * The map or a layer receiving DOM events, duck-typed for markers.
+ * @typedef {Evented<any, any> & {getLatLng?(): LatLng, _pxRadius?: number,
+ *    dragging?: {enabled(): boolean, moved(): unknown}}} DOMEventTarget
+ */
+
 /**
  * Layer events
- * @typedef {Object} LeafletMapLayerEvents
+ * @typedef {Object} MapLayerEvents
  * @property {LayersControlEvent} baselayerchange Fired when the base layer is changed through the [layers control](#control-layers).
  * @property {LayersControlEvent} overlayadd Fired when an overlay is selected through the [layers control](#control-layers).
  * @property {LayersControlEvent} overlayremove Fired when an overlay is deselected through the [layers control](#control-layers).
@@ -307,7 +333,7 @@ const defaultOptions = {
 
 /**
  * Popup events
- * @typedef {Object} LeafletMapPopupEvents
+ * @typedef {Object} MapPopupEvents
  * @property {PopupEvent} popupopen Fired when a popup is opened in the map
  * @property {PopupEvent} popupclose Fired when a popup in the map is closed
  * @property {LeafletEvent} autopanstart Fired when the map starts autopanning when opening a popup.
@@ -315,14 +341,14 @@ const defaultOptions = {
 
 /**
  * Tooltip events
- * @typedef {Object} LeafletMapTooltipEvents
+ * @typedef {Object} MapTooltipEvents
  * @property {TooltipEvent} tooltipopen Fired when a tooltip is opened in the map.
  * @property {TooltipEvent} tooltipclose Fired when a tooltip in the map is closed.
  */
 
 /**
  * Map state change events
- * @typedef {Object} LeafletMapMapStateChangeEvents
+ * @typedef {Object} MapStateEvents
  * @property {ResizeEvent} resize Fired when the map is resized.
  * @property {LeafletEvent} unload Fired when the map is destroyed with [remove](#map-remove) method.
  * @property {LeafletEvent} viewreset Fired when the map needs to redraw its content (this usually happens on map zoom or load). Very useful for creating custom overlays.
@@ -339,14 +365,14 @@ const defaultOptions = {
 
 /**
  * Location events
- * @typedef {Object} LeafletMapLocationEvents
+ * @typedef {Object} MapLocationEvents
  * @property {ErrorEvent} locationerror Fired when geolocation (using the [`locate`](#map-locate) method) failed.
  * @property {LocationEvent} locationfound Fired when geolocation (using the [`locate`](#map-locate) method) went successfully.
  */
 
 /**
  * Interaction events
- * @typedef {Object} LeafletMapInteractionEvents
+ * @typedef {Object} MapInteractionEvents
  * @property {LeafletPointerEvent} click Fired when the user clicks (or taps) the map.
  * @property {LeafletPointerEvent} dblclick Fired when the user double-clicks (or double-taps) the map.
  * @property {LeafletPointerEvent} pointerdown Fired when the user pushes the pointer on the map.
@@ -362,7 +388,7 @@ const defaultOptions = {
 
 /**
  * Other Events
- * @typedef {Object} LeafletMapOtherEvents
+ * @typedef {Object} MapOtherEvents
  * @property {ZoomAnimEvent} zoomanim Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
  */
 
@@ -383,50 +409,49 @@ const defaultOptions = {
  * ```js
  * map.doubleClickZoom.disable();
  * ```
+ * @categoryDescription Panes
+ * Panes are DOM elements used to control the ordering of layers on the map. You can access panes with
+ * [`map.getPane`](#map-getpane) or [`map.getPanes`](#map-getpanes) methods. New panes can be created with the
+ * [`map.createPane`](#map-createpane) method.
+ *
+ * Every map has the following default panes that differ only in zIndex.
+ *
+ * | Pane | zIndex | Description |
+ * | --- | --- | --- |
+ * | `mapPane` | `'auto'` | Pane that contains all other map panes |
+ * | `tilePane` | `200` | Pane for `GridLayer`s and `TileLayer`s |
+ * | `overlayPane` | `400` | Pane for vectors (`Path`s, like `Polyline`s and `Polygon`s), `ImageOverlay`s and `VideoOverlay`s |
+ * | `shadowPane` | `500` | Pane for overlay shadows (e.g. `Marker` shadows) |
+ * | `markerPane` | `600` | Pane for `Icon`s of `Marker`s |
+ * | `tooltipPane` | `650` | Pane for `Tooltip`s |
+ * | `popupPane` | `700` | Pane for `Popup`s |
+ * @extends {Evented<MapOptions, MapEventMap>}
  */
 export class LeafletMap extends Evented {
 
 	static initHooks = true;
 
+	/** @type {Defaults<MapOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
-	 * Instantiates a map object given the DOM ID of a `<div>` element
-	 * and optionally an object literal with `LeafletMap options`.
-	 * @overload
-	 * @param {string} id
-	 * @param {LeafletMapOptions} [options]
-	 */
-	/**
-	 * Instantiates a map object given an instance of a `<div>` HTML element
-	 * and optionally an object literal with `LeafletMap options`.
-	 * @overload
-	 * @param {HTMLElement} el
-	 * @param {LeafletMapOptions} [options]
-	 */
-	/**
-	 * Instantiates a map object given the DOM ID of a `<div>` element
+	 * Instantiates a map object given the DOM ID of a `<div>` element (or the element itself)
 	 * and optionally an object literal with `Map options`.
-	 * @overload
-	 * @param {string} id
-	 * @param {MapOptions} [options]
+	 * @param {string | HTMLElement} id
+	 * @param {Partial<MapOptions>} [options]
 	 */
-	/**
-	 * Instantiates a map object given an instance of a `<div>` HTML
-	 * element and optionally an object literal with `Map options`.
-	 * @overload
-	 * @param {HTMLElement} el
-	 * @param {MapOptions} [options]
-	 */
-	constructor(id, options) { // (HTMLElement or String, Object)
+	constructor(id, options) {
 		super();
 
 		options = Util.setOptions(this, options);
 
 		// Make sure to assign internal flags at the beginning,
 		// to avoid inconsistent state in some edge cases.
+		/** @type {Handler[]} */
 		this._handlers = [];
+		/** @type {{[id: number]: LayerBase}} */
 		this._layers = {};
+		/** @type {{[id: number]: GridLayer}} */
 		this._zoomBoundLayers = {};
 		this._sizeChanged = true;
 
@@ -440,6 +465,7 @@ export class LeafletMap extends Evented {
 		}
 
 		if (options.zoom !== undefined) {
+			/** @type {number} */
 			this._zoom = this._limitZoom(options.zoom);
 		}
 
@@ -455,7 +481,7 @@ export class LeafletMap extends Evented {
 			 * The default zoom control (only available if the [`zoomControl`
 			 * option](#map-zoomcontrol) was `true` when creating the map).
 			 * @category Controls
-			 * @type {ZoomControl}
+			 * @type {ZoomControl | undefined}
 			 */
 			this.zoomControl = new ZoomControl();
 			this.addControl(this.zoomControl);
@@ -468,53 +494,19 @@ export class LeafletMap extends Evented {
 			delete options.touchZoom;
 		}
 
-		if (options.preferCanvas !== undefined) {
+		if (/** @type {any} */ (options).preferCanvas !== undefined) {
 			console.error('Map: preferCanvas option has been removed. Use renderer: new Canvas() instead.');
 		}
 
-		/**
-		 * Box (shift-drag with pointer) zoom handler.
-		 * @category Handlers
-		 * @type {Handler}
-		 */
 		this.addHandler('boxZoom', BoxZoomHandler);
-		/**
-		 * Double click zoom handler.
-		 * @category Handlers
-		 * @type {Handler}
-		 */
 		this.addHandler('doubleClickZoom', DoubleClickZoomHandler);
-		/**
-		 * Map dragging handler.
-		 * @category Handlers
-		 * @type {Handler}
-		 */
 		this.addHandler('dragging', DragHandler);
-		/**
-		 * Keyboard navigation handler.
-		 * @category Handlers
-		 * @type {Handler}
-		 */
 		this.addHandler('keyboard', KeyboardHandler);
-		/**
-		 * Scroll wheel zoom handler.
-		 * @category Handlers
-		 * @type {Handler}
-		 */
 		this.addHandler('scrollWheelZoom', ScrollWheelZoomHandler);
-		/**
-		 * Long tap handler to simulate `contextmenu` event (useful in mobile Safari).
-		 * @category Handlers
-		 * @type {Handler}
-		 */
 		this.addHandler('tapHold', TapHoldHandler);
-		/**
-		 * Pinch zoom handler.
-		 * @category Handlers
-		 * @type {Handler}
-		 */
 		this.addHandler('pinchZoom', PinchZoomHandler);
-		this.touchZoom = this.pinchZoom; // deprecated alias
+		/** @deprecated Use `pinchZoom`. */
+		this.touchZoom = this.pinchZoom;
 
 		this.callInitHooks();
 
@@ -532,20 +524,20 @@ export class LeafletMap extends Evented {
 	/**
 	 * Sets the view of the map (geographical center and zoom) with the given animation options.
 	 * @category Methods for modifying map state
-	 * @param {LatLng} center
+	 * @param {LatLngExpression} center
 	 * @param {number} [zoom]
-	 * @param {Zoom/pan options} [options]
+	 * @param {ZoomPanOptions} [options]
 	 * @returns {this}
 	 */
 	setView(center, zoom, options) {
 
 		zoom = zoom === undefined ? this._zoom : this._limitZoom(zoom);
-		center = this._limitCenter(new LatLng(center), zoom, this.options.maxBounds);
+		const latlng = this._limitCenter(new LatLng(center), zoom, this.options.maxBounds);
 		options ??= {};
 
 		this._stop();
 
-		if (this._loaded && !options.reset && options !== true) {
+		if (this._loaded && !options.reset) {
 
 			if (options.animate !== undefined) {
 				options.zoom = {animate: options.animate, ...options.zoom};
@@ -554,8 +546,8 @@ export class LeafletMap extends Evented {
 
 			// try animating pan or zoom
 			const moved = (this._zoom !== zoom) ?
-				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom) :
-				this._tryAnimatedPan(center, options.pan);
+				this._tryAnimatedZoom && this._tryAnimatedZoom(latlng, zoom, options.zoom) :
+				this._tryAnimatedPan(latlng, options.pan);
 
 			if (moved) {
 				// prevent resize handler call, the view will refresh after animation anyway
@@ -565,7 +557,7 @@ export class LeafletMap extends Evented {
 		}
 
 		// animation didn't start, just reset the map view
-		this._resetView(center, zoom, options.pan?.noMoveStart);
+		this._resetView(latlng, zoom, options.pan?.noMoveStart);
 
 		return this;
 	}
@@ -574,7 +566,7 @@ export class LeafletMap extends Evented {
 	 * Sets the zoom of the map.
 	 * @category Methods for modifying map state
 	 * @param {number} zoom
-	 * @param {Zoom/pan options} [options]
+	 * @param {ZoomOptions} [options]
 	 * @returns {this}
 	 */
 	setZoom(zoom, options) {
@@ -614,9 +606,9 @@ export class LeafletMap extends Evented {
 	 * (e.g. used internally for scroll zoom and double-click zoom).
 	 * @category Methods for modifying map state
 	 * @overload
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @param {number} zoom
-	 * @param {ZoomOptions} options
+	 * @param {ZoomOptions} [options]
 	 * @returns {this}
 	 */
 	/**
@@ -624,8 +616,13 @@ export class LeafletMap extends Evented {
 	 * @overload
 	 * @param {Point} offset
 	 * @param {number} zoom
-	 * @param {ZoomOptions} options
+	 * @param {ZoomOptions} [options]
 	 * @returns {this}
+	 */
+	/**
+	 * @param {LatLngExpression | Point} latlng
+	 * @param {number} zoom
+	 * @param {ZoomOptions} [options]
 	 */
 	setZoomAround(latlng, zoom, options) {
 		// work in unrounded projected coordinates so that zooming back and forth around the same point
@@ -639,10 +636,14 @@ export class LeafletMap extends Evented {
 		return this.setView(newCenter, zoom, {zoom: options});
 	}
 
+	/**
+	 * @param {LatLngBoundsExpression | {getBounds(): LatLngBounds}} bounds
+	 * @param {FitBoundsOptions} [options]
+	 */
 	_getBoundsCenterZoom(bounds, options) {
 
 		options ??= {};
-		bounds = bounds.getBounds ? bounds.getBounds() : new LatLngBounds(bounds);
+		bounds = 'getBounds' in bounds ? bounds.getBounds() : new LatLngBounds(bounds);
 
 		const paddingTL = new Point(options.paddingTopLeft || options.padding || [0, 0]),
 		paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]);
@@ -673,8 +674,8 @@ export class LeafletMap extends Evented {
 	/**
 	 * Sets a map view that contains the given geographical bounds with the maximum zoom level possible.
 	 * @category Methods for modifying map state
-	 * @param {LatLngBounds} bounds
-	 * @param {fitBoundsOptions} [options]
+	 * @param {LatLngBoundsExpression} bounds
+	 * @param {FitBoundsOptions} [options]
 	 * @returns {this}
 	 */
 	fitBounds(bounds, options) {
@@ -692,7 +693,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Sets a map view that mostly contains the whole world with the maximum zoom level possible.
 	 * @category Methods for modifying map state
-	 * @param {fitBoundsOptions} [options]
+	 * @param {FitBoundsOptions} [options]
 	 * @returns {this}
 	 */
 	fitWorld(options) {
@@ -702,7 +703,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Pans the map to a given center.
 	 * @category Methods for modifying map state
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} center
 	 * @param {PanOptions} [options]
 	 * @returns {this}
 	 */
@@ -714,7 +715,7 @@ export class LeafletMap extends Evented {
 	 * Pans the map by a given number of pixels (animated unless `animate: false` is passed, or the user
 	 * prefers reduced motion and the pan is longer than half the map size without `animate: true`).
 	 * @category Methods for modifying map state
-	 * @param {Point} offset
+	 * @param {PointExpression} offset
 	 * @param {PanOptions} [options]
 	 * @returns {this}
 	 */
@@ -769,9 +770,9 @@ export class LeafletMap extends Evented {
 	 * animation. If the user prefers reduced motion (and `animate: true` isn't passed),
 	 * it behaves like `setView` instead, only animating short pans and zooms.
 	 * @category Methods for modifying map state
-	 * @param {LatLng} latlng
-	 * @param {number} [zoom]
-	 * @param {Zoom/pan options} [options]
+	 * @param {LatLngExpression} targetCenter
+	 * @param {number} [targetZoom]
+	 * @param {ZoomPanOptions} [options]
 	 * @returns {this}
 	 */
 	flyTo(targetCenter, targetZoom, options) {
@@ -787,10 +788,10 @@ export class LeafletMap extends Evented {
 		this._stop();
 
 		targetZoom = targetZoom === undefined ? this._zoom : this._limitZoom(targetZoom);
-		targetCenter = this._limitCenter(new LatLng(targetCenter), targetZoom, this.options.maxBounds);
+		const center = this._limitCenter(new LatLng(targetCenter), targetZoom, this.options.maxBounds);
 
 		const from = this.project(this.getCenter()),
-		to = this.project(targetCenter),
+		to = this.project(center),
 		size = this.getSize(),
 		startZoom = this._zoom;
 
@@ -800,6 +801,7 @@ export class LeafletMap extends Evented {
 		rho = 1.42,
 		rho2 = rho * rho;
 
+		/** @param {number} i */
 		function r(i) {
 			const s1 = i ? -1 : 1,
 			s2 = i ? w1 : w0,
@@ -811,8 +813,10 @@ export class LeafletMap extends Evented {
 
 		const r0 = r(0);
 
+		/** @param {number} s */
 		function u(s) { return w0 * (Math.cosh(r0) * Math.tanh(r0 + rho * s) - Math.sinh(r0)) / rho2; }
 
+		/** @param {number} t */
 		function easeOut(t) { return 1 - (1 - t) ** 1.5; }
 
 		const start = Date.now(),
@@ -824,6 +828,7 @@ export class LeafletMap extends Evented {
 			s = easeOut(t) * S;
 
 			if (t <= 1) {
+				/** @type {number} */
 				this._flyToFrame = requestAnimationFrame(frame);
 
 				this._move(
@@ -835,7 +840,7 @@ export class LeafletMap extends Evented {
 				// the last step shifts the pixel origin even at the same zoom, and layers like GridLayer only
 				// re-anchor on 'zoom' (#9438)
 				const zoomChanged = this._zoom !== targetZoom;
-				this._move(targetCenter, targetZoom);
+				this._move(center, targetZoom);
 				if (!zoomChanged) { this.fire('zoom'); }
 				this._moveEnd(true);
 			}
@@ -843,7 +848,7 @@ export class LeafletMap extends Evented {
 
 		this._moveStart(true, options.noMoveStart);
 
-		frame(this);
+		frame();
 		return this;
 	}
 
@@ -851,8 +856,8 @@ export class LeafletMap extends Evented {
 	 * Sets the view of the map with a smooth animation like [`flyTo`](#map-flyto),
 	 * but takes a bounds parameter like [`fitBounds`](#map-fitbounds).
 	 * @category Methods for modifying map state
-	 * @param {LatLngBounds} bounds
-	 * @param {fitBoundsOptions} [options]
+	 * @param {LatLngBoundsExpression} bounds
+	 * @param {FitBoundsOptions} [options]
 	 * @returns {this}
 	 */
 	flyToBounds(bounds, options) {
@@ -862,12 +867,14 @@ export class LeafletMap extends Evented {
 
 	/**
 	 * Restricts the map view to the given bounds (see the [maxBounds](#map-maxbounds) option).
+	 * Call it without arguments to remove the restriction.
 	 * @category Methods for modifying map state
-	 * @param {LatLngBounds} bounds
+	 * @param {LatLngBoundsExpression} [bounds]
 	 * @returns {this}
 	 */
 	setMaxBounds(bounds) {
-		bounds = new LatLngBounds(bounds);
+		// empty (so invalid) when called without bounds
+		bounds = new LatLngBounds(/** @type {LatLngBoundsExpression} */ (bounds));
 
 		if (this.listens('moveend', this._panInsideMaxBounds)) {
 			this.off('moveend', this._panInsideMaxBounds);
@@ -933,7 +940,7 @@ export class LeafletMap extends Evented {
 	 * Pans the map to the closest view that would lie inside the given bounds (if it's
 	 * not already), controlling the animation using the options specific, if any.
 	 * @category Methods for modifying map state
-	 * @param {LatLngBounds} bounds
+	 * @param {LatLngBoundsExpression} bounds
 	 * @param {PanOptions} [options]
 	 * @returns {this}
 	 */
@@ -955,8 +962,8 @@ export class LeafletMap extends Evented {
 	 * to fit the display to more restricted bounds. If `latlng` is already within
 	 * the (optionally padded) display bounds, the map will not be panned.
 	 * @category Methods for modifying map state
-	 * @param {LatLng} latlng
-	 * @param {paddingOptions} [options]
+	 * @param {LatLngExpression} latlng
+	 * @param {PanInsideOptions} [options]
 	 * @returns {this}
 	 */
 	panInside(latlng, options) {
@@ -986,17 +993,10 @@ export class LeafletMap extends Evented {
 	 * Checks if the map container size changed and updates the map if so — call it after you've changed
 	 * the map size dynamically, also animating pan by default. If `options.pan` is `false`, panning
 	 * will not occur. If `options.debounceMoveend` is `true`, it will delay `moveend` event so that
-	 * it doesn't happen often even if the method is called many times in a row.
+	 * it doesn't happen often even if the method is called many times in a row. `true` is a shorthand
+	 * for `{animate: true}`.
 	 * @category Methods for modifying map state
-	 * @overload
-	 * @param {invalidateSizeOptions} options
-	 * @returns {this}
-	 */
-	/**
-	 * Checks if the map container size changed and updates the map if so — call it after
-	 * you've changed the map size dynamically, also animating pan by default.
-	 * @overload
-	 * @param {boolean} animate
+	 * @param {InvalidateSizeOptions | boolean} [options]
 	 * @returns {this}
 	 */
 	invalidateSize(options) {
@@ -1070,7 +1070,8 @@ export class LeafletMap extends Evented {
 	 */
 	locate(options) {
 
-		options = this._locateOptions = {
+		/** @type {LocateOptions} */
+		this._locateOptions = options = {
 			timeout: 10000,
 			watch: false,
 			// setView: false
@@ -1095,6 +1096,7 @@ export class LeafletMap extends Evented {
 			if (this._locationWatchId !== undefined) {
 				navigator.geolocation.clearWatch(this._locationWatchId);
 			}
+			/** @type {number} */
 			this._locationWatchId = navigator.geolocation.watchPosition(onResponse, onError, options);
 		} else {
 			navigator.geolocation.getCurrentPosition(onResponse, onError, options);
@@ -1116,6 +1118,7 @@ export class LeafletMap extends Evented {
 		return this;
 	}
 
+	/** @param {{code: number, message: string}} error */
 	_handleGeolocationError(error) {
 		if (!this._container._leaflet_id) { return; }
 
@@ -1134,6 +1137,7 @@ export class LeafletMap extends Evented {
 		});
 	}
 
+	/** @param {GeolocationPosition} pos */
 	_handleGeolocationResponse(pos) {
 		if (!this._container._leaflet_id) { return; }
 
@@ -1148,6 +1152,7 @@ export class LeafletMap extends Evented {
 			this.setView(latlng, options.maxZoom ? Math.min(zoom, options.maxZoom) : zoom);
 		}
 
+		/** @type {{[key: string]: unknown}} */
 		const data = {
 			latlng,
 			bounds,
@@ -1155,8 +1160,9 @@ export class LeafletMap extends Evented {
 		};
 
 		for (const i in pos.coords) { // do not use Object.keys here to access getters of GeolocationCoordinates
-			if (typeof pos.coords[i] === 'number') {
-				data[i] = pos.coords[i];
+			const value = pos.coords[/** @type {keyof GeolocationCoordinates} */ (i)];
+			if (typeof value === 'number') {
+				data[i] = value;
 			}
 		}
 
@@ -1166,7 +1172,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Adds the given layer to the map
 	 * @category Methods for Layers and Controls
-	 * @param {Layer} layer
+	 * @param {LayerBase<any, any>} layer
 	 * @returns {this}
 	 */
 	addLayer(layer) {
@@ -1192,7 +1198,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Removes the given layer from the map.
 	 * @category Methods for Layers and Controls
-	 * @param {Layer} layer
+	 * @param {LayerBase<any, any>} layer
 	 * @returns {this}
 	 */
 	removeLayer(layer) {
@@ -1211,7 +1217,7 @@ export class LeafletMap extends Evented {
 			layer.fire('remove');
 		}
 
-		layer._map = layer._mapToAdd = null;
+		/** @type {any} */ (layer)._map = layer._mapToAdd = null;
 
 		return this;
 	}
@@ -1219,7 +1225,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns `true` if the given layer is currently added to the map
 	 * @category Methods for Layers and Controls
-	 * @param {Layer} layer
+	 * @param {LayerBase<any, any>} layer
 	 * @returns {boolean}
 	 */
 	hasLayer(layer) {
@@ -1234,8 +1240,8 @@ export class LeafletMap extends Evented {
 	 * });
 	 * ```
 	 * @category Methods for Layers and Controls
-	 * @param {Function} fn
-	 * @param {object} [context]
+	 * @param {(layer: LayerBase) => void} method
+	 * @param {any} [context]
 	 * @returns {this}
 	 */
 	eachLayer(method, context) {
@@ -1259,9 +1265,14 @@ export class LeafletMap extends Evented {
 	 * instead.
 	 * @overload
 	 * @param {string | HTMLElement} content
-	 * @param {LatLng} latlng
-	 * @param {PopupOptions} [options]
+	 * @param {LatLngExpression} latlng
+	 * @param {Partial<PopupOptions>} [options]
 	 * @returns {this}
+	 */
+	/**
+	 * @param {Popup | string | HTMLElement} popup
+	 * @param {LatLngExpression} [latlng]
+	 * @param {Partial<PopupOptions>} [options]
 	 */
 	openPopup(popup, latlng, options) {
 		this._initOverlay(Popup, popup, latlng, options)
@@ -1294,9 +1305,14 @@ export class LeafletMap extends Evented {
 	 * as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
 	 * @overload
 	 * @param {string | HTMLElement} content
-	 * @param {LatLng} latlng
-	 * @param {TooltipOptions} [options]
+	 * @param {LatLngExpression} latlng
+	 * @param {Partial<TooltipOptions>} [options]
 	 * @returns {this}
+	 */
+	/**
+	 * @param {Tooltip | string | HTMLElement} tooltip
+	 * @param {LatLngExpression} [latlng]
+	 * @param {Partial<TooltipOptions>} [options]
 	 */
 	openTooltip(tooltip, latlng, options) {
 		this._initOverlay(Tooltip, tooltip, latlng, options)
@@ -1316,11 +1332,16 @@ export class LeafletMap extends Evented {
 		return this;
 	}
 
+	/**
+	 * @template {Popup | Tooltip} T
+	 * @param {new (options?: Partial<PopupOptions & TooltipOptions>) => T} OverlayClass
+	 * @param {T | string | HTMLElement} content
+	 * @param {LatLngExpression} [latlng]
+	 * @param {Partial<PopupOptions & TooltipOptions>} [options]
+	 */
 	_initOverlay(OverlayClass, content, latlng, options) {
-		let overlay = content;
-		if (!(overlay instanceof OverlayClass)) {
-			overlay = new OverlayClass(options).setContent(content);
-		}
+		const overlay = content instanceof OverlayClass ? content :
+			new OverlayClass(options).setContent(/** @type {string | HTMLElement} */ (content));
 		if (latlng) {
 			overlay.setLatLng(latlng);
 		}
@@ -1353,7 +1374,7 @@ export class LeafletMap extends Evented {
 	 * Returns the instance of `Renderer` that should be used to render the given `Path`. It will ensure that the
 	 * `renderer` options of the map and paths are respected, and that the renderers do exist on the map.
 	 * @category Methods for Layers and Controls
-	 * @param {Path} layer
+	 * @param {Path<any, any>} layer
 	 * @returns {Renderer}
 	 */
 	getRenderer(layer) {
@@ -1366,6 +1387,7 @@ export class LeafletMap extends Evented {
 		return renderer;
 	}
 
+	/** @param {Path<any, any>} layer */
 	_getPaneRenderer(layer) {
 		const name = layer.options.pane;
 		if (name === 'overlayPane' || name === undefined) {
@@ -1375,9 +1397,9 @@ export class LeafletMap extends Evented {
 		let renderer = this._paneRenderers[name];
 		if (!renderer) {
 			// custom panes get a renderer of the same kind as the map's default one, so Canvas maps stay Canvas
-			const Renderer = this.options.renderer?.constructor;
-			renderer = Renderer ?
-				new Renderer({...this.options.renderer.options, pane: name}) :
+			const RendererClass = /** @type {typeof Renderer | undefined} */ (this.options.renderer?.constructor);
+			renderer = RendererClass ?
+				new RendererClass({...this.options.renderer?.options, pane: name}) :
 				layer._createRenderer({pane: name});
 			this._paneRenderers[name] = renderer;
 		}
@@ -1388,17 +1410,17 @@ export class LeafletMap extends Evented {
 	 * Adds a new `Handler` to the map, given its name and constructor function.
 	 * @category Other Methods
 	 * @param {string} name
-	 * @param {Function} HandlerClass
+	 * @param {new (map: LeafletMap) => Handler} HandlerClass
 	 * @returns {this}
 	 */
 	addHandler(name, HandlerClass) {
 		if (!HandlerClass) { return this; }
 
-		const handler = this[name] = new HandlerClass(this);
+		const handler = /** @type {any} */ (this)[name] = new HandlerClass(this);
 
 		this._handlers.push(handler);
 
-		if (this.options[name]) {
+		if (/** @type {any} */ (this.options)[name]) {
 			handler.enable();
 		}
 
@@ -1432,8 +1454,8 @@ export class LeafletMap extends Evented {
 		this._mapPane.remove();
 
 		this._controlContainer.remove();
-		delete this._controlCorners;
-		delete this._controlContainer;
+		delete /** @type {any} */ (this)._controlCorners;
+		delete /** @type {any} */ (this)._controlContainer;
 		cancelAnimationFrame(this._resizeRequest);
 
 		for (const handler of this._handlers) {
@@ -1457,7 +1479,7 @@ export class LeafletMap extends Evented {
 
 		this._layers = {};
 		this._panes = {};
-		delete this._mapPane;
+		delete /** @type {any} */ (this)._mapPane;
 		delete this._renderer;
 
 		return this;
@@ -1541,12 +1563,12 @@ export class LeafletMap extends Evented {
 	 * If `inside` (optional) is set to `true`, the method instead returns the minimum zoom
 	 * level on which the map view fits into the given bounds in its entirety.
 	 * @category Methods for Getting Map State
-	 * @param {LatLngBounds} bounds
+	 * @param {LatLngBoundsExpression} bounds
 	 * @param {boolean} [inside]
-	 * @param {Point} [padding]
+	 * @param {PointExpression} [padding]
 	 * @returns {number}
 	 */
-	getBoundsZoom(bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
+	getBoundsZoom(bounds, inside, padding) {
 		bounds = new LatLngBounds(bounds);
 		padding = new Point(padding ?? [0, 0]);
 
@@ -1579,6 +1601,7 @@ export class LeafletMap extends Evented {
 	 */
 	getSize() {
 		if (!this._size || this._sizeChanged) {
+			/** @type {Point} */
 			this._size = new Point(
 				this._container.clientWidth || 0,
 				this._container.clientHeight || 0);
@@ -1617,7 +1640,7 @@ export class LeafletMap extends Evented {
 	 * If `zoom` is omitted, the map's current zoom level is used.
 	 * @category Methods for Getting Map State
 	 * @param {number} [zoom]
-	 * @returns {Bounds}
+	 * @returns {Bounds | null}
 	 */
 	getPixelWorldBounds(zoom) {
 		return this.options.crs.getProjectedBounds(zoom ?? this.getZoom());
@@ -1636,7 +1659,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Returns a plain object containing the names of all [panes](#map-pane) as keys and the panes as values.
 	 * @category Other Methods
-	 * @returns {object}
+	 * @returns {{[name: string]: HTMLElement}}
 	 */
 	getPanes() {
 		return this._panes;
@@ -1686,7 +1709,7 @@ export class LeafletMap extends Evented {
 	 * Projects a geographical coordinate `LatLng` according to the projection of the map's CRS, then scales it
 	 * according to `zoom` and the CRS's `Transformation`. The result is pixel coordinate relative to the CRS origin.
 	 * @category Conversion Methods
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @param {number} [zoom]
 	 * @returns {Point}
 	 */
@@ -1698,7 +1721,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Inverse of [`project`](#map-project).
 	 * @category Conversion Methods
-	 * @param {Point} point
+	 * @param {PointExpression} point
 	 * @param {number} [zoom]
 	 * @returns {LatLng}
 	 */
@@ -1711,7 +1734,7 @@ export class LeafletMap extends Evented {
 	 * Given a pixel coordinate relative to the [origin pixel](#map-getpixelorigin), returns
 	 * the corresponding geographical coordinate (for the current zoom level).
 	 * @category Conversion Methods
-	 * @param {Point} point
+	 * @param {PointExpression} point
 	 * @returns {LatLng}
 	 */
 	layerPointToLatLng(point) {
@@ -1723,7 +1746,7 @@ export class LeafletMap extends Evented {
 	 * Given a geographical coordinate, returns the corresponding pixel
 	 * coordinate relative to the [origin pixel](#map-getpixelorigin).
 	 * @category Conversion Methods
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @returns {Point}
 	 */
 	latLngToLayerPoint(latlng) {
@@ -1735,7 +1758,7 @@ export class LeafletMap extends Evented {
 	 * and `wrapLng` properties, if they are outside the CRS's bounds. By default this means longitude
 	 * is wrapped around the dateline so its value is between -180 and +180 degrees.
 	 * @category Conversion Methods
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @returns {LatLng}
 	 */
 	wrapLatLng(latlng) {
@@ -1747,7 +1770,7 @@ export class LeafletMap extends Evented {
 	 * CRS's bounds. By default this means the center longitude is wrapped around the dateline so its value
 	 * is between -180 and +180 degrees, and the majority of the bounds overlaps the CRS's bounds.
 	 * @category Conversion Methods
-	 * @param {LatLngBounds} bounds
+	 * @param {LatLngBoundsExpression} bounds
 	 * @returns {LatLngBounds}
 	 */
 	wrapLatLngBounds(bounds) {
@@ -1758,8 +1781,8 @@ export class LeafletMap extends Evented {
 	 * Returns the distance between two geographical coordinates according
 	 * to the map's CRS. By default this measures distance in meters.
 	 * @category Conversion Methods
-	 * @param {LatLng} latlng1
-	 * @param {LatLng} latlng2
+	 * @param {LatLngExpression} latlng1
+	 * @param {LatLngExpression} latlng2
 	 * @returns {number}
 	 */
 	distance(latlng1, latlng2) {
@@ -1770,10 +1793,10 @@ export class LeafletMap extends Evented {
 	 * Given a pixel coordinate relative to the map container, returns the corresponding
 	 * pixel coordinate relative to the [origin pixel](#map-getpixelorigin).
 	 * @category Conversion Methods
-	 * @param {Point} point
+	 * @param {PointExpression} point
 	 * @returns {Point}
 	 */
-	containerPointToLayerPoint(point) { // (Point)
+	containerPointToLayerPoint(point) {
 		return new Point(point).subtract(this._getMapPanePos());
 	}
 
@@ -1781,10 +1804,10 @@ export class LeafletMap extends Evented {
 	 * Given a pixel coordinate relative to the [origin pixel](#map-getpixelorigin),
 	 * returns the corresponding pixel coordinate relative to the map container.
 	 * @category Conversion Methods
-	 * @param {Point} point
+	 * @param {PointExpression} point
 	 * @returns {Point}
 	 */
-	layerPointToContainerPoint(point) { // (Point)
+	layerPointToContainerPoint(point) {
 		return new Point(point).add(this._getMapPanePos());
 	}
 
@@ -1792,7 +1815,7 @@ export class LeafletMap extends Evented {
 	 * Given a pixel coordinate relative to the map container, returns the corresponding
 	 * geographical coordinate (for the current zoom level).
 	 * @category Conversion Methods
-	 * @param {Point} point
+	 * @param {PointExpression} point
 	 * @returns {LatLng}
 	 */
 	containerPointToLatLng(point) {
@@ -1803,7 +1826,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * Given a geographical coordinate, returns the corresponding pixel coordinate relative to the map container.
 	 * @category Conversion Methods
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @returns {Point}
 	 */
 	latLngToContainerPoint(latlng) {
@@ -1814,7 +1837,7 @@ export class LeafletMap extends Evented {
 	 * Given a PointerEvent object, returns the pixel coordinate relative
 	 * to the map container where the event took place.
 	 * @category Conversion Methods
-	 * @param {LeafletPointerEvent} ev
+	 * @param {PointerEvent | MouseEvent} e
 	 * @returns {Point}
 	 */
 	pointerEventToContainerPoint(e) {
@@ -1825,7 +1848,7 @@ export class LeafletMap extends Evented {
 	 * Given a PointerEvent object, returns the pixel coordinate relative to
 	 * the [origin pixel](#map-getpixelorigin) where the event took place.
 	 * @category Conversion Methods
-	 * @param {LeafletPointerEvent} ev
+	 * @param {PointerEvent | MouseEvent} e
 	 * @returns {Point}
 	 */
 	pointerEventToLayerPoint(e) {
@@ -1835,24 +1858,28 @@ export class LeafletMap extends Evented {
 	/**
 	 * Given a PointerEvent object, returns geographical coordinate where the event took place.
 	 * @category Conversion Methods
-	 * @param {LeafletPointerEvent} ev
+	 * @param {PointerEvent | MouseEvent} e
 	 * @returns {LatLng}
 	 */
-	pointerEventToLatLng(e) { // (PointerEvent)
+	pointerEventToLatLng(e) {
 		return this.layerPointToLatLng(this.pointerEventToLayerPoint(e));
 	}
 
 
 	// map initialization methods
 
+	/** @param {string | HTMLElement} id */
 	_initContainer(id) {
-		const container = this._container = DomUtil.get(id);
+		/** @type {(HTMLElement & {_leaflet_id?: number}) | null} */
+		const container = DomUtil.get(id);
 
 		if (!container) {
 			throw new Error('Map container not found.');
 		} else if (container._leaflet_id) {
 			throw new Error('Map container is already initialized.');
 		}
+		/** @type {HTMLElement & {_leaflet_id?: number}} */
+		this._container = container;
 
 		PointerEvents.enablePointerDetection(container);
 		DomEvent.on(container, 'scroll', this._onScroll, this);
@@ -1884,53 +1911,39 @@ export class LeafletMap extends Evented {
 	}
 
 	_initControlPos() {
-		const corners = this._controlCorners = {},
+		/** @type {{[position: string]: HTMLElement}} */
+		const corners = {},
 		l = 'leaflet-',
-		container = this._controlContainer = DomUtil.create('div', `${l}control-container`, this._container);
+		container = DomUtil.create('div', `${l}control-container`, this._container);
 
 		for (const v of ['top', 'bottom']) {
 			for (const h of ['left', 'right']) {
 				corners[v + h] = DomUtil.create('div', `${l + v} ${l}${h}`, container);
 			}
 		}
+		/** @type {{[position: string]: HTMLElement}} */
+		this._controlCorners = corners;
+		/** @type {HTMLElement} */
+		this._controlContainer = container;
 	}
 
 	_initPanes() {
-		const panes = this._panes = {};
+		/** @type {{[name: string]: HTMLElement}} */
+		const panes = {};
+		/** @type {{[name: string]: HTMLElement}} */
+		this._panes = panes;
+		/** @type {{[pane: string]: Renderer}} */
 		this._paneRenderers = {};
 
-		// @section
-		//
-		// Panes are DOM elements used to control the ordering of layers on the map. You
-		// can access panes with [`map.getPane`](#map-getpane) or
-		// [`map.getPanes`](#map-getpanes) methods. New panes can be created with the
-		// [`map.createPane`](#map-createpane) method.
-		//
-		// Every map has the following default panes that differ only in zIndex.
-		//
-		// @pane mapPane: HTMLElement = 'auto'
-		// Pane that contains all other map panes
-
+		/** @type {HTMLElement} */
 		this._mapPane = this.createPane('mapPane', this._container);
 		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
-		// @pane tilePane: HTMLElement = 200
-		// Pane for `GridLayer`s and `TileLayer`s
 		this.createPane('tilePane');
-		// @pane overlayPane: HTMLElement = 400
-		// Pane for vectors (`Path`s, like `Polyline`s and `Polygon`s), `ImageOverlay`s and `VideoOverlay`s
 		this.createPane('overlayPane');
-		// @pane shadowPane: HTMLElement = 500
-		// Pane for overlay shadows (e.g. `Marker` shadows)
 		this.createPane('shadowPane');
-		// @pane markerPane: HTMLElement = 600
-		// Pane for `Icon`s of `Marker`s
 		this.createPane('markerPane');
-		// @pane tooltipPane: HTMLElement = 650
-		// Pane for `Tooltip`s.
 		this.createPane('tooltipPane');
-		// @pane popupPane: HTMLElement = 700
-		// Pane for `Popup`s.
 		this.createPane('popupPane');
 
 		if (!this.options.markerZoomAnimation) {
@@ -1941,6 +1954,11 @@ export class LeafletMap extends Evented {
 
 
 	// private methods that modify map state
+	/**
+	 * @param {LatLng} center
+	 * @param {number} zoom
+	 * @param {boolean} [noMoveStart]
+	 */
 	_resetView(center, zoom, noMoveStart) {
 		const loading = !this._loaded;
 		this._loaded = true;
@@ -1953,6 +1971,7 @@ export class LeafletMap extends Evented {
 
 		const zoomChanged = this._zoom !== zoom;
 		if (zoomChanged && !loading) {
+			/** @type {number} */
 			this._instantZoomEnd = Date.now() + zoomAnimDuration;
 		}
 		this
@@ -1967,6 +1986,10 @@ export class LeafletMap extends Evented {
 		}
 	}
 
+	/**
+	 * @param {boolean} zoomChanged
+	 * @param {boolean} [noMoveStart]
+	 */
 	_moveStart(zoomChanged, noMoveStart) {
 		if (zoomChanged) {
 			this.fire('zoomstart');
@@ -1977,6 +2000,12 @@ export class LeafletMap extends Evented {
 		return this;
 	}
 
+	/**
+	 * @param {LatLng} center
+	 * @param {number} [zoom]
+	 * @param {{flyTo?: boolean, pinch?: boolean}} [data]
+	 * @param {boolean} [suppressEvent]
+	 */
 	_move(center, zoom, data, suppressEvent) {
 		if (zoom === undefined) {
 			zoom = this._zoom;
@@ -1984,8 +2013,11 @@ export class LeafletMap extends Evented {
 		const zoomChanged = this._zoom !== zoom;
 
 		this._zoom = zoom;
+		/** @type {LatLng | null} */
 		this._lastCenter = center;
+		/** @type {Point} */
 		this._lastCenterPanePos = this._getMapPanePos();
+		/** @type {Point} */
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
 		if (!suppressEvent) {
@@ -2000,6 +2032,7 @@ export class LeafletMap extends Evented {
 		return this;
 	}
 
+	/** @param {boolean} zoomChanged */
 	_moveEnd(zoomChanged) {
 		if (zoomChanged) {
 			this.fire('zoomend');
@@ -2015,6 +2048,7 @@ export class LeafletMap extends Evented {
 		return this;
 	}
 
+	/** @param {PointExpression} offset */
 	_rawPanBy(offset) {
 		DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	}
@@ -2025,7 +2059,7 @@ export class LeafletMap extends Evented {
 		// an infinite CRS has no world to wrap around, and no pixel world bounds either
 		if (!this._loaded || !this.options.worldCopyJump || this.options.crs.infinite) { return pos; }
 
-		const width = this.getPixelWorldBounds().getSize().x,
+		const width = /** @type {Bounds} */ (this.getPixelWorldBounds()).getSize().x,
 		x = pos.x - width * Math.round((pos.x + this.latLngToLayerPoint([0, 0]).x - this.getSize().x / 2) / width),
 		worlds = Math.round((x - this._getMapPanePos().x) / width);
 
@@ -2039,6 +2073,7 @@ export class LeafletMap extends Evented {
 		return pos;
 	}
 
+	/** @param {Layer | Layer[]} [layers] */
 	_addLayers(layers) {
 		layers = layers ? (Array.isArray(layers) ? layers : [layers]) : [];
 
@@ -2047,13 +2082,15 @@ export class LeafletMap extends Evented {
 		}
 	}
 
+	/** @param {GridLayer} layer */
 	_addZoomLimit(layer) {
-		if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
+		if (!isNaN(/** @type {number} */ (layer.options.maxZoom)) || !isNaN(layer.options.minZoom)) {
 			this._zoomBoundLayers[Util.stamp(layer)] = layer;
 			this._updateZoomLevels();
 		}
 	}
 
+	/** @param {GridLayer} layer */
 	_removeZoomLimit(layer) {
 		const id = Util.stamp(layer);
 
@@ -2095,7 +2132,7 @@ export class LeafletMap extends Evented {
 
 	_panInsideMaxBounds() {
 		if (!this._enforcingBounds) {
-			this.panInsideBounds(this.options.maxBounds);
+			this.panInsideBounds(/** @type {LatLngBoundsExpression} */ (this.options.maxBounds));
 		}
 	}
 
@@ -2106,8 +2143,9 @@ export class LeafletMap extends Evented {
 	}
 
 	// DOM event handling
+	/** @param {boolean} [remove] */
 	_initEvents(remove) {
-		/** @type {{[id: number]: Evented}} */
+		/** @type {{[id: number]: DOMEventTarget}} */
 		this._targets = {};
 		this._targets[Util.stamp(this._container)] = this;
 
@@ -2119,6 +2157,7 @@ export class LeafletMap extends Evented {
 		if (this.options.trackResize) {
 			if (!remove) {
 				if (!this._resizeObserver) {
+					/** @type {ResizeObserver} */
 					this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 				}
 				this._resizeObserver.observe(this._container);
@@ -2128,12 +2167,17 @@ export class LeafletMap extends Evented {
 		}
 
 		if (this.options.transform3DLimit) {
-			(remove ? this.off : this.on).call(this, 'moveend', this._onMoveEnd);
+			if (remove) {
+				this.off('moveend', this._onMoveEnd);
+			} else {
+				this.on('moveend', this._onMoveEnd);
+			}
 		}
 	}
 
 	_onResize() {
 		cancelAnimationFrame(this._resizeRequest);
+		/** @type {number} */
 		this._resizeRequest = requestAnimationFrame(() => { this.invalidateSize({debounceMoveend: true}); });
 	}
 
@@ -2151,10 +2195,15 @@ export class LeafletMap extends Evented {
 		}
 	}
 
+	/**
+	 * @param {Event} e
+	 * @param {string} type
+	 */
 	_findEventTargets(e, type) {
-		let targets = [],
-		target,
-		src = e.target,
+		/** @type {DOMEventTarget[]} */
+		let targets = [];
+		let target,
+		src = /** @type {Node | null} */ (e.target),
 		dragging = false;
 		const isHover = type === 'pointerout' || type === 'pointerover';
 
@@ -2166,7 +2215,7 @@ export class LeafletMap extends Evented {
 				break;
 			}
 			if (target && target.listens(type, true)) {
-				if (isHover && !DomEvent.isExternalTarget(src, e)) { break; }
+				if (isHover && !DomEvent.isExternalTarget(src, /** @type {MouseEvent} */ (e))) { break; }
 				targets.push(target);
 				if (isHover) { break; }
 			}
@@ -2179,15 +2228,17 @@ export class LeafletMap extends Evented {
 		return targets;
 	}
 
+	/** @param {Node | null} el */
 	_isClickDisabled(el) {
 		while (el && el !== this._container) {
-			if (el['_leaflet_disable_click'] || !el.parentNode) { return true; }
+			if (/** @type {any} */ (el)['_leaflet_disable_click'] || !el.parentNode) { return true; }
 			el = el.parentNode;
 		}
 	}
 
+	/** @param {Event} e */
 	_handleDOMEvent(e) {
-		const el = e.target;
+		const el = /** @type {Element & {_leaflet_disable_events?: boolean}} */ (e.target);
 		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
 			return;
 		}
@@ -2197,6 +2248,11 @@ export class LeafletMap extends Evented {
 
 	static _pointerEvents = ['click', 'dblclick', 'pointerover', 'pointerout', 'contextmenu'];
 
+	/**
+	 * @param {Event} e
+	 * @param {string} type
+	 * @param {DOMEventTarget[] | false} [canvasTargets]
+	 */
 	_fireDOMEvent(e, type, canvasTargets) {
 
 		if (type === 'click') {
@@ -2220,16 +2276,20 @@ export class LeafletMap extends Evented {
 		}
 
 		const target = targets[0];
+		/**
+		 * @type {{originalEvent: Event & {_stopped?: boolean},
+		 *    containerPoint?: Point, layerPoint?: Point, latlng?: LatLng}}
+		 */
 		const data = {
 			originalEvent: e
 		};
 
 		if (e.type !== 'keydown' && e.type !== 'keyup') {
-			const isMarker = target.getLatLng && (!target._pxRadius || target._pxRadius <= 10);
-			data.containerPoint = isMarker ?
-				this.latLngToContainerPoint(target.getLatLng()) : this.pointerEventToContainerPoint(e);
+			const latlng = (!target._pxRadius || target._pxRadius <= 10) && target.getLatLng?.();
+			data.containerPoint = latlng ?
+				this.latLngToContainerPoint(latlng) : this.pointerEventToContainerPoint(/** @type {MouseEvent} */ (e));
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
-			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
+			data.latlng = latlng || this.layerPointToLatLng(data.layerPoint);
 		}
 
 		for (const t of targets) {
@@ -2241,6 +2301,7 @@ export class LeafletMap extends Evented {
 		}
 	}
 
+	/** @param {DOMEventTarget} obj */
 	_draggableMoved(obj) {
 		obj = obj.dragging?.enabled() ? obj : this;
 		return obj.dragging?.moved() || this.boxZoom?.moved();
@@ -2250,8 +2311,8 @@ export class LeafletMap extends Evented {
 	 * Runs the given function `fn` when the map gets initialized with a view (center and zoom) and at least
 	 * one layer, or immediately if it's already initialized, optionally passing a function context.
 	 * @category Other Methods
-	 * @param {Function} fn
-	 * @param {object} [context]
+	 * @param {(e: {target: LeafletMap}) => void} callback
+	 * @param {any} [context]
 	 * @returns {this}
 	 */
 	whenReady(callback, context) {
@@ -2270,6 +2331,10 @@ export class LeafletMap extends Evented {
 		return DomUtil.getPosition(this._mapPane);
 	}
 
+	/**
+	 * @param {LatLngExpression} [center]
+	 * @param {number} [zoom]
+	 */
 	_getTopLeftPoint(center, zoom) {
 		const pixelOrigin = center && zoom !== undefined ?
 			this._getNewPixelOrigin(center, zoom) :
@@ -2277,11 +2342,20 @@ export class LeafletMap extends Evented {
 		return pixelOrigin.subtract(this._getMapPanePos());
 	}
 
+	/**
+	 * @param {LatLngExpression} center
+	 * @param {number} [zoom]
+	 */
 	_getNewPixelOrigin(center, zoom) {
 		const viewHalf = this.getSize()._divideBy(2);
 		return this.project(center, zoom)._subtract(viewHalf)._add(this._getMapPanePos())._round();
 	}
 
+	/**
+	 * @param {LatLngExpression} latlng
+	 * @param {number} zoom
+	 * @param {LatLngExpression} center
+	 */
 	_latLngToNewLayerPoint(latlng, zoom, center) {
 		const topLeft = this._getNewPixelOrigin(center, zoom);
 		return this.project(latlng, zoom)._subtract(topLeft);
@@ -2293,11 +2367,17 @@ export class LeafletMap extends Evented {
 	}
 
 	// offset of the specified place to the current center in pixels
+	/** @param {LatLngExpression} latlng */
 	_getCenterOffset(latlng) {
 		return this.latLngToLayerPoint(latlng)._round()._subtract(this._getCenterLayerPoint());
 	}
 
 	// adjust center for view to get inside bounds
+	/**
+	 * @param {LatLng} center
+	 * @param {number} zoom
+	 * @param {LatLngBoundsExpression | null} [bounds]
+	 */
 	_limitCenter(center, zoom, bounds) {
 
 		if (!bounds) { return center; }
@@ -2323,6 +2403,10 @@ export class LeafletMap extends Evented {
 	}
 
 	// adjust offset for view to get inside bounds
+	/**
+	 * @param {Point} offset
+	 * @param {LatLngBoundsExpression | null} [bounds]
+	 */
 	_limitOffset(offset, bounds) {
 		if (!bounds) { return offset; }
 
@@ -2333,10 +2417,17 @@ export class LeafletMap extends Evented {
 	}
 
 	// returns offset needed for pxBounds to get inside maxBounds at a specified zoom
+	/**
+	 * @param {Bounds} pxBounds
+	 * @param {LatLngBoundsExpression} maxBounds
+	 * @param {number} [zoom]
+	 */
 	_getBoundsOffset(pxBounds, maxBounds, zoom) {
-		const projectedMaxBounds = new Bounds(
-			this.project(maxBounds.getNorthEast(), zoom),
-			this.project(maxBounds.getSouthWest(), zoom)
+		// `setMaxBounds` makes the option a `LatLngBounds`
+		const bounds = /** @type {LatLngBounds} */ (maxBounds),
+		projectedMaxBounds = new Bounds(
+			this.project(bounds.getNorthEast(), zoom),
+			this.project(bounds.getSouthWest(), zoom)
 		),
 		minOffset = projectedMaxBounds.min.subtract(pxBounds.min),
 		maxOffset = projectedMaxBounds.max.subtract(pxBounds.max),
@@ -2347,12 +2438,17 @@ export class LeafletMap extends Evented {
 		return new Point(dx, dy);
 	}
 
+	/**
+	 * @param {number} left
+	 * @param {number} right
+	 */
 	_rebound(left, right) {
 		return left + right > 0 ?
 			Math.round(left - right) / 2 :
 			Math.max(0, Math.ceil(left)) - Math.max(0, Math.floor(right));
 	}
 
+	/** @param {number} zoom */
 	_limitZoom(zoom) {
 		const min = this.getMinZoom(),
 		max = this.getMaxZoom(),
@@ -2373,6 +2469,10 @@ export class LeafletMap extends Evented {
 		this.fire('moveend');
 	}
 
+	/**
+	 * @param {LatLng} center
+	 * @param {PanOptions} [options]
+	 */
 	_tryAnimatedPan(center, options) {
 		// difference between the new and current centers in pixels
 		const offset = this._getCenterOffset(center)._trunc();
@@ -2386,6 +2486,7 @@ export class LeafletMap extends Evented {
 	}
 
 	_createAnimProxy() {
+		/** @type {HTMLElement} */
 		this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
 		this._panes.mapPane.appendChild(this._proxy);
 
@@ -2395,6 +2496,7 @@ export class LeafletMap extends Evented {
 		DomEvent.on(this._proxy, 'transitionend', this._catchTransitionEnd, this);
 	}
 
+	/** @param {ZoomAnimEvent} e */
 	_animateProxyZoom(e) {
 		const transform = this._proxy.style.transform;
 
@@ -2423,6 +2525,7 @@ export class LeafletMap extends Evented {
 		);
 	}
 
+	/** @param {TransitionEvent} e */
 	_catchTransitionEnd(e) {
 		if (this._animatingZoom && e.propertyName.includes('transform')) {
 			this._onZoomTransitionEnd();
@@ -2439,6 +2542,11 @@ export class LeafletMap extends Evented {
 		return this._animatingZoom || Date.now() < this._instantZoomEnd;
 	}
 
+	/**
+	 * @param {LatLng} center
+	 * @param {number} zoom
+	 * @param {ZoomPanOptions} [options]
+	 */
 	_tryAnimatedZoom(center, zoom, options) {
 
 		if (this._animatingZoom) { return true; }
@@ -2459,8 +2567,9 @@ export class LeafletMap extends Evented {
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
+		/** @type {number} */
 		this._zoomAnimFrame = requestAnimationFrame(() => {
-			this._zoomAnimFrame = null;
+			this._zoomAnimFrame = 0;
 			this
 				._moveStart(true, options.noMoveStart ?? false)
 				._animateZoom(center, zoom, true);
@@ -2469,6 +2578,12 @@ export class LeafletMap extends Evented {
 		return true;
 	}
 
+	/**
+	 * @param {LatLng} center
+	 * @param {number} zoom
+	 * @param {boolean} [startAnim]
+	 * @param {boolean} [noUpdate]
+	 */
 	_animateZoom(center, zoom, startAnim, noUpdate) {
 		if (!this._mapPane) { return; }
 
@@ -2476,7 +2591,9 @@ export class LeafletMap extends Evented {
 			this._animatingZoom = true;
 
 			// remember what center/zoom to set after animation
+			/** @type {LatLng} */
 			this._animateToCenter = center;
+			/** @type {number} */
 			this._animateToZoom = zoom;
 
 			this._mapPane.classList.add('leaflet-zoom-anim');

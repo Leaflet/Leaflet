@@ -28,8 +28,17 @@ import type {CanvasDefaults, DrawOrder} from './layer/vector/Canvas.js';
 import type {CircleMarker, CircleMarkerDefaults, CircleMarkerEvents} from './layer/vector/CircleMarker.js';
 import type {Path, PathDefaults} from './layer/vector/Path.js';
 import type {Polyline, PolylineDefaults} from './layer/vector/Polyline.js';
-import type {RendererEvents} from './layer/vector/Renderer.js';
-import type {LeafletMap} from './map/Map.js';
+import type {Renderer, RendererEvents} from './layer/vector/Renderer.js';
+import type {AttributionControl} from './control/AttributionControl.js';
+import type {BoxZoomHandler} from './map/handler/BoxZoomHandler.js';
+import type {DoubleClickZoomHandler} from './map/handler/DoubleClickZoomHandler.js';
+import type {DragHandler} from './map/handler/DragHandler.js';
+import type {KeyboardHandler} from './map/handler/KeyboardHandler.js';
+import type {PinchZoomHandler} from './map/handler/PinchZoomHandler.js';
+import type {ScrollWheelZoomHandler} from './map/handler/ScrollWheelZoomHandler.js';
+import type {TapHoldHandler} from './map/handler/TapHoldHandler.js';
+import type {LeafletMap, MapDefaults, MapInteractionEvents, MapLayerEvents, MapLocationEvents, MapOtherEvents,
+	MapPopupEvents, MapStateEvents, MapTooltipEvents} from './map/Map.js';
 
 export type {Listener, ListenerMap} from './core/Events.js';
 
@@ -223,6 +232,141 @@ export interface WMSParams extends WMSParamsDefaults {
 	[key: string]: unknown;
 }
 export interface WMSTileLayerOptions extends TileLayerOptions, WMSTileLayerDefaults, Partial<WMSParamsDefaults> {}
+
+export interface MapOptions extends MapDefaults {
+	/** @deprecated Use `pinchZoom`. */
+	touchZoom?: boolean | 'center';
+}
+export interface MapEventMap extends MapLayerEvents, MapPopupEvents, MapTooltipEvents, MapStateEvents,
+	MapLocationEvents, MapInteractionEvents, MapOtherEvents {}
+
+/** Options for the `Map` methods that change the zoom level. */
+export interface ZoomOptions {
+	/**
+	 * If not specified, zoom animation will happen if the zoom origin is inside the current view, and if the user
+	 * prefers reduced motion, only when zooming by at most one level. If `true`, the map will attempt animating
+	 * zoom disregarding where zoom origin is and the user's reduced motion preference. Setting `false` will make it
+	 * always reset the view completely without animation.
+	 */
+	animate?: boolean;
+}
+
+/** Options for the `Map` methods that change the center of the map. */
+export interface PanOptions {
+	/**
+	 * If `true`, panning will always be animated if possible, even if the user prefers reduced motion. If `false`,
+	 * it will not animate panning, either resetting the map view if panning more than a screen away, or just
+	 * setting a new offset for the map pane (except for `panBy` which always does the latter). If not specified,
+	 * panning is animated, except for pans longer than half the map size when the user prefers reduced motion.
+	 */
+	animate?: boolean;
+	/**
+	 * Duration of animated panning, in seconds.
+	 * @default 0.25
+	 */
+	duration?: number;
+	/**
+	 * The curvature factor of panning animation easing (third parameter of the [Cubic Bezier
+	 * curve](https://cubic-bezier.com/)). 1.0 means linear animation, and the smaller this number, the more bowed
+	 * the curve.
+	 * @default 0.25
+	 */
+	easeLinearity?: number;
+	/**
+	 * If `true`, panning won't fire `movestart` event on start (used internally for panning inertia).
+	 * @default false
+	 */
+	noMoveStart?: boolean;
+}
+
+/** Options for the `Map` methods that change both the center and the zoom level. */
+export interface ZoomPanOptions extends ZoomOptions, PanOptions {
+	/** If `true`, the view is reset without animation. */
+	reset?: boolean;
+	/** Options for the zoom part of the change, taking precedence over `animate`. */
+	zoom?: ZoomOptions;
+	/** Options for the pan part of the change, taking precedence over `animate` and `duration`. */
+	pan?: PanOptions;
+}
+
+export interface InvalidateSizeOptions extends ZoomOptions, PanOptions {
+	/**
+	 * If `false`, panning will not occur.
+	 * @default true
+	 */
+	pan?: boolean;
+	/**
+	 * If `true`, it will delay `moveend` event so that it doesn't happen often even if the method is called many
+	 * times in a row.
+	 * @default false
+	 */
+	debounceMoveend?: boolean;
+}
+
+export interface PaddingOptions {
+	/**
+	 * Sets the amount of padding in the top left corner of a map container that shouldn't be accounted for when
+	 * setting the view to fit bounds. Useful if you have some control overlays on the map like a sidebar and you
+	 * don't want them to obscure objects you're zooming to.
+	 * @default [0, 0]
+	 */
+	paddingTopLeft?: PointExpression;
+	/**
+	 * The same for the bottom right corner of the map.
+	 * @default [0, 0]
+	 */
+	paddingBottomRight?: PointExpression;
+	/**
+	 * Equivalent of setting both top left and bottom right padding to the same value.
+	 * @default [0, 0]
+	 */
+	padding?: PointExpression;
+}
+
+export interface PanInsideOptions extends PanOptions, PaddingOptions {}
+
+export interface FitBoundsOptions extends ZoomPanOptions, PaddingOptions {
+	/** The maximum possible zoom to use. */
+	maxZoom?: number;
+}
+
+/** Options for `Map`'s geolocation methods. */
+export interface LocateOptions {
+	/**
+	 * If `true`, starts continuous watching of location changes (instead of detecting it once) using W3C
+	 * `watchPosition` method. You can later stop watching using `map.stopLocate()` method.
+	 * @default false
+	 */
+	watch?: boolean;
+	/**
+	 * If `true`, automatically sets the map view to the user location with respect to detection accuracy, or to
+	 * world view if geolocation failed.
+	 * @default false
+	 */
+	setView?: boolean;
+	/**
+	 * The maximum zoom for automatic view setting when using `setView` option.
+	 * @default Infinity
+	 */
+	maxZoom?: number;
+	/**
+	 * Number of milliseconds to wait for a response from geolocation before firing a `locationerror` event.
+	 * @default 10000
+	 */
+	timeout?: number;
+	/**
+	 * Maximum age of detected location. If less than this amount of milliseconds passed since last geolocation
+	 * response, `locate` will return a cached location.
+	 * @default 0
+	 */
+	maximumAge?: number;
+	/**
+	 * Enables high accuracy, see [description in the W3C
+	 * spec](https://w3c.github.io/geolocation-api/#enablehighaccuracy-member).
+	 * @default false
+	 */
+	enableHighAccuracy?: boolean;
+}
 
 /** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
 export type PointExpression = Point | [number, number] | {x: number, y: number};
@@ -544,6 +688,51 @@ declare module './layer/vector/CircleMarker.js' {
 declare module './map/Map.js' {
 	interface LeafletMap {
 		_popup?: Popup; // the last popup opened with `openOn`, set by `Popup`
+		_renderer?: Renderer; // the default renderer, created lazily by `getRenderer`
+
+		/**
+		 * The attribution control (only available if the [`attributionControl` option](#map-attributioncontrol)
+		 * was `true` when creating the map).
+		 * @category Controls
+		 */
+		attributionControl?: AttributionControl;
+
+		// created by `addHandler` in the constructor
+		/**
+		 * Box (shift-drag with pointer) zoom handler.
+		 * @category Handlers
+		 */
+		boxZoom: BoxZoomHandler;
+		/**
+		 * Double click zoom handler.
+		 * @category Handlers
+		 */
+		doubleClickZoom: DoubleClickZoomHandler;
+		/**
+		 * Map dragging handler.
+		 * @category Handlers
+		 */
+		dragging: DragHandler;
+		/**
+		 * Keyboard navigation handler.
+		 * @category Handlers
+		 */
+		keyboard: KeyboardHandler;
+		/**
+		 * Scroll wheel zoom handler.
+		 * @category Handlers
+		 */
+		scrollWheelZoom: ScrollWheelZoomHandler;
+		/**
+		 * Long tap handler to simulate `contextmenu` event (useful in mobile Safari).
+		 * @category Handlers
+		 */
+		tapHold: TapHoldHandler;
+		/**
+		 * Pinch zoom handler.
+		 * @category Handlers
+		 */
+		pinchZoom: PinchZoomHandler;
 	}
 }
 
