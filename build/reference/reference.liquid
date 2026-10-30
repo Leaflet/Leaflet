@@ -1,5 +1,6 @@
 {%- for ns in namespaces %}
-<h2 id='{{ ns.id }}'>{{ ns.name | escape }}</h2>
+<article id='{{ ns.id }}'>
+<h2><a class='permalink' href='#{{ ns.id }}' aria-label='Permalink'></a>{{ ns.name | escape }}</h2>
 {{ ns.comments | markdown: true }}
 {%- for ss in ns.supersections %}{% render 'supersection', ss: ss, columns: columns %}{% endfor %}
 {%- for mini in ns.miniclasses %}
@@ -7,4 +8,5 @@
 {{ mini.comments | markdown: true }}
 {%- for ss in mini.supersections %}{% render 'supersection', ss: ss, columns: columns %}{% endfor %}
 {%- endfor %}
+</article>
 {%- endfor %}

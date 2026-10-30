@@ -7,8 +7,13 @@ h2 {
     margin-top: 2em;
 }
 
-/* class headings are sticky, so a linked one scrolls to the very top to cover the one stuck there */
-#toc ~ h2 {
+#toc ~ article > h2 {
+    margin-top: 2em;
+}
+
+/* class headings are sticky within their article, so a linked one scrolls to the very top to cover the one stuck
+   there; the id is on the article since browsers scroll a sticky element to where it's stuck, e.g. its article's end */
+#toc ~ article {
     scroll-margin-top: -5rem;
 }
 
