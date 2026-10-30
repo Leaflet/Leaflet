@@ -79,7 +79,7 @@ export class TapHoldHandler extends Handler {
 	 * @param {PointerEvent} e
 	 */
 	_simulateEvent(type, e) {
-		const simulatedEvent = /** @type {MouseEvent & {_simulated?: boolean}} */ (new MouseEvent(type, {
+		const simulatedEvent = new MouseEvent(type, {
 			bubbles: true,
 			cancelable: true,
 			view: window,
@@ -90,9 +90,7 @@ export class TapHoldHandler extends Handler {
 			clientY: e.clientY,
 			// button: 2,
 			// buttons: 2
-		}));
-
-		simulatedEvent._simulated = true;
+		});
 
 		/** @type {EventTarget} */ (e.target).dispatchEvent(simulatedEvent);
 	}

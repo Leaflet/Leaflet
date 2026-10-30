@@ -113,8 +113,8 @@ export class LayersControl extends Control {
 	constructor(baseLayers, overlays, options) {
 		super(options);
 
-		/** @type {Array<HTMLInputElement & {_layer: Layer}>} */
-		this._layerControlInputs = [];
+		/** @type {Map<HTMLInputElement, Layer>} */
+		this._layerControlInputs = new Map();
 		/** @type {LayersControlEntry[]} */
 		this._layers = [];
 		this._lastZIndex = 0;
@@ -341,7 +341,7 @@ export class LayersControl extends Control {
 		this._baseLayersList.replaceChildren();
 		this._overlaysList.replaceChildren();
 
-		this._layerControlInputs = [];
+		this._layerControlInputs.clear();
 		let baseLayersPresent, overlaysPresent, baseLayersCount = 0;
 
 		for (const obj of this._layers) {
@@ -384,7 +384,7 @@ export class LayersControl extends Control {
 		const label = document.createElement('label'),
 		checked = this._map.hasLayer(obj.layer);
 
-		const input = /** @type {HTMLInputElement & {_layer: Layer}} */ (document.createElement('input'));
+		const input = document.createElement('input');
 		input.type = obj.overlay ? 'checkbox' : 'radio';
 		input.className = 'leaflet-control-layers-selector';
 		input.defaultChecked = checked;
@@ -392,8 +392,7 @@ export class LayersControl extends Control {
 			input.name = `leaflet-base-layers_${Util.stamp(this)}`;
 		}
 
-		this._layerControlInputs.push(input);
-		input._layer = obj.layer;
+		this._layerControlInputs.set(input, obj.layer);
 
 		DomEvent.on(input, 'click', this._onInputClick, this);
 
@@ -425,8 +424,7 @@ export class LayersControl extends Control {
 		// a layer can be listed under several inputs, so it should be on the map if any of them is checked
 		/** @type {Map<Layer, boolean>} */
 		const checked = new Map();
-		for (const input of this._layerControlInputs) {
-			const layer = input._layer;
+		for (const [input, layer] of this._layerControlInputs) {
 			checked.set(layer, checked.get(layer) || input.checked);
 		}
 
@@ -464,11 +462,10 @@ export class LayersControl extends Control {
 	}
 
 	_checkDisabledLayers() {
-		const inputs = this._layerControlInputs,
-		zoom = this._map.getZoom();
+		const zoom = this._map.getZoom();
 
-		for (const input of inputs) {
-			const options = /** @type {{minZoom?: number, maxZoom?: number}} */ (input._layer.options);
+		for (const [input, layer] of this._layerControlInputs) {
+			const options = /** @type {{minZoom?: number, maxZoom?: number}} */ (layer.options);
 			input.disabled = (options.minZoom !== undefined && zoom < options.minZoom) ||
 			                 (options.maxZoom !== undefined && zoom > options.maxZoom);
 

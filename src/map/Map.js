@@ -2242,15 +2242,15 @@ export class LeafletMap extends Evented {
 	/** @param {Node | null} el */
 	_isClickDisabled(el) {
 		while (el && el !== this._container) {
-			if (/** @type {any} */ (el)['_leaflet_disable_click'] || !el.parentNode) { return true; }
+			if (DomEvent.isClickPropagationDisabled(el) || !el.parentNode) { return true; }
 			el = el.parentNode;
 		}
 	}
 
 	/** @param {Event} e */
 	_handleDOMEvent(e) {
-		const el = /** @type {Element & {_leaflet_disable_events?: boolean}} */ (e.target);
-		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
+		const el = /** @type {Element} */ (e.target);
+		if (!this._loaded || DomEvent.isMapHandlingDisabled(el) || e.type === 'click' && this._isClickDisabled(el)) {
 			return;
 		}
 
@@ -2287,10 +2287,7 @@ export class LeafletMap extends Evented {
 		}
 
 		const target = targets[0];
-		/**
-		 * @type {{originalEvent: Event & {_stopped?: boolean},
-		 *    containerPoint?: Point, layerPoint?: Point, latlng?: LatLng}}
-		 */
+		/** @type {{originalEvent: Event, containerPoint?: Point, layerPoint?: Point, latlng?: LatLng}} */
 		const data = {
 			originalEvent: e
 		};
@@ -2307,7 +2304,7 @@ export class LeafletMap extends Evented {
 			t.fire(type, data, true);
 			// bubblingMouseEvents is the Leaflet 1 name of the option
 			const bubbling = t.options.bubblingMouseEvents ?? t.options.bubblingPointerEvents;
-			if (data.originalEvent._stopped ||
+			if (DomEvent.isPropagationStopped(e) ||
 				(bubbling === false && LeafletMap._pointerEvents.includes(type))) { return; }
 		}
 	}

@@ -1,4 +1,4 @@
-import {DomEvent, LeafletMap} from 'leaflet';
+import {LeafletMap} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -110,7 +110,7 @@ describe('ScrollWheelZoomHandler', () => {
 		map.setZoom(zoom, {animate: false});
 		expect(map.getZoom()).to.equal(zoom);
 
-		map.options.wheelPxPerZoomLevel = 30 / DomEvent.getWheelPxFactor();
+		map.options.wheelPxPerZoomLevel = 15 / window.devicePixelRatio;
 		clock.tick(300);
 		UIEventSimulator.fire(wheel, container, scrollIn);
 		clock.tick(100);

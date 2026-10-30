@@ -1,34 +1,10 @@
 // @ts-check
 import {Point} from '../geometry/Point.js';
 import * as Util from '../core/Util.js';
-import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
 import {getScale} from './DomUtil.js';
 
-/**
- * Utility functions to work with the
- * [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.
- * @module DomEvent
- */
-
-/**
- * The event object type for the DOM event type `K`, or for any of them if `K` holds space-separated types. Types
- * that aren't in `HTMLElementEventMap` (custom events) get a plain `Event`.
- * @template {string} K
- * @typedef {K extends `${infer A} ${infer B}` ? DomEventOf<A> | DomEventOf<B> :
- *   K extends keyof HTMLElementEventMap ? HTMLElementEventMap[K] : Event} DomEventOf
- */
-
-/**
- * A listener for the DOM event type `K` (or several space-separated types).
- * @template {string} K
- * @typedef {(e: DomEventOf<K>) => void} DomEventListener
- */
-
-/**
- * An object with DOM event types as keys and listeners as values, as taken by [`DomEvent.on`](#domevent-on).
- * @typedef {{[K in keyof HTMLElementEventMap]?: (e: HTMLElementEventMap[K]) => void} &
- *   {[type: string]: (e: any) => void}} DomEventListenerMap
- */
+// DOM event utilities; `DomEvent.public.js` picks the public ones for the `DomEvent` namespace
+/** @import {DomEventListener, DomEventListenerMap} from './DomEvent.public.js' */
 
 // Inspired by John Resig, Dean Edwards and YUI addEvent implementations.
 
@@ -71,7 +47,9 @@ export function on(obj, types, fn, context) {
 	}
 }
 
-const eventsKey = '_leaflet_events';
+// the wrapped listeners added to each target, by type + listener id + context id
+/** @type {WeakMap<EventTarget, Map<string, any>>} */
+const handlers = new WeakMap();
 
 /**
  * Removes a previously added listener function. Note that if you passed a custom context
@@ -115,7 +93,7 @@ export function off(obj, types, fn, context) {
 
 	if (arguments.length === 1) {
 		batchRemove(obj);
-		delete obj[eventsKey];
+		handlers.delete(obj);
 
 	} else if (types && typeof types === 'object') {
 		for (const [type, listener] of Object.entries(types)) {
@@ -138,11 +116,11 @@ export function off(obj, types, fn, context) {
 const DIGIT_RE = /\d/;
 
 /**
- * @param {EventTarget & {_leaflet_events?: {[id: string]: any}}} obj
+ * @param {EventTarget} obj
  * @param {(type: string) => boolean} [filterFn]
  */
 function batchRemove(obj, filterFn) {
-	for (const id of Object.keys(obj[eventsKey] ?? {})) {
+	for (const id of handlers.get(obj)?.keys() ?? []) {
 		const type = id.split(DIGIT_RE)[0];
 		if (!filterFn || filterFn(type)) {
 			removeOne(obj, type, null, null, id);
@@ -151,7 +129,7 @@ function batchRemove(obj, filterFn) {
 }
 
 /**
- * @param {EventTarget & {_leaflet_events?: {[id: string]: any}}} obj
+ * @param {EventTarget} obj
  * @param {string} type
  * @param {any} fn
  * @param {any} [context]
@@ -159,7 +137,8 @@ function batchRemove(obj, filterFn) {
 function addOne(obj, type, fn, context) {
 	const id = type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
 
-	if (obj[eventsKey] && obj[eventsKey][id]) { return; }
+	let objHandlers = handlers.get(obj);
+	if (objHandlers?.has(id)) { return; }
 
 	/** @type {EventListener | ReturnType<typeof addDoubleTapListener>} */
 	let handler = function (e) {
@@ -172,12 +151,15 @@ function addOne(obj, type, fn, context) {
 		obj.addEventListener(type, handler, type === 'wheel' ? {passive: false} : false);
 	}
 
-	obj[eventsKey] ??= {};
-	obj[eventsKey][id] = handler;
+	if (!objHandlers) {
+		objHandlers = new Map();
+		handlers.set(obj, objHandlers);
+	}
+	objHandlers.set(id, handler);
 }
 
 /**
- * @param {EventTarget & {_leaflet_events?: {[id: string]: any}}} obj
+ * @param {EventTarget} obj
  * @param {string} type
  * @param {any} fn
  * @param {any} context
@@ -185,9 +167,10 @@ function addOne(obj, type, fn, context) {
  */
 function removeOne(obj, type, fn, context, id) {
 	id ??= type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
-	const handler = obj[eventsKey] && obj[eventsKey][id];
+	const objHandlers = handlers.get(obj);
+	const handler = objHandlers?.get(id);
 
-	if (!handler) { return; }
+	if (!objHandlers || !handler) { return; }
 
 	if (type === 'dblclick') {
 		removeDoubleTapListener(/** @type {HTMLElement} */ (obj), handler);
@@ -195,8 +178,18 @@ function removeOne(obj, type, fn, context, id) {
 		obj.removeEventListener(type, handler, false);
 	}
 
-	/** @type {{[id: string]: any}} */ (obj[eventsKey])[id] = null;
+	objHandlers.delete(id);
 }
+
+// native events of Leaflet events that `stopPropagation` was called on, so the map stops firing them on more targets
+/** @type {WeakSet<Event>} */
+const stoppedEvents = new WeakSet();
+
+/** @type {WeakSet<Node>} */
+const clickDisabledElements = new WeakSet();
+
+/** @type {WeakSet<EventTarget>} */
+const mapHandlingDisabled = new WeakSet();
 
 /**
  * Stop the given event from propagation to parent elements. Used inside the listener functions:
@@ -211,7 +204,7 @@ export function stopPropagation(e) {
 	if ('stopPropagation' in e) {
 		e.stopPropagation();
 	} else if (e.originalEvent) {  // In case of Leaflet event.
-		/** @type {Event & {_stopped?: boolean}} */ (e.originalEvent)._stopped = true;
+		stoppedEvents.add(e.originalEvent);
 	}
 }
 
@@ -231,7 +224,40 @@ export function disableScrollPropagation(el) {
  */
 export function disableClickPropagation(el) {
 	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
-	/** @type {any} */ (el)['_leaflet_disable_click'] = true;
+	clickDisabledElements.add(el);
+}
+
+/**
+ * Whether `stopPropagation` was called on a Leaflet event wrapping `e`.
+ * @param {Event} e
+ */
+export function isPropagationStopped(e) {
+	return stoppedEvents.has(e);
+}
+
+/**
+ * Whether `disableClickPropagation` was called on `el`.
+ * @param {Node} el
+ */
+export function isClickPropagationDisabled(el) {
+	return clickDisabledElements.has(el);
+}
+
+/**
+ * Makes the map ignore DOM events on `el`, for elements that handle them and fire them on the map's layers
+ * themselves (like the `Canvas` renderer).
+ * @param {EventTarget} el
+ */
+export function disableMapHandling(el) {
+	mapHandlingDisabled.add(el);
+}
+
+/**
+ * Whether `disableMapHandling` was called on `el`.
+ * @param {EventTarget} el
+ */
+export function isMapHandlingDisabled(el) {
+	return mapHandlingDisabled.has(el);
 }
 
 /**
@@ -361,4 +387,141 @@ function _onDelete(e) {
  */
 export function getPointers() {
 	return [...activePointers.values()];
+}
+// Double tap support for mobile browsers. Most browsers fire native dblclick, with only a few exceptions
+// (see https://github.com/Leaflet/Leaflet/issues/7012#issuecomment-595087386).
+
+/** @param {MouseEvent & {region?: string | null}} ev */
+function makeDblclick(ev) {
+	const init = {
+		// EventInit
+		bubbles: ev.bubbles,
+		cancelable: ev.cancelable,
+		composed: ev.composed,
+
+		// UIEventInit
+		detail: 2,
+		view: ev.view,
+
+		// mouseEventInit
+		screenX: ev.screenX,
+		screenY: ev.screenY,
+		clientX: ev.clientX,
+		clientY: ev.clientY,
+		ctrlKey: ev.ctrlKey,
+		shiftKey: ev.shiftKey,
+		altKey: ev.altKey,
+		metaKey: ev.metaKey,
+		button: ev.button,
+		buttons: ev.buttons,
+		relatedTarget: ev.relatedTarget,
+		region: ev.region,
+	};
+
+	let newEvent;
+	// The `click` event received should be a PointerEvent - but some
+	// Firefox versions still use MouseEvent.
+	if (ev instanceof PointerEvent) {
+		newEvent = new PointerEvent('dblclick', {
+			...init,
+			pointerId: ev.pointerId,
+			width: ev.width,
+			height: ev.height,
+			pressure: ev.pressure,
+			tangentialPressure: ev.tangentialPressure,
+			tiltX: ev.tiltX,
+			tiltY: ev.tiltY,
+			twist: ev.twist,
+			pointerType: ev.pointerType,
+			isPrimary: ev.isPrimary,
+		});
+	} else {
+		newEvent = new MouseEvent('dblclick', init);
+	}
+	return newEvent;
+}
+
+const delay = 200;
+/**
+ * @param {HTMLElement} obj
+ * @param {EventListener} handler
+ */
+function addDoubleTapListener(obj, handler) {
+	// Most browsers handle double tap natively
+	obj.addEventListener('dblclick', handler);
+
+	// On some platforms the browser doesn't fire native dblclicks for touch events.
+	// It seems that in all such cases `detail` property of `click` event is always `1`.
+	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
+	let last = 0,
+	/** @type {number} */
+	detail,
+	/** @type {string} */
+	pointerType;
+
+	// iOS Safari reports `pointerType: 'mouse'` on clicks from touch (WebKit bug 282988), so we take it from the
+	// pointerdown instead; capturing so that it's seen even if a child (e.g. a control) stops its propagation.
+	/** @param {PointerEvent} ev */
+	function onPointerDown(ev) {
+		pointerType = ev.pointerType;
+	}
+
+	/** @param {MouseEvent & {sourceCapabilities?: {firesTouchEvents: boolean} | null}} ev */
+	function simDblclick(ev) {
+		if (ev.detail !== 1) {
+			detail = ev.detail; // keep in sync to avoid false dblclick in some cases
+			return;
+		}
+
+		if (pointerType === 'mouse' ||
+			(ev.sourceCapabilities && !ev.sourceCapabilities.firesTouchEvents)) {
+
+			return;
+		}
+
+		// When clicking on an <input>, the browser generates a click on its
+		// <label> (and vice versa) triggering two clicks in quick succession.
+		// This ignores clicks on elements which are a label with a 'for'
+		// attribute (or children of such a label), but not children of
+		// a <input>.
+		const path = ev.composedPath();
+		if (path.some(el => el instanceof HTMLLabelElement && el.htmlFor) &&
+			!path.some(el => (
+				el instanceof HTMLInputElement ||
+					el instanceof HTMLSelectElement
+			))
+		) {
+			return;
+		}
+
+		const now = Date.now();
+		if (now - last <= delay) {
+			detail++;
+			if (detail === 2) {
+				/** @type {EventTarget} */ (ev.target).dispatchEvent(makeDblclick(ev));
+			}
+		} else {
+			detail = 1;
+		}
+		last = now;
+	}
+
+	obj.addEventListener('pointerdown', onPointerDown, true);
+	obj.addEventListener('click', simDblclick);
+
+	return {
+		dblclick: handler,
+		onPointerDown,
+		simDblclick
+	};
+}
+
+/**
+ * @param {HTMLElement} obj
+ * @param {ReturnType<typeof addDoubleTapListener>} handlers
+ */
+function removeDoubleTapListener(obj, handlers) {
+	obj.removeEventListener('dblclick', handlers.dblclick);
+	obj.removeEventListener('pointerdown', handlers.onPointerDown, true);
+	obj.removeEventListener('click', handlers.simDblclick);
 }

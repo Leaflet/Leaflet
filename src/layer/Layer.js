@@ -9,6 +9,10 @@ import * as Util from '../core/Util.js';
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {OverlayContent} from './DivOverlay.js' */
 
+// the focus listener a tooltip added to each layer element, to remove it when the tooltip is unbound or rebound
+/** @type {WeakMap<Element, () => void>} */
+const focusHandlers = new WeakMap();
+
 /**
  * A set of methods from the Layer base class that all Leaflet layers use. Inherits all methods, options and events
  * from `Evented`.
@@ -347,29 +351,27 @@ export class Layer extends LayerBase {
 	 * @param {boolean} remove
 	 */
 	_addFocusListenersOnLayer(layer, remove) {
-		const el = /** @type {(Element & {_leaflet_focus_handler?: () => void}) | undefined} */ (layer.getElement?.());
-		if (el) {
-			const toggle = remove ? DomEvent.off : DomEvent.on;
-			if (!remove) {
-				// Remove focus listener, if already existing
-				el._leaflet_focus_handler && DomEvent.off(el, 'focus', el._leaflet_focus_handler, this);
+		const el = layer.getElement?.();
+		if (!el) { return; }
 
-				// eslint-disable-next-line camelcase
-				el._leaflet_focus_handler = () => {
-					if (this._tooltip) {
-						this._tooltip._source = layer;
-						this.openTooltip();
-					}
-				};
-			}
+		const oldHandler = focusHandlers.get(el);
+		if (oldHandler) { DomEvent.off(el, 'focus', oldHandler, this); }
 
-			el._leaflet_focus_handler && toggle(el, 'focus', el._leaflet_focus_handler, this);
-			toggle(el, 'blur', this.closeTooltip, this);
-
-			if (remove) {
-				delete el._leaflet_focus_handler;
-			}
+		if (remove) {
+			focusHandlers.delete(el);
+			DomEvent.off(el, 'blur', this.closeTooltip, this);
+			return;
 		}
+
+		const handler = () => {
+			if (this._tooltip) {
+				this._tooltip._source = layer;
+				this.openTooltip();
+			}
+		};
+		focusHandlers.set(el, handler);
+		DomEvent.on(el, 'focus', handler, this);
+		DomEvent.on(el, 'blur', this.closeTooltip, this);
 	}
 
 	/** @param {Layer} layer */

@@ -51,7 +51,6 @@ describe('TapHoldHandler', () => {
 
 		const event = spy.lastCall.args[0];
 		expect(event.type).to.equal('contextmenu');
-		expect(event.originalEvent._simulated).to.be.true;
 		await touchFinger.up();
 	});
 
@@ -93,14 +92,15 @@ describe('TapHoldHandler', () => {
 		await touchFinger.down();
 		clock.tick(560);
 
-		UIEventSimulator.fire('contextmenu', container);
+		const nativeEvent = new MouseEvent('contextmenu', {bubbles: true, cancelable: true});
+		container.dispatchEvent(nativeEvent);
 
 		clock.tick(100);
 		await touchFinger.up();
 
 		expect(spy.called).to.be.true;
 		expect(spy.calledOnce).to.be.true;
-		expect(spy.lastCall.args[0].originalEvent._simulated).not.to.be.true;
+		expect(spy.lastCall.args[0].originalEvent).to.equal(nativeEvent);
 	});
 
 	it('swallows native contextmenu that comes after the simulated one', async () => {
@@ -111,7 +111,7 @@ describe('TapHoldHandler', () => {
 		container.dispatchEvent(nativeEvent);
 
 		expect(spy.calledOnce).to.be.true;
-		expect(spy.lastCall.args[0].originalEvent._simulated).to.be.true;
+		expect(spy.lastCall.args[0].originalEvent).not.to.equal(nativeEvent);
 		expect(nativeEvent.defaultPrevented).to.be.true;
 
 		await touchFinger.up();

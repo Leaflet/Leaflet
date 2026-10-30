@@ -86,7 +86,7 @@ export class Canvas extends Renderer {
 		DomEvent.on(container, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(container, 'click dblclick pointerdown pointerup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'pointerout', this._handlePointerOut, this);
-		/** @type {any} */ (container)['_leaflet_disable_events'] = true;
+		DomEvent.disableMapHandling(container);
 
 		/** @type {CanvasRenderingContext2D} */
 		this._ctx = /** @type {CanvasRenderingContext2D} */ (container.getContext('2d'));

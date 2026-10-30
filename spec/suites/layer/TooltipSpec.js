@@ -585,36 +585,44 @@ describe('Tooltip', () => {
 		expect(spy2.called).to.be.true;
 	});
 
+	const focusListeners = spy => spy.args.filter(([type]) => type === 'focus').map(args => args[1]);
+
 	it('removes focus listeners after unbinding tooltip from Layer', () => {
 		const marker = new Marker([51.515, -0.09]).addTo(map);
+		const el = marker.getElement();
+		const add = sinon.spy(el, 'addEventListener');
+		const remove = sinon.spy(el, 'removeEventListener');
 
 		marker
 			.bindTooltip('Tooltip that will be unbinded')
 			.openTooltip();
 
-		expect(marker.getElement()._leaflet_focus_handler).to.be.not.undefined;
+		expect(focusListeners(add)).to.have.length(1);
 
 		marker.unbindTooltip();
 
-		expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
-		expect(marker.getElement()._leaflet_focus_handler).to.be.undefined;
+		expect(() => UIEventSimulator.fire('focus', el)).to.not.throw();
+		expect(focusListeners(remove)).to.eql(focusListeners(add));
 	});
 
 	it('removes focus listeners after unbinding tooltip from FeatureGroup', () => {
 
 		const marker = new Marker([51.515, -0.09]);
 		const layergroup = new FeatureGroup([marker]).addTo(map);
+		const el = marker.getElement();
+		const add = sinon.spy(el, 'addEventListener');
+		const remove = sinon.spy(el, 'removeEventListener');
 
 		layergroup
 			.bindTooltip('Tooltip that will be unbinded in two seconds')
 			.openTooltip();
 
-		expect(marker.getElement()._leaflet_focus_handler).to.be.not.undefined;
+		expect(focusListeners(add)).to.have.length(1);
 
 		layergroup.unbindTooltip();
 
-		expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
-		expect(marker.getElement()._leaflet_focus_handler).to.be.undefined;
+		expect(() => UIEventSimulator.fire('focus', el)).to.not.throw();
+		expect(focusListeners(remove)).to.eql(focusListeners(add));
 	});
 
 	it('switches handlers when rebound with different options', () => {
@@ -642,11 +650,13 @@ describe('Tooltip', () => {
 	});
 
 	it('doesn\'t add focus listeners on add after unbinding', () => {
-		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		const layer = new Marker(center, {autoPanOnFocus: false}).bindTooltip('Tooltip').addTo(map);
 
 		layer.unbindTooltip();
+		const add = sinon.spy(EventTarget.prototype, 'addEventListener');
 		map.removeLayer(layer).addLayer(layer);
+		add.restore();
 
-		expect(layer.getElement()._leaflet_focus_handler).to.be.undefined;
+		expect(focusListeners(add)).to.eql([]);
 	});
 });

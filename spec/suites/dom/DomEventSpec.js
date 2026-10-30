@@ -15,13 +15,20 @@ describe('DomEvent', () => {
 		document.body.removeChild(el);
 	});
 
+	it('exposes only the public functions', () => {
+		expect(Object.keys(DomEvent).sort()).to.eql([
+			'disableClickPropagation', 'disablePointerDetection', 'disableScrollPropagation', 'enablePointerDetection',
+			'getPointerPosition', 'getWheelDelta', 'off', 'on', 'preventDefault', 'stop', 'stopPropagation'
+		]);
+	});
+
 	describe('#arguments check', () => {
 		it('throws when el is not HTMLElement', () => {
 			expect(() => DomEvent.on({}, 'click', Util.falseFn)).to.throw();
 			expect(() => DomEvent.disableScrollPropagation({})).to.throw();
 			expect(() => DomEvent.disableClickPropagation({})).to.throw();
 			expect(() => DomEvent.getPointerPosition({clientX: 0, clientY: 0}, {})).to.throw();
-			// .off and .isExternalTarget do not throw atm
+			// .off does not throw atm
 		});
 	});
 
@@ -515,13 +522,6 @@ describe('DomEvent', () => {
 
 			expect(listener.notCalled).to.be.true;
 		});
-
-		it('marks the original event of a Leaflet event as stopped', () => {
-			const originalEvent = new MouseEvent('click');
-			DomEvent.stopPropagation({originalEvent});
-
-			expect(originalEvent._stopped).to.be.true;
-		});
 	});
 
 	describe('#stop', () => {
@@ -534,11 +534,10 @@ describe('DomEvent', () => {
 			expect(e.defaultPrevented).to.be.true;
 		});
 
-		it('only stops propagation of a Leaflet event', () => {
+		it('does not prevent the default action of a Leaflet event\'s original event', () => {
 			const originalEvent = new MouseEvent('click', {cancelable: true});
 			DomEvent.stop({originalEvent});
 
-			expect(originalEvent._stopped).to.be.true;
 			expect(originalEvent.defaultPrevented).to.be.false;
 		});
 	});
