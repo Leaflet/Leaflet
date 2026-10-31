@@ -18,24 +18,32 @@ h2 {
 }
 
 h3 {
-    margin-top: 1em;
-    margin-bottom: .5em;
+    margin-top: 1.75em;
+    margin-bottom: .25em;
+    padding-top: 0;
 }
 
 details.inherited > summary,
 section > h4 {
     display: block;
     font-weight: 500;
-    margin: 1em 0 0.25em;
+    margin: 1.5em 0 0.25em;
+}
+details.inherited:not([open]) + details.inherited:not([open]) > summary {
+    margin-top: 0.5em;
 }
 details.inherited[open] > summary,
 section > h4 {
-    margin: 0.75em 0 0;
+    margin-top: 1.5em;
+    margin-bottom: 0;
     padding: 0.25em 0;
     position: sticky;
     top: 2.8em;
     background-color: white;
     border-bottom: 1px solid #eee;
+}
+h3 + section > h4 {
+    margin-top: 0;
 }
 
 /* the id is on the section since its heading is sticky; a linked section lands with its heading where it sticks,
