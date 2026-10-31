@@ -59,15 +59,29 @@ function type(str, pre = '', post = '') {
 }
 liquid.registerFilter('type', type);
 
-// params wrap only between each other; the closing paren stays with the last one
+// wraps only after the opening paren and between params; the closing paren and return type stay with the last param
 liquid.registerFilter('signature', (item, returns) => {
-	const ret = returns && item.type ? type(item.type, ': ') : '';
+	// most methods chain, so `this` is muted for the meaningful return types to stand out
+	const ret = !returns || !item.type ? '' :
+		item.type === 'this' ? '<nobr class="this">: this</nobr>' : type(item.type, ': ');
 	const params = item.params.map((p, i) => {
 		const post = i < item.params.length - 1 ? ',' : ')';
 		const name = `<i>${p.name}</i>`;
 		return p.type ? type(p.type, `${name}: `, post) : `<nobr>${name}${post}</nobr>`;
 	});
-	return `(${params.length ? params.join(' ') : ')'}${ret}`;
+	return `(${params.length ? `<wbr>${params.join(' ')}` : ')'}${ret}`;
+});
+
+const STRING = /^(['"`]).*\1$/s;
+const LITERAL = /^(-?([\d.]+|Infinity)|true|false|null|\[(-?[\d.]+(, )?)*\])$/;
+const HTML_CHARS = /[&<>"']/g;
+
+// colored like code blocks by the kind of literal; `undefined` shows as an empty cell
+liquid.registerFilter('literal', (str) => {
+	if (!str || str === 'undefined') { return ''; }
+	const kind = STRING.test(str) ? 'string' : LITERAL.test(str) ? 'literal' : '';
+	const html = str.replace(HTML_CHARS, c => `&#${c.charCodeAt(0)};`);
+	return `<code${kind ? ` class='${kind}'` : ''}>${html}</code>`;
 });
 
 // `block` keeps the paragraphs; otherwise the first paragraph's tags are dropped so a one-liner sits in a table cell

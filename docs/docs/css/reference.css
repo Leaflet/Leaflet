@@ -38,6 +38,16 @@ section > h4 {
     border-bottom: 1px solid #eee;
 }
 
+/* the id is on the section since its heading is sticky; a linked section lands with its heading where it sticks,
+   hiding the previous one behind the class heading, and the first one of a supersection shows the supersection
+   heading above it */
+section[id] {
+    scroll-margin-top: -2rem;
+}
+h3 + section[id] {
+    scroll-margin-top: 3rem;
+}
+
 details.inherited > summary {
     cursor: pointer;
     list-style: none;

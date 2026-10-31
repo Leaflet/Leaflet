@@ -1,6 +1,6 @@
-<section{% if section.secondary %} class='collapsable'{% endif %}>
+<section{% if section.name and inherited != true %} id='{{ section.id }}'{% endif %}{% if section.secondary %} class='collapsable'{% endif %}>
 {%- if section.name and inherited != true %}
-<h4 id='{{ section.id }}'>{{ section.name | escape }}</h4>
+<h4>{{ section.name | escape }}</h4>
 {%- endif %}
 {%- if section.comments %}
 <div class='section-comments'>{{ section.comments | markdown }}</div>
@@ -11,7 +11,7 @@
 {%- endfor %}
 {%- else %}
 {%- assign c = columns[kind] %}
-<table><thead>
+<table{% if c.params %} class='signatures'{% endif %}><thead>
 	<tr>
 		<th>{{ c.name }}</th>
 		{%- if c.type %}
@@ -31,7 +31,7 @@
 		<td><code>{{ item.type | type }}</code></td>
 		{%- endif %}
 		{%- if c.default %}
-		<td><code>{{ item.default | escape }}</code></td>
+		<td>{{ item.default | literal }}</td>
 		{%- endif %}
 		<td>{{ item.comments | markdown: c.block }}</td>
 	</tr>

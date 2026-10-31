@@ -16,7 +16,7 @@ const INTERFACE_SUFFIX = /(Options|EventMap)$/;
 const OPTIONS_SUFFIX = /Options$/;
 const EVENT_MAP_SUFFIX = /EventMap$/;
 const CAPTION = /^<caption>(.*?)<\/caption>\s*/;
-const PROPERTY_DEFAULT = /^@property\s*\{.*?\}\s*\[[\w$]+\s*=\s*(.*?)\]/s;
+const PROPERTY_DEFAULT = /^@property\s*\{.*?\}\s*\[[\w$]+\s*=\s*((?:\[[^\]]*\]|[^\]])*)\]/s;
 const PARAM_MARKS = /^…|\?$/g;
 const BLOCK_COMMENT = /\/\*.*?\*\/\s*/g;
 const FENCE = /```.*?```/gs;

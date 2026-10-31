@@ -143,6 +143,10 @@ h4 {
 	margin: 0 auto;
 }
 
+.api-page .container {
+	max-width: 60em;
+}
+
 .footer {
 	margin-top: 50px;
 	color: #777;
@@ -637,6 +641,15 @@ table.plugins td:first-child a {
 	white-space: nowrap;
 }
 
+#toc-copy h4.current {
+	color: black;
+	font-weight: 600;
+}
+
+#toc-copy a.current {
+	font-weight: 600;
+}
+
 #toc-copy ul li a {
 	position: relative;
 	padding: .25em .5em 0;
@@ -784,22 +797,20 @@ table.plugins td:first-child a {
 
 	.scrolled #toc-copy { opacity: 1; }
 
-	#toc-copy h4 { padding-right: 5em; }
+	#toc-copy h4 { padding-right: 3em; }
 
 	#toc-copy ul {
 		position: absolute;
 		left: 100%;
-		margin: -4.9em 0 0 -4.5em;
+		margin: -4.9em 0 0 -3.25em;
 		padding: 3em 6em 3em 0;
 	}
 
-	#toc-copy h4:hover + ul,
-	#toc-copy ul:hover {
+	#toc-copy h4.hover + ul {
 		display: block;
 	}
 
-	#toc-copy h4:hover + ul:before,
-	#toc-copy ul:hover:before {
+	#toc-copy h4.hover + ul:before {
 		content: '';
 		position: absolute;
 		top: 3.775em;
@@ -810,8 +821,7 @@ table.plugins td:first-child a {
 		border-top: 2px solid #eee;
 	}
 
-	#toc-copy h4:hover + ul:after,
-	#toc-copy ul:hover:after {
+	#toc-copy h4.hover + ul:after {
 		content: '';
 		position: absolute;
 		z-index: -1;
@@ -823,8 +833,7 @@ table.plugins td:first-child a {
 		background: rgba(255,255,255,0.9);
 	}
 
-	.plugins-page #toc-copy h4:hover + ul:after,
-	.plugins-page #toc-copy ul:hover:after {
+	.plugins-page #toc-copy h4.hover + ul:after {
 		width: 17em;
 	}
 
@@ -859,10 +868,32 @@ table.plugins td:first-child a {
 .api-page table td code b {
 	color: black;
 }
+.api-page table td code .this {
+	color: #aaa;
+}
+/* default values, in the code blocks' colors */
+.api-page table td code.string {
+	color: #df5000;
+}
+.api-page table td code.literal {
+	color: #0086b3;
+}
 .api-page table td,
 .api-page table th {
 	font-size: 14px;
 	vertical-align: top;
+}
+@media screen and (min-width: 768px) {
+	/* otherwise the column takes the full width of its longest signature, squeezing descriptions */
+	.api-page table.signatures th:first-child {
+		width: 45%;
+	}
+	/* hanging indent for wrapped params */
+	.api-page table.signatures td:first-child code {
+		display: inline-block;
+		padding-left: 2ch;
+		text-indent: -2ch;
+	}
 }
 
 main .api-page p {
