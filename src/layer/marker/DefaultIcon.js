@@ -1,6 +1,6 @@
 import {Icon} from './Icon.js';
 
-/** @import {Defaults, DefaultIconOptions, IconOptions} from '../../types.js' */
+/** @import {DefaultIconDefaults, DefaultIconOptions, Defaults, IconOptions} from '../../types.js' */
 
 // the path itself draws white (the root fill) under the pin, which fades to it at the top, so a single color gets a highlight
 // like the default one; the outline keeps light colors visible, but would double the antialiased edges of the default pin
@@ -27,7 +27,7 @@ const defaultOptions = {
 	color: null
 };
 
-/** @typedef {typeof defaultOptions} DefaultIconDefaults */
+/** @typedef {typeof defaultOptions} DefaultIconDefaultsValues */
 
 /**
  * A subclass of `Icon`, represents the icon to use in `Marker`s when no icon is specified. The marker, with a soft
@@ -43,7 +43,7 @@ const defaultOptions = {
  * If you want to _completely_ replace the default icon, override the `Marker.defaultOptions.icon` with your own
  * icon instead.
  * @template {DefaultIconOptions} [O=DefaultIconOptions]
- * @extends {Icon<O>}
+ * @extends {Icon<O & DefaultIconDefaults>}
  */
 export class DefaultIcon extends Icon {
 

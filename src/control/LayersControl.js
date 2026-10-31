@@ -3,7 +3,7 @@ import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {ControlOptions, Defaults, LayersControlOptions, LeafletEvent} from '../types.js' */
+/** @import {ControlOptions, Defaults, LayersControlDefaults, LayersControlOptions, LeafletEvent} from '../types.js' */
 /** @import {Layer} from '../layer/Layer.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
@@ -54,7 +54,7 @@ const defaultOptions = {
 	}
 };
 
-/** @typedef {typeof defaultOptions} LayersControlDefaults */
+/** @typedef {typeof defaultOptions} LayersControlDefaultsValues */
 
 /** @typedef {{layer: Layer, name: string, overlay?: boolean}} LayersControlEntry */
 
@@ -97,7 +97,7 @@ const defaultOptions = {
  * {"<img src='my-layer-icon' /> <span class='my-layer-item'>My Layer</span>": myLayer}
  * ```
  * @template {LayersControlOptions} [O=LayersControlOptions]
- * @extends {Control<O>}
+ * @extends {Control<O & LayersControlDefaults>}
  */
 export class LayersControl extends Control {
 
@@ -112,10 +112,10 @@ export class LayersControl extends Control {
 	 * the base layers object, but only one should be added to the map during map instantiation.
 	 * @param {{[name: string]: Layer}} [baseLayers]
 	 * @param {{[name: string]: Layer}} [overlays]
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(baseLayers, overlays, options) {
-		super(options);
+		super(/** @type {Partial<O & LayersControlDefaults>} */ (options));
 
 		/** @type {Map<HTMLInputElement, Layer>} */
 		this._layerControlInputs = new Map();

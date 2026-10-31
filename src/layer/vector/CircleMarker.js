@@ -5,8 +5,8 @@ import {Bounds} from '../../geometry/Bounds.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 /** @import {Feature, Point as GeoJSONPoint} from 'geojson' */
-/** @import {CircleMarkerEventMap, CircleMarkerOptions, Defaults, LatLngExpression, MarkerMoveEvent, PathOptions,
- *    PointExpression} from '../../types.js' */
+/** @import {CircleMarkerDefaults, CircleMarkerEventMap, CircleMarkerOptions, Defaults, LatLngExpression,
+ *    MarkerMoveEvent, PathOptions, PointExpression} from '../../types.js' */
 /** @import {Point} from '../../geometry/Point.js' */
 
 /** @satisfies {Defaults<PathOptions>} */
@@ -17,7 +17,7 @@ const defaultOptions = {
 	radius: 10
 };
 
-/** @typedef {typeof defaultOptions} CircleMarkerDefaults */
+/** @typedef {typeof defaultOptions} CircleMarkerDefaultsValues */
 
 /**
  * @typedef {Object} CircleMarkerEvents
@@ -29,7 +29,7 @@ const defaultOptions = {
  * A circle of a fixed size with radius specified in CSS pixels. Extends `Path`.
  * @template {CircleMarkerOptions} [O=CircleMarkerOptions]
  * @template {CircleMarkerEventMap} [E=CircleMarkerEventMap]
- * @extends {Path<O, E>}
+ * @extends {Path<O & CircleMarkerDefaults, E>}
  */
 export class CircleMarker extends Path {
 
@@ -41,7 +41,7 @@ export class CircleMarker extends Path {
 	/**
 	 * Instantiates a circle marker object given a geographical point, and an optional options object.
 	 * @param {LatLngExpression} latlng
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(latlng, options) {
 		super();
@@ -86,7 +86,7 @@ export class CircleMarker extends Path {
 
 	/** @param {Partial<O>} options */
 	setStyle(options) {
-		super.setStyle(options);
+		super.setStyle(/** @type {Partial<O & CircleMarkerDefaults>} */ (options));
 		if (options?.radius !== undefined) {
 			this.setRadius(options.radius);
 		}

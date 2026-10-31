@@ -3,7 +3,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
-/** @import {Defaults, LeafletEvent, VideoOverlayEventMap, VideoOverlayOptions} from '../types.js' */
+/** @import {Defaults, LeafletEvent, VideoOverlayDefaults, VideoOverlayEventMap, VideoOverlayOptions} from '../types.js' */
 
 const defaultOptions = {
 	/**
@@ -31,7 +31,7 @@ const defaultOptions = {
 	playsInline: true
 };
 
-/** @typedef {typeof defaultOptions} VideoOverlayDefaults */
+/** @typedef {typeof defaultOptions} VideoOverlayDefaultsValues */
 
 /**
  * @typedef {Object} VideoOverlayEvents
@@ -52,7 +52,7 @@ const defaultOptions = {
  * ```
  * @template {VideoOverlayOptions} [O=VideoOverlayOptions]
  * @template {VideoOverlayEventMap} [E=VideoOverlayEventMap]
- * @extends {ImageOverlay<O, E, HTMLVideoElement, string | string[] | HTMLVideoElement>}
+ * @extends {ImageOverlay<O & VideoOverlayDefaults, E, HTMLVideoElement, string | string[] | HTMLVideoElement>}
  */
 export class VideoOverlay extends ImageOverlay {
 

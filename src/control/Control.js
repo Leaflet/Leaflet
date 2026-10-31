@@ -1,7 +1,7 @@
 import {Class} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 
-/** @import {ControlOptions, Defaults} from '../types.js' */
+/** @import {ControlDefaults, ControlOptions, Defaults} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
 const defaultOptions = {
@@ -13,7 +13,7 @@ const defaultOptions = {
 	position: 'topright'
 };
 
-/** @typedef {typeof defaultOptions} ControlDefaults */
+/** @typedef {typeof defaultOptions} ControlDefaultsValues */
 
 /**
  * One of the map corners a control can be placed in.
@@ -29,7 +29,7 @@ const defaultOptions = {
  * @categoryDescription Extension methods
  * Every control should extend from `Control` and (re-)implement the following methods.
  * @template {ControlOptions} [O=ControlOptions]
- * @extends {Class<O>}
+ * @extends {Class<O & ControlDefaults>}
  */
 export class Control extends Class {
 
@@ -40,7 +40,7 @@ export class Control extends Class {
 
 	/**
 	 * Creates a control with the given options.
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(options) {
 		super();

@@ -2,7 +2,7 @@ import {Class} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
 import {Point} from '../../geometry/Point.js';
 
-/** @import {Defaults, IconOptions, PointExpression} from '../../types.js' */
+/** @import {Defaults, IconDefaults, IconOptions, PointExpression} from '../../types.js' */
 
 const defaultOptions = {
 	/**
@@ -81,7 +81,7 @@ const defaultOptions = {
 	crossOrigin: false
 };
 
-/** @typedef {typeof defaultOptions} IconDefaults */
+/** @typedef {typeof defaultOptions} IconDefaultsValues */
 
 /**
  * Represents an icon to provide when creating a marker.
@@ -104,7 +104,7 @@ const defaultOptions = {
  *
  * `DefaultIcon` extends `Icon` and is the blue icon Leaflet uses for markers by default.
  * @template {IconOptions} [O=IconOptions]
- * @extends {Class<O>}
+ * @extends {Class<O & IconDefaults>}
  */
 export class Icon extends Class {
 
@@ -115,7 +115,7 @@ export class Icon extends Class {
 
 	/**
 	 * Creates an icon instance with the given options.
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(options) {
 		super();

@@ -24,7 +24,7 @@ export class Circle extends CircleMarker {
 	 * Instantiates a circle object given a geographical point, and an options object which contains the circle
 	 * radius.
 	 * @param {LatLngExpression} latlng
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(latlng, options) {
 		super(latlng, options);

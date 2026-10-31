@@ -3,8 +3,8 @@ import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
-/** @import {Coords, Defaults, DoneCallback, GridLayerOptions, TileEvent, TileLayerEventMap, TileLayerOptions}
- *    from '../../types.js' */
+/** @import {Coords, Defaults, DoneCallback, GridLayerOptions, TileEvent, TileLayerDefaults, TileLayerEventMap,
+ *    TileLayerOptions} from '../../types.js' */
 
 /** @satisfies {Defaults<GridLayerOptions>} */
 const defaultOptions = {
@@ -64,7 +64,7 @@ const defaultOptions = {
 	referrerPolicy: 'strict-origin-when-cross-origin'
 };
 
-/** @typedef {typeof defaultOptions} TileLayerDefaults */
+/** @typedef {typeof defaultOptions} TileLayerDefaultsValues */
 
 const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
 const hostRe = /^(https?:)?\/\/([^/?#:]*)/i;
@@ -107,7 +107,7 @@ const upgradeOSMUrl = (/** @type {string} */ url) => (isOSMUrl(url) ? url.replac
  * ```
  * @template {TileLayerOptions} [O=TileLayerOptions]
  * @template {TileLayerEventMap} [E=TileLayerEventMap]
- * @extends {GridLayer<O, E>}
+ * @extends {GridLayer<O & TileLayerDefaults, E>}
  */
 export class TileLayer extends GridLayer {
 
@@ -120,10 +120,10 @@ export class TileLayer extends GridLayer {
 	 * Instantiates a tile layer object given a `URL template` and optionally an options object.
 	 * @category URL template
 	 * @param {string} url
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(url, options) {
-		super(options);
+		super(/** @type {Partial<O & TileLayerDefaults>} */ (options));
 
 		options = Util.setOptions(this, options);
 

@@ -3,7 +3,7 @@ import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {Point} from '../geometry/Point.js';
 
-/** @import {Defaults, DivOverlayEventMap, PointExpression, PopupOptions, ZoomAnimEvent} from '../types.js' */
+/** @import {Defaults, DivOverlayEventMap, PointExpression, PopupDefaults, PopupOptions, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Layer} from './Layer.js' */
@@ -80,7 +80,7 @@ const defaultOptions = {
 	trackResize: true,
 };
 
-/** @typedef {typeof defaultOptions} PopupDefaults */
+/** @typedef {typeof defaultOptions} PopupDefaultsValues */
 
 /**
  * @typedef {Object} PopupProps
@@ -132,7 +132,7 @@ const defaultOptions = {
  *
  * @template {PopupOptions} [O=PopupOptions]
  * @template {DivOverlayEventMap} [E=DivOverlayEventMap]
- * @extends {DivOverlay<O, E>}
+ * @extends {DivOverlay<O & PopupDefaults, E>}
  */
 export class Popup extends DivOverlay {
 

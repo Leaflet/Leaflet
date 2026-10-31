@@ -26,7 +26,7 @@ export class Rectangle extends Polygon {
 	/**
 	 * Instantiates a rectangle object given geographical bounds, and an optional options object.
 	 * @param {LatLngBoundsExpression} latLngBounds
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(latLngBounds, options) {
 		super(boundsToLatLngs(latLngBounds), options);

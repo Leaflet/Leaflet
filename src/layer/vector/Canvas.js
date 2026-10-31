@@ -4,7 +4,7 @@ import {mapHandlingDisabled} from '../../dom/DomEventUtil.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
-/** @import {CanvasOptions, Defaults, RendererEventMap} from '../../types.js' */
+/** @import {CanvasDefaults, CanvasOptions, Defaults, RendererEventMap} from '../../types.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Point} from '../../geometry/Point.js' */
 /** @import {CircleMarker} from './CircleMarker.js' */
@@ -16,7 +16,7 @@ const defaultOptions = {
 	tolerance: 0
 };
 
-/** @typedef {typeof defaultOptions} CanvasDefaults */
+/** @typedef {typeof defaultOptions} CanvasDefaultsValues */
 
 // a node of the linked list of paths in drawing order
 /** @typedef {{layer: Path, prev?: DrawOrder | null, next?: DrawOrder | null}} DrawOrder */
@@ -46,7 +46,7 @@ const DASH_SEPARATOR_RE = /[, ]+/;
  * ```
  * @template {CanvasOptions} [O=CanvasOptions]
  * @template {RendererEventMap} [E=RendererEventMap]
- * @extends {Renderer<O, E>}
+ * @extends {Renderer<O & CanvasDefaults, E>}
  */
 export class Canvas extends Renderer {
 

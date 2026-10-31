@@ -4,39 +4,39 @@
 
 import type {Feature, Geometry, Point as GeoJSONPoint, Position} from 'geojson';
 import type {Evented, LeafletEventProps, Listener} from './core/Events.js';
-import type {DragEndEventProps, DraggableDefaults, DraggableEvents} from './dom/Draggable.js';
+import type {DragEndEventProps, DraggableDefaultsValues, DraggableEvents} from './dom/Draggable.js';
 import type {LatLng} from './geo/LatLng.js';
 import type {LatLngBounds} from './geo/LatLngBounds.js';
 import type {Bounds} from './geometry/Bounds.js';
 import type {Point, PointExpression} from './geometry/Point.js';
-import type {BlanketOverlayDefaults} from './layer/BlanketOverlay.js';
-import type {DivOverlayDefaults, DivOverlayEvents} from './layer/DivOverlay.js';
-import type {ImageOverlayDefaults, ImageOverlayEvents} from './layer/ImageOverlay.js';
+import type {BlanketOverlayDefaultsValues} from './layer/BlanketOverlay.js';
+import type {DivOverlayDefaultsValues, DivOverlayEvents} from './layer/DivOverlay.js';
+import type {ImageOverlayDefaultsValues, ImageOverlayEvents} from './layer/ImageOverlay.js';
 import type {InteractiveLayerEvents, InteractiveLayerProps, Layer} from './layer/Layer.js';
 import type {FeatureGroupEvents} from './layer/FeatureGroup.js';
 import type {GeoJSONEventProps, StyleFunction} from './layer/GeoJSON.js';
-import type {DefaultIconDefaults} from './layer/marker/DefaultIcon.js';
-import type {DivIconDefaults} from './layer/marker/DivIcon.js';
-import type {IconDefaults} from './layer/marker/Icon.js';
-import type {MarkerDefaults, MarkerDragEvents, MarkerEvents, MarkerMoveEventProps} from './layer/marker/Marker.js';
-import type {LayerDefaults, LayerEvents, LayerPopupEvents, LayerTooltipEvents} from './layer/LayerBase.js';
-import type {Popup, PopupDefaults, PopupEventProps, PopupProps} from './layer/Popup.js';
-import type {VideoOverlayDefaults, VideoOverlayEvents} from './layer/VideoOverlay.js';
-import type {GridLayerDefaults, GridLayerEvents, TileErrorEventProps, TileEventProps}
+import type {DefaultIconDefaultsValues} from './layer/marker/DefaultIcon.js';
+import type {DivIconDefaultsValues} from './layer/marker/DivIcon.js';
+import type {IconDefaultsValues} from './layer/marker/Icon.js';
+import type {MarkerDefaultsValues, MarkerDragEvents, MarkerEvents, MarkerMoveEventProps} from './layer/marker/Marker.js';
+import type {LayerDefaultsValues, LayerEvents, LayerPopupEvents, LayerTooltipEvents} from './layer/LayerBase.js';
+import type {Popup, PopupDefaultsValues, PopupEventProps, PopupProps} from './layer/Popup.js';
+import type {VideoOverlayDefaultsValues, VideoOverlayEvents} from './layer/VideoOverlay.js';
+import type {GridLayerDefaultsValues, GridLayerEvents, TileErrorEventProps, TileEventProps}
 	from './layer/tile/GridLayer.js';
-import type {TileLayerDefaults, TileLayerEvents} from './layer/tile/TileLayer.js';
-import type {WMSParamsDefaults, WMSTileLayerDefaults} from './layer/tile/WMSTileLayer.js';
-import type {Tooltip, TooltipDefaults, TooltipEventProps} from './layer/Tooltip.js';
-import type {CanvasDefaults, DrawOrder} from './layer/vector/Canvas.js';
-import type {CircleMarker, CircleMarkerDefaults, CircleMarkerEvents} from './layer/vector/CircleMarker.js';
-import type {Path, PathDefaults} from './layer/vector/Path.js';
-import type {Polyline, PolylineDefaults} from './layer/vector/Polyline.js';
+import type {TileLayerDefaultsValues, TileLayerEvents} from './layer/tile/TileLayer.js';
+import type {WMSParamsDefaults, WMSTileLayerDefaultsValues} from './layer/tile/WMSTileLayer.js';
+import type {Tooltip, TooltipDefaultsValues, TooltipEventProps} from './layer/Tooltip.js';
+import type {CanvasDefaultsValues, DrawOrder} from './layer/vector/Canvas.js';
+import type {CircleMarker, CircleMarkerDefaultsValues, CircleMarkerEvents} from './layer/vector/CircleMarker.js';
+import type {Path, PathDefaultsValues} from './layer/vector/Path.js';
+import type {Polyline, PolylineDefaultsValues} from './layer/vector/Polyline.js';
 import type {Renderer, RendererEvents} from './layer/vector/Renderer.js';
-import type {AttributionControl, AttributionControlDefaults} from './control/AttributionControl.js';
-import type {ControlDefaults} from './control/Control.js';
-import type {LayersControlDefaults, LayersControlEventProps} from './control/LayersControl.js';
-import type {ScaleControlDefaults} from './control/ScaleControl.js';
-import type {ZoomControlDefaults} from './control/ZoomControl.js';
+import type {AttributionControl, AttributionControlDefaultsValues} from './control/AttributionControl.js';
+import type {ControlDefaultsValues} from './control/Control.js';
+import type {LayersControlDefaultsValues, LayersControlEventProps} from './control/LayersControl.js';
+import type {ScaleControlDefaultsValues} from './control/ScaleControl.js';
+import type {ZoomControlDefaultsValues} from './control/ZoomControl.js';
 import type {BoxZoomEventProps, BoxZoomHandler} from './map/handler/BoxZoomHandler.js';
 import type {DoubleClickZoomHandler} from './map/handler/DoubleClickZoomHandler.js';
 import type {DragHandler} from './map/handler/DragHandler.js';
@@ -45,7 +45,7 @@ import type {PinchZoomHandler} from './map/handler/PinchZoomHandler.js';
 import type {ScrollWheelZoomHandler} from './map/handler/ScrollWheelZoomHandler.js';
 import type {TapHoldHandler} from './map/handler/TapHoldHandler.js';
 import type {ErrorEventProps, FitBoundsProps, InvalidateSizeProps, LayerEventProps, LeafletKeyboardEventProps,
-	LeafletMap, LeafletPointerEventProps, LocateProps, LocationEventProps, MapDefaults, MapHandlerEvents,
+	LeafletMap, LeafletPointerEventProps, LocateProps, LocationEventProps, MapDefaultsValues, MapHandlerEvents,
 	MapInteractionEvents, MapLayerEvents, MapLocationEvents, MapOtherEvents, MapPopupEvents, MapStateEvents,
 	MapTooltipEvents, PaddingProps, PanProps, ResizeEventProps, ViewPreResetEventProps, WorldCopyJumpEventProps,
 	ZoomAnimEventProps, ZoomPanProps, ZoomProps} from './map/Map.js';
@@ -62,51 +62,65 @@ export type {Coords, DoneCallback} from './layer/tile/GridLayer.js';
 export type {StyleFunction} from './layer/GeoJSON.js';
 export type {ControlPosition} from './control/Control.js';
 
-export interface DraggableOptions extends DraggableDefaults {}
+export interface DraggableDefaults extends DraggableDefaultsValues {}
+export interface DraggableOptions extends Partial<DraggableDefaults> {}
 export interface DraggableEventMap extends DraggableEvents {}
 
-export interface LayerOptions extends LayerDefaults {}
+export interface LayerDefaults extends LayerDefaultsValues {}
+export interface LayerOptions extends Partial<LayerDefaults> {}
 export interface LayerEventMap extends LayerEvents, LayerPopupEvents, LayerTooltipEvents {}
 
 /**
  * Some `Layer`s can be made interactive - when the user interacts with such a layer, pointer events like `click`
  * and `pointerover` can be handled. Use the [event handling methods](#evented-method) to handle these events.
  */
-export interface InteractiveLayerOptions extends LayerOptions, InteractiveLayerProps {}
+export interface InteractiveLayerOptions extends LayerOptions, Partial<InteractiveLayerProps> {}
 
 export interface InteractiveLayerEventMap extends LayerEventMap, InteractiveLayerEvents {}
 
-export interface DivOverlayOptions extends InteractiveLayerOptions, DivOverlayDefaults {}
+export interface DivOverlayDefaults extends DivOverlayDefaultsValues {}
+export interface DivOverlayOptions extends InteractiveLayerOptions, Partial<DivOverlayDefaults> {}
 export interface DivOverlayEventMap extends InteractiveLayerEventMap, DivOverlayEvents {}
 
-export interface PopupOptions extends DivOverlayOptions, PopupDefaults, PopupProps {}
+export interface PopupDefaults extends PopupDefaultsValues {}
+export interface PopupOptions extends DivOverlayOptions, Partial<PopupDefaults>, PopupProps {}
 
-export interface TooltipOptions extends DivOverlayOptions, TooltipDefaults {}
+export interface TooltipDefaults extends TooltipDefaultsValues {}
+export interface TooltipOptions extends DivOverlayOptions, Partial<TooltipDefaults> {}
 
 // Subclass defaults that override inherited options are checked with `@satisfies` and left out here, so that the
 // option keeps the parent's type rather than the narrower one of its default value.
-export interface IconOptions extends IconDefaults {}
-export interface DivIconOptions extends IconOptions, Omit<DivIconDefaults, keyof IconOptions> {}
-export interface DefaultIconOptions extends IconOptions, Omit<DefaultIconDefaults, keyof IconOptions> {}
+export interface IconDefaults extends IconDefaultsValues {}
+export interface IconOptions extends Partial<IconDefaults> {}
+export interface DivIconDefaults extends Omit<DivIconDefaultsValues, keyof IconOptions> {}
+export interface DivIconOptions extends IconOptions, Partial<DivIconDefaults> {}
+export interface DefaultIconDefaults extends Omit<DefaultIconDefaultsValues, keyof IconOptions> {}
+export interface DefaultIconOptions extends IconOptions, Partial<DefaultIconDefaults> {}
 
-export interface MarkerOptions extends InteractiveLayerOptions, MarkerDefaults {}
+export interface MarkerDefaults extends MarkerDefaultsValues {}
+export interface MarkerOptions extends InteractiveLayerOptions, Partial<MarkerDefaults> {}
 export interface MarkerEventMap extends InteractiveLayerEventMap, MarkerEvents, MarkerDragEvents {}
 
 export interface FeatureGroupEventMap extends InteractiveLayerEventMap, FeatureGroupEvents {}
 
-export interface BlanketOverlayOptions extends LayerOptions, BlanketOverlayDefaults {}
+export interface BlanketOverlayDefaults extends BlanketOverlayDefaultsValues {}
+export interface BlanketOverlayOptions extends LayerOptions, Partial<BlanketOverlayDefaults> {}
 
-export interface ImageOverlayOptions extends InteractiveLayerOptions, ImageOverlayDefaults {}
+export interface ImageOverlayDefaults extends ImageOverlayDefaultsValues {}
+export interface ImageOverlayOptions extends InteractiveLayerOptions, Partial<ImageOverlayDefaults> {}
 export interface ImageOverlayEventMap extends InteractiveLayerEventMap, ImageOverlayEvents {}
 
-export interface VideoOverlayOptions extends ImageOverlayOptions, VideoOverlayDefaults {}
+export interface VideoOverlayDefaults extends VideoOverlayDefaultsValues {}
+export interface VideoOverlayOptions extends ImageOverlayOptions, Partial<VideoOverlayDefaults> {}
 export interface VideoOverlayEventMap extends ImageOverlayEventMap, VideoOverlayEvents {}
 
 export interface RendererOptions extends BlanketOverlayOptions {}
 export interface RendererEventMap extends LayerEventMap, RendererEvents {}
-export interface CanvasOptions extends RendererOptions, CanvasDefaults {}
+export interface CanvasDefaults extends CanvasDefaultsValues {}
+export interface CanvasOptions extends RendererOptions, Partial<CanvasDefaults> {}
 
-export interface PathOptions extends InteractiveLayerOptions, PathDefaults {
+export interface PathDefaults extends PathDefaultsValues {}
+export interface PathOptions extends InteractiveLayerOptions, Partial<PathDefaults> {
 	/**
 	 * Custom class name set on an element. Only for SVG renderer. Applied when the element is created;
 	 * [`setStyle`](#path-setstyle) does not update it afterwards.
@@ -114,14 +128,16 @@ export interface PathOptions extends InteractiveLayerOptions, PathDefaults {
 	className?: string;
 }
 
-export interface PolylineOptions extends PathOptions, PolylineDefaults {}
+export interface PolylineDefaults extends PolylineDefaultsValues {}
+export interface PolylineOptions extends PathOptions, Partial<PolylineDefaults> {}
 
-export interface CircleMarkerOptions extends PathOptions, Omit<CircleMarkerDefaults, keyof PathOptions> {}
+export interface CircleMarkerDefaults extends Omit<CircleMarkerDefaultsValues, keyof PathOptions> {}
+export interface CircleMarkerOptions extends PathOptions, Partial<CircleMarkerDefaults> {}
 export interface CircleMarkerEventMap extends InteractiveLayerEventMap, CircleMarkerEvents {}
 
 export interface CircleOptions extends CircleMarkerOptions {
 	/** Radius of the circle, in meters. */
-	radius: number;
+	radius?: number;
 }
 
 // The callbacks use method syntax, so a callback typed with the user's own feature properties is accepted.
@@ -180,15 +196,17 @@ export interface GeoJSONOptions extends InteractiveLayerOptions {
 	markersInheritOptions?: boolean;
 }
 
-export interface GridLayerOptions extends LayerOptions, GridLayerDefaults {}
+export interface GridLayerDefaults extends GridLayerDefaultsValues {}
+export interface GridLayerOptions extends LayerOptions, Partial<GridLayerDefaults> {}
 export interface GridLayerEventMap extends LayerEventMap, GridLayerEvents {}
 
-export interface TileLayerOptions extends GridLayerOptions, Omit<TileLayerDefaults, keyof GridLayerOptions> {
+export interface TileLayerDefaults extends TileLayerDefaultsValues {}
+export interface TileLayerOptions extends GridLayerOptions, Partial<Omit<TileLayerDefaults, keyof GridLayerOptions>> {
 	/**
 	 * The maximum zoom level up to which this layer will be displayed (inclusive).
 	 * @default 18
 	 */
-	maxZoom: number;
+	maxZoom?: number;
 	[key: string]: unknown; // custom keys of the URL template
 }
 export interface TileLayerEventMap extends GridLayerEventMap, TileLayerEvents {}
@@ -197,9 +215,12 @@ export interface TileLayerEventMap extends GridLayerEventMap, TileLayerEvents {}
 export interface WMSParams extends WMSParamsDefaults {
 	[key: string]: unknown;
 }
-export interface WMSTileLayerOptions extends TileLayerOptions, WMSTileLayerDefaults, Partial<WMSParamsDefaults> {}
+export interface WMSTileLayerDefaults extends WMSTileLayerDefaultsValues {}
+export interface WMSTileLayerOptions extends TileLayerOptions, Partial<WMSTileLayerDefaults>,
+	Partial<WMSParamsDefaults> {}
 
-export interface MapOptions extends MapDefaults {
+export interface MapDefaults extends MapDefaultsValues {}
+export interface MapOptions extends Partial<MapDefaults> {
 	/** @deprecated Use `pinchZoom`. */
 	touchZoom?: boolean | 'center';
 }
@@ -261,12 +282,16 @@ export interface FitBoundsOptions extends ZoomPanOptions, PaddingOptions, FitBou
 /** Options for `Map`'s geolocation methods. */
 export interface LocateOptions extends LocateProps {}
 
-export interface ControlOptions extends ControlDefaults {}
-export interface ZoomControlOptions extends ControlOptions, Omit<ZoomControlDefaults, keyof ControlOptions> {}
-export interface AttributionControlOptions extends ControlOptions,
-	Omit<AttributionControlDefaults, keyof ControlOptions> {}
-export interface ScaleControlOptions extends ControlOptions, Omit<ScaleControlDefaults, keyof ControlOptions> {}
-export interface LayersControlOptions extends ControlOptions, Omit<LayersControlDefaults, keyof ControlOptions> {}
+export interface ControlDefaults extends ControlDefaultsValues {}
+export interface ControlOptions extends Partial<ControlDefaults> {}
+export interface ZoomControlDefaults extends Omit<ZoomControlDefaultsValues, keyof ControlOptions> {}
+export interface ZoomControlOptions extends ControlOptions, Partial<ZoomControlDefaults> {}
+export interface AttributionControlDefaults extends Omit<AttributionControlDefaultsValues, keyof ControlOptions> {}
+export interface AttributionControlOptions extends ControlOptions, Partial<AttributionControlDefaults> {}
+export interface ScaleControlDefaults extends Omit<ScaleControlDefaultsValues, keyof ControlOptions> {}
+export interface ScaleControlOptions extends ControlOptions, Partial<ScaleControlDefaults> {}
+export interface LayersControlDefaults extends Omit<LayersControlDefaultsValues, keyof ControlOptions> {}
+export interface LayersControlOptions extends ControlOptions, Partial<LayersControlDefaults> {}
 
 /**
  * Whenever a class inheriting from `Evented` fires an event, a listener function will be called with an event

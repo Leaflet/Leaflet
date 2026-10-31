@@ -2,8 +2,8 @@ import {TileLayer} from './TileLayer.js';
 import {EPSG4326} from '../../geo/crs/EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
-/** @import {Coords, Defaults, TileLayerEventMap, TileLayerOptions, WMSParams, WMSTileLayerOptions}
- *    from '../../types.js' */
+/** @import {Coords, Defaults, TileLayerEventMap, TileLayerOptions, WMSParams, WMSTileLayerDefaults,
+ *    WMSTileLayerOptions} from '../../types.js' */
 /** @import {CRS} from '../../geo/crs/CRS.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 
@@ -41,7 +41,7 @@ const defaultOptions = {
 	uppercase: false
 };
 
-/** @typedef {typeof defaultOptions} WMSTileLayerDefaults */
+/** @typedef {typeof defaultOptions} WMSTileLayerDefaultsValues */
 
 /**
  * Used to display [WMS](https://en.wikipedia.org/wiki/Web_Map_Service)
@@ -61,7 +61,7 @@ const defaultOptions = {
  * ```
  * @template {WMSTileLayerOptions} [O=WMSTileLayerOptions]
  * @template {TileLayerEventMap} [E=TileLayerEventMap]
- * @extends {TileLayer<O, E>}
+ * @extends {TileLayer<O & WMSTileLayerDefaults, E>}
  */
 export class WMSTileLayer extends TileLayer {
 
@@ -75,10 +75,10 @@ export class WMSTileLayer extends TileLayer {
 	/**
 	 * Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
 	 * @param {string} url
-	 * @param {Partial<O>} options
+	 * @param {NoInfer<Partial<O>>} options
 	 */
 	constructor(url, options) {
-		super(url, options);
+		super(url, /** @type {Partial<O & WMSTileLayerDefaults>} */ (options));
 
 		/** @type {WMSParams} */
 		const wmsParams = {...WMSTileLayer.defaultWmsParams};

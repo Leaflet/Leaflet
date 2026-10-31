@@ -5,7 +5,7 @@ import * as DomUtil from './DomUtil.js';
 import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 
-/** @import {Defaults, DragEndEvent, DraggableEventMap, DraggableOptions, LeafletEvent} from '../types.js' */
+/** @import {Defaults, DragEndEvent, DraggableDefaults, DraggableEventMap, DraggableOptions, LeafletEvent} from '../types.js' */
 
 const defaultOptions = {
 	/**
@@ -15,7 +15,7 @@ const defaultOptions = {
 	clickTolerance: 3
 };
 
-/** @typedef {typeof defaultOptions} DraggableDefaults */
+/** @typedef {typeof defaultOptions} DraggableDefaultsValues */
 
 /**
  * @typedef {Object} DraggableEvents
@@ -43,7 +43,7 @@ const defaultOptions = {
  * draggable.enable();
  * ```
  *
- * @extends {Evented<DraggableOptions, DraggableEventMap>}
+ * @extends {Evented<DraggableOptions & DraggableDefaults, DraggableEventMap>}
  */
 export class Draggable extends Evented {
 

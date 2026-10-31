@@ -1,7 +1,7 @@
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {ControlOptions, Defaults, ScaleControlOptions} from '../types.js' */
+/** @import {ControlOptions, Defaults, ScaleControlDefaults, ScaleControlOptions} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
 /** @satisfies {Defaults<ControlOptions>} */
@@ -31,7 +31,7 @@ const defaultOptions = {
 	updateWhenIdle: false
 };
 
-/** @typedef {typeof defaultOptions} ScaleControlDefaults */
+/** @typedef {typeof defaultOptions} ScaleControlDefaultsValues */
 
 /**
  * A simple scale control that shows the scale of the current center of screen
@@ -41,7 +41,7 @@ const defaultOptions = {
  * new ScaleControl().addTo(map);
  * ```
  * @template {ScaleControlOptions} [O=ScaleControlOptions]
- * @extends {Control<O>}
+ * @extends {Control<O & ScaleControlDefaults>}
  */
 export class ScaleControl extends Control {
 

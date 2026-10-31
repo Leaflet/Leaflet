@@ -2,7 +2,7 @@ import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 
-/** @import {ControlOptions, Defaults, ZoomControlOptions} from '../types.js' */
+/** @import {ControlOptions, Defaults, ZoomControlDefaults, ZoomControlOptions} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
 /** @satisfies {Defaults<ControlOptions>} */
@@ -26,13 +26,13 @@ const defaultOptions = {
 	zoomOutTitle: 'Zoom out'
 };
 
-/** @typedef {typeof defaultOptions} ZoomControlDefaults */
+/** @typedef {typeof defaultOptions} ZoomControlDefaultsValues */
 
 /**
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default
  * unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.
  * @template {ZoomControlOptions} [O=ZoomControlOptions]
- * @extends {Control<O>}
+ * @extends {Control<O & ZoomControlDefaults>}
  */
 export class ZoomControl extends Control {
 

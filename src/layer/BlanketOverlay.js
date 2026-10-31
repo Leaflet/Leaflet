@@ -4,7 +4,7 @@ import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import {Bounds} from '../geometry/Bounds.js';
 
-/** @import {BlanketOverlayOptions, Defaults, LayerEventMap, LeafletEvent, MapListeners, ZoomAnimEvent} from '../types.js' */
+/** @import {BlanketOverlayDefaults, BlanketOverlayOptions, Defaults, LayerEventMap, LeafletEvent, MapListeners, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Point} from '../geometry/Point.js' */
@@ -23,7 +23,7 @@ const defaultOptions = {
 	continuous: false,
 };
 
-/** @typedef {typeof defaultOptions} BlanketOverlayDefaults */
+/** @typedef {typeof defaultOptions} BlanketOverlayDefaultsValues */
 
 /**
  * Represents an HTML element that covers ("blankets") the entire surface of the map.
@@ -33,7 +33,7 @@ const defaultOptions = {
  * Subclasses must define the following methods:
  * @template {BlanketOverlayOptions} [O=BlanketOverlayOptions]
  * @template {LayerEventMap} [E=LayerEventMap]
- * @extends {Layer<O, E>}
+ * @extends {Layer<O & BlanketOverlayDefaults, E>}
  */
 export class BlanketOverlay extends Layer {
 
@@ -44,7 +44,7 @@ export class BlanketOverlay extends Layer {
 
 	/**
 	 * Creates a blanket overlay with the given options.
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(options) {
 		super();

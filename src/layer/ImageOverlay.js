@@ -4,8 +4,8 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 import {Bounds} from '../geometry/Bounds.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {Defaults, ImageOverlayEventMap, ImageOverlayOptions, LatLngBoundsExpression, LeafletEvent,
- *    ZoomAnimEvent} from '../types.js' */
+/** @import {Defaults, ImageOverlayDefaults, ImageOverlayEventMap, ImageOverlayOptions, LatLngBoundsExpression,
+ *    LeafletEvent, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
@@ -49,7 +49,7 @@ const defaultOptions = {
 	decoding: 'auto'
 };
 
-/** @typedef {typeof defaultOptions} ImageOverlayDefaults */
+/** @typedef {typeof defaultOptions} ImageOverlayDefaultsValues */
 
 /**
  * @typedef {Object} ImageOverlayEvents
@@ -69,7 +69,7 @@ const defaultOptions = {
  * @template {ImageOverlayEventMap} [E=ImageOverlayEventMap]
  * @template {HTMLElement | SVGElement} [El=HTMLImageElement] the overlay's element
  * @template [S=string | El] what the overlay is created from
- * @extends {Layer<O, E>}
+ * @extends {Layer<O & ImageOverlayDefaults, E>}
  */
 export class ImageOverlay extends Layer {
 
@@ -83,7 +83,7 @@ export class ImageOverlay extends Layer {
 	 * bounds it is tied to.
 	 * @param {NoInfer<S>} url
 	 * @param {LatLngBoundsExpression} bounds
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(url, bounds, options) {
 		super();

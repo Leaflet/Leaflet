@@ -31,7 +31,7 @@ export class Renderer extends BlanketOverlay {
 
 	static initHooks = true;
 
-	/** @param {Partial<O>} [options] */
+	/** @param {NoInfer<Partial<O>>} [options] */
 	constructor(options) {
 		super(/** @type {Partial<O>} */ ({...options, continuous: false}));
 		Util.stamp(this);

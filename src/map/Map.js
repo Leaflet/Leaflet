@@ -24,9 +24,10 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 
 /** @import {BoxZoomEvent, Defaults, DragEndEvent, ErrorEvent, FitBoundsOptions, InvalidateSizeOptions,
  *    LatLngBoundsExpression, LatLngExpression, LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent,
- *    LeafletPointerEvent, LocateOptions, LocationEvent, MapEventMap, MapOptions, MapPanes, PanInsideOptions,
- *    PanOptions, PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent, TooltipOptions,
- *    ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions} from '../types.js' */
+ *    LeafletPointerEvent, LocateOptions, LocationEvent, MapDefaults, MapEventMap, MapOptions, MapPanes,
+ *    PanInsideOptions, PanOptions, PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent,
+ *    TooltipOptions, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions}
+ *    from '../types.js' */
 /** @import {CRS} from '../geo/crs/CRS.js' */
 /** @import {Control} from '../control/Control.js' */
 /** @import {Handler} from '../core/Handler.js' */
@@ -315,7 +316,7 @@ const defaultOptions = {
 	attributionControl: true
 };
 
-/** @typedef {typeof defaultOptions} MapDefaults */
+/** @typedef {typeof defaultOptions} MapDefaultsValues */
 
 /**
  * The map or a layer receiving DOM events, duck-typed for markers.
@@ -564,7 +565,7 @@ const defaultOptions = {
  * [`map.createPane`](#map-createpane) method.
  *
  * Every map has the following default panes that differ only in z-index.
- * @extends {Evented<MapOptions, MapEventMap>}
+ * @extends {Evented<MapOptions & MapDefaults, MapEventMap>}
  */
 export class LeafletMap extends Evented {
 

@@ -5,8 +5,9 @@ import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
-/** @import {Defaults, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent, MapListeners,
- *    TileErrorEvent, TileEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent} from '../../types.js' */
+/** @import {Defaults, GridLayerDefaults, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent,
+ *    MapListeners, TileErrorEvent, TileEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent}
+ *    from '../../types.js' */
 /** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 
@@ -83,7 +84,7 @@ const defaultOptions = {
 	keepBuffer: 2
 };
 
-/** @typedef {typeof defaultOptions} GridLayerDefaults */
+/** @typedef {typeof defaultOptions} GridLayerDefaultsValues */
 
 /**
  * @typedef {Object} GridLayerEvents
@@ -174,7 +175,7 @@ const defaultOptions = {
  * Layers extending `GridLayer` shall reimplement the following method.
  * @template {GridLayerOptions} [O=GridLayerOptions]
  * @template {GridLayerEventMap} [E=GridLayerEventMap]
- * @extends {Layer<O, E>}
+ * @extends {Layer<O & GridLayerDefaults, E>}
  */
 export class GridLayer extends Layer {
 
@@ -185,7 +186,7 @@ export class GridLayer extends Layer {
 
 	/**
 	 * Creates a new instance of GridLayer with the supplied options.
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(options) {
 		super();

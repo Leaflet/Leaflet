@@ -2,7 +2,7 @@ import {Control} from './Control.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {AttributionControlOptions, ControlOptions, Defaults} from '../types.js' */
+/** @import {AttributionControlDefaults, AttributionControlOptions, ControlOptions, Defaults} from '../types.js' */
 /** @import {LayerBase} from '../layer/LayerBase.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
@@ -23,7 +23,7 @@ const defaultOptions = {
 	prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
 };
 
-/** @typedef {typeof defaultOptions} AttributionControlDefaults */
+/** @typedef {typeof defaultOptions} AttributionControlDefaultsValues */
 
 /**
  * The attribution control allows you to display attribution data in a small text box on a map. It is put
@@ -31,7 +31,7 @@ const defaultOptions = {
  * `false`, and it fetches attribution texts from layers with the [`getAttribution`
  * method](#layer-getattribution) automatically. Extends `Control`.
  * @template {AttributionControlOptions} [O=AttributionControlOptions]
- * @extends {Control<O>}
+ * @extends {Control<O & AttributionControlDefaults>}
  */
 export class AttributionControl extends Control {
 
@@ -42,10 +42,10 @@ export class AttributionControl extends Control {
 
 	/**
 	 * Creates an attribution control.
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(options) {
-		super(options);
+		super(/** @type {Partial<O & AttributionControlDefaults>} */ (options));
 
 		/** @type {{[text: string]: number}} */
 		this._attributions = {};

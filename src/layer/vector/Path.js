@@ -2,7 +2,7 @@ import {Layer} from '../Layer.js';
 import {SVG} from './SVG.js';
 import * as Util from '../../core/Util.js';
 
-/** @import {CanvasOptions, Defaults, InteractiveLayerEventMap, PathOptions, RendererOptions} from '../../types.js' */
+/** @import {CanvasOptions, Defaults, InteractiveLayerEventMap, PathDefaults, PathOptions, RendererOptions} from '../../types.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Renderer} from './Renderer.js' */
 
@@ -83,14 +83,14 @@ const defaultOptions = {
 	renderer: undefined
 };
 
-/** @typedef {typeof defaultOptions} PathDefaults */
+/** @typedef {typeof defaultOptions} PathDefaultsValues */
 
 /**
  * An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline,
  * Circle). Do not use it directly. Extends `Layer`.
  * @template {PathOptions} [O=PathOptions]
  * @template {InteractiveLayerEventMap} [E=InteractiveLayerEventMap]
- * @extends {Layer<O, E>}
+ * @extends {Layer<O & PathDefaults, E>}
  */
 export class Path extends Layer {
 

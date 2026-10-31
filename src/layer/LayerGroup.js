@@ -42,7 +42,7 @@ export class LayerGroup extends Layer {
 	/**
 	 * Create a layer group, optionally given an initial set of layers and an `options` object.
 	 * @param {Layer[]} [layers]
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(layers, options) {
 		super();

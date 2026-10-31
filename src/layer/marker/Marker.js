@@ -9,7 +9,7 @@ import {MarkerDrag} from './Marker.Drag.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 /** @import {Feature, Point as GeoJSONPoint} from 'geojson' */
-/** @import {Defaults, DragEndEvent, LatLngExpression, LeafletEvent, MapListeners, MarkerEventMap,
+/** @import {Defaults, DragEndEvent, LatLngExpression, LeafletEvent, MapListeners, MarkerDefaults, MarkerEventMap,
  *    MarkerMoveEvent, MarkerOptions, PointExpression, ZoomAnimEvent} from '../../types.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Icon} from './Icon.js' */
@@ -108,7 +108,7 @@ const defaultOptions = {
 	autoPanSpeed: 10
 };
 
-/** @typedef {typeof defaultOptions} MarkerDefaults */
+/** @typedef {typeof defaultOptions} MarkerDefaultsValues */
 
 /**
  * @typedef {Object} MarkerEvents
@@ -150,7 +150,7 @@ const defaultOptions = {
  * ```
  * @template {MarkerOptions} [O=MarkerOptions]
  * @template {MarkerEventMap} [E=MarkerEventMap]
- * @extends {Layer<O, E>}
+ * @extends {Layer<O & MarkerDefaults, E>}
  */
 export class Marker extends Layer {
 
@@ -162,7 +162,7 @@ export class Marker extends Layer {
 	/**
 	 * Instantiates a Marker object given a geographical point and optionally an options object.
 	 * @param {LatLngExpression} latlng
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(latlng, options) {
 		super();

@@ -4,7 +4,7 @@ import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {Defaults, DivOverlayEventMap, DivOverlayOptions, LatLngExpression, LayerEventMap, LayerOptions, LeafletEvent, MapListeners, PointExpression, ZoomAnimEvent} from '../types.js' */
+/** @import {Defaults, DivOverlayDefaults, DivOverlayEventMap, DivOverlayOptions, LatLngExpression, LayerEventMap, LayerOptions, LeafletEvent, MapListeners, PointExpression, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLngBounds} from '../geo/LatLngBounds.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Layer, OverlayTriggerEvents} from './Layer.js' */
@@ -38,7 +38,7 @@ const defaultOptions = {
 	content: ''
 };
 
-/** @typedef {typeof defaultOptions} DivOverlayDefaults */
+/** @typedef {typeof defaultOptions} DivOverlayDefaultsValues */
 
 /**
  * @category DivOverlay events
@@ -50,7 +50,7 @@ const defaultOptions = {
  * Base model for Popup and Tooltip. Inherit from it for custom overlays like plugins.
  * @template {DivOverlayOptions} [O=DivOverlayOptions]
  * @template {DivOverlayEventMap} [E=DivOverlayEventMap]
- * @extends {LayerBase<O, E>}
+ * @extends {LayerBase<O & DivOverlayDefaults, E>}
  */
 export class DivOverlay extends LayerBase {
 
@@ -63,7 +63,7 @@ export class DivOverlay extends LayerBase {
 	 * Instantiates the overlay given an optional `options` object that describes its appearance and location and
 	 * an optional `source` layer it's bound to.
 	 * @overload
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 * @param {Layer} [source]
 	 */
 	/**
@@ -71,7 +71,7 @@ export class DivOverlay extends LayerBase {
 	 * its appearance and location.
 	 * @overload
 	 * @param {LatLng | [number, number, number?]} latlng
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	/**
 	 * @param {Partial<O> | LatLng | [number, number, number?]} [options]

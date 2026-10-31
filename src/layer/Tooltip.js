@@ -3,7 +3,7 @@ import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
 
-/** @import {Defaults, DivOverlayEventMap, PointExpression, TooltipOptions, ZoomAnimEvent} from '../types.js' */
+/** @import {Defaults, DivOverlayEventMap, PointExpression, TooltipDefaults, TooltipOptions, ZoomAnimEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
@@ -34,7 +34,7 @@ const defaultOptions = {
 	opacity: 0.9
 };
 
-/** @typedef {typeof defaultOptions} TooltipDefaults */
+/** @typedef {typeof defaultOptions} TooltipDefaultsValues */
 
 /**
  * @typedef {Object} TooltipEventProps
@@ -86,7 +86,7 @@ const defaultOptions = {
  *
  * @template {TooltipOptions} [O=TooltipOptions]
  * @template {DivOverlayEventMap} [E=DivOverlayEventMap]
- * @extends {DivOverlay<O, E>}
+ * @extends {DivOverlay<O & TooltipDefaults, E>}
  */
 export class Tooltip extends DivOverlay {
 

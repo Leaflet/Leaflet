@@ -1,7 +1,7 @@
 import {Icon} from './Icon.js';
 import {Point} from '../../geometry/Point.js';
 
-/** @import {Defaults, DivIconOptions, IconOptions, PointExpression} from '../../types.js' */
+/** @import {Defaults, DivIconDefaults, DivIconOptions, IconOptions, PointExpression} from '../../types.js' */
 
 /** @satisfies {Defaults<IconOptions>} */
 const defaultOptions = {
@@ -22,7 +22,7 @@ const defaultOptions = {
 	className: 'leaflet-div-icon'
 };
 
-/** @typedef {typeof defaultOptions} DivIconDefaults */
+/** @typedef {typeof defaultOptions} DivIconDefaultsValues */
 
 /**
  * Represents a lightweight icon for markers that uses a simple `<div>` element instead
@@ -37,7 +37,7 @@ const defaultOptions = {
  *
  * By default, it has a 'leaflet-div-icon' CSS class and is styled as a little white square with a shadow.
  * @template {DivIconOptions} [O=DivIconOptions]
- * @extends {Icon<O>}
+ * @extends {Icon<O & DivIconDefaults>}
  */
 export class DivIcon extends Icon {
 

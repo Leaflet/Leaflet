@@ -449,22 +449,37 @@ function interfaceMembers(ns, kind, ifaceName, ctx) {
 	const iface = lookup(ifaceName);
 	if (iface?.kind !== SK.InterfaceDeclaration) { return; }
 
-	for (const h of iface.heritageClauses?.flatMap(c => c.types) ?? []) {
+	for (const clause of iface.heritageClauses?.flatMap(c => c.types) ?? []) {
+		const h = defaultsSource(clause);
 		const hName = (h.expression ?? h.typeName).text;
 		const hOwner = ownerOfInterface.get(hName) ?? (pages.has(hName) ? hName : null);
 		if (hOwner) {
 			inherit(ns, config.display[hOwner] ?? hOwner);
 			continue;
 		}
-		// `Omit<XDefaults, keyof P>` leaves out the defaults that override P's, which are still own rows here
-		const target = hName === 'Omit' ? h.typeArguments[0] : h;
-		for (const prop of checker.getPropertiesOfType(checker.getTypeAtLocation(target))) {
+		for (const prop of checker.getPropertiesOfType(checker.getTypeAtLocation(h))) {
 			memberRow(ns, kind, prop, ctx);
 		}
 	}
 	for (const m of iface.members) {
 		const sym = m.name && checker.getSymbolAtLocation(m.name);
 		if (sym) { memberRow(ns, kind, sym, ctx, m); }
+	}
+}
+
+// What an options interface gets its rows from: `Partial<XDefaults>` documents the defaults as options, and
+// `interface XDefaults extends Omit<XDefaultsValues, keyof P>` leaves out the defaults that override P's, which are
+// still own rows of X
+function defaultsSource(h) {
+	for (;;) {
+		const name = (h.expression ?? h.typeName).text;
+		if (name === 'Partial' || name === 'Omit') {
+			h = h.typeArguments[0];
+			continue;
+		}
+		const decl = name.endsWith('Defaults') && lookup(name);
+		if (decl?.kind !== SK.InterfaceDeclaration) { return h; }
+		h = decl.heritageClauses[0].types[0];
 	}
 }
 
@@ -732,7 +747,8 @@ function classInterfaces(cls) {
 	}
 	const args = augmentsOf(cls)?.className.typeArguments ?? [];
 	return [0, 1].map((i) => {
-		const n = args[i]?.typeName?.text;
+		// `O & XDefaults` passes the class's own options up with its defaults filled in
+		const n = (args[i]?.types?.[0] ?? args[i])?.typeName?.text;
 		return n && (n in defaults ? defaults[n] : n);
 	}).map(n => (n && INTERFACE_SUFFIX.test(n) ? n : undefined));
 }

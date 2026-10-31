@@ -8,7 +8,7 @@ import {Point} from '../../geometry/Point.js';
 import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
 
 /** @import {Feature, Geometry, LineString, MultiLineString} from 'geojson' */
-/** @import {Defaults, InteractiveLayerEventMap, LatLngExpression, NestedCoords, PolylineOptions} from '../../types.js' */
+/** @import {Defaults, InteractiveLayerEventMap, LatLngExpression, NestedCoords, PolylineDefaults, PolylineOptions} from '../../types.js' */
 
 const defaultOptions = {
 	/**
@@ -21,7 +21,7 @@ const defaultOptions = {
 	noClip: false
 };
 
-/** @typedef {typeof defaultOptions} PolylineDefaults */
+/** @typedef {typeof defaultOptions} PolylineDefaultsValues */
 
 /**
  * A class for drawing polyline overlays on a map. Extends `Path`.
@@ -56,7 +56,7 @@ const defaultOptions = {
  * @template {PolylineOptions} [O=PolylineOptions]
  * @template {InteractiveLayerEventMap} [E=InteractiveLayerEventMap]
  * @template {Geometry} [G=LineString | MultiLineString] the geometry `toGeoJSON` returns
- * @extends {Path<O, E>}
+ * @extends {Path<O & PolylineDefaults, E>}
  */
 export class Polyline extends Path {
 
@@ -70,7 +70,7 @@ export class Polyline extends Path {
 	 * can create a `Polyline` object with multiple separate lines (`MultiPolyline`) by passing an array of arrays
 	 * of geographic points.
 	 * @param {NestedCoords<LatLngExpression>} latlngs
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(latlngs, options) {
 		super();

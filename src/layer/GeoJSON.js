@@ -54,7 +54,7 @@ export class GeoJSON extends FeatureGroup {
 	 * Creates a GeoJSON layer. Optionally accepts an object in [GeoJSON format](https://tools.ietf.org/html/rfc7946)
 	 * to display on the map (you can alternatively add it later with `addData` method) and an `options` object.
 	 * @param {GeoJSONData | GeoJSONData[] | null} [geojson]
-	 * @param {Partial<O>} [options]
+	 * @param {NoInfer<Partial<O>>} [options]
 	 */
 	constructor(geojson, options) {
 		super(undefined, options);

@@ -1,7 +1,7 @@
 import {Evented} from '../core/Events.js';
 import * as Util from '../core/Util.js';
 
-/** @import {Defaults, LayerEventMap, LayerOptions, LeafletEvent, PopupEvent, TooltipEvent} from '../types.js' */
+/** @import {Defaults, LayerDefaults, LayerEventMap, LayerOptions, LeafletEvent, PopupEvent, TooltipEvent} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
 // Classes extending `Layer` will inherit the following options:
@@ -23,7 +23,7 @@ const defaultOptions = {
 	bubblingPointerEvents: true
 };
 
-/** @typedef {typeof defaultOptions} LayerDefaults */
+/** @typedef {typeof defaultOptions} LayerDefaultsValues */
 
 /**
  * A `LayerGroup` that can hold layers of type `L`: groups type their members as `Layer`, so a popup or a tooltip
@@ -55,7 +55,7 @@ const defaultOptions = {
 /**
  * @template {LayerOptions} [O=LayerOptions]
  * @template {LayerEventMap} [E=LayerEventMap]
- * @extends {Evented<O, E>}
+ * @extends {Evented<O & LayerDefaults, E>}
  */
 export class LayerBase extends Evented {
 
