@@ -8,13 +8,8 @@ import {Point} from '../../geometry/Point.js';
 /** @import {DragEndEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
 /** @import {Marker} from './Marker.js' */
 
-/** @type {Record<string, Point>} */
-const arrows = {
-	ArrowLeft: new Point(-1, 0),
-	ArrowRight: new Point(1, 0),
-	ArrowUp: new Point(0, -1),
-	ArrowDown: new Point(0, 1)
-};
+/** @type {Record<string, [number, number]>} */
+const arrows = {ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1]};
 
 // Used internally by Marker to make the markers draggable.
 export class MarkerDrag extends Handler {
@@ -179,9 +174,10 @@ export class MarkerDrag extends Handler {
 				draggable.fire('dragstart');
 			}
 
-			draggable._newPos = draggable._newPos.add(dir.multiplyBy(k.shiftKey ? 30 : 10));
-			draggable._lastEvent = k;
-			draggable._updatePosition();
+			// not through _updatePosition, whose predrag would start the pointer autoPan loop
+			draggable._newPos = draggable._newPos.add(new Point(...dir).multiplyBy(k.shiftKey ? 30 : 10));
+			DomUtil.setPosition(draggable._element, draggable._newPos);
+			draggable.fire('drag', {originalEvent: k});
 
 			if (options.autoPan) {
 				map.panInside(this._marker._latlng, {padding: options.autoPanPadding, animate: false});
