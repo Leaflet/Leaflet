@@ -202,4 +202,66 @@ describe('Marker.Drag', () => {
 			expect(marker.getOffset().equals(offset)).to.be.true;
 		});
 	});
+
+	describe('drag with keyboard', () => {
+		// returns false if the default action (scrolling the page) was prevented
+		function key(marker, type, key, options) {
+			return marker._icon.dispatchEvent(new KeyboardEvent(type, {key, bubbles: true, cancelable: true, ...options}));
+		}
+
+		it('moves a focused marker with the arrow keys', () => {
+			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
+
+			expect(key(marker, 'keydown', 'ArrowRight')).to.be.false;
+			key(marker, 'keydown', 'ArrowDown', {shiftKey: true});
+
+			expect(marker.getOffset()).to.eql(new Point(10, 30));
+			expect(marker.getLatLng()).to.be.nearLatLng(map.layerPointToLatLng(marker._getPosition()));
+			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
+		});
+
+		it('ends the drag when the key is released or the marker loses focus', () => {
+			const marker = new Marker([0, 0], {draggable: true}).addTo(map);
+			const events = [];
+			const dragend = sinon.spy();
+			marker.on('movestart dragstart move drag moveend dragend', e => events.push(e.type));
+			marker.on('dragend', dragend);
+
+			key(marker, 'keydown', 'ArrowRight');
+			key(marker, 'keydown', 'ArrowRight', {repeat: true});
+			key(marker, 'keyup', 'ArrowRight');
+			expect(events).to.eql(['movestart', 'dragstart', 'move', 'drag', 'move', 'drag', 'moveend', 'dragend']);
+			expect(dragend.lastCall.args[0].distance).to.equal(20);
+
+			key(marker, 'keydown', 'ArrowLeft');
+			marker._icon.dispatchEvent(new FocusEvent('blur'));
+			expect(events.slice(8)).to.eql(['movestart', 'dragstart', 'move', 'drag', 'moveend', 'dragend']);
+		});
+
+		it('ignores other keys, keys with modifiers, keys pressed inside a DivIcon and disabled dragging', () => {
+			const marker = new Marker([0, 0], {draggable: true, icon: new DivIcon({html: '<input>'})}).addTo(map);
+			const spy = sinon.spy();
+			marker.on('dragstart dragend', spy);
+
+			key(marker, 'keyup', 'Tab');
+			key(marker, 'keydown', 'a');
+			for (const modifier of ['altKey', 'ctrlKey', 'metaKey']) {
+				key(marker, 'keydown', 'ArrowRight', {[modifier]: true});
+			}
+			marker._icon.querySelector('input').dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight', bubbles: true}));
+			marker.dragging.disable();
+			expect(key(marker, 'keydown', 'ArrowRight')).to.be.true;
+
+			expect(spy.called).to.be.false;
+		});
+
+		it('pans the map to keep the marker in view with autoPan', () => {
+			const marker = new Marker(map.containerPointToLatLng([545, 300]), {draggable: true, autoPan: true}).addTo(map);
+
+			key(marker, 'keydown', 'ArrowRight');
+
+			expect(map.latLngToContainerPoint(marker.getLatLng())).to.be.near([550, 300]);
+			expect(map.getCenter().lng).to.be.above(0);
+		});
+	});
 });

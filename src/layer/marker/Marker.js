@@ -82,7 +82,8 @@ const defaultOptions = {
 	autoPanOnFocus: true,
 
 	/**
-	 * Whether the marker is draggable with pointer or not.
+	 * Whether the marker is draggable with pointer or not. A focused draggable marker can also be moved with the arrow
+	 * keys, by 10 pixels or 30 with Shift.
 	 * @category Draggable marker options
 	 */
 	draggable: false,
