@@ -1,8 +1,10 @@
 import {Handler} from '../../core/Handler.js';
+import * as DomEvent from '../../dom/DomEvent.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
+import {KeyboardHandler} from '../../map/handler/KeyboardHandler.js';
 
 /** @import {DragEndEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
 /** @import {Marker} from './Marker.js' */
@@ -33,6 +35,8 @@ export class MarkerDrag extends Handler {
 			dragend: this._onDragEnd
 		}, this).enable();
 
+		DomEvent.on(icon, {keydown: this._onKeyDown, keyup: this._onKeyUp, blur: this._onKeyUp}, this);
+
 		icon.classList.add('leaflet-marker-draggable');
 	}
 
@@ -43,6 +47,8 @@ export class MarkerDrag extends Handler {
 			drag: this._onDrag,
 			dragend: this._onDragEnd
 		}, this).disable();
+
+		DomEvent.off(this._draggable._element, {keydown: this._onKeyDown, keyup: this._onKeyUp, blur: this._onKeyUp}, this);
 
 		this._marker._icon?.classList.remove('leaflet-marker-draggable');
 	}
@@ -136,5 +142,40 @@ export class MarkerDrag extends Handler {
 		this._marker
 			.fire('moveend')
 			.fire('dragend', e);
+	}
+
+	// arrow keys move a focused marker; holding a key down is one drag, which ends on keyup or blur
+	/** @param {KeyboardEvent} e */
+	_onKeyDown(e) {
+		const {left, right, up, down} = KeyboardHandler.keys,
+		x = +right.includes(e.key) - +left.includes(e.key),
+		y = +down.includes(e.key) - +up.includes(e.key),
+		marker = this._marker,
+		icon = this._draggable._element;
+
+		if (!(x || y) || e.target !== icon || e.altKey || e.ctrlKey || e.metaKey) { return; }
+
+		e.preventDefault(); // don't scroll the page
+
+		const pos = DomUtil.getPosition(icon);
+		if (!this._keyStartPos) {
+			this._keyStartPos = pos;
+			this._draggable.fire('dragstart');
+		}
+
+		DomUtil.setPosition(icon, pos.add(new Point(x, y).multiplyBy(e.shiftKey ? 30 : 10)));
+		this._draggable.fire('drag', {originalEvent: e});
+
+		if (marker.options.autoPan) {
+			marker._map.panInside(marker.getLatLng(), {padding: marker.options.autoPanPadding, animate: false});
+		}
+	}
+
+	_onKeyUp() {
+		if (!this._keyStartPos) { return; }
+
+		const distance = DomUtil.getPosition(this._draggable._element).distanceTo(this._keyStartPos);
+		delete this._keyStartPos;
+		this._draggable.fire('dragend', {distance});
 	}
 }
