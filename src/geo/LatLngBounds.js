@@ -1,6 +1,8 @@
 import {LatLng} from './LatLng.js';
 
-/** @import {LatLngExpression} from './LatLng.js' */
+/** @import {LatLngExpression, LatLngTuple} from './LatLng.js' */
+
+/** @typedef {LatLngTuple[]} LatLngBoundsLiteral */
 
 /**
  * A `LatLngBounds`, or an array of the points it should contain (usually two opposite corners).

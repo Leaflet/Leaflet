@@ -1536,10 +1536,11 @@ export class LeafletMap extends Evented {
 	 * @returns {Renderer}
 	 */
 	getRenderer(layer) {
+		// markercluster calls this with a non-Path layer just to create the default renderer early, so tolerate it
 		const renderer = layer.options.renderer ?? this._getPaneRenderer(layer) ?? this.options.renderer ??
-			(this._renderer ??= layer._createRenderer());
+			(this._renderer ??= layer._createRenderer?.());
 
-		if (!this.hasLayer(renderer)) {
+		if (renderer && !this.hasLayer(renderer)) {
 			this.addLayer(renderer);
 		}
 		return renderer;

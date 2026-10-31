@@ -1,4 +1,4 @@
-import {Canvas, Circle, LeafletMap, SVG} from 'leaflet';
+import {Canvas, Circle, FeatureGroup, LeafletMap, SVG} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -23,6 +23,18 @@ describe('Renderer', () => {
 			expect(map.getRenderer(circle)).to.be.instanceOf(SVG);
 			expect(container.querySelector('.leaflet-pane svg path')).to.be.instanceOf(SVGPathElement);
 			expect(container.querySelector('.leaflet-pane canvas')).to.be.null;
+		});
+
+		it('tolerates a non-Path layer, as markercluster passes', () => {
+			map = new LeafletMap(container);
+			map.setView([55.8, 37.6], 6);
+
+			const group = new FeatureGroup().addTo(map);
+
+			expect(map.getRenderer(group)).to.be.undefined;
+
+			const circle = new Circle([55.8, 37.6]).addTo(map);
+			expect(map.getRenderer(group)).to.equal(map.getRenderer(circle));
 		});
 
 		it('uses the map renderer option', () => {

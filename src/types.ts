@@ -52,11 +52,11 @@ import type {ErrorEventProps, FitBoundsProps, InvalidateSizeProps, LayerEventPro
 
 export type {Defaults} from './core/Class.js';
 export type {LeafletEventHandlerFn, Listener, ListenerMap} from './core/Events.js';
-export type {PointExpression} from './geometry/Point.js';
-export type {BoundsExpression} from './geometry/Bounds.js';
-export type {LatLngExpression} from './geo/LatLng.js';
+export type {PointExpression, PointTuple} from './geometry/Point.js';
+export type {BoundsExpression, BoundsLiteral} from './geometry/Bounds.js';
+export type {LatLngExpression, LatLngLiteral, LatLngTuple} from './geo/LatLng.js';
 export type {NestedCoords} from './geometry/LineUtil.js';
-export type {LatLngBoundsExpression} from './geo/LatLngBounds.js';
+export type {LatLngBoundsExpression, LatLngBoundsLiteral} from './geo/LatLngBounds.js';
 export type {Projection} from './geo/crs/CRS.js';
 export type {Coords, DoneCallback} from './layer/tile/GridLayer.js';
 export type {StyleFunction} from './layer/GeoJSON.js';

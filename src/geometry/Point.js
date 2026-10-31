@@ -1,8 +1,10 @@
 import {formatNum} from '../core/Util.js';
 
+/** @typedef {[number, number]} PointTuple */
+
 /**
  * A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form.
- * @typedef {Point | [number, number] | {x: number, y: number}} PointExpression
+ * @typedef {Point | PointTuple | {x: number, y: number}} PointExpression
  */
 
 /**

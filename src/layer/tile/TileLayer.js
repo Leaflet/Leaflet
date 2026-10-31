@@ -190,6 +190,7 @@ export class TileLayer extends GridLayer {
 	 * The `done` callback is called when the tile has been loaded.
 	 * @param {Coords} coords
 	 * @param {DoneCallback} done
+	 * @returns {HTMLElement}
 	 */
 	createTile(coords, done) {
 		const tile = document.createElement('img');

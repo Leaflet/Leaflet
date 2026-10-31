@@ -1,6 +1,8 @@
 import {Point} from './Point.js';
 
-/** @import {PointExpression} from './Point.js' */
+/** @import {PointExpression, PointTuple} from './Point.js' */
+
+/** @typedef {PointTuple[]} BoundsLiteral */
 
 /**
  * A `Bounds`, or an array of the points it should contain (usually two opposite corners).
