@@ -1125,6 +1125,21 @@ describe('Map', () => {
 		});
 	});
 
+	describe('#getRenderer', () => {
+		it('throws a clear error for a layer that is not a Path', () => {
+			map.setView([0, 0], 0);
+			new Polygon([[0, 0], [1, 1], [0, 1]]).addTo(map); // the default renderer already exists
+			expect(() => map.getRenderer(new Layer())).to.throw('getRenderer() expects a Path');
+		});
+
+		it('returns the map renderer for any layer when the renderer option is set', () => {
+			const renderer = new Canvas();
+			const map2 = new LeafletMap(createContainer(), {renderer, center: [0, 0], zoom: 0});
+			expect(map2.getRenderer(new Layer())).to.equal(renderer);
+			removeMapContainer(map2, map2.getContainer());
+		});
+	});
+
 	describe('#removeLayer', () => {
 		it('calls layer.onRemove if the map is ready', () => {
 			const layer = layerSpy();

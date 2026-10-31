@@ -1536,6 +1536,10 @@ export class LeafletMap extends Evented {
 	 * @returns {Renderer}
 	 */
 	getRenderer(layer) {
+		// only paths can create a renderer, so fail here, not on whichever call happens to create the first one
+		if (!layer._createRenderer && !layer.options.renderer && !this.options.renderer) {
+			throw new Error('Map: getRenderer() expects a Path, or a layer or map with the renderer option set.');
+		}
 		const renderer = layer.options.renderer ?? this._getPaneRenderer(layer) ?? this.options.renderer ??
 			(this._renderer ??= layer._createRenderer());
 
