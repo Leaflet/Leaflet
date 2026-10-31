@@ -41,8 +41,9 @@ const defaultOptions = {
 /**
  * Used to load and display a video player over specific bounds of the map. Extends `ImageOverlay`.
  *
- * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML element. The
- * constructor takes the URL of the video (or an array of URLs, or even a video element) in place of the image URL.
+ * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML element.
+ * @constructorDescription Instantiates a video overlay given the URL of the video (or an array of URLs, or a video
+ * element) and the geographical bounds it is tied to.
  * @example
  * ```js
  * const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',

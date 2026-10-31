@@ -208,6 +208,8 @@ const defaultOptions = {
 	inertiaMaxSpeed: 1400, // px/s
 
 	/**
+	 * The curvature factor of the inertial movement's easing, like the [`easeLinearity`](#panoptions-easelinearity)
+	 * pan option.
 	 * @category Panning Inertia Options
 	 */
 	easeLinearity: 0.2,

@@ -26,6 +26,7 @@ const DASH_SEPARATOR_RE = /[, ]+/;
 /**
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
+ * @constructorDescription Creates a Canvas renderer with the given options.
  * @example
  * Use Canvas by default for all paths in the map:
  *

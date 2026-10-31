@@ -215,7 +215,10 @@ function classPage(name, cls, parent) {
 		for (const aug of augmentationsOf(c)) { signatureMembers(ns, aug.members, ctx); }
 	}
 
-	if (base) { inherit(ns, pageOfClass(base)); }
+	if (base) {
+		specializedMembers(ns, cls, base, ctx);
+		inherit(ns, pageOfClass(base));
+	}
 	return ns;
 }
 
@@ -290,15 +293,22 @@ function examples(ns, doc) {
 	}
 }
 
-// Constructor rows from the class or, when it doesn't document its own, the nearest base that does
+// Constructor rows from the class or, when it doesn't document its own, the nearest base that does, typed as the
+// class binds the base's type parameters and described by the nearest `@constructorDescription` on the way
 function constructors(ns, cls, ctx) {
+	let templates = ctx.templates, comments = null;
 	for (let c = cls; c; c = baseOf(c)) {
 		// with `@overload` blocks, only the implementation carries the JSDoc
 		const ctor = c.members.find(m => m.kind === SK.Constructor && m.jsDoc);
 		if (ctor?.jsDoc.some(d => descriptionOf(d))) {
-			signatureRows(ns, 'constructor', ns.name, ctor, ctx);
+			signatureRows(ns, 'constructor', ns.name, ctor, {...ctx, templates});
+			if (comments) {
+				for (const d of sectionOf(ns, 'constructor', null).items) { d.comments = comments; }
+			}
 			return;
 		}
+		comments ??= tagText(lastDoc(c), 'constructorDescription');
+		templates = baseTemplates(c, templates);
 	}
 }
 
@@ -313,10 +323,16 @@ function signatureRows(ns, kind, name, node, ctx, sigNode = node) {
 	const section = sectionOf(ns, kind, category, ctx.cats[category ?? LABELS[kind]]);
 	if (hasTag(main, 'uninheritable')) { section.uninheritable = true; }
 
-	sigs.forEach((b, i) => {
+	const items = sigs.map((b, i) => {
 		const sig = signatureOf(b, sigNode, ctx);
-		addItem(section, {key: i ? `${name}-alternative-${i}` : name, name,
-			comments: descriptionOf(rows[i]) ?? descriptionOf(rows[0]), ...sig, type: kind === 'constructor' ? null : sig.type});
+		return {name, comments: descriptionOf(rows[i]) ?? descriptionOf(rows[0]), ...sig,
+			type: kind === 'constructor' ? null : sig.type};
+	});
+	// overloads go from specific to general, so of those that render the same params (`DomUtil.create` typed by tag
+	// name and by any string) the last one has the types the page can show
+	const params = d => JSON.stringify(d.params);
+	items.filter((d, i) => !items.slice(i + 1).some(e => params(e) === params(d))).forEach((d, i) => {
+		addItem(section, {key: i ? `${name}-alternative-${i}` : name, ...d});
 	});
 }
 
@@ -368,6 +384,39 @@ function classMembers(ns, cls, ctx) {
 	};
 	for (const m of cls.members) {
 		if (m.body) { m.body.forEachChild(visit); }
+	}
+}
+
+// Members of ancestors typed by a class type parameter past the options and event map (`ImageOverlay`'s element)
+// that the class binds differently from the page it inherits from: own rows here, with the class's types
+function specializedMembers(ns, cls, base, ctx) {
+	let parent = base;
+	while (parent && !pages.has(config.fold[parent.name.text] ?? parent.name.text)) { parent = baseOf(parent); }
+	if (!parent) { return; }
+
+	let own = ctx.templates;
+	for (let c = cls; c && c !== parent; c = baseOf(c)) { own = baseTemplates(c, own); }
+	let inherited = classTemplates(parent);
+
+	for (let c = parent; c; c = baseOf(c)) {
+		if (Object.keys(inherited).length > 2) {
+			const cats = categoryDescriptions(lastDoc(c));
+			const before = createNamespace(ns.tsName), after = createNamespace(ns.tsName);
+			classMembers(before, c, {templates: inherited, cats});
+			classMembers(after, c, {templates: own, cats});
+			for (const [kind, ss] of Object.entries(after.supersections)) {
+				for (const s of ss.sections) {
+					const prev = before.supersections[kind].sections.find(x => x.name === s.name).items;
+					for (const d of s.items) {
+						if (JSON.stringify(d) !== JSON.stringify(prev.find(x => x.key === d.key))) {
+							addItem(sectionOf(ns, kind, s.name, s.comments), d);
+						}
+					}
+				}
+			}
+		}
+		own = baseTemplates(c, own);
+		inherited = baseTemplates(c, inherited);
 	}
 }
 
@@ -659,15 +708,29 @@ function classTemplates(cls) {
 	return templates;
 }
 
+// The type parameters of the base of `cls` as `@extends {Base<…>}` binds them, given those of `cls`
+function baseTemplates(cls, templates) {
+	const base = baseOf(cls);
+	if (!base) { return {}; }
+	const args = augmentsOf(cls)?.className.typeArguments ?? [];
+	const result = classTemplates(base);
+	Object.keys(result).forEach((name, i) => {
+		if (args[i]) { result[name] = {arg: args[i], ctx: {templates}}; }
+	});
+	return result;
+}
+
+function augmentsOf(cls) {
+	return (cls.jsDoc ?? []).flatMap(d => tagsOf(d)).find(t => t.kind === SK.JSDocAugmentsTag);
+}
+
 // The options and event map interface names of a class, from `@extends {Base<O, E>}` and the template defaults
 function classInterfaces(cls) {
-	const tags = (cls.jsDoc ?? []).flatMap(d => tagsOf(d));
-	const augments = tags.find(t => t.kind === SK.JSDocAugmentsTag);
 	const defaults = {};
-	for (const t of tags.filter(t => t.kind === SK.JSDocTemplateTag)) {
+	for (const t of (cls.jsDoc ?? []).flatMap(d => tagsOf(d)).filter(t => t.kind === SK.JSDocTemplateTag)) {
 		for (const tp of t.typeParameters) { defaults[tp.name.text] = tp.defaultType?.typeName?.text; }
 	}
-	const args = augments?.className.typeArguments ?? [];
+	const args = augmentsOf(cls)?.className.typeArguments ?? [];
 	return [0, 1].map((i) => {
 		const n = args[i]?.typeName?.text;
 		return n && (n in defaults ? defaults[n] : n);
@@ -752,7 +815,12 @@ function descriptionOf(doc) {
 }
 
 function categoryOf(doc) {
-	return tagsOf(doc).filter(t => tagName(t) === 'category').map(t => text(t.comment))[0] ?? null;
+	return tagText(doc, 'category');
+}
+
+function tagText(doc, name) {
+	const tag = tagsOf(doc).find(t => tagName(t) === name);
+	return tag ? text(tag.comment, tag) || null : null;
 }
 
 function sourceText(node) {

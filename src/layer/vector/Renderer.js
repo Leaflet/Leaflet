@@ -22,6 +22,7 @@ import * as Util from '../../core/Util.js';
  *
  * The `continuous` option inherited from `BlanketOverlay` cannot be set to `true` (otherwise, renderers get out of
  * place during a pinch-zoom operation).
+ * @constructorDescription Creates a renderer with the given options.
  * @template {RendererOptions} [O=RendererOptions]
  * @template {RendererEventMap} [E=RendererEventMap]
  * @extends {BlanketOverlay<O, E>}

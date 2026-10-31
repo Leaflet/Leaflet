@@ -19,6 +19,8 @@ const defaultOptions = {
  *
  * Note that points you pass when creating a polygon shouldn't have an additional
  * last point equal to the first one — it's better to filter out such points.
+ * @constructorDescription Instantiates a polygon given an array of geographical points (or arrays of rings, as
+ * shown below) and optionally an options object.
  * @example
  * ```js
  * // create a red polygon from an array of LatLng points

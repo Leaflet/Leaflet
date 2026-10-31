@@ -7,9 +7,9 @@ import * as Util from '../core/Util.js';
  * Used to load, display and provide DOM access to an SVG file over specific bounds of the map. Extends
  * `ImageOverlay`.
  *
- * An SVG overlay uses the [`<svg>`](https://developer.mozilla.org/docs/Web/SVG/Element/svg) element, passed to the
- * constructor in place of the image URL. A viewBox attribute is required on the SVG element to zoom in and out
- * properly.
+ * An SVG overlay uses the [`<svg>`](https://developer.mozilla.org/docs/Web/SVG/Element/svg) element. A viewBox
+ * attribute is required on the SVG element to zoom in and out properly.
+ * @constructorDescription Instantiates an SVG overlay given an SVG element and the geographical bounds it is tied to.
  * @example
  * ```js
  * const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");

@@ -10,6 +10,7 @@ import {splitWords, stamp} from '../../core/Util.js';
 
 /**
  * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG). Inherits `Renderer`.
+ * @constructorDescription Creates an SVG renderer with the given options.
  * @example
  * Use SVG by default for all paths in the map:
  *
