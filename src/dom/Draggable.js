@@ -185,6 +185,7 @@ export class Draggable extends Evented {
 		this._newPos = this._startPos.add(offset);
 		this._moving = true;
 
+		/** @type {PointerEvent | KeyboardEvent} */
 		this._lastEvent = e;
 		this._updatePosition();
 	}

@@ -4,10 +4,17 @@ import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
-import {KeyboardHandler} from '../../map/handler/KeyboardHandler.js';
 
 /** @import {DragEndEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
 /** @import {Marker} from './Marker.js' */
+
+/** @type {Record<string, Point>} */
+const arrows = {
+	ArrowLeft: new Point(-1, 0),
+	ArrowRight: new Point(1, 0),
+	ArrowUp: new Point(0, -1),
+	ArrowDown: new Point(0, 1)
+};
 
 // Used internally by Marker to make the markers draggable.
 export class MarkerDrag extends Handler {
@@ -35,12 +42,14 @@ export class MarkerDrag extends Handler {
 			dragend: this._onDragEnd
 		}, this).enable();
 
-		DomEvent.on(icon, {keydown: this._onKeyDown, keyup: this._onKeyUp, blur: this._onKeyUp}, this);
+		DomEvent.on(icon, 'keydown keyup blur', this._onKey, this);
 
 		icon.classList.add('leaflet-marker-draggable');
 	}
 
 	removeHooks() {
+		this._keyDrag = false; // disabling the Draggable below ends a keyboard drag in progress, as it does a pointer drag
+
 		this._draggable.off({
 			dragstart: this._onDragStart,
 			predrag: this._onPreDrag,
@@ -48,7 +57,7 @@ export class MarkerDrag extends Handler {
 			dragend: this._onDragEnd
 		}, this).disable();
 
-		DomEvent.off(this._draggable._element, {keydown: this._onKeyDown, keyup: this._onKeyUp, blur: this._onKeyUp}, this);
+		DomEvent.off(this._draggable._element, 'keydown keyup blur', this._onKey, this);
 
 		this._marker._icon?.classList.remove('leaflet-marker-draggable');
 	}
@@ -144,38 +153,39 @@ export class MarkerDrag extends Handler {
 			.fire('dragend', e);
 	}
 
-	// arrow keys move a focused marker; holding a key down is one drag, which ends on keyup or blur
-	/** @param {KeyboardEvent} e */
-	_onKeyDown(e) {
-		const {left, right, up, down} = KeyboardHandler.keys,
-		x = +right.includes(e.key) - +left.includes(e.key),
-		y = +down.includes(e.key) - +up.includes(e.key),
-		marker = this._marker,
-		icon = this._draggable._element;
+	// Arrow keys move a focused marker. Holding a key down is one drag, driven through the Draggable like a pointer
+	// drag (so the two can't overlap), and ends on keyup or blur.
+	/** @param {KeyboardEvent | FocusEvent} e */
+	_onKey(e) {
+		const k = /** @type {KeyboardEvent} */ (e), // all but blur
+		dir = arrows[k.key],
+		draggable = this._draggable,
+		{options, _map: map} = this._marker;
 
-		if (!(x || y) || e.target !== icon || e.altKey || e.ctrlKey || e.metaKey) { return; }
+		if (e.type !== 'keydown') {
+			if (this._keyDrag) {
+				this._keyDrag = false;
+				draggable.finishDrag();
+			}
 
-		e.preventDefault(); // don't scroll the page
+		} else if (dir && k.target === draggable._element && !(k.altKey || k.ctrlKey || k.metaKey)) {
+			e.preventDefault(); // don't scroll the page
 
-		const pos = DomUtil.getPosition(icon);
-		if (!this._keyStartPos) {
-			this._keyStartPos = pos;
-			this._draggable.fire('dragstart');
+			if (!this._keyDrag) {
+				if (Draggable._dragging) { return; }
+				Draggable._dragging = draggable;
+				draggable._startPos = draggable._newPos = DomUtil.getPosition(draggable._element);
+				draggable._moved = draggable._moving = this._keyDrag = true;
+				draggable.fire('dragstart');
+			}
+
+			draggable._newPos = draggable._newPos.add(dir.multiplyBy(k.shiftKey ? 30 : 10));
+			draggable._lastEvent = k;
+			draggable._updatePosition();
+
+			if (options.autoPan) {
+				map.panInside(this._marker._latlng, {padding: options.autoPanPadding, animate: false});
+			}
 		}
-
-		DomUtil.setPosition(icon, pos.add(new Point(x, y).multiplyBy(e.shiftKey ? 30 : 10)));
-		this._draggable.fire('drag', {originalEvent: e});
-
-		if (marker.options.autoPan) {
-			marker._map.panInside(marker.getLatLng(), {padding: marker.options.autoPanPadding, animate: false});
-		}
-	}
-
-	_onKeyUp() {
-		if (!this._keyStartPos) { return; }
-
-		const distance = DomUtil.getPosition(this._draggable._element).distanceTo(this._keyStartPos);
-		delete this._keyStartPos;
-		this._draggable.fire('dragend', {distance});
 	}
 }

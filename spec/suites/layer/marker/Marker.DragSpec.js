@@ -238,6 +238,19 @@ describe('Marker.Drag', () => {
 			expect(events.slice(8)).to.eql(['movestart', 'dragstart', 'move', 'drag', 'moveend', 'dragend']);
 		});
 
+		it('ends the drag when dragging is disabled while a key is held', () => {
+			const marker = new Marker([0, 0], {draggable: true}).addTo(map);
+			const dragstart = sinon.spy();
+			marker.on('dragstart', dragstart);
+
+			key(marker, 'keydown', 'ArrowRight');
+			marker.dragging.disable();
+			marker.dragging.enable();
+			key(marker, 'keydown', 'ArrowRight');
+
+			expect(dragstart.calledTwice).to.be.true;
+		});
+
 		it('ignores other keys, keys with modifiers, keys pressed inside a DivIcon and disabled dragging', () => {
 			const marker = new Marker([0, 0], {draggable: true, icon: new DivIcon({html: '<input>'})}).addTo(map);
 			const spy = sinon.spy();
