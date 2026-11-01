@@ -262,7 +262,9 @@ export class Class {
 				'Rename it to constructor() and call super() at its start.');
 		}
 
-		/** @type {O} */
+		// NoInfer stops a contextual type (e.g. `const l: Layer = new Circle(…)`) from inferring O through this
+		// property, which would check the constructor options against `LayerOptions` instead of the class's own
+		/** @type {NoInfer<O>} */
 		this.options = Util.setOptions(this);
 
 		this._initHooksLeft = getHookPlan(this.constructor).runners;

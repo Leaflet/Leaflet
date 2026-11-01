@@ -1,7 +1,7 @@
 // Options interfaces are all-optional bags, as in `@types/leaflet`, while `options` on an instance has the defaults
 // filled in, including the ones inherited from parent classes.
-import {Circle, DefaultIcon, DivIcon, Layer, LayersControl, Map, Marker, Point, Polyline, ScaleControl, TileLayer,
-	ZoomControl} from 'leaflet';
+import {Circle, DefaultIcon, DivIcon, Layer, LayerGroup, LayersControl, Map, Marker, Point, Polyline, ScaleControl,
+	TileLayer, ZoomControl} from 'leaflet';
 import type {ControlPosition, MapOptions, MarkerOptions, PathOptions, PolylineOptions, TileLayerOptions} from 'leaflet';
 
 declare module 'leaflet' {
@@ -36,6 +36,10 @@ const collapsed: boolean = new LayersControl().options.collapsed;
 // @ts-expect-error no default for bounds
 const bounds: object = new TileLayer('').options.bounds;
 const asLayer: Layer = m;
+// a contextual type doesn't narrow the options type parameter, so constructor options are still checked
+new LayerGroup().addLayer(new Circle([0, 0], {radius: 10}));
+const ctxLayer: Layer = new Circle([0, 0], {radius: 10});
+const ctxLayers: Layer[] = [new Polyline([[0, 0], [1, 1]], {color: '#222'})];
 
 // defaults that override an inherited option keep the parent's type, not the narrower one of the default value
 const zoomControl = new ZoomControl({position: 'bottomright'});
@@ -62,4 +66,4 @@ class ShineMarker extends Marker<ShineOptions & typeof shineDefaults> {
 new MyTiles('').addTo(map);
 new ShineMarker([0, 0], {shine: 2}).addTo(map);
 
-void [pane, angle, maxZoom, radius, className, title, pos, collapsed, bounds, asLayer];
+void [pane, angle, maxZoom, radius, className, title, pos, collapsed, bounds, asLayer, ctxLayer, ctxLayers];
