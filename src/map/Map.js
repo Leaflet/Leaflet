@@ -552,6 +552,10 @@ const defaultOptions = {
  * 	zoom: 13
  * });
  * ```
+ *
+ * The map container is given `role="region"` and `aria-label="Map"` to improve accessibility, unless it already has
+ * these attributes set. So, you can override them in markup, e.g. `<div id="map" aria-label="Map of parks in London" role="group">`.
+ *
  * @categoryDescription Handlers
  * Map properties include interaction handlers that allow you to control interaction behavior in runtime,
  * enabling or disabling certain features such as dragging or touch zoom (see `Handler` methods). For example:
@@ -2028,6 +2032,13 @@ export class LeafletMap extends Evented {
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
 
+		if (!container.hasAttribute('role')) {
+			container.setAttribute('role', 'region');
+		}
+
+		if (!container.hasAttribute('aria-label')) {
+			container.setAttribute('aria-label', 'Map');
+		}
 	}
 
 	_initLayout() {
