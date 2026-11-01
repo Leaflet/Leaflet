@@ -28,7 +28,7 @@
     "playwright": "^1.64.1",
     "rolldown": "^1.2.15",
     "sinon": "^22.1.0",
-    "typescript": "7.1.0-beta",
+    "typescript": "7.1.0-dev.20261025.1",
     "ui-event-simulator": "^2.0.0",
     "vitest": "^5.0.5"
   },
