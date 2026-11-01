@@ -241,6 +241,8 @@ export class Canvas extends Renderer {
 	}
 
 	_redraw() {
+		// drop a pending frame on a synchronous redraw, so it can't run after removal
+		cancelAnimationFrame(/** @type {number} */ (this._redrawRequest));
 		this._redrawRequest = null;
 
 		if (this._redrawBounds) {

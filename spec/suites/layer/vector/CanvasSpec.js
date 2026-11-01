@@ -296,6 +296,14 @@ describe('Canvas', () => {
 			requestAnimationFrame(() => { done(); });
 		});
 
+		it('can remove the map without errors after a view reset', (done) => {
+			new Polygon(latLngs).addTo(map);
+			map.setView([1, 1], 7, {animate: false});
+			map.remove();
+			map = null;
+			requestAnimationFrame(() => { done(); });
+		});
+
 		it('can remove renderer without errors', (done) => {
 			map.remove();
 
