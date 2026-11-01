@@ -212,18 +212,21 @@ Vladimir Agafonkin, Leaflet maintainer.
  [George MacKerron]: https://github.com/jawj/
  [Jacob Toye]: https://github.com/jacobtoye
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
 <script>
 	var map = L.map('map').setView([51.503, -0.09], 13);
 
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-i875mjb7'}).addTo(map);
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
 
-	var polygon = L.polygon([
+	L.polygon([
 		[51.509, -0.08],
 		[51.503, -0.06],
 		[51.51, -0.047]
-	], {color: 'red'}).addTo(map).bindPopup('I am an editable polygon.');
-
-	polygon.editing.enable();
+	], {color: 'red'}).addTo(map).bindPopup('I am a polygon.');
 
 	L.control.scale().addTo(map);
 

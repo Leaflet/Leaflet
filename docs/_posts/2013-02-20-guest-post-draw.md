@@ -95,14 +95,10 @@ I've had a great time implementing this plugin. I hope you enjoy using it. If yo
 Cheers,
 Jacob Toye
 
-<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.css" />
-<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
-<!--[if lte IE 8]>
-	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.ie.css" />
-	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/leaflet.draw.ie.css" />
-<![endif]-->
-<script src="https://leaflet.github.io/Leaflet.draw/libs/leaflet/leaflet.js"></script>
-<script src="https://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 
 <style>
 	.leaflet-bar {

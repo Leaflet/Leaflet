@@ -9,10 +9,31 @@ html, body, input, select, button, textarea, table {
 	text-rendering: optimizeLegibility;
 }
 
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
 body {
+	margin: 0;
 	line-height: 1.5;
 	color: black;
 	background-color: white;
+}
+
+button {
+	color: inherit;
+	line-height: inherit;
+}
+
+pre {
+	/* the doubled family opts out of the smaller default size browsers give a lone monospace */
+	font-family: monospace, monospace;
+	font-size: 1em;
+	overflow: auto;
+}
+
+sup {
+	line-height: 0;
 }
 
 p {
@@ -278,6 +299,7 @@ p.tagline {
 /* content */
 
 .container code {
+	/* eslint-disable-next-line css/use-baseline -- browsers without ui-monospace skip to the next font */
 	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 	font-size: .9em;
 }

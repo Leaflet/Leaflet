@@ -10,7 +10,6 @@ root: "../"
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="noindex">
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
-	<link rel="stylesheet" href="{{ root }}docs/css/normalize.css">
 	<link rel="stylesheet" href="{{ root }}docs/css/main.css">
 </head>
 <body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>

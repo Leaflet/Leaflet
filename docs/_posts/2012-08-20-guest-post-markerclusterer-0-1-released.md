@@ -84,14 +84,16 @@ If you have any issues also please log a bug on <a href="https://github.com/leaf
 Enjoy!<br />
 Dave Leaver.
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
 <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-<!--[if lte IE 8]><link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css" /><![endif]-->
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
 <script src="https://leaflet.github.io/Leaflet.markercluster/example/realworld.388.js"></script>
 
 <script>
-	var mapbox = new L.TileLayer(MB_URL, {maxZoom: 18, attribution: MB_ATTR, id: 'examples.map-i875mjb7'}),
+	var mapbox = new L.TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
 		latlng = new L.LatLng(-37.820, 175.217);
 
 	var map = new L.Map('map', {center: latlng, zoom: 15, layers: [mapbox]});

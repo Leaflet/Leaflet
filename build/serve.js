@@ -23,6 +23,7 @@ const TYPES = {
 	'.jpg': 'image/jpeg',
 	'.jpeg': 'image/jpeg',
 	'.gif': 'image/gif',
+	'.mp4': 'video/mp4',
 	'.webp': 'image/webp',
 	'.ico': 'image/x-icon',
 	'.woff2': 'font/woff2',

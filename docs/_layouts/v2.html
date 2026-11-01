@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta charset="utf-8" />
 	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
 
 	{% if title != '' %}
 	<title>{{ title }}Leaflet</title>
 	{% else %}
 	<title>Leaflet - a JavaScript library for interactive maps</title>
-	{% endif %}
-	
-	<meta charset="utf-8" />
-	{% if title == '' %}
 	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
 	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for building powerful interactive maps." />
-	<meta property="og:image" content="{{ root }}docs/images/logo.png" />
+	<meta property="og:image" content="https://leafletjs.com/docs/images/logo.png" />
 	<meta property="og:image:alt" content="Leaflet">
-	<meta itemprop="name" content="Leaflet">
-	<meta itemprop="description" content="Leaflet — a modern, lightweight open-source JavaScript library for building powerful interactive maps.">
-	<meta itemprop="image" content="{{ root }}docs/images/logo.png">
 	{% endif %}
 
 	{% if page.redirect_to %}
@@ -29,36 +23,25 @@
 
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
 
-	<link type="image/x-icon" href="{{ root }}docs/images/favicon.svg" sizes="any" rel="icon" />
+	<link rel="icon" href="{{ root }}docs/images/favicon.svg" type="image/svg+xml" />
 
 	<link href="https://leafletjs.com/atom.xml" type="application/atom+xml" rel="alternate" title="Leaflet Dev Blog Atom Feed" />
 
-	<link rel="stylesheet" href="{{ root }}docs/css/normalize.css" />
 	<link rel="stylesheet" href="{{ root }}docs/css/main.css" />
 	{% if page.title == 'Documentation' %}
 	<link rel="stylesheet" href="{{ root }}docs/css/reference.css" />
 	{% endif %}
 
-	<script src="{{ root }}docs/highlight/highlight.pack.js"></script>
 	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
 
 	<!-- Leaflet -->
 	{% include leaflet.html %}
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
-
-	<script>
-		ACCESS_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
-		MB_ATTR = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
-		MB_URL = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + ACCESS_TOKEN;
-		OSM_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-		OSM_ATTRIB = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-	</script>
 </head>
 <body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
 
 <header>
-	<h1><a href="https://leafletjs.com/"><img src="{{ root }}docs/images/logo.png" alt="Leaflet" width="300" /></a></h1>
+	<h1><a href="/"><img src="{{ root }}docs/images/logo.png" alt="Leaflet" width="300" height="80" /></a></h1>
 	<p class="tagline">an open-source JavaScript library<br> for building powerful interactive maps</p>
 </header>
 
@@ -138,6 +121,7 @@
 </footer>
 
 <script src="{{ root }}dialog/dialog.js"></script>
+<script src="{{ root }}docs/highlight/highlight.pack.js"></script>
 <script src="{{ root }}docs/js/docs.js"></script>
 {% if page.title == 'Documentation' %}
 <script src="{{ root }}docs/js/reference.js"></script>

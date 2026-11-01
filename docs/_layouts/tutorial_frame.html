@@ -7,7 +7,7 @@
 	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
 	<title>{{ title }}Leaflet</title>
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
-	<link type="image/x-icon" href="{{ root }}docs/images/favicon.svg" sizes="any" rel="icon" />
+	<link rel="icon" href="{{ root }}docs/images/favicon.svg" type="image/svg+xml" />
 
 	{% include leaflet.html %}
 

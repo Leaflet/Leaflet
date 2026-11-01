@@ -76,25 +76,36 @@ for (const mount of config.mounts) {
 	}
 }
 
-rmSync(DEST, {recursive: true, force: true});
+// Built aside and swapped in, so concurrent builds don't trip over each other and the server never sees a partial site
+const out = join(CACHE_DIR, `site-${process.pid}`);
+// clears what builds killed midway (e.g. restarted by --watch) left behind, keeping those of builds still running
+for (const name of existsSync(CACHE_DIR) ? readdirSync(CACHE_DIR) : []) {
+	const pid = name.match(/^site-(\d+)/)?.[1];
+	if (pid && (+pid === process.pid || !isRunning(+pid))) { rmSync(join(CACHE_DIR, name), {recursive: true, force: true}); }
+}
 
 for (const post of site.posts) {
-	write(join(DEST, post.url), engine.renderLayouts(post.content, post, site));
+	write(join(out, post.url), engine.renderLayouts(post.content, post, site));
 }
-for (const [out, {path, site}] of outputs) {
+for (const [file, {path, site}] of outputs) {
 	const page = readPage(path);
 	if (page?.data.reference) { Object.assign(page.data, buildReference(treeDir(config.refs[page.data.reference]))); }
 	if (page) {
-		page.data.url = `/${out}`;
+		page.data.url = `/${file}`;
 		const content = engine.renderContent(page.body, MARKDOWN_EXT.test(path), {site, page: page.data});
 		let html = engine.renderLayouts(content, page.data, site);
-		if (page.data.reference) { html = checkLinks(out, html, !config.refs[page.data.reference]); }
-		write(join(DEST, out), html);
+		if (page.data.reference) { html = checkLinks(file, html, !config.refs[page.data.reference]); }
+		write(join(out, file), html);
 	} else {
-		mkdirSync(dirname(join(DEST, out)), {recursive: true});
-		copyFileSync(path, join(DEST, out));
+		mkdirSync(dirname(join(out, file)), {recursive: true});
+		copyFileSync(path, join(out, file));
 	}
 }
+
+const old = `${out}-old`;
+if (existsSync(DEST)) { renameSync(DEST, old); }
+renameSync(out, DEST);
+rmSync(old, {recursive: true, force: true});
 
 console.log(`Built ${outputs.size + site.posts.length} files in ${Math.round(performance.now() - start)} ms`);
 
@@ -198,6 +209,15 @@ function checkLinks(out, html, strict) {
 
 function matches(file, paths) {
 	return paths.some(p => file === p || file.startsWith(`${p}/`));
+}
+
+function isRunning(pid) {
+	try {
+		process.kill(pid, 0);
+		return true;
+	} catch (err) {
+		return err.code === 'EPERM';
+	}
 }
 
 function write(path, content) {

@@ -52,7 +52,7 @@ With prosthetic-hand, I can now automate a pinch-zoom gesture in a Leaflet webpa
 
 <table class="image">
 <caption align="bottom"><small>You get to see my disembodied fingers as a bonus</small></caption>
-<tr><td style='text-align:center'><img src="/docs/images/2016-03-20-prosthetic-hand-zooming.gif" alt="Animated screenshot of prosthetic-hand zooming in and out"/></td></tr>
+<tr><td style='text-align:center'><video src="/docs/images/2016-03-20-prosthetic-hand-zooming.mp4" width="480" height="316" autoplay loop muted playsinline aria-label="Animated screenshot of prosthetic-hand zooming in and out"></video></td></tr>
 </table>
 
 
