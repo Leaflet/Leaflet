@@ -87,8 +87,8 @@ for (const [out, {path, site}] of outputs) {
 	if (page) {
 		page.data.url = `/${out}`;
 		const content = engine.renderContent(page.body, MARKDOWN_EXT.test(path), {site, page: page.data});
-		const html = engine.renderLayouts(content, page.data, site);
-		if (page.data.reference) { checkLinks(out, html, !config.refs[page.data.reference]); }
+		let html = engine.renderLayouts(content, page.data, site);
+		if (page.data.reference) { html = checkLinks(out, html, !config.refs[page.data.reference]); }
 		write(join(DEST, out), html);
 	} else {
 		mkdirSync(dirname(join(DEST, out)), {recursive: true});
@@ -176,13 +176,24 @@ function treeDir(sha) {
 }
 
 // In-page links without a target fail the build for a reference from the checkout; a pinned ref only warns, since
-// fixing it takes a new commit to pin
+// fixing it takes a new commit to pin, and gets links that differ from an id only in case pointed at that id
 function checkLinks(out, html, strict) {
 	const ids = new Set(Array.from(html.matchAll(ID_ATTR), m => m[1]));
-	const dead = new Set(Array.from(html.matchAll(HASH_LINK), m => decodeURIComponent(m[1])).filter(id => !ids.has(id)));
-	if (!dead.size) { return; }
-	console.warn(`${strict ? 'Error' : 'Warning'}: ${out} links to missing anchors: ${Array.from(dead, id => `#${id}`).join(', ')}`);
-	if (strict) { process.exitCode = 1; }
+	const idsByLowerCase = new Map(Array.from(ids, id => [id.toLowerCase(), id]));
+	const dead = new Set();
+	html = html.replace(HASH_LINK, (link, hash) => {
+		const id = decodeURIComponent(hash);
+		if (ids.has(id)) { return link; }
+		const target = !strict && idsByLowerCase.get(id.toLowerCase());
+		if (target) { return link.replace(hash, target); }
+		dead.add(id);
+		return link;
+	});
+	if (dead.size) {
+		console.warn(`${strict ? 'Error' : 'Warning'}: ${out} links to missing anchors: ${Array.from(dead, id => `#${id}`).join(', ')}`);
+		if (strict) { process.exitCode = 1; }
+	}
+	return html;
 }
 
 function matches(file, paths) {

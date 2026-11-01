@@ -553,9 +553,6 @@ const defaultOptions = {
  * });
  * ```
  *
- * The map container is given `role="region"` and `aria-label="Map"` to improve accessibility, unless it already has
- * these attributes set. So, you can override them in markup, e.g. `<div id="map" aria-label="Map of parks in London" role="group">`.
- *
  * @categoryDescription Handlers
  * Map properties include interaction handlers that allow you to control interaction behavior in runtime,
  * enabling or disabling certain features such as dragging or touch zoom (see `Handler` methods). For example:
@@ -580,7 +577,8 @@ export class LeafletMap extends Evented {
 
 	/**
 	 * Instantiates a map object given the DOM ID of a `<div>` element (or the element itself)
-	 * and optionally an object literal with `Map options`.
+	 * and optionally an object literal with `Map options`. Sets `role="region"` and `aria-label="Map"` on the
+	 * container unless already present.
 	 * @param {string | HTMLElement} id
 	 * @param {Partial<MapOptions>} [options]
 	 */

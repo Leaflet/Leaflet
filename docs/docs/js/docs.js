@@ -14,7 +14,7 @@ if (toc) {
 
 	// a hovered group opens its flyout at once, unless the pointer is heading for the open flyout's links: then the
 	// switch waits until it stops doing so, so it can cross the headings below on its way
-	const floating = window.matchMedia('(min-width: 1350px) and (min-height: 600px)');
+	const floating = window.matchMedia('(width > 1350px) and (min-height: 600px)');
 	const trail = [];
 	let open, pending, timer;
 
