@@ -33,6 +33,25 @@ describe('Map', () => {
 		});
 	});
 
+	// For #7193 and #9119.
+	describe('ARIA attributes on the container', () => {
+		it('sets aria-label and role if not set', () => {
+			expect(container.getAttribute('role')).to.equal('region');
+			expect(container.getAttribute('aria-label')).to.equal('Map');
+		});
+
+		it('does not override aria-label and role if already set', () => {
+			const container1 = createContainer();
+			container1.setAttribute('role', 'group');
+			container1.setAttribute('aria-label', 'My custom map name');
+
+			const map1 = new LeafletMap(container1);
+			expect(container1.getAttribute('role')).to.equal('group');
+			expect(container1.getAttribute('aria-label')).to.equal('My custom map name');
+			removeMapContainer(map1, container1);
+		});
+	});
+
 	describe('#remove', () => {
 		let spy;
 
