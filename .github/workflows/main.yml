@@ -7,7 +7,7 @@ on:
 permissions:
   contents: read
 env:
-  NODE_VERSION: 24
+  NODE_VERSION: 26
   PLAYWRIGHT_BROWSERS_PATH: .playwright-browsers
 jobs:
   build-site:
@@ -197,25 +197,40 @@ jobs:
             [ -e "dist/$name" ] || gh release delete-asset dev "$name" --yes
           done
 
+  # stages the package with trusted publishing (no token); it goes public only after `npm stage approve` with 2FA
   publish-npm:
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
+    needs: [check, test-chromium, test-firefox, test-webkit]
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    environment: npm
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
+          # the runner's cached Node may come with an npm that predates `npm stage`
+          check-latest: true
           cache: npm
-          registry-url: https://registry.npmjs.org
 
       - run: npm ci
-      - run: npm run build
+      - run: npm run zip
 
-      - name: Publish to NPM
+      - name: Stage on npm
         run: |
-          TAG=$(echo $GITHUB_REF_NAME | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?')
-          npm publish --tag ${TAG:-latest}
+          TAG=$(echo "$GITHUB_REF_NAME" | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?')
+          npm stage publish --tag "${TAG:-latest}"
+
+      - name: Create GitHub release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          awk -v v="$VERSION" '/^## / {p = index($0, "## " v " ") == 1; next} p' CHANGELOG.md > notes.md
+          [ -s notes.md ] || { echo "No CHANGELOG.md section for $VERSION"; exit 1; }
+          gh release create "$GITHUB_REF_NAME" dist/leaflet.zip --verify-tag --notes-file notes.md \
+            $([[ "$VERSION" == *-* ]] && echo --prerelease)

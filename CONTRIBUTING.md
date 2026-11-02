@@ -6,8 +6,9 @@ Contributing to Leaflet
  3. [Contributing Code](#contributing-code)
  4. [Running the Tests](#running-the-tests)
  5. [Improving Documentation](#improving-documentation)
- 6. [Code of Conduct](#code-of-conduct)
- 7. [Thank You](#thank-you)
+ 6. [Releasing](#releasing)
+ 7. [Code of Conduct](#code-of-conduct)
+ 8. [Thank You](#thank-you)
 
 ## Getting Involved
 
@@ -169,6 +170,22 @@ The website builds the references from released code (see `refs` in [`build/site
 `reference.html` documents 1.9.4 from the `v1` branch, and `reference-2.0.0.html` the latest 2.0 release.
 `reference-preview.html` is built from `main`, so changes to the comments show up there on merge,
 and in the release references with the next release.
+
+## Releasing
+
+For maintainers:
+
+1. Make sure CI passes on `main` and no [blocker](https://github.com/Leaflet/Leaflet/labels/blocker) issues are open.
+2. Describe the release in [`CHANGELOG.md`](CHANGELOG.md) under a `## <version> (<date>)` heading and commit it.
+   This section becomes the GitHub release notes.
+3. Run `npm version <patch | minor | major>`, or `npm version 2.0.0-beta.2` for a prerelease, then `git push --follow-tags`.
+4. Once the tests pass on the tag, CI stages the package on npm and creates the GitHub release with `leaflet.zip`.
+   A version with a suffix (`-beta.2`) goes to the `beta` dist-tag and a prerelease, others to `latest`.
+5. Run `npm stage list leaflet` and `npm stage approve <id>` (asks for 2FA) to publish the package.
+6. Check the [npm page](https://www.npmjs.com/package/leaflet) and the files on [jsDelivr](https://cdn.jsdelivr.net/npm/leaflet/).
+
+Then update the website in a pull request: write a post in `docs/_posts/`, run `npm run pin-release` to update the version,
+integrity hashes and reference commit in `build/site.json`, and update the release links in `docs/download.md` and `docs/index.html`.
 
 ## Code of Conduct
 
