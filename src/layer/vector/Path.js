@@ -77,7 +77,8 @@ const defaultOptions = {
 
 	/**
 	 * Use this specific instance of `Renderer` for this path. If not set, the path uses the map's
-	 * [renderer](#map-renderer), which is `SVG` by default. If set, it overrides the `pane` option.
+	 * [renderer](#map-renderer) (`SVG` by default), or in a custom pane, a renderer of the same kind created
+	 * for that pane. If set, it overrides the `pane` option.
 	 * @type {Renderer | undefined}
 	 */
 	renderer: undefined

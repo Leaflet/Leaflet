@@ -103,13 +103,21 @@ export class LayerBase extends Evented {
 		return this._map.getPane(name ? (/** @type {any} */ (this.options)[name] || name) : this.options.pane);
 	}
 
-	/** @param {HTMLElement | SVGElement} targetEl */
+	/**
+	 * Registers `targetEl`, one of the layer's DOM elements, so that pointer, click and keyboard events on it
+	 * (or its descendants) fire on the layer and bubble through its parent groups to the map, the way they do
+	 * for markers and paths. Custom layers call it in [`onAdd`](#layer-onadd), once the layer is on a map.
+	 * @param {HTMLElement | SVGElement} targetEl
+	 */
 	addInteractiveTarget(targetEl) {
 		this._map._targets[Util.stamp(targetEl)] = this;
 		return this;
 	}
 
-	/** @param {HTMLElement | SVGElement} targetEl */
+	/**
+	 * Undoes [`addInteractiveTarget`](#layer-addinteractivetarget), typically in [`onRemove`](#layer-onremove).
+	 * @param {HTMLElement | SVGElement} targetEl
+	 */
 	removeInteractiveTarget(targetEl) {
 		delete this._map._targets[Util.stamp(targetEl)];
 		return this;
