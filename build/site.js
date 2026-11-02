@@ -69,11 +69,9 @@ const start = performance.now();
 const config = JSON.parse(readFileSync('build/site.json', 'utf8'));
 const site = {...config.site, ...config.versions[config.version], time: new Date()};
 
-// PREVIEW=1 serves the checkout's pages in place of the v1 ones, running on the checkout's src/ instead of a release
+// PREVIEW=1 runs the pages on the checkout's src/ instead of the release, leaving out the v1 ones, which need 1.x
 site.preview = !!process.env.PREVIEW;
-if (site.preview) {
-	config.mounts = config.mounts.filter(m => m.ref !== 'v1').map(({exclude, ...m}) => m);
-}
+if (site.preview) { config.mounts = config.mounts.filter(m => m.ref !== 'v1'); }
 // the release each pinned ref is at, for the references' version links: `v2` follows `version`, `v1` its mounts
 site.refVersions = {v2: config.version};
 for (const {ref, version} of config.mounts) { if (ref) { site.refVersions[ref] = version; } }
@@ -98,15 +96,20 @@ site.posts = readdirSync(join(SITE_DIR, '_posts')).sort().reverse().map((file) =
 	return data;
 });
 
-// mounts map files of a tree (the checkout or a pinned ref) onto the site; later mounts override earlier ones
+// Mounts map files of a tree (the checkout or a pinned ref) onto the site; later mounts override earlier ones. A mount
+// can move paths to another prefix (`rename`) and replace strings in its pages' content (`replace`), e.g. links.
 const outputs = new Map();
 for (const mount of config.mounts) {
 	const dir = join(treeDir(config.refs[mount.ref]), SITE_DIR);
 	const mountSite = {...site, ...config.versions[mount.version]};
+	const renames = Object.entries(mount.rename ?? {});
+	const replace = Object.entries(mount.replace ?? {});
 
 	for (const file of walk(dir)) {
 		if (mount.exclude && matches(file, mount.exclude) || mount.include && !matches(file, mount.include)) { continue; }
-		outputs.set(file.replace(MARKDOWN_EXT, '.html'), {path: join(dir, file), site: mountSite});
+		const [from, to] = renames.find(([from]) => matches(file, [from])) ?? [];
+		const dest = from ? to + file.slice(from.length) : file;
+		outputs.set(dest.replace(MARKDOWN_EXT, '.html'), {path: join(dir, file), site: mountSite, replace});
 	}
 }
 
@@ -121,8 +124,9 @@ for (const name of existsSync(CACHE_DIR) ? readdirSync(CACHE_DIR) : []) {
 for (const post of site.posts) {
 	write(join(out, post.url), highlightCode(engine.renderLayouts(post.content, post, site)));
 }
-for (const [file, {path, site}] of outputs) {
+for (const [file, {path, site, replace}] of outputs) {
 	const page = readPage(path);
+	for (const [from, to] of page ? replace : []) { page.body = page.body.replaceAll(from, to); }
 	if (page?.data.reference) { Object.assign(page.data, buildReference(treeDir(config.refs[page.data.reference]))); }
 	if (page) {
 		page.data.url = `/${file}`;

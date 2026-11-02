@@ -25,7 +25,7 @@ has a beautiful, easy to use and [well-documented][] API
 and a simple, readable [source code][] that is a joy to [contribute][] to.
 
 For more info, docs and tutorials, check out the [official website][].<br>
-For **Leaflet downloads** (including the built main version), check out the [download page][].
+For **Leaflet downloads** (including the built main version), check out the [install page][].
 
 We're happy to meet new contributors.
 If you want to **get involved** with Leaflet development, check out the [contribution guide][contribute].
@@ -40,4 +40,4 @@ and push the limits of what's possible with online maps!
  [source code]: https://github.com/Leaflet/Leaflet "Leaflet GitHub repository"
  [contribute]: https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: https://leafletjs.com
- [download page]: https://leafletjs.com/download.html
+ [install page]: https://leafletjs.com/install.html

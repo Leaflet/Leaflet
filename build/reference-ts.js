@@ -3,7 +3,7 @@
 // the API changes between TS minors (the version is pinned in package.json).
 
 import {readFileSync} from 'node:fs';
-import {join} from 'node:path';
+import {join, resolve} from 'node:path';
 import {API} from 'typescript/sync';
 import {SyntaxKind as SK, getTextOfJSDocComment} from 'typescript/ast';
 import {LABELS, normalizeName, resolveModel} from './reference.js';
@@ -24,6 +24,8 @@ const FENCE = /```.*?```/gs;
 let checker, config, pages, ownerOfInterface, lookup;
 
 export function tsModel(dir) {
+	// the compiler resolves source files against its cwd, so a relative ref directory would be resolved twice
+	dir = resolve(dir);
 	config = JSON.parse(readFileSync(join(dir, 'build/reference.json'), 'utf8'));
 	const api = new API({cwd: dir});
 	try {

@@ -1,12 +1,12 @@
 {
 	"refs": {
 		"v1": "0412763d42ebba1da6f153e4073f6654e5de8a21",
-		"v2": "9b7432a8fe3344ed731221e4a1da2cd327dc3383"
+		"v2": "3a68ea6b0a1bbff829f28340d8716ee586824064"
 	},
 	"site": {
 		"cartocdn_key": "cb1_2i38_1_bb6349bf813f7d7c3fe79a8c"
 	},
-	"version": "2.0.0-alpha.1",
+	"version": "2.0.0-beta.1",
 	"versions": {
 		"1.9.4": {
 			"latest_leaflet_version": "1.9.4",
@@ -14,36 +14,36 @@
 			"integrity_hash_source": "sha256-tPonvXioSHRQt1+4ztWR5mz/1KG1X3yHNzVXprP2gLo=",
 			"integrity_hash_uglified": "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 		},
-		"2.0.0-alpha.1": {
-			"latest_leaflet_version": "2.0.0-alpha.1",
-			"integrity_hash_css": "sha256-P+hWJNlpL+GBSRYC7cdsDbQH91URmpDeOzLp7DbFRtE=",
-			"integrity_hash_source": "sha256-HmtDXNcV4omyVnB4yWuQ/EIBIAMpKS5Paajojw42NyU=",
-			"integrity_hash_uglified": "sha256-gj5JhNAaMi6LCs+jVFOk8sXDe1sWSS2Zlc87m+trLiQ=",
-			"integrity_hash_global_source": "sha256-SnNOWrUASCy0Jw4FGryafJamqNk15qDnW00Y/biE2dU=",
-			"integrity_hash_global_uglified": "sha256-lJUxSvvKo54k90cTx9u9DCAP1MtAEqnLmx6Sx3no03c="
+		"2.0.0-beta.1": {
+			"latest_leaflet_version": "2.0.0-beta.1",
+			"integrity_hash_css": "sha256-RwBOaSN3kFqUIUAZaMmmo5grrEMRXwBCe0sCRJgqydk=",
+			"integrity_hash_uglified": "sha256-KSSQ64wnHC2i4zVNU79jUjWmdKCIJjLj/gkifFEluvo=",
+			"integrity_hash_global_uglified": "sha256-LJoXVjge1e1SC/7nC0F1sZTitcnujiT8fR9WfxzQitA="
 		}
 	},
 	"mounts": [
-		{
-			"exclude": [
-				"examples",
-				"install.md"
-			]
-		},
+		{},
 		{
 			"ref": "v1",
 			"include": [
 				"examples",
-				"index.html",
-				"download.md",
-				"edit.html",
 				"examples.md"
 			],
+			"rename": {
+				"examples": "examples-v1",
+				"examples.md": "examples-v1.md"
+			},
+			"replace": {
+				"/reference.html": "/reference-1.9.4.html",
+				"../../examples.html": "../../examples-v1.html",
+				"/examples/": "/examples-v1/",
+				"## Leaflet Tutorials\n": "## Leaflet 1.9 Tutorials\n\n<div class=\"announcement\">These tutorials are for Leaflet 1.9.4, the last 1.x release. See the <a href=\"examples.html\">tutorials for Leaflet 2.0</a>.</div>\n"
+			},
 			"version": "1.9.4"
 		},
 		{
 			"include": [
-				"reference.html"
+				"reference-1.9.4.html"
 			],
 			"version": "1.9.4"
 		}

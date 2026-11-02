@@ -1,8 +1,10 @@
+{%- assign major = site.latest_leaflet_version | split: "." | first -%}
+{%- if major == "1" %}{% assign dir = "examples-v1/" %}{% else %}{% assign dir = "examples/" %}{% endif %}
 
 ***
 
-<a href="examples/{{ include.page }}"><img src="examples/{{ include.thumbnail }}" alt="Link to {{include.title}}" class="example-img bordered-img" /></a>
+<a href="{{ dir }}{{ include.page }}"><img src="{{ dir }}{{ include.thumbnail }}" alt="Link to {{include.title}}" class="example-img bordered-img" /></a>
 
-### <a href="examples/{{include.page}}">{{ include.title }}</a>
+### <a href="{{ dir }}{{include.page}}">{{ include.title }}</a>
 
 {{ include.description }}

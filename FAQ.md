@@ -114,7 +114,8 @@ Check out the [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markerc
 Leaflet generally does a pretty good job of handling heavy vector data
 with its real-time clipping and simplification algorithms,
 but the browser technology still has its limits.
-Try [switching from SVG to Canvas as the default rendering back-end](https://leafletjs.com/reference.html#map-prefercanvas),
+Try switching from SVG to [Canvas](https://leafletjs.com/reference.html#canvas) as the default rendering back-end
+(the map's [`renderer`](https://leafletjs.com/reference.html#map-renderer) option: `renderer: new Canvas()`),
 it may help considerably (depends on the app and the data).
 
 If you still have too much data to render, render it into image tiles instead,
@@ -126,7 +127,7 @@ or with a service like [Mapbox](https://www.mapbox.com/) or [CARTO](https://cart
 
 #### I downloaded the Leaflet source but didn't find `leaflet.js` there. Why is that?
 
-You can get the built versions from npm, a CDN or a zip, as described on the [download page](https://leafletjs.com/download.html),
+You can get the built versions from npm, a CDN or a zip, as described on the [install page](https://leafletjs.com/install.html),
 or build them yourself with `npm run build`.
 There's also a [development snapshot](https://github.com/Leaflet/Leaflet/releases/tag/dev) of the `main` branch,
 updated automatically on each commit to the repo.

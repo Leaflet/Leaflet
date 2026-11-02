@@ -174,7 +174,6 @@ h4 {
 	margin: 2em 0 1em;
 }
 
-
 /* general layout */
 
 .container {
@@ -306,7 +305,6 @@ h1 a:hover, h1 a:focus {
 	to   { opacity: 0.7; }
 }
 
-
 /* content */
 
 .container code {
@@ -341,142 +339,12 @@ h1 a:hover, h1 a:focus {
 	color: #767676;
 }
 
-
 /* frontpage */
 
 .map-home {
 	height: 300px;
 	margin-top: 32px;
 	margin-bottom: 32px;
-}
-
-.usedby-title {
-	text-align: center;
-	background-color: #f5f5f5;
-	padding: 1em 1em 0.5em;
-	margin: 0;
-}
-
-.usedby {
-	margin: 0 0 3em;
-	text-align: center;
-	padding: 0 3em 0;
-	background-color: #f5f5f5;
-}
-
-.logo {
-	display: inline-block;
-	opacity: 0.8;
-	height: 32px;
-	overflow: hidden;
-	text-indent: -9999px;
-	margin: 1em;
-	background: url(../images/logos.png);
-	background-repeat: no-repeat;
-	background-size: 100%;
-	vertical-align: middle;
-	transition: opacity .15s ease;
-}
-
-.logo:hover { opacity: 1; }
-
-.logo-foursquare {
-	background-position: 50% -4px;
-	width: 135px;
-}
-
-.logo-pinterest {
-	background-position: 50% -39px;
-	width: 115px;
-}
-
-.logo-500px {
-	background-position: 50% -48px;
-	width: 72px;
-	background-size: 80px;
-}
-
-.logo-evernote {
-	background-position: 50% -169px;
-	width: 170px;
-	height: 43px;
-}
-
-.logo-ftimes {
-	background-position: 50% -190px;
-	width: 112px;
-	height: 40px;
-	background-size: 145px;
-}
-
-.logo-github {
-	background-position: 50% -178px;
-	width: 110px;
-}
-
-.logo-wpost {
-	background-position: 50% -327px;
-	width: 170px;
-}
-
-.logo-npr {
-	background-position: 50% -214px;
-	width: 100px;
-	height: 34px;
-}
-
-.logo-usatoday {
-	background-position: 50% -299px;
-	width: 120px;
-	height: 34px;
-}
-
-.logo-facebook {
-	background-position: 50% -359px;
-	width: 130px;
-}
-
-.logo-flickr {
-	background-position: 50% -277px;
-	width: 92px;
-	height: 29px;
-}
-
-.logo-datagov {
-	background-position: 50% -452px;
-	width: 135px;
-	height: 26px;
-}
-
-.logo-ign {
-	background-position: 50% -393px;
-	width: 110px;
-}
-
-.logo-etsy {
-	background-position: 50% -428px;
-	width: 57px;
-	background-size: 110px;
-}
-
-.logo-european-commission {
-	background-position: 50% -526px;
-	width: 125px;
-}
-
-.logo-nps {
-	background-position: 50% -483px;
-	width: 32px;
-	height: 40px;
-	margin-top: .5em;
-	margin-bottom: .5em;
-	background-size: 106px;
-}
-
-.logo-openstreetmap {
-	background-position: 50% -796px;
-	width: 160px;
-	height: 56px;
 }
 
 .features {
@@ -494,7 +362,6 @@ h1 a:hover, h1 a:focus {
 .features h4 {
 	margin: 0 0 0.3em;
 }
-
 
 /* tutorials */
 
@@ -524,7 +391,6 @@ h1 a:hover, h1 a:focus {
 	margin-top: 0;
 }
 
-
 /* plugins */
 
 .plugins td:first-child,
@@ -540,7 +406,6 @@ table.plugins td:first-child a {
 	float: left;
 	width: 25%;
 }
-
 
 /* API docs */
 
@@ -1170,22 +1035,6 @@ tr:target {
 		padding: 0 1.5em 1.5em;
 	}
 
-	.logo {
-		margin: 0.6em;
-	}
-
-	.usedby-title {
-		padding-top: 1em;
-		padding-bottom: 0.5em;
-		font-size: 1.8em;
-	}
-
-	.usedby {
-		padding-left: 0;
-		padding-right: 0;
-		padding-bottom: 0;
-	}
-
 	.features {
 		column-count: 1;
 	}
@@ -1240,7 +1089,7 @@ tr:target {
 	justify-content: space-between;
 	margin-bottom: -1.5em;
 }
-.prerelease {
+.version-label {
 	padding: 0 .6em;
 	border-radius: 1em;
 	background: #eee;

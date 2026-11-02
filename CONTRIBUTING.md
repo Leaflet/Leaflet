@@ -156,9 +156,9 @@ Once it gets merged, the changes will immediately appear on the website.
 To preview the website locally, run `npm run serve` and open [http://localhost:8080](http://localhost:8080).
 It builds the site into `_site/` (in about a second) and serves it; run `npm run site` to rebuild after changes.
 
-Until Leaflet 2.0 is released, the 1.x tutorials, the front page and the download page
-are taken from a pinned commit of the `v1` branch (see `refs` in [`build/site.json`](./build/site.json)).
-To preview the 2.0 versions of these pages, run `npm run preview` instead, which serves them with Leaflet from `src/`.
+The site uses the released Leaflet from jsDelivr. To try the pages with Leaflet from `src/` instead,
+run `npm run preview`. The 1.x tutorials at `/examples-v1/` are taken from a pinned commit of the `v1` branch
+(see `refs` in [`build/site.json`](./build/site.json)).
 
 ### API documentation
 
@@ -168,7 +168,7 @@ published types, so to change the API documentation, edit these comments. The gr
 are set in [`build/reference.json`](./build/reference.json), and the templates are in `build/reference/`.
 
 The website builds the references from released code (see `refs` in [`build/site.json`](./build/site.json)):
-`reference.html` documents 1.9.4 from the `v1` branch, and `reference-2.0.0.html` the latest 2.0 release.
+`reference.html` documents the latest 2.0 release, and `reference-1.9.4.html` 1.9.4 from the `v1` branch.
 `reference-preview.html` is built from `main`, so changes to the comments show up there on merge,
 and in the release references with the next release.
 
@@ -185,8 +185,8 @@ For maintainers:
 5. Run `npm stage list leaflet` and `npm stage approve <id>` (asks for 2FA) to publish the package.
 6. Check the [npm page](https://www.npmjs.com/package/leaflet) and the files on [jsDelivr](https://cdn.jsdelivr.net/npm/leaflet/).
 
-Then update the website in a pull request: write a post in `docs/_posts/`, run `npm run pin-release` to update the version,
-integrity hashes and reference commit in `build/site.json`, and update the release links in `docs/download.md` and `docs/index.html`.
+Then update the website in a pull request: run `npm run pin-release` to update the version, integrity hashes and
+reference commit in `build/site.json`, and update the release announcement in `docs/index.html`.
 
 ## Code of Conduct
 

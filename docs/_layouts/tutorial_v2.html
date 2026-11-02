@@ -3,7 +3,11 @@ root: "../../"
 layout: v2
 tutorial: true
 ---
-
-<p class="tutorials-back"><a href="../../examples.html">&larr; Tutorials</a> <span class="prerelease">For Leaflet 2.0 beta</span></p>
+{%- assign major = site.latest_leaflet_version | split: "." | first %}
+{% if major == "1" -%}
+<p class="tutorials-back"><a href="../../examples-v1.html">&larr; Tutorials</a> <span class="version-label">For Leaflet 1.9</span> <a href="../../examples.html">Tutorials for Leaflet 2.0</a></p>
+{%- else -%}
+<p class="tutorials-back"><a href="../../examples.html">&larr; Tutorials</a> <span class="version-label">For Leaflet 2.0 beta</span></p>
+{%- endif %}
 
 {{ content }}
