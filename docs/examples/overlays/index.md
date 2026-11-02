@@ -35,10 +35,12 @@ const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 ```
 
-Let's create an image overlay with multiple options:
+Let's create an image overlay with multiple options. The image is a public domain 1922 map of Newark, N.J. from the
+[Perry-Castañeda Library Map Collection](https://maps.lib.utexas.edu/maps/historical/) of the University of Texas
+Libraries:
 
 ```
-const imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg';
+const imageUrl = 'newark_nj_1922.jpg';
 const errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
 const altText = 'Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries Map Collection.';
 const latLngBounds = new LatLngBounds([[40.799311, -74.118464], [40.68202047785919, -74.33]]);
@@ -51,10 +53,9 @@ const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, {
 }).addTo(map);
 ```
 
-If you want to see the area which is covered by the ImageOverlay, you can add a [`Rectangle`](/reference.html#rectangle) with the same `LatLngBounds` to the map:
+Then zoom the map to the image:
 
 ```
-const rectangle = new Rectangle(latLngBounds).addTo(map);
 map.fitBounds(latLngBounds);
 ```
 
