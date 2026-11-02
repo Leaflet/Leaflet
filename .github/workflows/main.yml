@@ -232,5 +232,7 @@ jobs:
           VERSION="${GITHUB_REF_NAME#v}"
           awk -v v="$VERSION" '/^## / {p = index($0, "## " v " ") == 1; next} p' CHANGELOG.md > notes.md
           [ -s notes.md ] || { echo "No CHANGELOG.md section for $VERSION"; exit 1; }
+          # plain @mentions render as GitHub user mentions and list the contributors under the release
+          perl -pi -e 's#\[@([\w-]+)\]\(https://github\.com/\1/?\)#\@$1#g' notes.md
           gh release create "$GITHUB_REF_NAME" dist/leaflet.zip --verify-tag --notes-file notes.md \
             $([[ "$VERSION" == *-* ]] && echo --prerelease)
