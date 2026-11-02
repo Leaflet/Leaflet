@@ -229,7 +229,13 @@ function treeDir(sha) {
 // In-page links without a target fail the build for a reference from the checkout; a pinned ref only warns, since
 // fixing it takes a new commit to pin, and gets links that differ from an id only in case pointed at that id
 function checkLinks(out, html, strict) {
-	const ids = new Set(Array.from(html.matchAll(ID_ATTR), m => m[1]));
+	const ids = new Set();
+	const duplicates = new Set();
+	for (const [, id] of html.matchAll(ID_ATTR)) { (ids.has(id) ? duplicates : ids).add(id); }
+	if (duplicates.size) {
+		console.warn(`${strict ? 'Error' : 'Warning'}: ${out} has duplicate anchors: ${Array.from(duplicates, id => `#${id}`).join(', ')}`);
+		if (strict) { process.exitCode = 1; }
+	}
 	const idsByLowerCase = new Map(Array.from(ids, id => [id.toLowerCase(), id]));
 	const dead = new Set();
 	html = html.replace(HASH_LINK, (link, hash) => {

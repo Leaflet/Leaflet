@@ -96,10 +96,43 @@ liquid.registerFilter('markdown', (str, block) => {
 export function buildReference(dir) {
 	const model = existsSync(join(dir, 'build/reference.json')) ? tsModel(dir) : leafdocModel(dir);
 	akas = model.akas;
+	uniqueIds(model.namespaces);
 	return {
 		api: liquid.renderFileSync('reference', {namespaces: model.namespaces, columns: COLUMNS}),
 		toc: model.toc ? liquid.renderFileSync('toc', {toc: model.toc}) : null
 	};
+}
+
+// Item anchors are `namespace-name`, so overloads and same-named items of different kinds (the `zoom` option and
+// event) collide. Walking in page order, the first keeps the anchor it always had; a later overload gets a number
+// (`map-on-2`) and an item of another kind its kind (`map-zoom-event`).
+function uniqueIds(namespaces) {
+	const owners = new Map(); // id → the item holding it, or true for a non-item
+	const claim = (id, owner, suffix) => {
+		let unique = owners.has(id) && suffix ? `${id}-${suffix}` : id;
+		for (let n = 2; owners.has(unique); n++) { unique = `${id}-${suffix ? `${suffix}-` : ''}${n}`; }
+		owners.set(unique, owner);
+		return unique;
+	};
+	const visit = (ns) => {
+		ns.id = claim(ns.id, true);
+		for (const ss of ns.supersections) {
+			ss.id = claim(ss.id, true);
+			for (const s of ss.sections) {
+				if (s.name) { s.id = claim(s.id, true); }
+			}
+			for (const s of [...ss.sections, ...ss.inherited]) {
+				for (const item of s.items) {
+					if (!item.id) { continue; }
+					const owner = owners.get(item.id);
+					const overload = owner?.kind === ss.kind && owner.name === item.name;
+					item.id = claim(item.id, {kind: ss.kind, name: item.name}, overload ? null : ss.kind);
+				}
+			}
+		}
+		ns.miniclasses.forEach(visit);
+	};
+	namespaces.forEach(visit);
 }
 
 // Turns `[text](#aka)` and `` `aka` `` in descriptions into links to the anchor
