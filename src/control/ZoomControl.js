@@ -14,13 +14,13 @@ const defaultOptions = {
 	position: 'topleft',
 
 	/** The text set on the 'zoom in' button. */
-	zoomInText: '<span aria-hidden="true">+</span>',
+	zoomInText: '<svg width="12" height="12" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6h12M6 0v12"/></svg>',
 
 	/** The title set on the 'zoom in' button. */
 	zoomInTitle: 'Zoom in',
 
 	/** The text set on the 'zoom out' button. */
-	zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
+	zoomOutText: '<svg width="12" height="12" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6h12"/></svg>',
 
 	/** The title set on the 'zoom out' button. */
 	zoomOutTitle: 'Zoom out'

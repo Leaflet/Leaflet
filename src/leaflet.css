@@ -343,7 +343,11 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
 	font: bold 22px "Lucida Console", Monaco, monospace;
-	text-indent: 1px;
+}
+
+.leaflet-control-zoom a {
+	display: grid;
+	place-items: center;
 }
 
 
