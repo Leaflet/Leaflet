@@ -38,7 +38,7 @@ users:
 
 {% include frame.html url="example.html" %}
 
-In the case of `divIcon`s,
+In the case of `DivIcon`s,
 [custom HTML](/reference.html#divicon-html)
 can otherwise provide a visual or non-visual label.
 
@@ -74,8 +74,7 @@ and have no focusable descendants.
 This is to avoid the potential to confuse screen reader users,
 and to remove any unnecessary tab stops for keyboard users.
 A simple way to achieve this is to use the HTML
-[`inert` attribute](https://github.com/WICG/inert)
-polyfill:
+[`inert` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert):
 
 ```html
 <!-- This map is for aesthetic purposes only, and can not be interacted with due to the 'inert' property! -->

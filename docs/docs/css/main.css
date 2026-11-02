@@ -115,6 +115,7 @@ iframe {
 }
 .example-frame iframe {
 	display: block;
+	box-sizing: border-box;
 	width: 100%;
 	margin: 0 auto;
 	max-height: 90vh;

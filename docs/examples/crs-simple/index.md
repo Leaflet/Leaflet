@@ -53,7 +53,7 @@ This example doesn't quite work, as we cannot see the whole map after doing a `f
 
 ## Common Gotchas in SimpleCRS Maps
 
-In the default Leaflet CRS, `EarthCRS`, 360 degrees of longitude are mapped to 256 horizontal pixels (at zoom level 0) and approximately 170 degrees of latitude are mapped to 256 vertical pixels (at zoom level 0).
+In the default Leaflet CRS, `EPSG3857`, 360 degrees of longitude are mapped to 256 horizontal pixels (at zoom level 0) and approximately 170 degrees of latitude are mapped to 256 vertical pixels (at zoom level 0).
 
 In a `SimpleCRS`, one horizontal map unit is mapped to one horizontal pixel, and *idem* with vertical. This means that the whole map is about 1000x1000 pixels big and won't fit in our HTML container. Luckily, we can set `minZoom` to values lower than zero:
 
@@ -85,7 +85,7 @@ You'll notice that Sol is at coordinates `[145,175]` instead of `[175,145]`, and
 
 <small>(In technical terms, Leaflet prefers to use [`[northing, easting]`](https://en.wikipedia.org/wiki/Easting_and_northing) over `[easting, northing]` - the first coordinate in a coordinate pair points "north" and the second points "east")</small>
 
-The debate about whether `[lng, lat]` or `[lat, lng]` or `[y, x]` or `[x, y]` [is not new, and there is no clear consensus](http://www.macwright.org/lonlat/). This lack of consensus is why Leaflet has a class named `LatLng` instead of the more confusion-prone `Coordinate`.
+The debate about whether `[lng, lat]` or `[lat, lng]` or `[y, x]` or `[x, y]` [is not new, and there is no clear consensus](https://macwright.com/lonlat/). This lack of consensus is why Leaflet has a class named `LatLng` instead of the more confusion-prone `Coordinate`.
 
 If working with `[y, x]` coordinates with something named `LatLng` doesn't make much sense to you, you can easily create wrappers for them:
 

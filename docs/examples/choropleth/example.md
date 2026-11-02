@@ -4,7 +4,6 @@ title: Full Choropleth Example
 css: ".info {
 			padding: 6px 8px;
 			font: 14px/16px Arial, Helvetica, sans-serif;
-			background: white;
 			background: rgba(255,255,255,0.8);
 			box-shadow: 0 0 15px rgba(0,0,0,0.2);
 			border-radius: 5px;
@@ -36,7 +35,7 @@ css: ".info {
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
 	// control that shows state info on hover
@@ -116,7 +115,7 @@ css: ".info {
 		});
 	}
 
-	map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
+	map.attributionControl.addAttribution('Population data &copy; <a href="https://www.census.gov/">US Census Bureau</a>');
 
 
 	const legend = new Control({position: 'bottomright'});

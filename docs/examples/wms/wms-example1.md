@@ -10,7 +10,7 @@ title: WMS Example 1
 		zoom: 3
 	});
 
-	const wmsLayer = new WMSTileLayer('http://ows.mundialis.de/services/service?', {
+	const wmsLayer = new WMSTileLayer('https://ows.mundialis.de/osm/service?', {
 		layers: 'TOPO-OSM-WMS'
 	}).addTo(map);
 </script>

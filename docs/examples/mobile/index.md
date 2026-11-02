@@ -24,20 +24,20 @@ html, body, #map {
 }
 ```
 
-Also, we need to tell the mobile browser to disable unwanted scaling of the page and set it to its actual size by placing the following line in the `head` section or our HTML page:
+Also, we need to tell the mobile browser to show the page at its actual size by placing the following line in the `head` section or our HTML page:
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 ### Initializing the map
 
 We'll now initialize the map in the JavaScript code like we did in the [quick start guide](../quick-start/), showing the whole world:
 
 ```javascript
-const map =  new LeafletMap('map').fitWorld();
+const map = new LeafletMap('map').fitWorld();
 
 new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
-	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 ```
 
@@ -47,7 +47,7 @@ Leaflet has a very handy shortcut for zooming the map view to the detected locat
 
 	map.locate({setView: true, maxZoom: 16});
 
-Here we specify 16 as the maximum zoom when setting the map view automatically. As soon as the user agrees to share its location and it's detected by the browser, the map will set the view to it. Now we have a working fullscreen mobile map! But what if we need to do something after the geolocation completed? Here's what the `locationfound` and `locationerror` events are for. Let's for example add a marker in the detected location, showing accuracy in a popup, by adding an event listener to `locationfound` event before the `locateAndSetView` call:
+Here we specify 16 as the maximum zoom when setting the map view automatically. As soon as the user agrees to share their location and it's detected by the browser, the map will set the view to it. Now we have a working fullscreen mobile map! But what if we need to do something after the geolocation completed? Here's what the `locationfound` and `locationerror` events are for. Let's for example add a marker in the detected location, showing accuracy in a popup, by adding an event listener to `locationfound` event before the `locate` call:
 
 	function onLocationFound(e) {
 		const radius = e.accuracy;

@@ -5,7 +5,7 @@ title: Extending Leaflet, New Layers
 
 <br>
 
-This tutorial assumes you've read the [theory of Leaflet class inheritance](./extending-1-classes.html).
+This tutorial assumes you've read the [theory of Leaflet class inheritance](../extending-1-classes/).
 
 In Leaflet, a "layer" is anything that moves around when the map is moved around. Before seeing how to create them from scratch, it's easier to explain how to do simple extensions.
 
@@ -41,7 +41,7 @@ Normally, `getTileUrl()` receives the tile coordinates (as `coords.x`, `coords.y
 
 Another extension method is `GridLayer.createTile()`. Where `TileLayer` assumes that there is a grid of images (as `<img>` elements), `GridLayer` doesn't assume that - it allows creating grids of any kind of [HTML Elements](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
-`GridLayer` allows creating grids of `<img>`s, but grids of [`<div>`s](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div), [`<canvas>`es](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) or [`<picture>`s](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture) (or anything) are possible. `createTile()` just has to return an instance of [`HTMLElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) given the tile coordinates. Knowing how to manipulate elements in the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction) is important here: Leaflet expects instances of `HTMLElement`, so elements created with libraries like jQuery will be problematic.
+`GridLayer` allows creating grids of `<img>`s, but grids of [`<div>`s](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div), [`<canvas>`es](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) or [`<picture>`s](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture) (or anything) are possible. `createTile()` just has to return an instance of [`HTMLElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) given the tile coordinates. Knowing how to manipulate elements in the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction) is important here: Leaflet expects instances of `HTMLElement`.
 
 An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`. This is particularly useful when debugging the internals of Leaflet, and for understanding how the tile coordinates work:
 
@@ -125,7 +125,7 @@ The CRS origin (green) stays in the same `LatLng`. The pixel origin (red) always
 
 To position anything (for example, a blue `Marker`), its `LatLng` is converted to an absolute pixel coordinate inside the map's `CRS`. Then the absolute pixel coordinate of the pixel origin is subtracted from its absolute pixel coordinate, giving an offset relative to the pixel origin (light blue). As the pixel origin is the top-left corner of all map panes, this offset can be applied to the HTML element of the marker's icon. The marker's `iconAnchor` (dark blue line) is achieved via negative CSS margins.
 
-The `Map.project()` and `Map.unproject()` methods operate with these absolute pixel coordinates. Likewise, `Map.latLngToLayerPoint()` and `Map.layerPointToLatLng()` work with the offset relative to the pixel origin.
+The map's `project()` and `unproject()` methods operate with these absolute pixel coordinates. Likewise, `latLngToLayerPoint()` and `layerPointToLatLng()` work with the offset relative to the pixel origin.
 
 Different layers apply these calculations in different ways. `Marker`s simply reposition their icons; `GridLayer`s calculate the bounds of the map (in absolute pixel coordinates) and then calculate the list of tile coordinates to request; vector layers (polylines, polygons, circle markers, etc) transform each `LatLng` to pixels and draw the geometries using SVG or `<canvas>`.
 
@@ -144,7 +144,7 @@ class CustomLayer extends Layer {
 
 		pane.appendChild(this._container);
 
-		// Calculate initial position of container with `Map.latLngToLayerPoint()`, `getPixelOrigin()` and/or `getPixelBounds()`
+		// Calculate initial position of container with `map.latLngToLayerPoint()`, `getPixelOrigin()` and/or `getPixelBounds()`
 
 		DomUtil.setPosition(this._container, point);
 
@@ -161,7 +161,7 @@ class CustomLayer extends Layer {
 	_update() {
 		// Recalculate position of container
 
-		DomUtil.setPosition(this._container, point);        
+		DomUtil.setPosition(this._container, point);
 
 		// Add/remove/reposition children elements if needed
 	}

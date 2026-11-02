@@ -5,9 +5,9 @@ title: Interactive Choropleth Map
 
 ## Interactive Choropleth Map
 
-This is a case study of creating a colorful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of [GeoJSON](../geojson/) and some [custom controls](/reference.html#control) (that will hopefully convince all the remaining major news and government websites that do not use Leaflet yet to start doing so).
+This is a case study of creating a colorful interactive [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of [GeoJSON](../geojson/) and some [custom controls](/reference.html#control) (that will hopefully convince all the remaining major news and government websites that do not use Leaflet yet to start doing so).
 
-The tutorial was inspired by the [Texas Tribune US Senate Runoff Results map](http://www.texastribune.org/library/data/us-senate-runoff-results-map/) (also powered by Leaflet), created by [Ryan Murphy](http://www.texastribune.org/about/staff/ryan-murphy/).
+The tutorial was inspired by the [Texas Tribune US Senate Runoff Results map](https://www.texastribune.org/us-senate-runoff-results-map/) (also powered by Leaflet), created by [Ryan Murphy](https://www.texastribune.org/author/ryan-murphy/).
 
 {% include frame.html url="example.html" height=500 %}
 
@@ -27,7 +27,7 @@ Each feature of our GeoJSON data ([us-states.js](us-states.js)) will look like t
 		...
 	}
 
-The GeoJSON with state shapes was kindly shared by [Mike Bostock](http://bost.ocks.org/mike) of [D3](http://d3js.org/) fame, extended with density values from [this Wikipedia article](http://en.wikipedia.org/wiki/List_of_U.S._states_by_population_density) based on July 1st 2011 data from [US Census Bureau](http://www.census.gov/) and assigned to `statesData` JS variable.
+The GeoJSON with state shapes was kindly shared by [Mike Bostock](https://bost.ocks.org/mike/) of [D3](https://d3js.org/) fame, extended with density values from [this Wikipedia article](https://en.wikipedia.org/wiki/List_of_U.S._states_by_population_density) based on July 1st 2011 data from [US Census Bureau](https://www.census.gov/) and assigned to `statesData` JS variable.
 
 ### Basic States Map
 
@@ -37,7 +37,7 @@ Let's display our states data on the map:
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
 	new GeoJSON(statesData).addTo(map);
@@ -47,7 +47,7 @@ Let's display our states data on the map:
 
 ### Adding Some Color
 
-Now we need to color the states according to their population density. Choosing nice colors for a map can be tricky, but there's a great tool that can help with it --- [ColorBrewer](http://colorbrewer2.org/). Using the values we got from it, we create a function that returns a color based on population density:
+Now we need to color the states according to their population density. Choosing nice colors for a map can be tricky, but there's a great tool that can help with it --- [ColorBrewer](https://colorbrewer2.org/). Using the values we got from it, we create a function that returns a color based on population density:
 
 	function getColor(d) {
 		return d > 1000 ? '#800026' :
@@ -82,7 +82,7 @@ Looks much better now!
 
 ### Adding Interaction
 
-Now let's make the states highlighted visually in some way when they are hovered with a mouse. First we'll define an event listener for layer `mouseover` event:
+Now let's make the states highlighted visually in some way when they are hovered with a mouse. First we'll define an event listener for layer `pointerover` event:
 
 	function highlightFeature(e) {
 		const layer = e.target;
@@ -175,7 +175,6 @@ The control also needs some CSS styles to look nice:
 .info {
 	padding: 6px 8px;
 	font: 14px/16px Arial, Helvetica, sans-serif;
-	background: white;
 	background: rgba(255,255,255,0.8);
 	box-shadow: 0 0 15px rgba(0,0,0,0.2);
 	border-radius: 5px;

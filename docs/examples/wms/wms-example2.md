@@ -10,7 +10,7 @@ title: WMS Example 2
 		zoom: 3
 	});
 
-	const wmsLayer = new WMSTileLayer('http://ows.mundialis.de/services/service?', {
+	const wmsLayer = new WMSTileLayer('https://ows.mundialis.de/osm/service?', {
 		layers: 'SRTM30-Colored-Hillshade'
 	}).addTo(map);
 </script>

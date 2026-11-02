@@ -63,7 +63,7 @@ Just to be clear: the earth is not a square. Rather, the earth has an irregular 
 So we *assume* that the earth is mostly round. To make it flat, we put an imaginary cylinder around, unroll it, and cut it so it looks square:
 
 <div class='tiles legend' style='text-align: center'>
-<a title="By derived from US Government USGS [Public domain], via Wikimedia Commons" href="https://en.wikipedia.org/wiki/Map_projection#Cylindrical"><img width="512" alt="Usgs map mercator" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Usgs_map_mercator.svg/512px-Usgs_map_mercator.svg.png"/>
+<a title="By derived from US Government USGS [Public domain], via Wikimedia Commons" href="https://en.wikipedia.org/wiki/Map_projection#Cylindrical"><img width="500" alt="Usgs map mercator" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Usgs_map_mercator.svg/500px-Usgs_map_mercator.svg.png"/>
 <br/>
 This is called a "cylindrical map projection".
 </a>
@@ -148,8 +148,8 @@ but not <i>equidistant</i> (does not preserve distances), and not <i>equal-area<
 
 By adding a `ScaleControl` to a map, and panning to the equator and to 60° north,
 we can see how the scale factor <b>doubles</b>. The following example uses
-[javascript timeouts](https://developer.mozilla.org/docs/Web/API/WindowTimers/setTimeout)
-to  do this automatically:
+[javascript timeouts](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout)
+to do this automatically:
 
 	new ScaleControl().addTo(map);
 
@@ -234,7 +234,7 @@ snap the zoom level.
 
 There is another important map option related to `zoomSnap`: [the `zoomDelta` option](/reference.html#map-zoomdelta).
 This controls how many zoom levels to zoom in/out when using the zoom buttons
-(from the default [`ZoomControl`](/reference.html#control-zoom))
+(from the default [`ZoomControl`](/reference.html#zoomcontrol))
 or the `+`/`-` keys in your keyboard.
 
 For the mousewheel zoom, the [`wheelPxPerZoomLevel`](/reference.html#map-wheelpxperzoomlevel)

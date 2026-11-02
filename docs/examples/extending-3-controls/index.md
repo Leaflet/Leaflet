@@ -5,13 +5,13 @@ title: Extending Leaflet, Handlers and Controls
 
 <br>
 
-This tutorial assumes you've read the [theory of Leaflet class inheritance](./extending-1-classes.html).
+This tutorial assumes you've read the [theory of Leaflet class inheritance](../extending-1-classes/).
 
 In Leaflet, a "layer" is anything that moves with the map. In contraposition to that, a "control" is a HTML element that remains static relative to the map container, and a "handler" is a piece of invisible code that changes the map's behaviour.
 
 ## Handlers
 
-Map handlers process DOM events from the browser (like `click`, `dblclick` or `mousewheel`) and change the state of the map.
+Map handlers process DOM events from the browser (like `click`, `dblclick` or `wheel`) and change the state of the map.
 
 Handlers are relatively simple: they just need an `addHooks()` method (which runs when the handler is enabled in a map) and a `removeHooks()`, which runs when the handler is disabled. A skeleton for handlers is:
 
@@ -43,7 +43,7 @@ class TiltHandler extends Handler {
 
 	_tilt(ev) {
 		// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
-		this._map.panBy( new Point( ev.gamma, ev.beta ) );
+		this._map.panBy(new Point(ev.gamma, ev.beta));
 	}
 }
 ```
@@ -54,7 +54,7 @@ The handler can be attached to the map using `map.addHandler('tilt', TiltHandler
 
 Our handler can now be enabled by running `map.tilt.enable()` and disabled by `map.tilt.disable()`
 
-Moreover, if the map has a property named the same as the handler, then that handler will be enabled by default if that options is `true`, so this will enable our handler by default:
+Moreover, if the map has a property named the same as the handler, then that handler will be enabled by default if that option is `true`, so this will enable our handler by default:
 
 	const map = new LeafletMap('mapDiv', { tilt: true });
 

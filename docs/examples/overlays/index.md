@@ -31,7 +31,7 @@ const map = new LeafletMap('map').setView([37.8, -96], 4);
 
 const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
-	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 ```
 
@@ -78,16 +78,16 @@ Nowadays, we can easily embed videos using the following HTML code:
 
 ```
 <video width="500" controls>
-	<source src="https://www.mapbox.com/bites/00188/patricia_nasa.webm" type="video/webm">
-	<source src="https://www.mapbox.com/bites/00188/patricia_nasa.mp4" type="video/mp4">
+	<source src="https://labs.mapbox.com/bites/00188/patricia_nasa.webm" type="video/webm">
+	<source src="https://labs.mapbox.com/bites/00188/patricia_nasa.mp4" type="video/mp4">
 </video>
 ```
 
 To display this video:
 
 <video width="500" controls>
-<source src="https://www.mapbox.com/bites/00188/patricia_nasa.webm" type="video/webm">
-<source src="https://www.mapbox.com/bites/00188/patricia_nasa.mp4" type="video/mp4">
+<source src="https://labs.mapbox.com/bites/00188/patricia_nasa.webm" type="video/webm">
+<source src="https://labs.mapbox.com/bites/00188/patricia_nasa.mp4" type="video/mp4">
 </video>
 
 If a video can be shown in a webpage in this way, then Leaflet can display it inside a map. It is important that the videos are prepared in such a way that they will fit the map: The video should have a "north-up" orientation, and its proportions should fit the map. If not, it will look out of place.
@@ -101,7 +101,7 @@ const map = new LeafletMap('map').setView([37.8, -96], 4);
 
 const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
-	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 ```
 
@@ -118,8 +118,8 @@ A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML
 
 ```
 const videoUrls = [
-	'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
-	'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
+	'https://labs.mapbox.com/bites/00188/patricia_nasa.webm',
+	'https://labs.mapbox.com/bites/00188/patricia_nasa.mp4'
 ];
 const errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
 const latLngBounds = new LatLngBounds([[32, -130], [13, -100]]);
@@ -153,7 +153,7 @@ Video overlays behave like any other Leaflet layer - you can add and remove them
 
 If you read the API documentation, you'll notice that the `VideoOverlay` class does not have a `play()` or `pause()` method.
 
-For this, the `getElement()` method of the video overlay is useful. It returns the [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement) (which inherits from [`HTMLMediaElement`](https://developer.mozilla.org/docs/Web/API/HTMLMediaElement)) for the overlay - and that has methods like `play()` and `pause()`, e.g.
+For this, the `getElement()` method of the video overlay is useful. It returns the [`HTMLVideoElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement) (which inherits from [`HTMLMediaElement`](https://developer.mozilla.org/docs/Web/API/HTMLMediaElement)) for the overlay - and that has methods like `play()` and `pause()`, e.g.
 
 ```
 videoOverlay.getElement().pause();

@@ -5,17 +5,17 @@ title: Using GeoJSON with Leaflet
 
 <h2>Using GeoJSON with Leaflet</h2>
 
-<p>GeoJSON is a very popular data format among many GIS technologies and services — it's simple, lightweight, straightforward, and Leaflet is quite good at handling it. In this example, you'll learn how to create and interact with map vectors created from <a href="https://tools.ietf.org/html/rfc7946">GeoJSON</a> objects.</p>
+<p>GeoJSON is a very popular data format among many GIS technologies and services — it's simple, lightweight, straightforward, and Leaflet is quite good at handling it. In this example, you'll learn how to create and interact with map vectors created from <a href="https://www.rfc-editor.org/rfc/rfc7946">GeoJSON</a> objects.</p>
 
 {% include frame.html url="example.html" %}
 
 <h3>About GeoJSON</h3>
 
-<p>According to <a href="https://tools.ietf.org/html/rfc7946">GeoJSON Specification (RFC 7946)</a>:</p>
+<p>According to <a href="https://www.rfc-editor.org/rfc/rfc7946">GeoJSON Specification (RFC 7946)</a>:</p>
 
 <blockquote>GeoJSON is a format for encoding a variety of geographic data structures […]. A GeoJSON object may represent a region of space (a Geometry), a spatially bounded entity (a Feature), or a list of Features (a FeatureCollection). GeoJSON supports the following geometry types: Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection. Features in GeoJSON contain a Geometry object and additional properties, and a FeatureCollection contains a list of Features.</blockquote>
 
-<p>Leaflet supports all of the GeoJSON types above, but <a href="https://tools.ietf.org/html/rfc7946#section-3.2">Features</a> and <a href="https://tools.ietf.org/html/rfc7946#section-3.3">FeatureCollections</a> work best as they allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors. Here's an example of a simple GeoJSON feature:</p>
+<p>Leaflet supports all of the GeoJSON types above, but <a href="https://www.rfc-editor.org/rfc/rfc7946#section-3.2">Features</a> and <a href="https://www.rfc-editor.org/rfc/rfc7946#section-3.3">FeatureCollections</a> work best as they allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors. Here's an example of a simple GeoJSON feature:</p>
 
 <pre><code>const geojsonFeature = {
 	"type": "Feature",
@@ -119,7 +119,7 @@ new GeoJSON(states, {
 
 <h4>pointToLayer</h4>
 
-<p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="/reference.html#geojson">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="/reference.html#latlng">LatLng</a> and should return an instance of ILayer, in this case likely a <a href="/reference.html#marker">Marker</a> or <a href="/reference.html#circlemarker">CircleMarker</a>.</p>
+<p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="/reference.html#geojson">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="/reference.html#latlng">LatLng</a> and should return a <a href="/reference.html#layer">Layer</a>, in this case likely a <a href="/reference.html#marker">Marker</a> or <a href="/reference.html#circlemarker">CircleMarker</a>.</p>
 
 <p>Here we're using the <code>pointToLayer</code> option to create a CircleMarker:</p>
 
@@ -176,7 +176,7 @@ layer.bindPopup(el);</code></pre>
 
 <h4>filter</h4>
 
-<p>The <code>filter</code> option can be used to control the visibility of GeoJSON features. To accomplish this we pass a function as the <code>filter</code> option. This function gets called for each feature in your GeoJSON layer, and gets passed the <code>feature</code> and the <code>layer</code>. You can then utilise the values in the feature's properties to control the visibility by returning <code>true</code> or <code>false</code>.</p>
+<p>The <code>filter</code> option can be used to control the visibility of GeoJSON features. To accomplish this we pass a function as the <code>filter</code> option. This function gets called for each feature in your GeoJSON layer, and gets passed the <code>feature</code>. You can then utilise the values in the feature's properties to control the visibility by returning <code>true</code> or <code>false</code>.</p>
 
 <p>In the example below "Busch Field" will not be shown on the map.</p>
 
@@ -203,7 +203,7 @@ layer.bindPopup(el);</code></pre>
 }];
 
 new GeoJSON(someFeatures, {
-	filter(feature, layer) {
+	filter(feature) {
 		return feature.properties.show_on_map;
 	}
 }).addTo(map);</code></pre>

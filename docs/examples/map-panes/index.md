@@ -51,7 +51,7 @@ Labels on top of basemap
 </div>
 </div>
 
-If we create a Leaflet map with these two tile layers, any marker or polygon will show on top of both, but having the labels on top [looks much nicer](http://blog.cartodb.com/let-your-labels-shine/). How can we do that?
+If we create a Leaflet map with these two tile layers, any marker or polygon will show on top of both, but having the labels on top looks much nicer. How can we do that?
 
 {% include frame.html url="example.html" %}
 
@@ -66,13 +66,13 @@ Custom map panes are created on a per-map basis, so first create a map instance 
     map.createPane('labels');
 
 
-The next step is setting the z-index of the pane. Looking at the [defaults](https://github.com/Leaflet/Leaflet/blob/v1.0.0/dist/leaflet.css#L87), a value of 650 will make the `TileLayer` with the labels show on top of markers but below pop-ups. By using `getPane()`, we have a reference to the [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement) representing the pane, and change its z-index:
+The next step is setting the z-index of the pane. Looking at the [default z-indexes](/reference.html#map-pane), a value of 650 will make the `TileLayer` with the labels show on top of markers but below pop-ups. By using `getPane()`, we have a reference to the [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement) representing the pane, and change its z-index:
 
 
     map.getPane('labels').style.zIndex = 650;
 
 
-One of the problems of having image tiles on top of other map layers is that the tiles will capture clicks and touches. If a user clicks anywhere on the map, the web browser will assume she clicked on the labels tiles, and not on the GeoJSON or on the markers. This can be solved using [the `pointer-events` CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events):
+One of the problems of having image tiles on top of other map layers is that the tiles will capture clicks and touches. If a user clicks anywhere on the map, the web browser will assume they clicked on the labels tiles, and not on the GeoJSON or on the markers. This can be solved using [the `pointer-events` CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events):
 
 
     map.getPane('labels').style.pointerEvents = 'none';
@@ -82,11 +82,11 @@ With the pane now ready, we can add the layers, paying attention to use the `pan
 
 
     const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-            attribution: '©OpenStreetMap, ©CartoDB'
+            attribution: '© OpenStreetMap, © CARTO'
     }).addTo(map);
 
     const positronLabels = new TileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
-            attribution: '©OpenStreetMap, ©CartoDB',
+            attribution: '© OpenStreetMap, © CARTO',
             pane: 'labels'
     }).addTo(map);
 
