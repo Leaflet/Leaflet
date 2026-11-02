@@ -18,7 +18,7 @@ You can help the project tremendously by discovering and [reporting bugs](#repor
 helping others in [GitHub Discussions](https://github.com/Leaflet/Leaflet/discussions),
 [GIS Stack Exchange](https://gis.stackexchange.com/questions/tagged/leaflet)
 and [GitHub issues](https://github.com/Leaflet/Leaflet/issues);
-tweeting to [@LeafletJS](http://twitter.com/LeafletJS);
+following Leaflet on [Mastodon](https://mapstodon.space/@leaflet) or [X](https://x.com/LeafletJS);
 and spreading the word about Leaflet among your colleagues and friends.
 
 ## Reporting Bugs
@@ -32,9 +32,9 @@ and if it's already reported, just add any additional details in the comments.
 After you've made sure that you've found a new Leaflet bug,
 here are some tips for creating a helpful report that will make fixing it much easier and quicker:
 
- * Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in IE9 causes Z*.
+ * Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in Safari 18 causes Z*.
  * Include **browser, OS and Leaflet version** info in the description.
- * Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet plunker](https://leafletjs.com/edit.html)).
+ * Create a **simple test case** that demonstrates the bug (e.g. using the [Leaflet playground](https://leafletjs.com/edit.html)).
  * Check whether the bug can be reproduced in **other browsers**.
  * Check if the bug occurs in the stable version, main, or both.
  * *Bonus tip:* if the bug only appears in the main version but the stable version is fine,
@@ -67,20 +67,16 @@ please consider submitting another pull request with the corresponding [document
 
 The Leaflet build system uses [NodeJS](https://nodejs.org/).
 To set up the Leaflet build system, install [NodeJS](https://nodejs.org/).
-Then run the following commands in the project root to install dependencies:
+Then run the following command in the project root to install dependencies:
 
 ```
 npm install
-```
-or, if you prefer [`yarn`](https://yarnpkg.com/) over `npm`:
-```
-yarn install
 ```
 
 ### Making Changes to Leaflet Source
 
 If you're not yet familiar with the way GitHub works (forking, pull requests, etc.),
-be sure to check out the awesome [article about forking](https://help.github.com/articles/fork-a-repo)
+be sure to check out the awesome [article about forking](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
 on the GitHub Help website &mdash; it will get you started quickly.
 
 You should always write each batch of changes (feature, bugfix, etc.) in **its own topic branch**.
@@ -89,11 +85,12 @@ Please do not commit to the `main` branch of your fork — otherwise your unrela
 You should also follow the code style and whitespace conventions of the original codebase.
 In particular, use tabs for indentation and spaces for alignment.
 
-Before committing your changes, run `npm run lint` to catch any JS errors in the code and fix them. 
-The same command is automatically executed while committing. 
-You can prevent it from execution with the git flag `--no-verify`: `git commit -m "WIP" --no-verify`.  
+Before committing your changes, run `npm run lint` to catch any JS errors in the code and fix them,
+and `npm run typecheck` to check the types.
+ESLint also runs on the staged files while committing.
+You can skip it with the git flag `--no-verify`: `git commit -m "WIP" --no-verify`.
 
-Also, please make sure that you have [line endings configured properly](https://help.github.com/articles/dealing-with-line-endings) in Git! Otherwise the diff will show that all lines of a file were changed even if you touched only one.
+Also, please make sure that you have [line endings configured properly](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings) in Git! Otherwise the diff will show that all lines of a file were changed even if you touched only one.
 
 Happy coding!
 
@@ -102,7 +99,7 @@ Happy coding!
 The source JavaScript code for Leaflet is a few dozen files, in the `src/` directory.
 But normally, Leaflet is loaded in a web browser as just one JavaScript file.
 
-In order to create this file, run `npm run build` or `yarn run build`.
+In order to create this file, run `npm run build`.
 
 You'll find `dist/leaflet.js`, a minified ES module, and `dist/leaflet-global.js`,
 a minified script that defines the global `L`, each with a source map that includes
@@ -163,14 +160,15 @@ are taken from a pinned commit of the `v1` branch (see `refs` in [`build/site.js
 
 ### API documentation
 
-The API reference is generated with [Leafdoc](https://github.com/Leaflet/Leafdoc) from special code comments
-next to every class, method, option and event in `src/`. To change the API documentation, edit these comments.
+The API reference is generated from the JSDoc comments next to every class, method, option and event in `src/`,
+by a TypeScript-based script ([`build/reference-ts.js`](./build/reference-ts.js)). The same comments give the
+published types, so to change the API documentation, edit these comments. The grouping and the table of contents
+are set in [`build/reference.json`](./build/reference.json), and the templates are in `build/reference/`.
 
-The website builds the references from the released code rather than the latest one: `reference.html` documents
-1.9.4 from the `v1` branch, and `reference-2.0.0.html` the latest 2.0 release (see `refs` in
-[`build/site.json`](./build/site.json)), so changes to the comments appear there with the next release.
-The pages around them (header and table of contents in `docs/reference.html` and `docs/reference-2.0.0.html`)
-and the templates in `build/leafdoc-templates/` aren't pinned, so changes to them go live on merge.
+The website builds the references from released code (see `refs` in [`build/site.json`](./build/site.json)):
+`reference.html` documents 1.9.4 from the `v1` branch, and `reference-2.0.0.html` the latest 2.0 release.
+`reference-preview.html` is built from `main`, so changes to the comments show up there on merge,
+and in the release references with the next release.
 
 ## Code of Conduct
 

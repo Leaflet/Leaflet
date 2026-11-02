@@ -1,7 +1,7 @@
 # Leaflet Plugin Authoring Guide
 
 One of the greatest things about Leaflet is its powerful plugin ecosystem.
-The [Leaflet plugins page](http://leafletjs.com/plugins.html) lists dozens of awesome plugins, and more are being added every week.
+The [Leaflet plugins page](https://leafletjs.com/plugins.html) lists hundreds of awesome plugins, and more are being added every week.
 
 This guide lists a number of best practices for publishing a Leaflet plugin that meets the quality standards of Leaflet itself.
 
@@ -25,7 +25,7 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 
 ### Repository
 
-The best place to put your Leaflet plugin is a separate [GitHub](http://github.com) repository.
+The best place to put your Leaflet plugin is a separate [GitHub](https://github.com) repository.
 If you create a collection of plugins for different uses,
 don't put them in one repo &mdash;
 it's usually easier to work with small, self-contained plugins in individual repositories.
@@ -40,9 +40,9 @@ Just make sure to include the word "Leaflet" in the name so that it's obvious th
 The most essential thing to do when publishing a plugin is to include a demo that showcases what the plugin does &mdash;
 it's usually the first thing people will look for.
 
-The easiest way to put up a demo is using [GitHub Pages](http://pages.github.com/).
-A good [starting point](https://help.github.com/articles/creating-project-pages-manually) is creating a `gh-pages` branch in your repo and adding an `index.html` page to it  &mdash;
-after pushing, it'll be published as `http://<user>.github.io/<repo>`.
+The easiest way to put up a demo is using [GitHub Pages](https://pages.github.com/).
+Add an `index.html` page to your repo and [publish it from a branch or folder](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) &mdash;
+it'll be available at `https://<user>.github.io/<repo>`.
 
 ### Readme
 
@@ -64,7 +64,7 @@ At a minimum it should contain the following items:
 
 Every open source repository should include a license.
 If you don't know what open source license to choose for your code,
-[MIT License](http://opensource.org/licenses/MIT) and [BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause) are both good choices.
+[MIT License](https://opensource.org/licenses/MIT) and [BSD 2-Clause License](https://opensource.org/licenses/BSD-2-Clause) are both good choices.
 You can either put it in the repo as a `LICENSE` file or just link to the license from the Readme.
 
 ## Code
@@ -88,7 +88,6 @@ An example of a more sophisticated plugin file structure:
 /src        - JS source files
 /dist       - minified plugin JS, CSS, images
 /spec       - test files
-/lib        - any external libraries/plugins if necessary
 /examples   - HTML examples of plugin usage
 README.md
 LICENSE
@@ -108,7 +107,10 @@ Leaflet itself uses smart tabs (hard tabs for indentation, spaces for alignment)
 * If you inherit one of the existing classes or have a new class, export it and make it available via import.
 * If you want to add new methods to Leaflet classes, you can do it like this: `Marker.include({myPlugin: …})`.
 * Import what you need from Leaflet with named imports (`import {Marker, Util} from 'leaflet'`), and use named exports in your plugin too, so it's importable like this: `import {MyPlugin} from 'leaflet-my-plugin'`.
+* Leaflet 2.0 ships its own types. If your plugin adds members to Leaflet classes, declare them for TypeScript users as described in [the migration guide](MIGRATION.md#14-types-for-plugins).
 
+If you're porting a plugin from Leaflet 1.x, follow [the migration guide](MIGRATION.md), which also shows how to
+[support 1.x and 2.0 from one release](MIGRATION.md#11-support-1x-and-20-from-one-release).
 
 Function, method, property and factory names should be in `camelCase`.<br>
 Class names should be in `CapitalizedCamelCase`.
@@ -181,6 +183,8 @@ NPM has an excellent [developers guide](https://docs.npmjs.com/using-npm/develop
 
 When you publish your plugin, list `leaflet` in `peerDependencies` (not `dependencies`) in your `package.json`. This way your plugin uses the same copy of Leaflet as the app; with a separate copy, checks like `instanceof LatLng` fail between the two.
 
+While 2.0 is in beta, use `^2.0.0-beta.1` as the range: a plain `^2.0.0` doesn't match prereleases, so npm refuses to install the plugin next to a beta. A plugin that supports both versions declares `^1.9.0 || ^2.0.0-beta.1`.
+
 Here is an example of a `package.json` file for a Leaflet plugin.
 
 ```json
@@ -193,7 +197,7 @@ Here is an example of a `package.json` file for a Leaflet plugin.
   "author": "You",
   "license": "MIT",
   "peerDependencies": {
-    "leaflet": "^2.0.0"
+    "leaflet": "^2.0.0-beta.1"
   }
 }
 ```
@@ -213,19 +217,19 @@ trigger a build/minification just before publishing your package with a
 }
 ```
 
-You can then use the [`.gitignore`](https://help.github.com/articles/ignoring-files/)
-file to make sure the minified files are not versioned, and an
-[empty `.npmignore`](https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package)
-to ensure that they are published to NPM.
+You can then use the [`.gitignore`](https://docs.github.com/en/get-started/git-basics/ignoring-files)
+file to make sure the minified files are not versioned, and the
+[`files` field](https://docs.npmjs.com/cli/configuring-npm/package-json#files) in `package.json`
+to list what gets published to NPM.
 
 ## Adding to the plugins list
 
-Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so:
+Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](https://leafletjs.com/plugins.html). To do so:
 
-* [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
-* In the `docs/_plugins/` folder, copy the `template.md` file and add it to a category folder. Then put the information and links about your plugin into the new plugin file.
+* [Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the Leaflet repo.
+* In the `docs/_plugins/` folder, copy the `template.md` file and add it to a category folder. Then put the information and links about your plugin into the new plugin file, and set `compatible-v1` and `compatible-v2` to the Leaflet versions it works with.
 * Commit the code to your fork.
-* [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your fork to Leaflet's original repo.
+* [Open a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from your fork to Leaflet's original repo.
 
 Once the pull request is done, a Leaflet maintainer will have a quick look at your
 plugin and, if everything looks right, your plugin will appear in the list shortly thereafter.

@@ -50,7 +50,8 @@
     "src",
     "!dist/leaflet.zip",
     "!*.leafdoc",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "MIGRATION.md"
   ],
   "scripts": {
     "debug": "node build/serve.js",
@@ -61,7 +62,7 @@
     "build:js": "rolldown --config build/rolldown-config.js",
     "build:types": "tsc",
     "watch": "npm run build:js -- --watch",
-    "zip": "npm run build && rm -f dist/leaflet.zip && zip -j dist/leaflet.zip dist/leaflet* CHANGELOG.md LICENSE README.md",
+    "zip": "npm run build && rm -f dist/leaflet.zip && zip -j dist/leaflet.zip dist/leaflet* CHANGELOG.md MIGRATION.md LICENSE README.md",
     "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
     "typecheck": "tsc --noEmit",
