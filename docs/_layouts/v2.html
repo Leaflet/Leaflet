@@ -66,10 +66,10 @@
 			{% endif %}
 		</li>
 		<li>
-			{% if page.title == 'Download' %}
-				<span>Download</span>
+			{% if page.title == 'Install' %}
+				<span>Install</span>
 			{% else %}
-				<a href="{{ root }}download.html">Download</a>
+				<a href="{{ root }}download.html">Install</a>
 			{% endif %}
 		</li>
 		<li>
@@ -77,13 +77,6 @@
 				<span>Plugins</span>
 			{% else %}
 				<a href="{{ root }}plugins.html">Plugins</a>
-			{% endif %}
-		</li>
-		<li>
-			{% if page.title == 'Blog' %}
-				<span>Blog</span>
-			{% else %}
-				<a href="{{ root }}blog.html"{% if layout.post %} class="active"{% endif %}>Blog</a>
 			{% endif %}
 		</li>
 		<li>
@@ -100,7 +93,7 @@
 
 <footer class="container">
 	<div class="footer">
-		<p>&copy; 2010–{{ 'now' | date: "%Y" }} <a href="https://agafonkin.com">Volodymyr Agafonkin</a>. Maps &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+		<p>&copy; 2010–{{ 'now' | date: "%Y" }} <a href="https://agafonkin.com">Volodymyr Agafonkin</a>. Maps &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. <a href="{{ root }}blog.html">Blog archive</a>.</p>
 	</div>
 
 	<nav class="ext-links">

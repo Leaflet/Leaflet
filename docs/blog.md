@@ -1,12 +1,12 @@
 ---
 layout: v2
-title: Blog
+title: Blog archive
 bodyclass: blog-page
 ---
 
-## Leaflet Developer Blog
+## Leaflet Blog Archive
 
-The main place for all important Leaflet-related news, tutorials, tips and development notes. [Subscribe to Atom feed](atom.xml)
+Posts on Leaflet releases and development from 2012 to 2025. New releases are announced on [GitHub Releases](https://github.com/Leaflet/Leaflet/releases) ([Atom feed](https://github.com/Leaflet/Leaflet/releases.atom)).
 
 ---
 

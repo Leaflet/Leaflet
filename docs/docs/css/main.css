@@ -1236,7 +1236,16 @@ tr:target {
 }
 
 .tutorials-back {
+	display: flex;
+	justify-content: space-between;
 	margin-bottom: -1.5em;
+}
+.prerelease {
+	padding: 0 .6em;
+	border-radius: 1em;
+	background: #eee;
+	font-size: .875em;
+	line-height: 1.75;
 }
 
 .post-page h2 {

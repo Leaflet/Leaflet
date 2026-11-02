@@ -41,7 +41,7 @@ Here's what each part does:
  * The `div` is where the map goes. It needs a height.
  * Your code goes in the script with `type="module"`. Module scripts run after the page is parsed, so the map `div` already exists.
 
-For production, the [download page](/download.html) has the same snippets with [integrity hashes](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity), which make sure the files from the CDN haven't been tampered with.
+For production, the [install page](/install.html) has the same snippets with [integrity hashes](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity), which make sure the files from the CDN haven't been tampered with.
 
 Once your code grows, you may want to move it to its own file, like `<script type="module" src="app.js"></script>`. Browsers don't load module files from pages opened directly from disk, so you'll then need to open the page through a local web server, for example by running `npx serve` or `python3 -m http.server` in its folder.
 
@@ -60,7 +60,7 @@ import {LeafletMap, TileLayer} from 'leaflet';
 import 'leaflet/styles.css';
 ```
 
-The rest of this guide works the same either way. If you can't use modules at all, see the [download page](/download.html) for `leaflet-global.js`, a classic script that puts Leaflet in the global `L` variable.
+The rest of this guide works the same either way. If you can't use modules at all, see the [install page](/install.html) for `leaflet-global.js`, a classic script that puts Leaflet in the global `L` variable.
 
 ### Setting up the map
 

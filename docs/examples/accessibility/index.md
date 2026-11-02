@@ -109,5 +109,5 @@ but also mobile users in general.
 
 Leaflet is constantly improving accessibility.
 Use the latest stable
-[version](/download.html)
+[version](/install.html)
 for the greatest features!
