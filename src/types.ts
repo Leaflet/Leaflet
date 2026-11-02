@@ -275,7 +275,7 @@ export interface ZoomOptions extends ZoomProps {}
 export interface PanOptions extends PanProps {}
 /** Options for the `Map` methods that change both the center and the zoom level. */
 export interface ZoomPanOptions extends ZoomOptions, PanOptions, ZoomPanProps {}
-export interface InvalidateSizeOptions extends ZoomOptions, PanOptions, InvalidateSizeProps {}
+export interface InvalidateSizeOptions extends PanOptions, InvalidateSizeProps {}
 export interface PaddingOptions extends PaddingProps {}
 export interface PanInsideOptions extends PanOptions, PaddingOptions {}
 export interface FitBoundsOptions extends ZoomPanOptions, PaddingOptions, FitBoundsProps {}
