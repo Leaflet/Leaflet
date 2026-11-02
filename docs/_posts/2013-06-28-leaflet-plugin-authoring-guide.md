@@ -62,18 +62,22 @@ make it easy for a new person to find their way in your repo.
 
 A barebones repo for a simple plugin would look like this:
 
-	my-plugin.js
-	README.md
+```text
+my-plugin.js
+README.md
+```
 
 An example of a file structure for a more sophisticated plugin:
 
-	/src        JS source files
-	/dist       minified plugin JS, CSS, images
-	/spec       test files
-	/examples   HTML examples of plugin usage
-	README.md
-	LICENSE
-	package.json
+```text
+/src        JS source files
+/dist       minified plugin JS, CSS, images
+/spec       test files
+/examples   HTML examples of plugin usage
+README.md
+LICENSE
+package.json
+```
 
 #### Code Conventions
 

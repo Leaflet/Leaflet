@@ -32,7 +32,8 @@ There are two types of layers: (1) base layers that are mutually exclusive (only
 
 Now let's create those base layers and add the default ones to the map:
 
-<pre><code>const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+```js
+const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
@@ -45,22 +46,27 @@ const map = new LeafletMap('map', {
 	center: [39.73, -104.99],
 	zoom: 10,
 	layers: [osm, cities]
-});</code></pre>
+});
+```
 
 Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are just simple objects with key/value pairs. The key sets the text for the layer in the control (e.g. "OpenStreetMap"), while the corresponding value is a reference to the layer (e.g. `osm`).
 
-<pre><code>const baseMaps = {
+```js
+const baseMaps = {
 	"OpenStreetMap": osm,
 	"OpenStreetMap.HOT": osmHOT
 };
 
 const overlayMaps = {
 	"Cities": cities
-};</code></pre>
+};
+```
 
 Now, all that's left to do is to create a [Layers Control](/reference.html#layerscontrol) and add it to the map. The first argument passed when creating the layers control is the base layers object. The second argument is the overlays object. Both arguments are optional: you can pass just a base layers object by omitting the second argument, or just an overlays objects by passing `null` as the first argument. In each case, the omitted layer type will not appear for the user to select.
 
-<pre><code>const layerControl = new LayersControl(baseMaps, overlayMaps).addTo(map);</code></pre>
+```js
+const layerControl = new LayersControl(baseMaps, overlayMaps).addTo(map);
+```
 
 Note that we added `osm` and `cities` layers to the map but didn't add `osmHOT`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
 
@@ -68,15 +74,17 @@ Also note that when using multiple base layers, only one of them should be added
 
 You can also style the keys when you define the objects for the layers. For example, this code will make the label for the OpenStreetMap.HOT map red:
 
-<pre><code>const baseMaps = {
+```js
+const baseMaps = {
 	"OpenStreetMap": osm,
-	"&lt;span style='color: red'&gt;OpenStreetMap.HOT&lt;/span&gt;": osmHOT
+	"<span style='color: red'>OpenStreetMap.HOT</span>": osmHOT
 };
-</code></pre>
+```
 
 Finally, you can add or remove base layers or overlays dynamically:
 
-<pre><code>const crownHill = new Marker([39.75, -105.09]).bindPopup('This is Crown Hill Park.'),
+```js
+const crownHill = new Marker([39.75, -105.09]).bindPopup('This is Crown Hill Park.'),
     rubyHill = new Marker([39.68, -105.00]).bindPopup('This is Ruby Hill Park.');
     
 const parks = new LayerGroup([crownHill, rubyHill]);
@@ -87,7 +95,7 @@ const openTopoMap = new TileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.
 
 layerControl.addBaseLayer(openTopoMap, "OpenTopoMap");
 layerControl.addOverlay(parks, "Parks");
-</code></pre>
+```
 
 
 Now let's [view the result on a separate page &rarr;](example.html)

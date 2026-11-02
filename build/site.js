@@ -9,6 +9,7 @@ import {Liquid} from 'liquidjs';
 import {Marked} from 'marked';
 import {markedSmartypants} from 'marked-smartypants';
 import {parse as parseYaml} from '@mourner/yeahml';
+import {createHighlighter, bundledThemes} from 'shiki';
 import {buildReference} from './reference.js';
 
 const SITE_DIR = 'docs';
@@ -22,6 +23,33 @@ const HTML_TAG = /<[^>]*>/g;
 const NON_ID_CHAR = /[^\p{L}\p{N}\p{M}_\- ]/gu;
 const ID_ATTR = /\sid=['"]([^'"]+)['"]/g;
 const HASH_LINK = /\shref=['"]#([^'"]+)['"]/g;
+const CODE_BLOCK = /<pre([^>]*)><code([^>]*)>([\s\S]*?)<\/code><\/pre>/g;
+const CLASS_ATTR = /\sclass=['"]([^'"]*)['"]/;
+const WHITESPACE = /\s+/;
+const LANGUAGE_PREFIX = /^language-/;
+const ENTITY = /&(#x[\da-f]+|#\d+|amp|lt|gt|quot|copy);/gi;
+const ENTITIES = {amp: '&', lt: '<', gt: '>', quot: '"', copy: '©'};
+const SPECIAL_CHAR = /[&<>]/g;
+const SPECIAL_ENTITIES = {'&': 'amp', '<': 'lt', '>': 'gt'};
+
+// VS Code's GitHub theme, recolored to match how github.com highlights code; its comment color also fails AA on the
+// code background, unlike the one GitHub uses now
+const FUNCTION_COLOR = '#6639ba';
+const CLASS_COLOR = '#953800';
+const AFTER_NEW = /\bnew\s+(?:[\w$]+\.)*$/;
+const baseTheme = (await bundledThemes['github-light-default']()).default;
+const theme = {...baseTheme, name: 'leaflet', tokenColors: [...baseTheme.tokenColors, ...Object.entries({
+	'comment': '#59636e',
+	'keyword.operator': '#0550ae',
+	'keyword.operator.new, keyword.operator.expression': '#cf222e',
+	'entity.name.function': FUNCTION_COLOR,
+	'entity.other.inherited-class, variable.other.readwrite.alias': CLASS_COLOR,
+	'variable.other.constant, punctuation.separator.key-value': '#1f2328',
+	'meta.object-literal.key, entity.name.tag': '#0550ae'
+}).map(([scope, foreground]) => ({scope: scope.split(', '), settings: {foreground}}))]};
+
+const highlighter = await createHighlighter({themes: [theme], langs: ['javascript', 'html', 'css', 'shellscript', 'json']});
+const languages = new Set(highlighter.getLoadedLanguages());
 
 // GitHub-style header ids, which the site's anchors link to
 let headerIds;
@@ -91,7 +119,7 @@ for (const name of existsSync(CACHE_DIR) ? readdirSync(CACHE_DIR) : []) {
 }
 
 for (const post of site.posts) {
-	write(join(out, post.url), engine.renderLayouts(post.content, post, site));
+	write(join(out, post.url), highlightCode(engine.renderLayouts(post.content, post, site)));
 }
 for (const [file, {path, site}] of outputs) {
 	const page = readPage(path);
@@ -101,7 +129,7 @@ for (const [file, {path, site}] of outputs) {
 		const content = engine.renderContent(page.body, MARKDOWN_EXT.test(path), {site, page: page.data});
 		let html = engine.renderLayouts(content, page.data, site);
 		if (page.data.reference) { html = checkLinks(file, html, !config.refs[page.data.reference]); }
-		write(join(out, file), html);
+		write(join(out, file), highlightCode(html));
 	} else {
 		mkdirSync(dirname(join(out, file)), {recursive: true});
 		copyFileSync(path, join(out, file));
@@ -213,6 +241,33 @@ function checkLinks(out, html, strict) {
 		if (strict) { process.exitCode = 1; }
 	}
 	return html;
+}
+
+// Highlights code blocks by the language in a `<pre>` or `<code>` class (`language-js`, `javascript`), or else as
+// HTML if they start with a tag and as JS otherwise. Tags inside a block (links in some pinned v1 tutorials) are
+// dropped, keeping their text.
+function highlightCode(html) {
+	return html.replace(CODE_BLOCK, (block, preAttrs, codeAttrs, code) => {
+		const classes = `${preAttrs.match(CLASS_ATTR)?.[1] ?? ''} ${codeAttrs.match(CLASS_ATTR)?.[1] ?? ''}`;
+		const names = classes.split(WHITESPACE).map(c => c.replace(LANGUAGE_PREFIX, ''));
+		if (names.includes('no-highlight') || names.includes('text')) { return block; }
+		const text = code.replace(HTML_TAG, '').replace(ENTITY, (entity, name) => ENTITIES[name.toLowerCase()] ??
+			String.fromCodePoint(name[1] === 'x' || name[1] === 'X' ? parseInt(name.slice(2), 16) : +name.slice(1)));
+		const lang = names.find(name => languages.has(name)) ?? (text.trimStart().startsWith('<') ? 'html' : 'javascript');
+		const {tokens, fg} = highlighter.codeToTokens(text, {theme: 'leaflet', lang});
+		const html = tokens.map((line) => {
+			let before = '';
+			return line.map(({content, color}) => {
+				const escaped = content.replace(SPECIAL_CHAR, c => `&${SPECIAL_ENTITIES[c]};`);
+				let hex = color.toLowerCase();
+				// the grammar scopes `X` in `new X()` like any call, while GitHub colors it as a class
+				if (hex === FUNCTION_COLOR && AFTER_NEW.test(before)) { hex = CLASS_COLOR; }
+				before += content;
+				return hex === fg.toLowerCase() ? escaped : `<span style="color:${hex}">${escaped}</span>`;
+			}).join('');
+		}).join('\n');
+		return `<pre${preAttrs}><code${codeAttrs}>${html}</code></pre>`;
+	});
 }
 
 function matches(file, paths) {

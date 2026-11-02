@@ -23,13 +23,17 @@ WMTS, for [*web map tile service*](https://en.wikipedia.org/wiki/Web_Map_Tile_Se
 
 When somebody publishes a WMS service, most likely they link to something called a `GetCapabilities` document. For this tutorial, we'll use the WMS offered by [*Mundialis*](https://www.mundialis.de) at https://ows.mundialis.de/osm/service? . The service capabilities are described at the following URL:
 
-	https://ows.mundialis.de/osm/service?request=GetCapabilities
+```text
+https://ows.mundialis.de/osm/service?request=GetCapabilities
+```
 
 Leaflet does not understand WMS `GetCapabilities` documents. Instead, you have to create a `WMSTileLayer` layer, provide the base WMS URL, and specify whatever WMS options you need.
 
 The base WMS URL is simply the `GetCapabilities` URL, without any parameters, like so:
 
-	https://ows.mundialis.de/osm/service?
+```text
+https://ows.mundialis.de/osm/service?
+```
 
 And the way to use that in a Leaflet map is simply:
 
@@ -125,15 +129,21 @@ Leaflet doesn't have explicit support for TMS services, but the tile naming stru
 
 Let's consider a TMS server with the following endpoint:
 
-	http://base_url/tms/1.0.0
+```text
+http://base_url/tms/1.0.0
+```
 
 Checking the [MapCache help about TMS](https://mapserver.org/mapcache/services.html) and the [TMS specification](https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification) you can see that the URL for a map tile in TMS looks like:
 
-	http://base_url/tms/1.0.0/ {tileset} / {z} / {x} / {y} .png
+```text
+http://base_url/tms/1.0.0/ {tileset} / {z} / {x} / {y} .png
+```
 
 To use the TMS services as a `TileLayer`, we can check the capabilities document (the same as the base endpoint, in our case `http://base_url/tms/1.0.0`) to see what `tileset`s are available, and build our base URLs:
 
-	http://base_url/tms/1.0.0/{example_layer}@png/{z}/{x}/{y}.png
+```text
+http://base_url/tms/1.0.0/{example_layer}@png/{z}/{x}/{y}.png
+```
 
 
 And use the `tms:true` option when instantiating the layers, like so:

@@ -26,6 +26,7 @@
     "marked-smartypants": "1.1.12",
     "playwright": "^1.64.1",
     "rolldown": "^1.2.16",
+    "shiki": "4.6.0",
     "sinon": "^22.1.0",
     "typescript": "7.1.0-beta",
     "ui-event-simulator": "^2.0.0",

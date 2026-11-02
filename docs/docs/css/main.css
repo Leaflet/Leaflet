@@ -40,8 +40,8 @@ p {
 	margin: 24px 0;
 }
 
-a, a span.hljs-string {
-	color: #199900;
+a {
+	color: #198900;
 }
 
 a:hover, a:focus {
@@ -141,8 +141,11 @@ h2 {
 	font-size: 2em;
 	font-weight: 300;
 	color: black;
-	margin-top: 1.6em;
-	padding-top: .2em;
+	margin-top: 1.5em;
+}
+
+h2, h3, h4 {
+	line-height: 1.25;
 }
 
 h2:first-child {
@@ -168,7 +171,7 @@ h3 {
 h4 {
 	font-size: 1.1em;
 	font-weight: 500;
-	margin: 1em 0 1em;
+	margin: 2em 0 1em;
 }
 
 
@@ -185,8 +188,10 @@ h4 {
 }
 
 .footer {
-	margin-top: 50px;
-	color: #777;
+	color: #757575;
+}
+.footer p {
+	margin-top: 0;
 }
 
 #back-to-top {
@@ -234,7 +239,7 @@ h4 {
 /* header */
 
 h1 {
-	margin: 1.25em 0 1.5em;
+	margin: 1em 0 .5em;
 	text-align: center;
 }
 
@@ -260,31 +265,21 @@ h1 a:hover, h1 a:focus {
 	filter: hue-rotate(-70deg) saturate(1.5);
 }
 
-p.tagline {
-	font-weight: 300;
-	font-size: 1.5em;
-	margin-top: -.75em;
-	padding: 0;
-	color: #333;
-	text-align: center;
-	margin-bottom: 30px;
-}
-
 .nav {
 	overflow: hidden;
 	list-style: none;
 	padding: 0 30px;
 	text-align: center;
 	font-size: 1.25em;
-	margin-bottom: 30px;
+	margin: 0 0 24px;
 	border-bottom: 1px solid #ccc;
-	padding-bottom: 40px;
+	padding-bottom: 12px;
 }
 
 .nav li {
 	display: inline-block;
 	padding: .333em .5em;
-	color: #999;
+	color: #666;
 }
 
 .nav li a {
@@ -320,10 +315,15 @@ p.tagline {
 	font-size: .9em;
 }
 .container pre code {
+	display: block;
 	font-size: 14px;
 	padding: .75em 1em;
-	border-radius: 5px;
+	border-left: 3px solid #b5d99c;
+	border-radius: 0 6px 6px 0;
+	background: #f8f8f8;
+	color: #1f2328;
 	white-space: pre;
+	tab-size: 4;
 	overflow: auto;
 }
 .container pre {
@@ -338,7 +338,7 @@ p.tagline {
 }
 
 .quiet {
-	color: #888;
+	color: #767676;
 }
 
 
@@ -346,8 +346,8 @@ p.tagline {
 
 .map-home {
 	height: 300px;
-	margin-top: 40px;
-	margin-bottom: 40px;
+	margin-top: 32px;
+	margin-bottom: 32px;
 }
 
 .usedby-title {
@@ -481,13 +481,14 @@ p.tagline {
 
 .features {
 	column-count: 3;
+	margin-bottom: -1.8em;
 }
 .features ul {
 	padding-left: 1.6em;
 	margin: 0 0 1.8em;
 }
 .features h3 {
-	margin: 0 0 0.8em;
+	margin: 0 0 .6em;
 	padding: 0;
 }
 .features h4 {
@@ -604,6 +605,9 @@ table.plugins td:first-child a {
 }
 
 .api-page #toc ~ article > h2 {
+	margin-top: 1.6em;
+	padding-top: .2em;
+	line-height: 1.5;
 	font-weight: 700;
 	font-size: 1.75em;
 	color: #333;
@@ -619,6 +623,10 @@ table.plugins td:first-child a {
 }
 .api-page h2:first-child {
 	border: none;
+}
+
+.api-page h4 {
+	margin-top: 1em;
 }
 
 #toc h4 {
@@ -911,18 +919,18 @@ table.plugins td:first-child a {
 }
 /* default values, in the code blocks' colors */
 .api-page table td code.string {
-	color: #df5000;
+	color: #0a3069;
 }
 .api-page table td code.literal {
-	color: #0086b3;
+	color: #0550ae;
 }
 .api-page table td,
 .api-page table th {
-	font-size: 14px;
+	font-size: 15px;
 	vertical-align: top;
 }
 .api-page table td code {
-	font-size: 13.5px;
+	font-size: 14.5px;
 }
 @media screen and (min-width: 768px) {
 	/* otherwise the column takes the full width of its longest signature, squeezing descriptions */
@@ -1155,12 +1163,7 @@ tr:target {
 	}
 
 	h1 {
-		margin: 1em 0;
-	}
-
-	p.tagline {
-		font-size: 1.05em;
-		margin: 0 1em;
+		margin: 1em 0 .5em;
 	}
 
 	.container {
@@ -1233,7 +1236,7 @@ tr:target {
 }
 
 .tutorials-back {
-	margin-bottom: -3em;
+	margin-bottom: -1.5em;
 }
 
 .post-page h2 {
@@ -1252,6 +1255,10 @@ iframe[src*='youtube.com'] {
 .no-break {
 	display: inline-block;
 	width: 100%;
+}
+
+abbr {
+	white-space: nowrap;
 }
 
 .announcement {
