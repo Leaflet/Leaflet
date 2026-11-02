@@ -15,11 +15,11 @@ Leaflet maintainers.
 
 Leaflet is the leading open-source JavaScript library for **building powerful interactive maps**.
 
-Weighing just about 40 kB of gzipped JS plus 3.2 kB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
+Weighing just about 40 kB of gzipped JS plus 2.4 kB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
 It works efficiently across all major desktop and mobile platforms out of the box,
-taking advantage of modern browser features while being accessible on older ones too.
+taking advantage of modern browser features.
 It can be extended with a huge amount of [plugins][],
 has a beautiful, easy to use and [well-documented][] API
 and a simple, readable [source code][] that is a joy to [contribute][] to.
@@ -34,12 +34,10 @@ and push the limits of what's possible with online maps!
 
 [![CI](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml/badge.svg)](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml)
 
- [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
  [features]: https://leafletjs.com/#features
  [plugins]: https://leafletjs.com/plugins.html
  [well-documented]: https://leafletjs.com/reference.html "Leaflet API reference"
  [source code]: https://github.com/Leaflet/Leaflet "Leaflet GitHub repository"
- [hosted on GitHub]: https://github.com/Leaflet/Leaflet
  [contribute]: https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: https://leafletjs.com
  [download page]: https://leafletjs.com/download.html

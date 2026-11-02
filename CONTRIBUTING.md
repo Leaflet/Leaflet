@@ -192,7 +192,7 @@ integrity hashes and reference commit in `build/site.json`, and update the relea
 Everyone is invited to participate in the Leaflet community and related projects:
 we want to create a welcoming and friendly environment.
 Harassment of participants or other unethical and unprofessional behavior will not be tolerated in our spaces.
-The [Contributor Covenant](CODE_OF_CONDUCT.md)
+The [Contributor Covenant](.github/CODE_OF_CONDUCT.md)
 applies to all projects under the Leaflet organization.
 Report any issues to agafonkin@gmail.com or ivan@sanchezortega.es.
 

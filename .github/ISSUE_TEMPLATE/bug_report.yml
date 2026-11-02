@@ -14,7 +14,7 @@ body:
           required: false
         - label: I've searched through the [current issues](https://github.com/Leaflet/Leaflet/issues) to make sure this hasn't been reported yet.
           required: false
-        - label: I agree to follow the [Code of Conduct](https://github.com/Leaflet/Leaflet/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.
+        - label: I agree to follow the [Code of Conduct](https://github.com/Leaflet/Leaflet/blob/main/.github/CODE_OF_CONDUCT.md) that this project adheres to.
           required: true
 
   - type: textarea
@@ -51,7 +51,7 @@ body:
     attributes:
       label: Minimal example reproducing the issue
       description: |
-        Please create an example using the [Leaflet Editor](https://leafletjs.com/edit.html) or any other suitable online code editor.
+        Please create an example using the [Leaflet playground](https://leafletjs.com/edit.html) or any other suitable online code editor.
         **This example should be as simple as possible, and should not rely on any third-party code!**
       placeholder: Link to your example here
     validations:
@@ -63,9 +63,9 @@ body:
       description: |
         Please fill in the Leaflet [version](https://leafletjs.com/reference.html#version) and the name and versions of the affected browser(s), OS(es), and platform(s).
         Example:
-          - Leaflet version: 1.7.1, 1.8.0-beta.0
-          - Browser (with version): Chrome 99.0.4844.82, Firefox 98.0.1
-          - OS/Platform (with version): Windows 10 laptop
+          - Leaflet version: 1.9.4, 2.0.0-beta.1
+          - Browser (with version): Chrome 142, Firefox 145
+          - OS/Platform (with version): Windows 11 laptop
       placeholder: |
         - Leaflet version:
         - Browser (with version):
