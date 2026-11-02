@@ -37,6 +37,7 @@
       "types": "./dist/types/index.d.ts",
       "default": "./src/Leaflet.js"
     },
+    "./dist/leaflet.css": "./dist/leaflet.css",
     "./styles.css": "./dist/leaflet.css"
   },
   "sideEffects": [

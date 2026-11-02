@@ -21,6 +21,7 @@ describe('FeatureGroup', () => {
 
 				fg2.on('click', (e) => {
 					expect(e.propagatedFrom).to.equal(marker);
+					expect(e.layer).to.equal(marker);
 					expect(e.target).to.equal(fg2);
 					wasClicked2 = true;
 				});

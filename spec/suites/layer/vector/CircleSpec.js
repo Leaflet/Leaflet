@@ -20,6 +20,10 @@ describe('Circle', () => {
 			const circle = new Circle([0, 0]);
 			expect(circle.getRadius()).to.eql(10);
 		});
+
+		it('throws when the radius is passed as the second argument', () => {
+			expect(() => new Circle([0, 0], 200)).to.throw('the radius is an option');
+		});
 	});
 
 	describe('#getBounds', () => {

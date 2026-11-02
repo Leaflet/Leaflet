@@ -619,7 +619,8 @@ describe('Events', () => {
 				type: 'test2',
 				target: parent,
 				sourceTarget: obj,
-				propagatedFrom: obj
+				propagatedFrom: obj,
+				layer: obj
 			})).to.be.true;
 		});
 	});
