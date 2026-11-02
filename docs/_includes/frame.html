@@ -1,10 +1,8 @@
-<table role="presentation">
-<tr><td style='text-align: center; border: none; padding: 0;'>
-<iframe src='{{ include.url }}'
-	width='{% if include.width %}{{ include.width }}{% else %}600{% endif %}'
-	height='{% if include.height %}{{ include.height }}{% else %}400{% endif %}'
-	style="max-width: 100%; max-height: 90vh; box-sizing: border-box;"></iframe>
-</td></tr>
-<tr><td style='text-align: center; border: none'>
-<small><a href='{{ include.url }}'>See this example stand-alone.</a></small>
-</td></tr></table>
+{%- assign width = include.width -%}
+{%- assign major = site.latest_leaflet_version | split: "." | first -%}
+{%- if major == "1" and width == nil %}{% assign width = 600 %}{% endif -%}
+<figure class="example-frame">
+<iframe src='{{ include.url }}' title='Example map'
+	style='height: {% if include.height %}{{ include.height }}{% else %}400{% endif %}px;{% if width %} max-width: {{ width }}px;{% endif %}'></iframe>
+<figcaption><a href='{{ include.url }}'>See this example stand-alone.</a></figcaption>
+</figure>

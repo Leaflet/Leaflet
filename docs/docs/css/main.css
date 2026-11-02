@@ -109,6 +109,21 @@ iframe {
 	border: none;
 }
 
+.example-frame {
+	margin: 1.5em 0;
+	text-align: center;
+}
+.example-frame iframe {
+	display: block;
+	width: 100%;
+	margin: 0 auto;
+	max-height: 90vh;
+}
+.example-frame figcaption {
+	margin-top: 0.3em;
+	font-size: 0.85em;
+}
+
 img {
 	height: auto;
 }

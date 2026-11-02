@@ -13,7 +13,7 @@ Please note that this tutorial assumes you have a good grasp of [JavaScript](htt
 
 Let's have a look at a simplified UML Class diagram for Leaflet. There are more than 60 classes, so the diagram is a bit big. Luckily we can make a zoomable image with an `ImageOverlay`:
 
-{% include frame.html url="class-diagram.html" %}
+{% include frame.html url="class-diagram.html" height=640 %}
 
 From a technical point of view, Leaflet can be extended in different ways:
 
@@ -26,23 +26,22 @@ From a technical point of view, Leaflet can be extended in different ways:
 
 ## Extending Leaflet Classes
 
-JavaScript is a bit of a weird language. It's not really object-oriented in the traditional sense, but handles inheritance using a [prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain). Only at a later point during its lifetime [syntax was added](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) to allow more 'class-like' inheritance.
-
-Because Leaflet was created before any standardized class syntax existed, it comes with its own implementation for classes in the form of a base class called `Class`. Almost all classes in Leaflet extend from `Class`, as well as most classes you'll find in plugins. It also contains various utility methods to further modify class behavior.
+Leaflet classes are plain [JavaScript classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes). Almost all of them, as well as most classes you'll find in plugins, extend from a base class called `Class`. It adds what plugins need on top of standard classes: default options, mixins and constructor hooks.
 
 ### Creating a subclass
 
-`Class`, or other built-in Leaflet classes derived from it (such as `Layer`, `Handler`, `Control`, etc.), can be extended in the same manner as any other JavaScript class, by using the [`extends`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) keyword. However, unlike regular JavaScript classes, Leaflet classes do not support the [`constructor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor) method. Instead, constructor logic should go into a special `initialize()` method to preserve backwards compatibility with older versions of Leaflet:
-
+`Class`, or other built-in Leaflet classes derived from it (such as `Layer`, `Handler`, `Control`, etc.), can be extended in the same manner as any other JavaScript class, by using the [`extends`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) keyword. Put the setup code in [`constructor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor), after calling `super()`:
 
 ```js
 class RotateMarker extends Marker {
-	initialize(latlng, rotation, options) {
-		super.initialize(latlng, options);
+	constructor(latlng, rotation, options) {
+		super(latlng, options);
 		this._rotation = rotation;
 	}
 }
 ```
+
+Leaflet 1.x classes used a special `initialize()` method instead. Leaflet 2.0 doesn't call it, and constructing a class that still has one throws an error.
 
 ### Naming conventions
 
@@ -54,19 +53,18 @@ When creating Leaflet classes, adhere to these conventions:
 
 ### Setting default options
 
-All classes that extend from `Class` can be provided with default options by calling `setDefaultOptions()` in a [static initialization block](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks):
+All classes that extend from `Class` can be provided with default options in a static `defaultOptions` field. `Util.setOptions()` combines the defaults with the options passed to the constructor:
 
 ```js
 class MyBox extends Class {
-	static {
-		this.setDefaultOptions({
-			width: 1,
-			height: 1
-		});
-	}
+	static defaultOptions = {
+		width: 1,
+		height: 1
+	};
 
-	initialize(name, options) {
-		super.initialize(options);
+	constructor(name, options) {
+		super();
+		Util.setOptions(this, options);
 		this.name = name;
 	}
 }
@@ -78,15 +76,15 @@ console.log(instance.options.width); // Outputs "10"
 console.log(instance.options.height); // Outputs "1", the default
 ```
 
-These options are inherited from parent classes, and merged automatically:
+Many Leaflet classes, such as `Marker` and `Control`, take the options as a constructor argument and call `Util.setOptions()` themselves, so for their subclasses passing the options to `super()` is enough, as in the `RotateMarker` example above.
+
+Default options are inherited from parent classes, and merged automatically:
 
 ```js
 class MyCube extends MyBox {
-	static {
-		this.setDefaultOptions({
-			depth: 1
-		});
-	}
+	static defaultOptions = {
+		depth: 1
+	};
 }
 
 const cube = new MyCube('Blue');
@@ -96,14 +94,21 @@ console.log(cube.options.height); // Outputs "1", parent class default
 console.log(cube.options.depth); // Outputs "1"
 ```
 
+To change the defaults of an existing class, for example from a plugin, use `mergeOptions()`:
+
+```js
+Marker.mergeOptions({riseOnHover: true});
+```
+
 ### `Class.include()`
 
 Leaflet provides `.include()` to add or override methods in existing classes. This is useful for monkey-patching or adding functionality to base classes:
 
 ```js
 class MyLayer extends Layer {
-	initialize(options) {
-		super.initialize(options);
+	constructor(options) {
+		super();
+		Util.setOptions(this, options);
 		this._count = 0;
 	}
 
@@ -129,21 +134,37 @@ console.log(instance.incrementCount()); // Outputs "2"
 
 Note: Use `.include()` sparingly, as modifying base classes can have unexpected side effects. As a general rule of thumb, try to extend existing classes instead.
 
-### Initialization hooks
+### Constructor hooks
 
-Use `addInitHook()` to run code after `initialize()` completes. This is useful for setup that depends on state from the class being modified (e.g. using `.include()`):
+Use `addInitHook()` to run additional code when an instance is created. This is useful for setup in classes you don't control, such as Leaflet's own classes, or a class modified with `.include()`:
+
+```js
+Polyline.addInitHook(function () {
+	this._createdAt = Date.now();
+});
+```
+
+Hooks added to a class also run for its subclasses. For Leaflet's own classes, they run after the constructor has finished, so a hook added to `Layer` sees a fully built `Polygon`.
+
+For a class of your own, hooks run before the body of its constructor. If they need the state the constructor sets up, mark the class with `static initHooks = true` and end its constructor with `this.callInitHooks()`:
 
 ```js
 class MyBox extends Class {
-	static {
-		this.setDefaultOptions({
-			width: 1,
-			height: 1
-		});
+	static defaultOptions = {
+		width: 1,
+		height: 1
+	};
+
+	static initHooks = true;
+
+	constructor(options) {
+		super();
+		Util.setOptions(this, options);
+		this.callInitHooks();
 	}
 }
 
-MyBox.addInitHook(function() {
+MyBox.addInitHook(function () {
 	this._area = this.options.width * this.options.height;
 });
 
@@ -161,11 +182,9 @@ console.log(box.getArea()); // Outputs "50"
 
 ```js
 class MyCube extends MyBox {
-	static {
-		this.setDefaultOptions({
-			depth: 1
-		});
-	}
+	static defaultOptions = {
+		depth: 1
+	};
 
 	_calculateVolume(multiplier/*, arg2, arg3. etc. */) {
 		this._volume = this.options.width * this.options.height * this.options.depth * multiplier;

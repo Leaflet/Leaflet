@@ -158,6 +158,7 @@ It builds the site into `_site/` (in about a second) and serves it; run `npm run
 
 Until Leaflet 2.0 is released, the 1.x tutorials, the front page and the download page
 are taken from a pinned commit of the `v1` branch (see `refs` in [`build/site.json`](./build/site.json)).
+To preview the 2.0 versions of these pages, run `npm run preview` instead, which serves them with Leaflet from `src/`.
 
 ### API documentation
 

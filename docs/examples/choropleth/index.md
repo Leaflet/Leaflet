@@ -9,7 +9,7 @@ This is a case study of creating a colorful interactive [choropleth map](http://
 
 The tutorial was inspired by the [Texas Tribune US Senate Runoff Results map](http://www.texastribune.org/library/data/us-senate-runoff-results-map/) (also powered by Leaflet), created by [Ryan Murphy](http://www.texastribune.org/about/staff/ryan-murphy/).
 
-{% include frame.html url="example.html" width=816 height=516 %}
+{% include frame.html url="example.html" height=500 %}
 
 ### Data Source
 

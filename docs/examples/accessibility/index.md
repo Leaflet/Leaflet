@@ -36,7 +36,7 @@ Resulting in markers that are discernible to
 [screen reader](https://en.wikipedia.org/wiki/Screen_reader)
 users:
 
-{% include frame.html url="example.html" width=600 height=400 %}
+{% include frame.html url="example.html" %}
 
 In the case of `divIcon`s,
 [custom HTML](/reference.html#divicon-html)

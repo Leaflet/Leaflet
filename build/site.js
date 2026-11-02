@@ -1,7 +1,7 @@
 // Builds leafletjs.com into _site/ from docs/ and the pinned refs in build/site.json. Covers the part of Jekyll the
 // site uses (front matter, Liquid, Markdown, chained layouts, posts, the plugins collection) and the API references.
 
-import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, copyFileSync, rmSync, renameSync, statSync}
+import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, copyFileSync, cpSync, rmSync, renameSync, statSync}
 	from 'node:fs';
 import {execSync} from 'node:child_process';
 import {join, dirname} from 'node:path';
@@ -40,6 +40,12 @@ const marked = new Marked({
 const start = performance.now();
 const config = JSON.parse(readFileSync('build/site.json', 'utf8'));
 const site = {...config.site, ...config.versions[config.version], time: new Date()};
+
+// PREVIEW=1 serves the checkout's pages in place of the v1 ones, running on the checkout's src/ instead of a release
+site.preview = !!process.env.PREVIEW;
+if (site.preview) {
+	config.mounts = config.mounts.filter(m => m.ref !== 'v1').map(({exclude, ...m}) => m);
+}
 // the release each pinned ref is at, for the references' version links: `v2` follows `version`, `v1` its mounts
 site.refVersions = {v2: config.version};
 for (const {ref, version} of config.mounts) { if (ref) { site.refVersions[ref] = version; } }
@@ -101,6 +107,8 @@ for (const [file, {path, site}] of outputs) {
 		copyFileSync(path, join(out, file));
 	}
 }
+
+if (site.preview) { cpSync('src', join(out, 'preview'), {recursive: true}); }
 
 const old = `${out}-old`;
 if (existsSync(DEST)) { renameSync(DEST, old); }

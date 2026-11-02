@@ -1,0 +1,105 @@
+---
+config:
+  class:
+    hideEmptyMembersBox: true
+---
+classDiagram
+	%% Rendered to class-diagram.svg with pele (https://pele.run): render(source, {responsive: false, padding: 16})
+	class Class {
+		options
+		include()
+		mergeOptions()
+		addInitHook()
+	}
+	class Evented {
+		on()
+		off()
+		fire()
+	}
+	class LeafletMap {
+		addLayer()
+		removeLayer()
+		addControl()
+		removeControl()
+		addHandler()
+	}
+	class Layer {
+		onAdd()
+		onRemove()
+		getEvents()
+		getAttribution()
+		beforeAdd()
+	}
+	class Control {
+		onAdd()
+		onRemove()
+	}
+	class Handler {
+		addHooks()
+		removeHooks()
+	}
+	class GridLayer {
+		createTile()
+	}
+	class TileLayer {
+		getTileUrl()
+	}
+	class LatLng {
+		lat
+		lng
+	}
+	class Point {
+		x
+		y
+	}
+	class Controls["AttributionControl<br>LayersControl<br>ScaleControl<br>ZoomControl"]
+	class Handlers["BoxZoomHandler<br>DoubleClickZoomHandler<br>DragHandler<br>KeyboardHandler<br>PinchZoomHandler<br>ScrollWheelZoomHandler"]
+	class EarthCRSs["EPSG3395<br>EPSG3857<br>EPSG4326"]
+
+	Class <|-- Evented
+	Class <|-- Control
+	Class <|-- Handler
+	Class <|-- Icon
+	Evented <|-- LeafletMap
+	Evented <|-- Layer
+
+	LeafletMap ..> CRS : has one
+
+	Control <|-- Controls
+	Handler <|-- Handlers
+
+	CRS <|-- EarthCRS
+	CRS <|-- SimpleCRS
+	EarthCRS <|-- EarthCRSs
+
+	Layer <|-- Marker
+	Layer <|-- GridLayer
+	Layer <|-- Renderer
+	Layer <|-- Path
+	Layer <|-- LayerGroup
+	Layer <|-- DivOverlay
+	Layer <|-- ImageOverlay
+
+	Icon <|-- DefaultIcon
+	Icon <|-- DivIcon
+
+	GridLayer <|-- TileLayer
+	TileLayer <|-- WMSTileLayer
+
+	Renderer <|-- Canvas
+	Renderer <|-- SVG
+	Path ..> Renderer : drawn in a
+	Path <|-- CircleMarker
+	CircleMarker <|-- Circle
+	Path <|-- Polyline
+	Polyline <|-- Polygon
+	Polygon <|-- Rectangle
+
+	LayerGroup <|-- FeatureGroup
+	FeatureGroup <|-- GeoJSON
+
+	DivOverlay <|-- Popup
+	DivOverlay <|-- Tooltip
+
+	LatLngBounds ..> LatLng : has 2
+	Bounds ..> Point : has 2
