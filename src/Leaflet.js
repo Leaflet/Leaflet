@@ -7,7 +7,7 @@
  * console.log(version); // "2.0.0", or whatever version is in use
  * ```
  */
-export const version = '2.0.0-dev';
+export const version = '2.0.0-beta.1';
 
 // control
 export {AttributionControl} from './control/AttributionControl.js';
