@@ -288,12 +288,9 @@ export function getPointerPosition(e, container) {
  * @param {WheelEvent} e
  */
 export function getWheelDelta(e) {
-	// a wheel notch gives 100-120px in most browsers, so halving it fits the default 60px per zoom level (see #7403)
-	return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / (window.devicePixelRatio * 2) : // Pixels
-		(e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
-		(e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
-		(e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
-		0;
+	// scale per delta mode (pixels, lines, pages); a wheel notch gives 100-120px in most browsers,
+	// so pixels are halved to fit the default 60px per zoom level (see #7403)
+	return -e.deltaY * (e.deltaMode ? e.deltaMode === 1 ? 20 : 60 : 0.5 / window.devicePixelRatio) || 0;
 }
 
 // Double tap support for mobile browsers. Most browsers fire native dblclick, with only a few exceptions
