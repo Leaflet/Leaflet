@@ -35,6 +35,7 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 /** @import {Layer} from '../layer/Layer.js' */
 /** @import {LayerBase} from '../layer/LayerBase.js' */
 /** @import {GridLayer} from '../layer/tile/GridLayer.js' */
+/** @import {Canvas} from '../layer/vector/Canvas.js' */
 /** @import {Path} from '../layer/vector/Path.js' */
 /** @import {Renderer} from '../layer/vector/Renderer.js' */
 
@@ -601,6 +602,8 @@ export class LeafletMap extends Evented {
 		this._layers = {};
 		/** @type {{[id: number]: GridLayer}} */
 		this._zoomBoundLayers = {};
+		/** @type {Canvas[]} canvas renderers on the map, topmost first */
+		this._canvases = [];
 		this._sizeChanged = true;
 		/** @type {Popup | undefined} */
 		this._popup = undefined; // the last popup opened with `openOn`, set by `Popup`
@@ -2404,16 +2407,51 @@ export class LeafletMap extends Evented {
 			return;
 		}
 
+		// canvas elements don't receive pointer events, so hit-test canvas renderers when the event isn't on
+		// an interactive DOM layer, and track hover (cursor, pointerover/out) for canvas layers here;
 		// keydown and keyup pass through too, but only fields they share with MouseEvent are read for them
-		this._fireDOMEvent(/** @type {MouseEvent} */ (e), e.type);
+		const ev = /** @type {MouseEvent} */ (e),
+		type = ev.type,
+		move = type === 'pointermove',
+		hovered = this._hoveredCanvasLayer,
+		skip = type === 'pointerover' || type === 'pointerout' || type.startsWith('key') ||
+			this._animatingZoom || move && this.dragging?.moving(),
+		layer = skip ? undefined : this._canvasLayerAt(ev, type === 'click'),
+		related = /** @type {Node | null} */ (ev.relatedTarget),
+		leftMap = type === 'pointerout' && !this._container.contains(related);
+
+		if (layer !== hovered && (move && !skip || leftMap)) {
+			if (hovered) { this._fireDOMEvent(ev, 'pointerout', [hovered]); }
+			this._container.classList.toggle('leaflet-interactive', !!layer); // change cursor
+			/** @type {Path | undefined} */
+			this._hoveredCanvasLayer = layer;
+			if (layer) { this._fireDOMEvent(ev, 'pointerover', [layer]); }
+		}
+
+		this._fireDOMEvent(ev, type, layer && [layer]);
 	};
+
+	/**
+	 * @param {MouseEvent} e
+	 * @param {boolean} click
+	 */
+	_canvasLayerAt(e, click) {
+		// skip events on interactive DOM layers and controls
+		for (let el = /** @type {Node | null} */ (e.target); el !== this._container; el = el.parentNode) {
+			if (!el || el === this._controlContainer || this._targets[Util.stamp(el)]) { return; }
+		}
+		for (const renderer of this._canvases) {
+			const layer = renderer._layerAt(e, click);
+			if (layer) { return layer; }
+		}
+	}
 
 	static _pointerEvents = ['click', 'dblclick', 'pointerover', 'pointerout', 'contextmenu'];
 
 	/**
 	 * @param {MouseEvent} e
 	 * @param {string} type
-	 * @param {DOMEventTarget[] | false} [canvasTargets]
+	 * @param {DOMEventTarget[]} [canvasTargets]
 	 */
 	_fireDOMEvent(e, type, canvasTargets) {
 
@@ -2422,8 +2460,10 @@ export class LeafletMap extends Evented {
 			this._fireDOMEvent(e, 'preclick', canvasTargets);
 		}
 
-		// Find the layer the event is propagating from and its parents.
-		let targets = this._findEventTargets(e, type);
+		// Find the layer the event is propagating from and its parents
+		// (synthetic canvas hover events don't propagate to DOM layers).
+		const canvasHover = canvasTargets && (type === 'pointerover' || type === 'pointerout');
+		let targets = canvasHover ? [] : this._findEventTargets(e, type);
 
 		if (canvasTargets) {
 			// pick only targets with listeners
