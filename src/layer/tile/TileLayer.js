@@ -326,7 +326,7 @@ export class TileLayer extends GridLayer {
 	 * @param {HTMLElement} [tile]
 	 */
 	_tileReady(coords, err, tile) {
-		if (!this._map || (tile && tile.getAttribute('src') === '')) {
+		if (!this._map || tile?.getAttribute('src') === '') {
 			return;
 		}
 

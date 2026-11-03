@@ -242,7 +242,7 @@ export class Layer extends LayerBase {
 		this._tooltip = this._initOverlay(Tooltip, old, content, options);
 		this._initTooltipInteractions();
 
-		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this)) {
+		if (this._tooltip.options.permanent && this._map?.hasLayer(this)) {
 			this.openTooltip();
 		}
 
@@ -428,14 +428,9 @@ export class Layer extends LayerBase {
 
 	/** @param {{latlng: LatLng, originalEvent?: PointerEvent | MouseEvent}} e */
 	_moveTooltip(e) {
-		let latlng = e.latlng, containerPoint, layerPoint;
 		const tooltip = /** @type {Tooltip} */ (this._tooltip);
-		if (tooltip.options.sticky && e.originalEvent) {
-			containerPoint = this._map.pointerEventToContainerPoint(e.originalEvent);
-			layerPoint = this._map.containerPointToLayerPoint(containerPoint);
-			latlng = this._map.layerPointToLatLng(layerPoint);
-		}
-		tooltip.setLatLng(latlng);
+		tooltip.setLatLng(tooltip.options.sticky && e.originalEvent ?
+			this._map.pointerEventToLatLng(e.originalEvent) : e.latlng);
 	}
 
 	/**

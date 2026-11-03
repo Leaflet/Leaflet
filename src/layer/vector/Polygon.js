@@ -130,7 +130,7 @@ export class Polygon extends Polyline {
 		bounds = new Bounds(bounds.min.subtract(p), bounds.max.add(p));
 
 		this._parts = [];
-		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
+		if (!this._pxBounds?.intersects(bounds)) {
 			return;
 		}
 
@@ -157,7 +157,7 @@ export class Polygon extends Polyline {
 		let inside = false,
 		part, p1, p2, i, j, k, len, len2;
 
-		if (!this._pxBounds || !this._pxBounds.contains(p)) { return false; }
+		if (!this._pxBounds?.contains(p)) { return false; }
 
 		// ray casting algorithm for detecting if point is in polygon
 		for (i = 0, len = this._parts.length; i < len; i++) {

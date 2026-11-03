@@ -285,7 +285,7 @@ export class Canvas extends Renderer {
 
 		for (let order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
-			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
+			if (!bounds || layer._pxBounds?.intersects(bounds)) {
 				layer._updatePath();
 			}
 		}

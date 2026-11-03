@@ -146,7 +146,7 @@ export class Popup extends DivOverlay {
 	openOn(map) {
 		map = arguments.length ? map : /** @type {Layer} */ (this._source)._map; // experimental, not the part of public api
 
-		if (!map.hasLayer(this) && map._popup && map._popup.options.autoClose) {
+		if (!map.hasLayer(this) && map._popup?.options.autoClose) {
 			map.removeLayer(map._popup);
 		}
 		map._popup = this;

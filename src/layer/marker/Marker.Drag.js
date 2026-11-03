@@ -2,7 +2,6 @@ import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
-import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
 
 /** @import {DragEndEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
@@ -67,26 +66,20 @@ export class MarkerDrag extends Handler {
 		const marker = this._marker,
 		map = marker._map,
 		speed = this._marker.options.autoPanSpeed,
-		padding = this._marker.options.autoPanPadding,
+		padding = new Point(this._marker.options.autoPanPadding),
 		icon = /** @type {HTMLElement} */ (marker._icon),
 		iconPos = DomUtil.getPosition(icon),
 		bounds = map.getPixelBounds(),
-		origin = map.getPixelOrigin();
+		origin = map.getPixelOrigin(),
+		min = bounds.min._subtract(origin)._add(padding),
+		max = bounds.max._subtract(origin)._subtract(padding),
+		// how far the icon is past the padded bounds on each axis (0 if within)
+		dx = Math.max(iconPos.x - max.x, 0) + Math.min(iconPos.x - min.x, 0),
+		dy = Math.max(iconPos.y - max.y, 0) + Math.min(iconPos.y - min.y, 0);
 
-		const panBounds = new Bounds(
-			bounds.min._subtract(origin).add(padding),
-			bounds.max._subtract(origin).subtract(padding)
-		);
-
-		if (!panBounds.contains(iconPos)) {
-			// Compute incremental movement
-			const movement = new Point(
-				(Math.max(panBounds.max.x, iconPos.x) - panBounds.max.x) / (bounds.max.x - panBounds.max.x) -
-				(Math.min(panBounds.min.x, iconPos.x) - panBounds.min.x) / (bounds.min.x - panBounds.min.x),
-
-				(Math.max(panBounds.max.y, iconPos.y) - panBounds.max.y) / (bounds.max.y - panBounds.max.y) -
-				(Math.min(panBounds.min.y, iconPos.y) - panBounds.min.y) / (bounds.min.y - panBounds.min.y)
-			).multiplyBy(speed);
+		if (dx || dy) {
+			// pan faster the deeper the icon goes into the padding
+			const movement = new Point(dx / padding.x * speed, dy / padding.y * speed);
 
 			map.panBy(movement, {animate: false});
 

@@ -254,7 +254,7 @@ export class DivOverlay extends LayerBase {
 
 	/** Returns `true` when the overlay is visible on the map. */
 	isOpen() {
-		return !!this._map && this._map.hasLayer(this);
+		return !!this._map?.hasLayer(this);
 	}
 
 	/** Brings this overlay in front of other overlays (in the same map pane). */

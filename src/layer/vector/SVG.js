@@ -55,7 +55,7 @@ export class SVG extends Renderer {
 		const size = super._resizeContainer();
 
 		// set size of svg-container if changed
-		if (!this._svgSize || !this._svgSize.equals(size)) {
+		if (!this._svgSize?.equals(size)) {
 			/** @type {Point | undefined} */
 			this._svgSize = size;
 			this._container.setAttribute('width', `${size.x}`);

@@ -259,7 +259,7 @@ export class Polyline extends Path {
 
 		/** @type {Point[][]} */
 		this._parts = [];
-		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
+		if (!this._pxBounds?.intersects(bounds)) {
 			return;
 		}
 
@@ -322,7 +322,7 @@ export class Polyline extends Path {
 		let i, j, k, len, len2, part;
 		const w = this._clickTolerance();
 
-		if (!this._pxBounds || !this._pxBounds.contains(p)) { return false; }
+		if (!this._pxBounds?.contains(p)) { return false; }
 
 		// hit detection for polylines
 		for (i = 0, len = this._parts.length; i < len; i++) {

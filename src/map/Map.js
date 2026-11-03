@@ -738,7 +738,7 @@ export class LeafletMap extends Evented {
 
 			// try animating pan or zoom
 			const moved = (this._zoom !== zoom) ?
-				this._tryAnimatedZoom && this._tryAnimatedZoom(latlng, zoom, options.zoom) :
+				this._tryAnimatedZoom?.(latlng, zoom, options.zoom) :
 				this._tryAnimatedPan(latlng, options.pan);
 
 			if (moved) {
@@ -2370,7 +2370,7 @@ export class LeafletMap extends Evented {
 				dragging = true;
 				break;
 			}
-			if (target && target.listens(type, true)) {
+			if (target?.listens(type, true)) {
 				// skip hover events between the target's own descendants
 				if (isHover && src.contains(related)) { break; }
 				targets.push(target);
