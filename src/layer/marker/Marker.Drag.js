@@ -5,6 +5,7 @@ import {Draggable} from '../../dom/Draggable.js';
 import {Point} from '../../geometry/Point.js';
 
 /** @import {DragEndEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
+/** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {Marker} from './Marker.js' */
 
 /** @type {Record<string, [number, number]>} */
@@ -95,6 +96,7 @@ export class MarkerDrag extends Handler {
 	}
 
 	_onDragStart() {
+		/** @type {LatLng} */
 		this._oldLatLng = this._marker.getLatLng();
 
 		// When using ES6 imports it could not be set when `Popup` was not imported as well
@@ -117,7 +119,10 @@ export class MarkerDrag extends Handler {
 	_onDrag(e) {
 		const marker = this._marker,
 		iconPos = DomUtil.getPosition(/** @type {HTMLElement} */ (marker._icon)),
-		latlng = marker._map.layerPointToLatLng(iconPos);
+		latlng = marker._map.layerPointToLatLng(iconPos),
+		{alt} = this._oldLatLng;
+
+		if (alt !== undefined) { latlng.alt = alt; }
 
 		// Draggable only moved the icon and dropped its rotation
 		marker._positionElements(iconPos);
@@ -135,7 +140,6 @@ export class MarkerDrag extends Handler {
 	_onDragEnd(e) {
 		cancelAnimationFrame(this._panRequest);
 
-		delete this._oldLatLng;
 		this._marker
 			.fire('moveend')
 			.fire('dragend', e);

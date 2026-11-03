@@ -46,6 +46,18 @@ describe('Marker.Drag', () => {
 			expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 		});
 
+		it('keeps the altitude of the dragged marker', async () => {
+			const marker = new Marker([0, 0, 123], {draggable: true}).addTo(map);
+			const alts = [];
+			marker.on('drag', e => alts.push(e.latlng.alt));
+
+			await new Finger(pointerType).moveTo(300, 280).down().moveBy(5, 0).moveTo(356, 312).up();
+
+			expect(alts.length).to.be.above(0);
+			expect(alts.every(alt => alt === 123)).to.be.true;
+			expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75, 123]);
+		});
+
 		it('keeps the rotation while dragging', async () => {
 			const marker = new MyMarker([0, 0], {draggable: true, rotation: 30}).addTo(map);
 			const transforms = [];
