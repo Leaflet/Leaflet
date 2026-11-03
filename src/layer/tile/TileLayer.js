@@ -148,6 +148,10 @@ export class TileLayer extends GridLayer {
 			}
 
 			this.options.minZoom = Math.max(0, this.options.minZoom);
+
+			// either way, the tile at zoom z is now the server's z + 1 tile, so native zooms shift down by one
+			if (this.options.maxNativeZoom !== undefined) { this.options.maxNativeZoom--; }
+			if (this.options.minNativeZoom !== undefined) { this.options.minNativeZoom--; }
 		} else if (!this.options.zoomReverse) {
 			// make sure maxZoom is gte minZoom
 			this.options.maxZoom = Math.max(this.options.minZoom, this.options.maxZoom);

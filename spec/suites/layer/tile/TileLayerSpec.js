@@ -588,6 +588,21 @@ describe('TileLayer', () => {
 			map.addLayer(kittenLayer).setView([0, 0], 1);
 		});
 
+		it('requests no tiles beyond min/maxNativeZoom with detectRetina', () => {
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(2);
+			const url = 'http://example.com/{z}/{x}/{y}.png';
+			const zooms = layer => [0, 3, 10].map((zoom) => {
+				layer._tileZoom = layer._clampZoom(zoom);
+				return layer._getZoomForUrl();
+			});
+
+			expect(zooms(new TileLayer(url, {detectRetina: true, minNativeZoom: 3, maxNativeZoom: 5}))).to.eql([3, 4, 5]);
+			expect(zooms(new TileLayer(url, {
+				detectRetina: true, zoomReverse: true, maxZoom: 10, minNativeZoom: 3, maxNativeZoom: 5
+			}))).to.eql([7, 6, 5]);
+			dpr.restore();
+		});
+
 		it('halves a number or Point tileSize with detectRetina', () => {
 			const dpr = sinon.stub(window, 'devicePixelRatio').value(2);
 			expect(new TileLayer('', {detectRetina: true}).options.tileSize).to.equal(128);
