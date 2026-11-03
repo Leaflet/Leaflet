@@ -431,32 +431,30 @@ export class Marker extends Layer {
 
 		this.addInteractiveTarget(icon);
 
-		if (MarkerDrag) {
-			// When the icon element is reused, the drag handler still refers to it. Keep that handler, because
-			// replacing it ends a drag in progress and forgets that the marker has just been dragged.
-			if (this.dragging?._draggable?._element === icon) {
-				// the icon has reset the class names of the element
-				icon.classList.toggle('leaflet-marker-draggable', this.dragging.enabled());
-				return;
-			}
+		// When the icon element is reused, the drag handler still refers to it. Keep that handler, because
+		// replacing it ends a drag in progress and forgets that the marker has just been dragged.
+		if (this.dragging?._draggable?._element === icon) {
+			// the icon has reset the class names of the element
+			icon.classList.toggle('leaflet-marker-draggable', this.dragging.enabled());
+			return;
+		}
 
-			let draggable = this.options.draggable;
-			if (this.dragging) {
-				draggable = this.dragging.enabled();
-				this.dragging.disable();
-			}
+		let draggable = this.options.draggable;
+		if (this.dragging) {
+			draggable = this.dragging.enabled();
+			this.dragging.disable();
+		}
 
-			/**
-			 * Marker dragging handler. Only valid when the marker is on the map (Otherwise set
-			 * [`marker.options.draggable`](#marker-draggable)).
-			 * @category Interaction handlers
-			 * @type {MarkerDrag | undefined}
-			 */
-			this.dragging = new MarkerDrag(this);
+		/**
+		 * Marker dragging handler. Only valid when the marker is on the map (Otherwise set
+		 * [`marker.options.draggable`](#marker-draggable)).
+		 * @category Interaction handlers
+		 * @type {MarkerDrag | undefined}
+		 */
+		this.dragging = new MarkerDrag(this);
 
-			if (draggable) {
-				this.dragging.enable();
-			}
+		if (draggable) {
+			this.dragging.enable();
 		}
 	}
 

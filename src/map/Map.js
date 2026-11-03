@@ -2460,7 +2460,7 @@ export class LeafletMap extends Evented {
 	/** @param {DOMEventTarget} obj */
 	_draggableMoved(obj) {
 		obj = obj.dragging?.enabled() ? obj : this;
-		return obj.dragging?.moved() || this.boxZoom?.moved();
+		return obj.dragging?.moved() || this.boxZoom.moved();
 	}
 
 	/**
