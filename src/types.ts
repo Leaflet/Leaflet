@@ -47,8 +47,8 @@ import type {TapHoldHandler} from './map/handler/TapHoldHandler.js';
 import type {ErrorEventProps, FitBoundsProps, InvalidateSizeProps, LayerEventProps, LeafletKeyboardEventProps,
 	LeafletMap, LeafletPointerEventProps, LocateProps, LocationEventProps, MapDefaultsValues, MapHandlerEvents,
 	MapInteractionEvents, MapLayerEvents, MapLocationEvents, MapOtherEvents, MapPopupEvents, MapStateEvents,
-	MapTooltipEvents, PaddingProps, PanProps, ResizeEventProps, ViewPreResetEventProps, WorldCopyJumpEventProps,
-	ZoomAnimEventProps, ZoomPanProps, ZoomProps} from './map/Map.js';
+	MapTooltipEvents, PaddingProps, PanProps, ResizeEventProps, ViewChangeEventProps, ViewPreResetEventProps,
+	WorldCopyJumpEventProps, ZoomAnimEventProps, ZoomPanProps, ZoomProps} from './map/Map.js';
 
 export type {Defaults} from './core/Class.js';
 export type {LeafletEventHandlerFn, Listener, ListenerMap} from './core/Events.js';
@@ -323,6 +323,7 @@ export interface DragEndEvent extends LeafletEvent, DragEndEventProps {}
 export interface BoxZoomEvent extends LeafletEvent, BoxZoomEventProps {}
 export interface MarkerMoveEvent extends LeafletEvent, MarkerMoveEventProps {}
 export interface ZoomAnimEvent extends LeafletEvent, ZoomAnimEventProps {}
+export interface ViewChangeEvent extends LeafletEvent, ViewChangeEventProps {}
 export interface ViewPreResetEvent extends LeafletEvent, ViewPreResetEventProps {}
 export interface WorldCopyJumpEvent extends LeafletEvent, WorldCopyJumpEventProps {}
 

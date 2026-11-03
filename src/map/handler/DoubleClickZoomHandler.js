@@ -19,10 +19,11 @@ export class DoubleClickZoomHandler extends Handler {
 		delta = map.options.zoomDelta,
 		zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;
 
+		const options = {originalEvent: e.originalEvent};
 		if (map.options.doubleClickZoom === 'center') {
-			map.setZoom(zoom);
+			map.setZoom(zoom, options);
 		} else {
-			map.setZoomAround(e.containerPoint, zoom);
+			map.setZoomAround(e.containerPoint, zoom, options);
 		}
 	}
 }

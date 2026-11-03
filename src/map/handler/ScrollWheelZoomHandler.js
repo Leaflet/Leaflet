@@ -58,10 +58,11 @@ export class ScrollWheelZoomHandler extends Handler {
 
 		if (!delta || map._zoomInputBlocked()) { return; }
 
+		const options = {originalEvent: this._lastEvent};
 		if (map.options.scrollWheelZoom === 'center') {
-			map.setZoom(zoom + delta);
+			map.setZoom(zoom + delta, options);
 		} else {
-			map.setZoomAround(map.pointerEventToContainerPoint(this._lastEvent), zoom + delta);
+			map.setZoomAround(map.pointerEventToContainerPoint(this._lastEvent), zoom + delta, options);
 		}
 	}
 }

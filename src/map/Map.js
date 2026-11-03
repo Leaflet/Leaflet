@@ -27,7 +27,7 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
  *    LatLngBoundsExpression, LatLngExpression, LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent,
  *    LeafletPointerEvent, LocateOptions, LocationEvent, MapDefaults, MapEventMap, MapOptions, MapPanes,
  *    PanInsideOptions, PanOptions, PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent,
- *    TooltipOptions, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions}
+ *    TooltipOptions, ViewChangeEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions}
  *    from '../types.js' */
 /** @import {CRS} from '../geo/crs/CRS.js' */
 /** @import {Control} from '../control/Control.js' */
@@ -359,12 +359,12 @@ const defaultOptions = {
  * @property {ViewPreResetEvent} viewprereset Fired right before `viewreset`, while the map still has its old view, with the new center and zoom.
  * @property {LeafletEvent} viewreset Fired when the map needs to redraw its content (this usually happens on map zoom or load). Very useful for creating custom overlays.
  * @property {LeafletEvent} load Fired when the map is initialized (when its center and zoom are set for the first time).
- * @property {LeafletEvent} zoomstart Fired when the map zoom is about to change (e.g. before zoom animation).
- * @property {LeafletEvent} movestart Fired when the view of the map starts changing (e.g. user starts dragging the map).
- * @property {LeafletEvent} zoom Fired repeatedly during any change in zoom level, including zoom and fly animations.
- * @property {LeafletEvent} move Fired repeatedly during any movement of the map, including pan and fly animations.
- * @property {LeafletEvent} zoomend Fired when the map zoom changed, after any animations.
- * @property {LeafletEvent} moveend Fired when the center of the map stops changing (e.g. user stopped dragging the map or after non-centered zoom).
+ * @property {ViewChangeEvent} zoomstart Fired when the map zoom is about to change (e.g. before zoom animation).
+ * @property {ViewChangeEvent} movestart Fired when the view of the map starts changing (e.g. user starts dragging the map).
+ * @property {ViewChangeEvent} zoom Fired repeatedly during any change in zoom level, including zoom and fly animations.
+ * @property {ViewChangeEvent} move Fired repeatedly during any movement of the map, including pan and fly animations.
+ * @property {ViewChangeEvent} zoomend Fired when the map zoom changed, after any animations.
+ * @property {ViewChangeEvent} moveend Fired when the center of the map stops changing (e.g. user stopped dragging the map or after non-centered zoom).
  * @property {WorldCopyJumpEvent} worldcopyjump Fired when [`worldCopyJump`](#map-worldcopyjump) moves the map pane by one or more world widths.
  * @property {LeafletEvent} zoomlevelschange Fired when the number of zoomlevels on the map is changed due to adding or removing a layer.
  */
@@ -416,6 +416,8 @@ const defaultOptions = {
  *   the current view, and if the user prefers reduced motion, only when zooming by at most one level. If
  *   `true`, the map will attempt animating zoom disregarding where zoom origin is and the user's reduced
  *   motion preference. Setting `false` will make it always reset the view completely without animation.
+ * @property {Event} [originalEvent] The DOM event that triggered the change, passed on in the move and zoom events
+ *   it fires. Map handlers and controls set it, so that listeners can tell user changes from programmatic ones.
  */
 
 /**
@@ -431,6 +433,7 @@ const defaultOptions = {
  *   animation, and the smaller this number, the more bowed the curve.
  * @property {boolean} [noMoveStart=false] If `true`, panning won't fire `movestart` event on
  *   start (used internally for panning inertia).
+ * @property {Event} [originalEvent] The DOM event that triggered the change, passed on in the move events it fires.
  */
 
 /**
@@ -522,6 +525,12 @@ const defaultOptions = {
 /**
  * @typedef {Object} LayerEventProps
  * @property {Layer} layer The layer that was added or removed.
+ */
+
+/**
+ * @typedef {Object} ViewChangeEventProps
+ * @property {Event} [originalEvent] The DOM event that triggered the change: set when the user moves or zooms the
+ *   map (or when it's passed in the [`originalEvent`](#zoomoptions-originalevent) option), and unset otherwise.
  */
 
 /**
@@ -727,6 +736,7 @@ export class LeafletMap extends Evented {
 		zoom = zoom === undefined ? this._zoom : this._limitZoom(zoom);
 		const latlng = this._limitCenter(new LatLng(center), zoom, this.options.maxBounds);
 		options ??= {};
+		const originalEvent = options.originalEvent ?? options.zoom?.originalEvent ?? options.pan?.originalEvent;
 
 		this._stop();
 
@@ -739,8 +749,8 @@ export class LeafletMap extends Evented {
 
 			// try animating pan or zoom
 			const moved = (this._zoom !== zoom) ?
-				this._tryAnimatedZoom?.(latlng, zoom, options.zoom) :
-				this._tryAnimatedPan(latlng, options.pan);
+				this._tryAnimatedZoom?.(latlng, zoom, {originalEvent, ...options.zoom}) :
+				this._tryAnimatedPan(latlng, {originalEvent, ...options.pan});
 
 			if (moved) {
 				// prevent resize handler call, the view will refresh after animation anyway
@@ -750,7 +760,7 @@ export class LeafletMap extends Evented {
 		}
 
 		// animation didn't start, just reset the map view
-		this._resetView(latlng, zoom, options.pan?.noMoveStart);
+		this._resetView(latlng, zoom, options.pan?.noMoveStart, originalEvent);
 
 		return this;
 	}
@@ -910,14 +920,15 @@ export class LeafletMap extends Evented {
 		options ??= {};
 
 		if (!offset.x && !offset.y) {
-			return this.fire('moveend');
+			return this._moveStart(false, true, options.originalEvent)._moveEnd(false);
 		}
 		// If we pan too far, Chrome gets issues with tiles
 		// and makes them disappear or appear in the wrong place (slightly offset) #2602
 		const size = this.getSize();
 		if (options.animate !== true && !size.contains(offset)) {
 			const center = this.unproject(this.project(this.getCenter()).add(offset));
-			this._resetView(this.options.worldCopyJump ? this.wrapLatLng(center) : center, this.getZoom());
+			this._resetView(this.options.worldCopyJump ? this.wrapLatLng(center) : center, this.getZoom(), false,
+				options.originalEvent);
 			return this;
 		}
 
@@ -931,9 +942,7 @@ export class LeafletMap extends Evented {
 		}
 
 		// don't fire movestart if animating inertia
-		if (!options.noMoveStart) {
-			this.fire('movestart');
-		}
+		this._moveStart(false, options.noMoveStart, options.originalEvent);
 
 		// with reduced motion, only short pans are animated unless animate: true is specified
 		const tooFarForReducedMotion = this._prefersReducedMotion() && !size.divideBy(2).contains(offset);
@@ -945,7 +954,7 @@ export class LeafletMap extends Evented {
 		} else {
 			this._rawPanBy(offset);
 			this._wrapWorldCopy();
-			this.fire('move').fire('moveend');
+			this._fireMove('move')._moveEnd(false);
 		}
 
 		return this;
@@ -1026,12 +1035,12 @@ export class LeafletMap extends Evented {
 				// re-anchor on 'zoom' (#9438)
 				const zoomChanged = this._zoom !== targetZoom;
 				this._move(center, targetZoom);
-				if (!zoomChanged) { this.fire('zoom'); }
+				if (!zoomChanged) { this._fireMove('zoom'); }
 				this._moveEnd(true);
 			}
 		};
 
-		this._moveStart(true, options.noMoveStart);
+		this._moveStart(true, options.noMoveStart, options.originalEvent);
 
 		frame();
 		return this;
@@ -2114,8 +2123,9 @@ export class LeafletMap extends Evented {
 	 * @param {LatLng} center
 	 * @param {number} zoom
 	 * @param {boolean} [noMoveStart]
+	 * @param {Event} [originalEvent]
 	 */
-	_resetView(center, zoom, noMoveStart) {
+	_resetView(center, zoom, noMoveStart, originalEvent) {
 		const loading = !this._loaded;
 		this._loaded = true;
 		zoom = this._limitZoom(zoom);
@@ -2131,7 +2141,7 @@ export class LeafletMap extends Evented {
 			this._instantZoomEnd = Date.now() + zoomAnimDuration;
 		}
 		this
-			._moveStart(zoomChanged, noMoveStart)
+			._moveStart(zoomChanged, noMoveStart, originalEvent)
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
@@ -2145,15 +2155,27 @@ export class LeafletMap extends Evented {
 	/**
 	 * @param {boolean} zoomChanged
 	 * @param {boolean} [noMoveStart]
+	 * @param {Event} [originalEvent]
 	 */
-	_moveStart(zoomChanged, noMoveStart) {
+	_moveStart(zoomChanged, noMoveStart, originalEvent) {
+		/** @type {Event | undefined} */
+		this._moveEvent = originalEvent;
 		if (zoomChanged) {
-			this.fire('zoomstart');
+			this._fireMove('zoomstart');
 		}
 		if (!noMoveStart) {
-			this.fire('movestart');
+			this._fireMove('movestart');
 		}
 		return this;
+	}
+
+	/**
+	 * @param {string} type
+	 * @param {object} [data]
+	 */
+	_fireMove(type, data) {
+		const originalEvent = this._moveEvent;
+		return this.fire(type, originalEvent ? {...data, originalEvent} : data);
 	}
 
 	/**
@@ -2178,23 +2200,27 @@ export class LeafletMap extends Evented {
 
 		if (!suppressEvent) {
 			if (zoomChanged || (data?.pinch)) {	// Always fire 'zoom' if pinching because #3530
-				this.fire('zoom', data);
+				this._fireMove('zoom', data);
 			}
 
-			this.fire('move', data);
+			this._fireMove('move', data);
 		} else if (data?.pinch) {	// Always fire 'zoom' if pinching because #3530
-			this.fire('zoom', data);
+			this._fireMove('zoom', data);
 		}
 		return this;
 	}
 
 	/** @param {boolean} zoomChanged */
 	_moveEnd(zoomChanged) {
-		if (zoomChanged) {
-			this.fire('zoomend');
-		}
+		// cleared before firing, so that a move started by a listener keeps its own event
+		const originalEvent = this._moveEvent,
+		data = originalEvent && {originalEvent};
+		this._moveEvent = undefined;
 
-		return this.fire('moveend');
+		if (zoomChanged) {
+			this.fire('zoomend', data);
+		}
+		return this.fire('moveend', data);
 	}
 
 	_stop() {
@@ -2615,13 +2641,13 @@ export class LeafletMap extends Evented {
 	}
 
 	_onPanTransitionStep() {
-		this.fire('move');
+		this._fireMove('move');
 	}
 
 	_onPanTransitionEnd() {
 		this._mapPane.classList.remove('leaflet-pan-anim');
 		this._wrapWorldCopy();
-		this.fire('moveend');
+		this._moveEnd(false);
 	}
 
 	/**
@@ -2726,7 +2752,7 @@ export class LeafletMap extends Evented {
 		this._zoomAnimFrame = requestAnimationFrame(() => {
 			this._zoomAnimFrame = 0;
 			this
-				._moveStart(true, options.noMoveStart ?? false)
+				._moveStart(true, options.noMoveStart ?? false, options.originalEvent)
 				._animateZoom(center, zoom, true);
 		});
 
@@ -2781,11 +2807,11 @@ export class LeafletMap extends Evented {
 		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
 		if (this._tempFireZoomEvent) {
-			this.fire('zoom');
+			this._fireMove('zoom');
 		}
 		delete this._tempFireZoomEvent;
 
-		this.fire('move');
+		this._fireMove('move');
 
 		this._moveEnd(true);
 	}

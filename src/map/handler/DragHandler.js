@@ -75,7 +75,7 @@ export class DragHandler extends Handler {
 		}
 
 		map
-			.fire('movestart')
+			._moveStart(false, false, this._draggable._lastEvent)
 			.fire('dragstart');
 
 		if (map.options.inertia) {
@@ -151,7 +151,7 @@ export class DragHandler extends Handler {
 		map.fire('dragend', e);
 
 		if (noInertia) {
-			map.fire('moveend');
+			map._moveEnd(false);
 
 		} else {
 			this._prunePositions(Date.now());
@@ -180,17 +180,19 @@ export class DragHandler extends Handler {
 			}
 
 			if (!offset.x && !offset.y) {
-				map.fire('moveend');
+				map._moveEnd(false);
 
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
+				const originalEvent = map._moveEvent;
 
 				requestAnimationFrame(() => {
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,
 						noMoveStart: true,
-						animate: true
+						animate: true,
+						originalEvent
 					});
 				});
 			}
