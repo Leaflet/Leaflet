@@ -137,6 +137,23 @@ describe('TapHoldHandler', () => {
 		expect(clickSpy.called).to.be.true;
 	});
 
+	it('stops preventing clicks on the next key press', async () => {
+		const clickSpy = sinon.spy();
+		map.on('click', clickSpy);
+
+		await touchFinger.down();
+		clock.tick(650);
+		await touchFinger.up();
+		expect(clickSpy.notCalled).to.be.true;
+
+		UIEventSimulator.fire('click', container);
+		expect(clickSpy.notCalled).to.be.true;
+
+		UIEventSimulator.fire('keydown', container, {key: 'Enter'});
+		UIEventSimulator.fire('click', container);
+		expect(clickSpy.calledOnce).to.be.true;
+	});
+
 	it('allows short movements', async () => {
 		await touchFinger.down();
 		clock.tick(550);

@@ -68,6 +68,7 @@
 
 			map.on('click', e => log(`map click: ${describe(e)}`));
 			map.on('dblclick', e => log(`map dblclick: ${describe(e)}`, 'dbl'));
+			map.on('contextmenu', e => log(`map contextmenu: ${describe(e)}`, 'dbl'));
 			map.on('zoomend', () => log(`zoomend: ${map.getZoom()}`));
 			for (const [name, layer] of Object.entries({circle, polygon, marker})) {
 				layer.on('dblclick', e => log(`${name} dblclick: ${describe(e)}`, 'dbl'));

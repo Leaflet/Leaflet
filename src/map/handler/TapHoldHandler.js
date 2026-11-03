@@ -14,7 +14,6 @@ export class TapHoldHandler extends Handler {
 	removeHooks() {
 		DomEvent.off(this._map._container, 'pointerdown', this._onDown, this);
 		this._cancel();
-		this._cancelClickPrevent();
 		this._stopPreventingNative();
 	}
 
@@ -22,56 +21,42 @@ export class TapHoldHandler extends Handler {
 	_onDown(e) {
 		clearTimeout(this._holdTimeout);
 		if (getPointers().length !== 1 || e.pointerType === 'mouse') { return; }
-		const el = this._map._container;
-		/** @type {Point} */
-		this._startPos = this._newPos = new Point(e.clientX, e.clientY);
+		const el = this._map._container,
+		start = new Point(e.clientX, e.clientY);
 
 		this._holdTimeout = setTimeout((() => {
 			this._cancel();
-			if (!this._isTapValid()) { return; }
+			// the tracker keeps the latest event of each pointer, so this is where the finger is now
+			const pointers = getPointers(),
+			p = pointers[0];
+			if (pointers.length !== 1 || start.distanceTo([p.clientX, p.clientY]) > this._map.options.tapTolerance) { return; }
 
-			// prevent simulated mouse events https://w3c.github.io/touch-events/#mouse-events
-			DomEvent.on(el, 'pointerup', DomEvent.preventDefault);
-			DomEvent.on(el, 'pointerup pointercancel', this._cancelClickPrevent, this);
 			this._simulateEvent('contextmenu', e);
 
-			// browsers that fire a native contextmenu on touch may do it later than us (e.g. Android with a longer
-			// touch & hold delay, or Windows on release), so swallow it until the next press
+			// releasing the finger still fires a click (iOS skips it only after a longer hold), and browsers that fire a
+			// native contextmenu on touch may do it later than us (e.g. Android with a longer touch & hold delay, or
+			// Windows on release), so swallow both until the next press or key (which could click a focused control)
 			el.addEventListener('contextmenu', DomEvent.stop, true);
+			el.addEventListener('click', DomEvent.stop, true);
 			el.addEventListener('pointerdown', this._stopPreventingNative, true);
+			el.addEventListener('keydown', this._stopPreventingNative, true);
 		}), tapHoldDelay);
 
 		DomEvent.on(el, 'pointerup pointercancel contextmenu', this._cancel, this);
-		DomEvent.on(el, 'pointermove', this._onMove, this);
 	}
-
-	_cancelClickPrevent() {
-		const el = this._map._container;
-		DomEvent.off(el, 'pointerup', DomEvent.preventDefault);
-		DomEvent.off(el, 'pointerup pointercancel', this._cancelClickPrevent, this);
-	};
 
 	_stopPreventingNative = () => {
 		const el = this._map._container;
 		el.removeEventListener('contextmenu', DomEvent.stop, true);
+		el.removeEventListener('click', DomEvent.stop, true);
 		el.removeEventListener('pointerdown', this._stopPreventingNative, true);
+		el.removeEventListener('keydown', this._stopPreventingNative, true);
 	};
 
 	_cancel() {
 		clearTimeout(this._holdTimeout);
 		const el = this._map._container;
 		DomEvent.off(el, 'pointerup pointercancel contextmenu', this._cancel, this);
-		DomEvent.off(el, 'pointermove', this._onMove, this);
-	}
-
-	/** @param {PointerEvent} e */
-	_onMove(e) {
-		/** @type {Point} */
-		this._newPos = new Point(e.clientX, e.clientY);
-	}
-
-	_isTapValid() {
-		return this._newPos.distanceTo(this._startPos) <= this._map.options.tapTolerance;
 	}
 
 	/**

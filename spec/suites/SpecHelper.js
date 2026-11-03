@@ -114,13 +114,14 @@ export class Finger {
 		}
 
 		const props = {bubbles: true, cancelable: true, clientX: x, clientY: y, screenX: x, screenY: y, ...init};
-		const notCancelled = target.dispatchEvent(new PointerEvent(`pointer${type}`, {
+		target.dispatchEvent(new PointerEvent(`pointer${type}`, {
 			...props, pointerId: this.id, pointerType,
 			button: type === 'move' ? -1 : 0, buttons: this.downAt ? 1 : 0
 		}));
 
-		// browsers click after a tap but not after a drag, and never after synthetic pointer events, so do it here
-		if (type === 'up' && notCancelled && Math.hypot(x - downAt.x, y - downAt.y) <= 5) {
+		// browsers click after a tap but not after a drag (even if pointerup is cancelled), and never after synthetic
+		// pointer events, so do it here
+		if (type === 'up' && Math.hypot(x - downAt.x, y - downAt.y) <= 5) {
 			target.dispatchEvent(new MouseEvent('click', {...props, detail: 1}));
 		}
 	}
