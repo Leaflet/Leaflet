@@ -218,7 +218,7 @@ export class Popup extends DivOverlay {
 			closeButton.setAttribute('aria-label', this.options.closeButtonLabel);
 
 			closeButton.href = '#close';
-			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
+			closeButton.textContent = '\u00D7';
 
 			DomEvent.on(closeButton, 'click', (ev) => {
 				ev.preventDefault();

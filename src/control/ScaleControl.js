@@ -138,7 +138,7 @@ export class ScaleControl extends Control {
 	 */
 	_updateScale(scale, text, ratio) {
 		scale.style.width = `${Math.round(this.options.maxWidth * ratio)}px`;
-		scale.innerHTML = text;
+		scale.textContent = text;
 	}
 
 	/** @param {number} num */
