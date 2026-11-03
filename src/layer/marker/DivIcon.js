@@ -50,8 +50,7 @@ export class DivIcon extends Icon {
 		options = this.options;
 
 		if (options.html instanceof Element) {
-			div.replaceChildren();
-			div.appendChild(options.html);
+			div.replaceChildren(options.html);
 		} else {
 			div.innerHTML = options.html !== false ? options.html : '';
 		}

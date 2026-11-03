@@ -72,6 +72,18 @@ describe('DomUtil', () => {
 			const e = DomUtil.create('div');
 			DomUtil.toFront(e);
 		});
+
+		it('moves the siblings instead of a hovered element', () => {
+			const [a, elm, b, c] = ['a', 'elm', 'b', 'c'].map(name => DomUtil.create('div', name, el));
+			elm.matches = selector => selector === ':hover';
+			const observer = new MutationObserver(() => {});
+			observer.observe(el, {childList: true});
+			DomUtil.toFront(elm);
+			const removed = observer.takeRecords().flatMap(r => [...r.removedNodes]);
+			observer.disconnect();
+			expect([...el.children]).to.eql([a, b, c, elm]);
+			expect(removed).not.to.include(elm);
+		});
 	});
 
 	describe('#toBack', () => {
@@ -97,6 +109,18 @@ describe('DomUtil', () => {
 		it('doesn\'t crash if an element doesn\'t have a parent', () => {
 			const e = DomUtil.create('div');
 			DomUtil.toBack(e);
+		});
+
+		it('moves the siblings instead of a hovered element', () => {
+			const [a, elm, b, c] = ['a', 'elm', 'b', 'c'].map(name => DomUtil.create('div', name, el));
+			elm.matches = selector => selector === ':hover';
+			const observer = new MutationObserver(() => {});
+			observer.observe(el, {childList: true});
+			DomUtil.toBack(elm);
+			const removed = observer.takeRecords().flatMap(r => [...r.removedNodes]);
+			observer.disconnect();
+			expect([...el.children]).to.eql([elm, a, b, c]);
+			expect(removed).not.to.include(elm);
 		});
 	});
 

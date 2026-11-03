@@ -61,7 +61,7 @@ export class BlanketOverlay extends Layer {
 			/** @type {HTMLElement} */ (this._container).classList.add('leaflet-zoom-animated');
 		}
 
-		this.getPane().appendChild(this._container);
+		this.getPane().append(this._container);
 		this._resizeContainer();
 		this._onMoveEnd();
 	}

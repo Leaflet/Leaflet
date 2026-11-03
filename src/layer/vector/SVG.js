@@ -42,7 +42,7 @@ export class SVG extends Renderer {
 
 		/** @type {SVGElement} */
 		this._rootGroup = SVG.create('g');
-		this._container.appendChild(this._rootGroup);
+		this._container.append(this._rootGroup);
 	}
 
 	_destroyContainer() {
@@ -104,7 +104,7 @@ export class SVG extends Renderer {
 	/** @param {Path} layer */
 	_addPath(layer) {
 		if (!this._rootGroup) { this._initContainer(); }
-		this._rootGroup.appendChild(layer._path);
+		this._rootGroup.append(layer._path);
 		layer.addInteractiveTarget(layer._path);
 	}
 

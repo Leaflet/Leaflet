@@ -150,7 +150,7 @@ export class DivOverlay extends LayerBase {
 		}
 
 		clearTimeout(this._removeTimeout);
-		this.getPane().appendChild(this._container);
+		this.getPane().append(this._container);
 		this.update();
 
 		if (map._fadeAnimated) {
@@ -316,10 +316,7 @@ export class DivOverlay extends LayerBase {
 		if (typeof content === 'string') {
 			node.innerHTML = content;
 		} else {
-			while (node.hasChildNodes()) {
-				node.removeChild(/** @type {ChildNode} */ (node.firstChild));
-			}
-			node.appendChild(content);
+			node.replaceChildren(content);
 		}
 
 		this.fire('contentupdate');

@@ -112,7 +112,7 @@ export class ImageOverlay extends Layer {
 			this.addInteractiveTarget(this._image);
 		}
 
-		this.getPane().appendChild(this._image);
+		this.getPane().append(this._image);
 		this._reset();
 	}
 

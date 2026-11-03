@@ -92,9 +92,9 @@ export class Control extends Class {
 		container.classList.add('leaflet-control');
 
 		if (pos.includes('bottom')) {
-			corner.insertBefore(container, corner.firstChild);
+			corner.prepend(container);
 		} else {
-			corner.appendChild(container);
+			corner.append(container);
 		}
 
 		this._map.on('unload', this.remove, this);

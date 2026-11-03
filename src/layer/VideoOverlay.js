@@ -96,7 +96,7 @@ export class VideoOverlay extends ImageOverlay {
 		for (const url of urls) {
 			const source = DomUtil.create('source');
 			source.src = url;
-			vid.appendChild(source);
+			vid.append(source);
 		}
 	}
 }

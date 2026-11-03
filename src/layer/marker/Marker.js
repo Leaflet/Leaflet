@@ -348,11 +348,11 @@ export class Marker extends Layer {
 
 
 		if (addIcon) {
-			this.getPane().appendChild(icon);
+			this.getPane().append(icon);
 		}
 		this._initInteraction();
 		if (newShadow && addShadow) {
-			this.getPane(options.shadowPane).appendChild(newShadow);
+			this.getPane(options.shadowPane).append(newShadow);
 		}
 	}
 

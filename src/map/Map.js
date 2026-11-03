@@ -2641,7 +2641,7 @@ export class LeafletMap extends Evented {
 	_createAnimProxy() {
 		/** @type {HTMLElement} */
 		this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
-		this._panes.mapPane.appendChild(this._proxy);
+		this._panes.mapPane.append(this._proxy);
 
 		this.on('zoomanim', this._animateProxyZoom, this);
 		this.on('load moveend', this._animMoveEnd, this);
