@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Double tap</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../src/leaflet.css" />
+		<style>
+			html, body { margin: 0; height: 100%; font: 13px/1.3 -apple-system, sans-serif; }
+			#map { position: absolute; top: 0; left: 0; right: 0; bottom: 35%; }
+			#log { position: absolute; left: 0; right: 0; bottom: 0; height: 35%; overflow: auto; margin: 0; padding: 4px 8px;
+				background: #111; color: #eee; font: 12px/1.35 ui-monospace, monospace; }
+			#log .dbl { color: #7f7; }
+			.ctl-btn { display: block; padding: 8px 12px; background: white; font-size: 14px; }
+		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../src/Leaflet.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<pre id="log"></pre>
+		<script type="module">
+			import {LeafletMap, TileLayer, Marker, CircleMarker, Polygon, Canvas, SVG, Control, LayersControl, DomEvent, DomUtil}
+				from 'leaflet';
+
+			const useCanvas = location.search.includes('canvas');
+			const logEl = document.getElementById('log');
+			function log(msg, cls) {
+				const line = document.createElement('div');
+				line.textContent = `${(performance.now() / 1000).toFixed(2)} ${msg}`;
+				if (cls) { line.className = cls; }
+				logEl.prepend(line);
+			}
+			function describe(e) {
+				const ev = e.originalEvent ?? e;
+				return `${ev.constructor.name} trusted=${ev.isTrusted} detail=${ev.detail}` +
+					(ev.pointerType !== undefined ? ` pointerType=${ev.pointerType}` : '');
+			}
+
+			const map = new LeafletMap('map', {renderer: useCanvas ? new Canvas() : new SVG()}).setView([50.45, 30.52], 13);
+			log(`renderer: ${useCanvas ? 'Canvas' : 'SVG'} (add ?canvas to the URL for Canvas)`);
+
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
+			}).addTo(map);
+
+			const circle = new CircleMarker([50.45, 30.5], {radius: 30}).addTo(map);
+			const polygon = new Polygon([[50.46, 30.53], [50.47, 30.56], [50.44, 30.57]], {color: 'red'}).addTo(map);
+			const marker = new Marker([50.44, 30.52]).addTo(map);
+
+			new LayersControl({OSM: osm}, {Circle: circle, Polygon: polygon, Marker: marker}, {collapsed: false}).addTo(map);
+
+			class ButtonControl extends Control {
+				onAdd() {
+					const btn = DomUtil.create('a', 'ctl-btn leaflet-bar');
+					btn.textContent = 'double-tap me';
+					DomEvent.disableClickPropagation(btn);
+					DomEvent.on(btn, 'dblclick', e => log(`control dblclick: ${describe(e)}`, 'dbl'));
+					return btn;
+				}
+			}
+			new ButtonControl({position: 'bottomleft'}).addTo(map);
+
+			map.on('click', e => log(`map click: ${describe(e)}`));
+			map.on('dblclick', e => log(`map dblclick: ${describe(e)}`, 'dbl'));
+			map.on('zoomend', () => log(`zoomend: ${map.getZoom()}`));
+			for (const [name, layer] of Object.entries({circle, polygon, marker})) {
+				layer.on('dblclick', e => log(`${name} dblclick: ${describe(e)}`, 'dbl'));
+			}
+		</script>
+	</body>
