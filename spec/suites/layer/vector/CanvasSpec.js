@@ -94,6 +94,38 @@ describe('Canvas', () => {
 			expect(spy.callCount).to.eql(1);
 		});
 
+		it('fires on the topmost layer under the pointer, following draw order changes', () => {
+			const top = new Polygon(latLngs).addTo(map),
+			bottomSpy = sinon.spy(),
+			topSpy = sinon.spy();
+			layer.on('click pointerover', bottomSpy);
+			top.on('click pointerover', topSpy);
+
+			UIEventSimulator.fireAt('pointermove', 50, 50);
+			UIEventSimulator.fireAt('click', 50, 50);
+			expect(topSpy.callCount).to.eql(2);
+			expect(bottomSpy.callCount).to.eql(0);
+
+			top.bringToBack();
+			UIEventSimulator.fireAt('click', 50, 50);
+			expect(bottomSpy.callCount).to.eql(1);
+			expect(topSpy.callCount).to.eql(2);
+		});
+
+		it('handles every pointermove without throttling', () => {
+			const moveSpy = sinon.spy(), overSpy = sinon.spy(), outSpy = sinon.spy();
+			layer.on({pointermove: moveSpy, pointerover: overSpy, pointerout: outSpy});
+
+			UIEventSimulator.fireAt('pointermove', 150, 150);
+			UIEventSimulator.fireAt('pointermove', 50, 50);
+			UIEventSimulator.fireAt('pointermove', 60, 60);
+			expect(overSpy.callCount).to.eql(1);
+			expect(moveSpy.callCount).to.eql(2);
+
+			UIEventSimulator.fireAt('pointermove', 150, 150);
+			expect(outSpy.callCount).to.eql(1);
+		});
+
 		it('should be transparent for DOM events going to non-canvas features', () => {
 			const marker = new Marker(map.layerPointToLatLng([150, 150]))
 				.addTo(map);
