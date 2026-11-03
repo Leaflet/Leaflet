@@ -302,12 +302,6 @@ export class Layer extends LayerBase {
 			if (this._tooltip._prepareOpen(latlng)) {
 				// open the tooltip on the map
 				this._tooltip.openOn(this._map);
-
-				if (this.getElement) {
-					this._setAriaDescribedByOnLayer(this);
-				} else if (this.eachLayer) {
-					this.eachLayer(layer => this._setAriaDescribedByOnLayer(/** @type {Layer} */ (layer)));
-				}
 			}
 		}
 		return this;
@@ -395,13 +389,6 @@ export class Layer extends LayerBase {
 		DomEvent.on(el, 'focus', handler, this);
 		DomEvent.on(el, 'blur', this.closeTooltip, this);
 	}
-
-	/** @param {Layer} layer */
-	_setAriaDescribedByOnLayer(layer) {
-		const el = layer.getElement?.();
-		el?.setAttribute?.('aria-describedby', /** @type {Tooltip} */ (this._tooltip)._container.id);
-	}
-
 
 	/** @param {LeafletEvent & {latlng?: LatLng}} e */
 	_openTooltip(e) {

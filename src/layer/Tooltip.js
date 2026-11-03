@@ -108,6 +108,7 @@ export class Tooltip extends DivOverlay {
 
 		if (this._source) {
 			this.addEventParent(this._source);
+			this._source.getElement?.()?.setAttribute('aria-describedby', this._container.id);
 
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}

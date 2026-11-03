@@ -121,7 +121,14 @@ describe('Tooltip', () => {
 
 		const tooltip = group.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
+		expect(marker1.getElement().hasAttribute('aria-describedby')).to.be.false;
+	});
 
+	it('is mentioned in aria-describedby of a layer it was toggled on', () => {
+		const layer = new Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip').toggleTooltip();
+
+		expect(layer.getElement().getAttribute('aria-describedby')).to.equal(layer.getTooltip()._container.id);
 	});
 
 	it('stays open on marker when permanent', () => {

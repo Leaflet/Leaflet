@@ -32,7 +32,7 @@ If you want to **get involved** with Leaflet development, check out the [contrib
 Let's make the best mapping library that will ever exist,
 and push the limits of what's possible with online maps!
 
-[![CI](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml/badge.svg)](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml)
+[![CI](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml/badge.svg)](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml) [![minzipped size](https://img.shields.io/bundlejs/size/leaflet?label=min%2Bgzip)](https://esm.run/leaflet) [![Simply Awesome](https://img.shields.io/badge/simply-awesome-2ebc4f.svg)](https://github.com/mourner/projects)
 
  [features]: https://leafletjs.com/#features
  [plugins]: https://leafletjs.com/plugins.html
