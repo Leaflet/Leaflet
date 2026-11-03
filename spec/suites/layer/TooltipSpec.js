@@ -273,6 +273,18 @@ describe('Tooltip', () => {
 		expect(spy.calledOnce).to.be.true;
 	});
 
+	it('replaces the direction class when the direction changes', () => {
+		const layer = new Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip', {permanent: true, direction: 'center'});
+		const tooltip = layer._tooltip;
+		expect(tooltip._container.classList.contains('leaflet-tooltip-center')).to.be.true;
+
+		tooltip.options.direction = 'top';
+		tooltip.update();
+		expect(tooltip._container.classList.contains('leaflet-tooltip-center')).to.be.false;
+		expect(tooltip._container.classList.contains('leaflet-tooltip-top')).to.be.true;
+	});
+
 	it('honours opacity option', () => {
 		const layer = new Marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true, opacity: 0.57});

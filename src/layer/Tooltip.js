@@ -37,6 +37,12 @@ const defaultOptions = {
 /** @typedef {typeof defaultOptions} TooltipDefaultsValues */
 
 /**
+ * Which point of the tooltip (as a fraction of its width and height) sits at the anchor, for each direction.
+ * @type {Record<string, [number, number]>}
+ */
+const directions = {top: [0.5, 1], bottom: [0.5, 0], center: [0.5, 0.5], right: [0, 0.5], left: [1, 0.5]};
+
+/**
  * @typedef {Object} TooltipEventProps
  * @property {Tooltip} tooltip The tooltip that was opened or closed.
  */
@@ -146,50 +152,21 @@ export class Tooltip extends DivOverlay {
 
 	/** @param {Point} pos */
 	_setPosition(pos) {
-		let subX, subY, direction = this.options.direction;
-		const map = this._map,
-		container = this._container,
-		centerPoint = map.latLngToContainerPoint(map.getCenter()),
-		tooltipPoint = map.layerPointToContainerPoint(pos),
-		tooltipWidth = container.offsetWidth,
-		tooltipHeight = container.offsetHeight,
-		offset = new Point(this.options.offset),
-		anchor = this._getAnchor();
+		const container = this._container,
+		shift = this._getAnchor().add(this.options.offset);
+		let direction = this.options.direction;
 
-		if (direction === 'top') {
-			subX = tooltipWidth / 2;
-			subY = tooltipHeight;
-		} else if (direction === 'bottom') {
-			subX = tooltipWidth / 2;
-			subY = 0;
-		} else if (direction === 'center') {
-			subX = tooltipWidth / 2;
-			subY = tooltipHeight / 2;
-		} else if (direction === 'right') {
-			subX = 0;
-			subY = tooltipHeight / 2;
-		} else if (direction === 'left') {
-			subX = tooltipWidth;
-			subY = tooltipHeight / 2;
-		} else if (tooltipPoint.x < centerPoint.x) {
-			direction = 'right';
-			subX = 0;
-			subY = tooltipHeight / 2;
-		} else {
-			direction = 'left';
-			subX = tooltipWidth + (offset.x + anchor.x) * 2;
-			subY = tooltipHeight / 2;
+		if (!(direction in directions)) { // auto: open away from the map center, mirroring the offset and anchor
+			direction = pos.x <= this._map._getCenterLayerPoint().x ? 'right' : 'left';
+			if (direction === 'left') { shift.x = -shift.x; }
 		}
+		const [fx, fy] = directions[direction];
 
-		pos = pos.subtract(new Point(subX, subY, true)).add(offset).add(anchor);
+		pos._add(shift)._subtract(new Point(container.offsetWidth * fx, container.offsetHeight * fy, true));
 
-		container.classList.remove(
-			'leaflet-tooltip-right',
-			'leaflet-tooltip-left',
-			'leaflet-tooltip-top',
-			'leaflet-tooltip-bottom'
-		);
-		container.classList.add(`leaflet-tooltip-${direction}`);
+		for (const d in directions) {
+			container.classList.toggle(`leaflet-tooltip-${d}`, d === direction);
+		}
 		DomUtil.setPosition(container, pos);
 	}
 
