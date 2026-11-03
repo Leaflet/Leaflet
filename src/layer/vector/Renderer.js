@@ -1,7 +1,8 @@
 import {BlanketOverlay} from '../BlanketOverlay.js';
 import * as Util from '../../core/Util.js';
 
-/** @import {LeafletEvent, RendererEventMap, RendererOptions} from '../../types.js' */
+/** @import {LatLngExpression, LeafletEvent, RendererEventMap, RendererOptions} from '../../types.js' */
+/** @import {Point} from '../../geometry/Point.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 
 /**
@@ -41,6 +42,7 @@ export class Renderer extends BlanketOverlay {
 
 	/** @param {LeafletMap} map */
 	onAdd(map) {
+		this._setPathView();
 		super.onAdd(map);
 		this.on('update', this._updatePaths, this);
 	}
@@ -52,12 +54,24 @@ export class Renderer extends BlanketOverlay {
 	}
 
 	_onZoomEnd() {
-		// When a zoom ends, the "origin pixel" changes. Internal coordinates
-		// of paths are relative to the origin pixel and therefore need to
-		// be recalculated.
+		this._setPathView();
 		for (const layer of Object.values(this._layers)) {
 			layer._project();
 		}
+	}
+
+	// Paths are projected with the zoom and pixel origin the renderer was last drawn at, which lag behind the map's
+	// during zoom animation and pinch, so that paths changed or added meanwhile line up with the rest.
+	_setPathView() {
+		/** @type {number} */
+		this._pathZoom = this._map.getZoom();
+		/** @type {Point} */
+		this._pathOrigin = this._map.getPixelOrigin();
+	}
+
+	/** @param {LatLngExpression} latlng */
+	_latLngToLayerPoint(latlng) {
+		return this._map.project(latlng, this._pathZoom)._subtract(this._pathOrigin);
 	}
 
 	_updatePaths() {
@@ -67,6 +81,7 @@ export class Renderer extends BlanketOverlay {
 	}
 
 	_onViewReset() {
+		this._setPathView();
 		for (const layer of Object.values(this._layers)) {
 			layer._reset();
 		}

@@ -54,15 +54,17 @@ export class Circle extends CircleMarker {
 		const lng = this._latlng.lng,
 		lat = this._latlng.lat,
 		map = this._map,
-		crs = map.options.crs;
+		crs = map.options.crs,
+		renderer = this._renderer,
+		zoom = renderer._pathZoom;
 
 		if (crs.distance === EarthCRS.distance) {
 			const d = Math.PI / 180,
 			latR = (this._radius / EarthCRS.R) / d,
-			top = map.project([lat + latR, lng]),
-			bottom = map.project([lat - latR, lng]),
+			top = map.project([lat + latR, lng], zoom),
+			bottom = map.project([lat - latR, lng], zoom),
 			p = top.add(bottom).divideBy(2),
-			lat2 = map.unproject(p).lat;
+			lat2 = map.unproject(p, zoom).lat;
 			// Longitude span from the haversine form of the spherical law of cosines. The plain acos() form
 			// loses precision for radii of about a metre and less, where cos(latR) is too close to 1 (#6120).
 			let lngR = 2 * Math.asin(Math.sqrt(
@@ -73,15 +75,15 @@ export class Circle extends CircleMarker {
 				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
 			}
 
-			this._point = p.subtract(map.getPixelOrigin());
-			this._pxRadius = isNaN(lngR) ? 0 : p.x - map.project([lat2, lng - lngR]).x;
+			this._point = p.subtract(renderer._pathOrigin);
+			this._pxRadius = isNaN(lngR) ? 0 : p.x - map.project([lat2, lng - lngR], zoom).x;
 			this._pxRadiusY = p.y - top.y;
 
 		} else {
 			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._radius, 0]));
 
-			this._point = map.latLngToLayerPoint(this._latlng);
-			this._pxRadius = Math.abs(this._point.x - map.latLngToLayerPoint(latlng2).x);
+			this._point = renderer._latLngToLayerPoint(this._latlng);
+			this._pxRadius = Math.abs(this._point.x - renderer._latLngToLayerPoint(latlng2).x);
 		}
 
 		this._updateBounds();

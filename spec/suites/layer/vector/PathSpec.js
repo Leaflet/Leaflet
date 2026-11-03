@@ -1,4 +1,4 @@
-import {LayerGroup, LeafletMap, Polygon, Polyline} from 'leaflet';
+import {Canvas, Circle, CircleMarker, LayerGroup, LeafletMap, Polygon, Polyline, SVG} from 'leaflet';
 import sinon from 'sinon';
 import {userEvent} from 'vitest/browser';
 import UIEventSimulator from 'ui-event-simulator';
@@ -126,6 +126,48 @@ describe('Path', () => {
 			path.addTo(map);
 			path.options.stroke = false;
 			expect(path._clickTolerance()).to.equal(0);
+		});
+	});
+
+	[Canvas, SVG].forEach((Renderer) => {
+		describe(`changed mid-zoom (${Renderer.name})`, () => {
+			const a = [1, 1], b = [-1, -1];
+			let renderer, still, moving;
+
+			beforeEach(() => {
+				map.setView([0, 0], 5);
+				renderer = new Renderer();
+				still = [new CircleMarker(a, {renderer}), new Polyline([a, b], {renderer}), new Circle(a, {radius: 1000, renderer})];
+				moving = [new CircleMarker(b, {renderer}), new Polyline([b, a], {renderer}), new Circle(b, {radius: 1000, renderer})];
+				for (const layer of [...still, ...moving]) { layer.addTo(map); }
+			});
+
+			// changed and new paths should be drawn where the untouched ones are, since they share the renderer
+			function moveAndCheck() {
+				moving[0].setLatLng(a);
+				moving[1].setLatLngs([a, b]);
+				moving[2].setLatLng(a);
+				const added = new CircleMarker(a, {renderer}).addTo(map);
+
+				expect([moving[0]._point, moving[1]._rings, moving[2]._point, added._point])
+					.to.eql([still[0]._point, still[1]._rings, still[2]._point, still[0]._point]);
+			}
+
+			it('stay aligned with other paths during zoom animation', () => {
+				map._moveStart(true);
+				map._animateZoom(map.getCenter(), 6, true);
+				moveAndCheck();
+
+				map._onZoomTransitionEnd();
+				expect(moving[0]._point).to.eql(map.latLngToLayerPoint(a).round());
+				expect(moving[1]._rings).to.eql(still[1]._rings);
+			});
+
+			it('stay aligned with other paths during pinch zoom', () => {
+				map._moveStart(true);
+				map._move(map.getCenter(), 5.5, {pinch: true});
+				moveAndCheck();
+			});
 		});
 	});
 });
