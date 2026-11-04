@@ -534,7 +534,12 @@ describe('DragHandler', () => {
 				const panBy = sinon.spy(map, 'panBy');
 				const moveend = new Promise((resolve) => { map.once('moveend', resolve); });
 
-				await new Finger().moveTo(200, 200).down().moveBy(20, 0).moveBy(60, 0).moveBy(80, 0).up();
+				// release right after the last move: headless WebKit runs rAF at ~30fps, so a frame gap in between
+				// would push all but the last drag position out of the 50ms inertia window
+				const finger = new Finger();
+				await finger.moveTo(200, 200).down().moveBy(20, 0).moveBy(60, 0);
+				finger.dispatch('move', 360, 200);
+				finger.dispatch('up', 360, 200);
 				await moveend;
 
 				expect(panBy.called).to.equal(inertia);
