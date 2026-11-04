@@ -205,7 +205,7 @@ describe('DragHandler', () => {
 
 			// A real user scenario would trigger a click on pointerup.
 			// We want to be sure we are cancelling it after a drag.
-			UIEventSimulator.fire('click', container);
+			UIEventSimulator.fire('click', container, {detail: 1});
 			expect(dragSpy.called).to.be.true;
 			expect(clickSpy.called).to.be.false;
 			expect(preclickSpy.called).to.be.false;
@@ -238,7 +238,7 @@ describe('DragHandler', () => {
 
 			// A real user scenario would trigger a click on pointerup.
 			// We want to be sure we are cancelling it after a drag.
-			UIEventSimulator.fire('click', container);
+			UIEventSimulator.fire('click', container, {detail: 1});
 			expect(mapDragSpy.called).to.be.true;
 			expect(markerDragSpy.called).to.be.false;
 			expect(clickSpy.called).to.be.false;
@@ -272,7 +272,7 @@ describe('DragHandler', () => {
 
 			// A real user scenario would trigger a click on pointerup.
 			// We want to be sure we are cancelling it after a drag.
-			UIEventSimulator.fire('click', marker._icon);
+			UIEventSimulator.fire('click', marker._icon, {detail: 1});
 			expect(markerDragSpy.called).to.be.true;
 			expect(mapDragSpy.called).to.be.false;
 			expect(clickSpy.called).to.be.false;

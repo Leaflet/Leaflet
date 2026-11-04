@@ -2361,12 +2361,15 @@ export class LeafletMap extends Evented {
 		let target,
 		src = /** @type {Node | null} */ (e.target),
 		dragging = false;
+		const {detail, relatedTarget} = /** @type {MouseEvent} */ (e);
 		const isHover = type === 'pointerout' || type === 'pointerover';
-		const related = /** @type {Node | null} */ (/** @type {MouseEvent} */ (e).relatedTarget);
+		// clicks with `detail` 0 come from `element.click()` or the keyboard, so they can't end a drag
+		const canEndDrag = (type === 'click' || type === 'preclick') && detail > 0;
+		const related = /** @type {Node | null} */ (relatedTarget);
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
-			if (target && (type === 'click' || type === 'preclick') && this._draggableMoved(target)) {
+			if (target && canEndDrag && this._draggableMoved(target)) {
 				// Prevent firing click after you just dragged an object.
 				dragging = true;
 				break;
