@@ -88,7 +88,7 @@ export class KeyboardHandler extends Handler {
 		popup = map._popup,
 		target = /** @type {Node} */ (e.target);
 
-		if (e.key !== 'Escape' || e.defaultPrevented || !popup?.options.closeOnEscapeKey ||
+		if (e.key !== 'Escape' || e.defaultPrevented || !popup?.isOpen() || !popup.options.closeOnEscapeKey ||
 			map._controlContainer.contains(target)) { return; }
 
 		const inPopup = popup._container.contains(target),

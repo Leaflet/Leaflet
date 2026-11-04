@@ -227,6 +227,17 @@ describe('KeyboardHandler', () => {
 
 			expect(popup.isOpen()).to.be.true;
 		});
+
+		it('leaves escape alone once the popup is closed', () => {
+			const popup = new Popup().setLatLng([0, 0]).setContent('Null Island');
+			map.openPopup(popup);
+			map.closePopup();
+
+			const e = new KeyboardEvent('keydown', {...KEY_ESC, bubbles: true, cancelable: true});
+			container.dispatchEvent(e);
+
+			expect(e.defaultPrevented).to.be.false;
+		});
 	});
 
 	describe('popup closing disabled', () => {
