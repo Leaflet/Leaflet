@@ -41,6 +41,7 @@ This file just defines the order of the classes in the docs.
 @class AttributionControl
 @class LayersControl
 @class ScaleControl
+@class FullscreenControl
 
 @class Util
 @class Transformation

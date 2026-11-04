@@ -28,7 +28,8 @@
 			{"name": "ZoomControl", "label": "Zoom"},
 			{"name": "AttributionControl", "label": "Attribution"},
 			{"name": "LayersControl", "label": "Layers"},
-			{"name": "ScaleControl", "label": "Scale"}
+			{"name": "ScaleControl", "label": "Scale"},
+			{"name": "FullscreenControl", "label": "Fullscreen"}
 		]},
 		{"label": "Utility", "entries": ["Util", "Transformation", "LineUtil", "PolyUtil"]},
 		{"label": "DOM Utility", "entries": ["DomEvent", "DomUtil", "Draggable"]},
