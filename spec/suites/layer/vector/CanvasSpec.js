@@ -153,6 +153,50 @@ describe('Canvas', () => {
 			expect(spyCircle.callCount).to.eql(1);
 		});
 
+		it('does not block interactive layers underneath (#4135)', () => {
+			map.createPane('top').style.zIndex = 450;
+			new Polygon(latLngs, {renderer: new Canvas({pane: 'top'})}).addTo(map);
+			const svgLayer = new Polygon(latLngs, {renderer: new SVG()}).addTo(map);
+			const spy = sinon.spy();
+			svgLayer.on('click', spy);
+			UIEventSimulator.fireAt('click', 50, 50);
+			expect(spy.calledOnce).to.be.true;
+		});
+
+		it('hit-tests multiple canvas renderers, topmost first', () => {
+			map.createPane('top').style.zIndex = 450;
+			const top = new Polygon([p2ll(0, 0), p2ll(0, 40), p2ll(40, 40), p2ll(40, 0)],
+				{renderer: new Canvas({pane: 'top'})}).addTo(map);
+			const topSpy = sinon.spy();
+			const bottomSpy = sinon.spy();
+			top.on('click', topSpy);
+			layer.on('click', bottomSpy);
+
+			UIEventSimulator.fireAt('click', 20, 20);
+			expect(topSpy.calledOnce).to.be.true;
+			expect(bottomSpy.called).to.be.false;
+
+			UIEventSimulator.fireAt('click', 70, 70);
+			expect(topSpy.calledOnce).to.be.true;
+			expect(bottomSpy.calledOnce).to.be.true;
+		});
+
+		it('changes the cursor and fires pointerout when moving onto a marker', () => {
+			const marker = new Marker(p2ll(150, 150)).addTo(map);
+			const outSpy = sinon.spy();
+			const markerSpy = sinon.spy();
+			layer.on('pointerout', outSpy);
+			marker.on('pointerover pointerout', markerSpy);
+
+			UIEventSimulator.fireAt('pointermove', 50, 50);
+			expect(map.getContainer().classList.contains('leaflet-interactive')).to.be.true;
+
+			UIEventSimulator.fireAt('pointermove', 150, 148);
+			expect(outSpy.calledOnce).to.be.true;
+			expect(markerSpy.called).to.be.false;
+			expect(map.getContainer().classList.contains('leaflet-interactive')).to.be.false;
+		});
+
 		it('should not block pointermove event going to non-canvas features', () => {
 			const spyMap = sinon.spy();
 			map.on('pointermove', spyMap);
