@@ -18,7 +18,7 @@ let failed = false;
 const alwaysAbsent = [
 	'layer/GeoJSON.js', 'layer/LayerGroup.js', 'layer/FeatureGroup.js', 'layer/tile/WMSTileLayer.js',
 	'layer/ImageOverlay.js', 'layer/VideoOverlay.js', 'layer/SVGOverlay.js', 'layer/vector/Canvas.js',
-	'control/LayersControl.js', 'control/ScaleControl.js', 'geo/crs/EPSG3395.js', 'geo/crs/EPSG4326.js',
+	'control/LayersControl.js', 'control/ScaleControl.js', 'control/FullscreenControl.js', 'geo/crs/EPSG3395.js', 'geo/crs/EPSG4326.js',
 	'geo/crs/SimpleCRS.js'
 ];
 const bundles = {

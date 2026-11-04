@@ -12,6 +12,7 @@ export const version = '2.0.0-beta.1';
 // control
 export {AttributionControl} from './control/AttributionControl.js';
 export {Control} from './control/Control.js';
+export {FullscreenControl} from './control/FullscreenControl.js';
 export {LayersControl} from './control/LayersControl.js';
 export {ScaleControl} from './control/ScaleControl.js';
 export {ZoomControl} from './control/ZoomControl.js';

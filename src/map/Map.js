@@ -408,6 +408,8 @@ const defaultOptions = {
  * @category Other Events
  * @typedef {Object} MapOtherEvents
  * @property {ZoomAnimEvent} zoomanim Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
+ * @property {LeafletEvent} enterfullscreen Fired when the map enters fullscreen mode through the [fullscreen control](#fullscreencontrol).
+ * @property {LeafletEvent} exitfullscreen Fired when the map exits fullscreen mode through the [fullscreen control](#fullscreencontrol).
  */
 
 /**
