@@ -175,7 +175,7 @@ describe('Marker.Drag', () => {
 			await dragMarker();
 			// A real user scenario would trigger a click on pointerup.
 			// We want to be sure it is cancelled after a drag.
-			UIEventSimulator.fire('click', marker._icon);
+			UIEventSimulator.fire('click', marker._icon, {detail: 1});
 			expect(clickSpy.called).to.be.false;
 		});
 
@@ -230,6 +230,18 @@ describe('Marker.Drag', () => {
 			expect(marker.getOffset()).to.eql(new Point(10, 30));
 			expect(marker.getLatLng()).to.be.nearLatLng(map.layerPointToLatLng(marker._getPosition()));
 			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
+		});
+
+		it('fires click on Enter after moving', () => {
+			const marker = new Marker([0, 0], {draggable: true}).addTo(map);
+			const clickSpy = sinon.spy();
+			marker.on('click', clickSpy);
+
+			key(marker, 'keydown', 'ArrowRight');
+			key(marker, 'keyup', 'ArrowRight');
+			key(marker, 'keydown', 'Enter');
+
+			expect(clickSpy.calledOnce).to.be.true;
 		});
 
 		it('ends the drag when the key is released or the marker loses focus', () => {
