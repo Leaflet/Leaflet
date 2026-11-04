@@ -1,7 +1,7 @@
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
-// Enables mouse scroll wheel zoom on the map, enabled by default.
+/** Zooms with the mouse scroll wheel (`map.scrollWheelZoom`), enabled by default. */
 export class ScrollWheelZoomHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);

@@ -4,7 +4,10 @@ import {Point} from '../../geometry/Point.js';
 
 /** @import {Marker} from '../../layer/marker/Marker.js' */
 
-// Handles keyboard interaction with the map, enabled by default.
+/**
+ * Pans and zooms the map with the keyboard (`map.keyboard`), enabled by default. Rebind keys by changing the static
+ * `KeyboardHandler.keys` object of `KeyboardEvent.key` values per action.
+ */
 export class KeyboardHandler extends Handler {
 
 	/**

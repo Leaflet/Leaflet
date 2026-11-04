@@ -176,7 +176,10 @@ export class Tooltip extends DivOverlay {
 		this._setPosition(pos);
 	}
 
-	/** @param {number} opacity */
+	/**
+	 * Sets the opacity of the tooltip.
+	 * @param {number} opacity
+	 */
 	setOpacity(opacity) {
 		this.options.opacity = opacity;
 

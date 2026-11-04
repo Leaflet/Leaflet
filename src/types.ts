@@ -275,9 +275,13 @@ export interface ZoomOptions extends ZoomProps {}
 export interface PanOptions extends PanProps {}
 /** Options for the `Map` methods that change both the center and the zoom level. */
 export interface ZoomPanOptions extends ZoomOptions, PanOptions, ZoomPanProps {}
+/** Options for `Map`'s [`invalidateSize`](#map-invalidatesize). */
 export interface InvalidateSizeOptions extends PanOptions, InvalidateSizeProps {}
+/** Padding options for the `Map` methods that fit bounds into the view, like `fitBounds` and `panInside`. */
 export interface PaddingOptions extends PaddingProps {}
+/** Options for `Map`'s [`panInside`](#map-paninside). */
 export interface PanInsideOptions extends PanOptions, PaddingOptions {}
+/** Options for `Map`'s [`fitBounds`](#map-fitbounds) and [`flyToBounds`](#map-flytobounds). */
 export interface FitBoundsOptions extends ZoomPanOptions, PaddingOptions, FitBoundsProps {}
 /** Options for `Map`'s geolocation methods. */
 export interface LocateOptions extends LocateProps {}
@@ -307,24 +311,49 @@ export interface LayersControlOptions extends ControlOptions, Partial<LayersCont
  * contain these properties too.
  */
 export interface LeafletEvent extends LeafletEventProps {}
+/** The event object of the map's `keydown` and `keyup` events. */
 export interface LeafletKeyboardEvent extends LeafletEvent, LeafletKeyboardEventProps {}
+/**
+ * The event object of pointer events like `click`, `dblclick`, `contextmenu`, `pointerdown` and `pointermove`,
+ * fired by the map and interactive layers.
+ */
 export interface LeafletPointerEvent extends LeafletEvent, LeafletPointerEventProps {}
+/** The event object of the map's `locationfound` event, fired when [`locate`](#map-locate) succeeds. */
 export interface LocationEvent extends LeafletEvent, LocationEventProps {}
+/** The event object of the map's `locationerror` event, fired when [`locate`](#map-locate) fails. */
 export interface ErrorEvent extends LeafletEvent, ErrorEventProps {}
+/** The event object of `layeradd` and `layerremove`, fired by the map and feature groups. */
 export interface LayerEvent extends LeafletEvent, LayerEventProps {}
+/**
+ * The event object of the map's `baselayerchange`, `overlayadd` and `overlayremove` events, fired when the user
+ * switches layers in a `LayersControl`.
+ */
 export interface LayersControlEvent extends LayerEvent, LayersControlEventProps {}
+/** The event object of grid layer tile events like `tileload`, `tileloadstart`, `tileunload` and `tileabort`. */
 export interface TileEvent extends LeafletEvent, TileEventProps {}
+/** The event object of `tileerror`, fired by grid layers when a tile fails to load. */
 export interface TileErrorEvent extends TileEvent, TileErrorEventProps {}
+/** The event object of the map's `resize` event. */
 export interface ResizeEvent extends LeafletEvent, ResizeEventProps {}
+/** The data of a GeoJSON feature layer, for plugins that fire events about them (no built-in event uses it). */
 export interface GeoJSONEvent extends LeafletEvent, GeoJSONEventProps {}
+/** The event object of `popupopen` and `popupclose`. */
 export interface PopupEvent extends LeafletEvent, PopupEventProps {}
+/** The event object of `tooltipopen` and `tooltipclose`. */
 export interface TooltipEvent extends LeafletEvent, TooltipEventProps {}
+/** The event object of `dragend`, fired by the map, draggable markers and `Draggable`. */
 export interface DragEndEvent extends LeafletEvent, DragEndEventProps {}
+/** The event object of the map's `boxzoomend` event. */
 export interface BoxZoomEvent extends LeafletEvent, BoxZoomEventProps {}
+/** The event object of `move` on markers and circle markers, and of `drag` on markers. */
 export interface MarkerMoveEvent extends LeafletEvent, MarkerMoveEventProps {}
+/** The event object of the map's `zoomanim` event. */
 export interface ZoomAnimEvent extends LeafletEvent, ZoomAnimEventProps {}
+/** The event object of the map's `movestart`, `move`, `moveend`, `zoomstart`, `zoom` and `zoomend` events. */
 export interface ViewChangeEvent extends LeafletEvent, ViewChangeEventProps {}
+/** The event object of the map's `viewprereset` event. */
 export interface ViewPreResetEvent extends LeafletEvent, ViewPreResetEventProps {}
+/** The event object of the map's `worldcopyjump` event. */
 export interface WorldCopyJumpEvent extends LeafletEvent, WorldCopyJumpEventProps {}
 
 // Members the classes can't declare in JS, added through `./Leaflet.js`, which plugins augment as `'leaflet'`:

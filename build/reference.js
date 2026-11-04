@@ -21,7 +21,8 @@ export const LABELS = {
 	property: 'Properties',
 	pane: 'Map panes',
 	projection: 'Defined projections',
-	crs: 'Defined CRSs'
+	crs: 'Defined CRSs',
+	handler: 'Built-in handlers'
 };
 const KINDS = Object.keys(LABELS);
 const INHERITABLE = new Set(['method', 'function', 'event', 'option', 'property']);
@@ -38,7 +39,8 @@ const COLUMNS = {
 	property: {name: 'Property', type: 'Type'},
 	pane: {name: 'Pane', type: 'Type', default: 'Z-index'},
 	projection: {name: 'Projection'},
-	crs: {name: 'CRS'}
+	crs: {name: 'CRS'},
+	handler: {name: 'Handler'}
 };
 
 const md = new Marked();

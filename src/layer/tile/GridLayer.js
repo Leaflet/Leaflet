@@ -100,8 +100,13 @@ const defaultOptions = {
 /** @typedef {{el: HTMLElement, origin: Point, zoom: number}} GridLevel */
 
 /**
+ * @typedef {Object} TileZoom
+ * @property {number} z The zoom level of the tile.
+ */
+
+/**
  * A `Point` with the tile's zoom level as `z`, as `createTile` and `getTileUrl` get it.
- * @typedef {Point & {z: number}} Coords
+ * @typedef {Point & TileZoom} Coords
  */
 
 /**
@@ -121,9 +126,9 @@ const defaultOptions = {
  */
 
 /**
- * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and
- * replaces `TileLayer.Canvas`. GridLayer can be extended to create a tiled grid of HTML elements like
- * `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
+ * Generic class for handling a tiled grid of HTML elements, and the base class of all tile layers. To show map
+ * tiles from a URL, use `TileLayer` (or `WMSTileLayer`). Extend `GridLayer` to create a tiled grid of your own
+ * elements like `<canvas>`, `<img>` or `<div>`; it handles creating and animating them for you.
  * @example <caption>Synchronous usage</caption>
  * To create a custom layer, extend GridLayer and implement the `createTile()` method, which will be passed a `Point` object with the `x`, `y`, and `z` (zoom level) coordinates to draw your tile.
  *

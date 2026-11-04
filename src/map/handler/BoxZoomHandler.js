@@ -11,7 +11,10 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 /** @import {Point} from '../../geometry/Point.js' */
 
-// Adds shift-drag zoom interaction to the map (zoom to a selected bounding box), enabled by default.
+/**
+ * Zooms to a box drawn with Shift-drag (`map.boxZoom`), enabled by default. Its `moved()` method tells whether a box is
+ * being drawn or was just drawn.
+ */
 export class BoxZoomHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerDown, this);

@@ -6,7 +6,10 @@ import {Bounds} from '../../geometry/Bounds.js';
 /** @import {DragEndEvent, LeafletEvent} from '../../types.js' */
 /** @import {Point} from '../../geometry/Point.js' */
 
-// Makes the map draggable (with panning inertia), enabled by default.
+/**
+ * Makes the map draggable with panning inertia (`map.dragging`), enabled by default. Its `moved()` and `moving()` methods
+ * tell whether the last drag moved the map and whether a drag is in progress.
+ */
 export class DragHandler extends Handler {
 	addHooks() {
 		if (!this._draggable) {

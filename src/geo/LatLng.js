@@ -2,7 +2,13 @@ import * as Util from '../core/Util.js';
 import {LatLngBounds} from './LatLngBounds.js';
 
 /** @typedef {[number, number, number?]} LatLngTuple */
-/** @typedef {{lat: number, lng: number, alt?: number}} LatLngLiteral */
+/**
+ * A geographical point as a plain object.
+ * @typedef {Object} LatLngLiteral
+ * @property {number} lat Latitude in degrees.
+ * @property {number} lng Longitude in degrees.
+ * @property {number} [alt] Altitude in meters.
+ */
 
 /**
  * A `LatLng`, or its array (`[lat, lng]`, `[lat, lng, alt]`) or object (`{lat, lng}`, `{lat, lon}`) form.

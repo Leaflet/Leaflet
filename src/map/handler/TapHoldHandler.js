@@ -5,7 +5,7 @@ import {Point} from '../../geometry/Point.js';
 
 const tapHoldDelay = 600;
 
-// Simulates a `contextmenu` event on long hold, which otherwise is not fired by mobile Safari.
+/** Fires a `contextmenu` event on long tap, which mobile Safari doesn't fire on its own (`map.tapHold`), enabled by default. */
 export class TapHoldHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'pointerdown', this._onDown, this);

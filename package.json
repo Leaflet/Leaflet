@@ -66,6 +66,7 @@
     "zip": "npm run build && rm -f dist/leaflet.zip && zip -j dist/leaflet.zip dist/leaflet* CHANGELOG.md MIGRATION.md LICENSE README.md",
     "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
+    "lint:docs": "node build/docs-audit.js",
     "typecheck": "tsc --noEmit",
     "test:types": "tsc -p spec/types",
     "site": "node build/site.js",
