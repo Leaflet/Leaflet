@@ -522,4 +522,27 @@ describe('DragHandler', () => {
 			});
 		});
 	});
+
+	describe('originalEvent in view change events', () => {
+		[false, true].forEach((inertia) => {
+			it(`is the pointer event for every event of a drag (inertia: ${inertia})`, async () => {
+				map = new LeafletMap(container, {dragging: true, inertia});
+				map.setView([0, 0], 1);
+
+				const log = [];
+				map.on('movestart move moveend zoomstart zoom zoomend', e => log.push(e.originalEvent));
+				const panBy = sinon.spy(map, 'panBy');
+				const moveend = new Promise((resolve) => { map.once('moveend', resolve); });
+
+				await new Finger().moveTo(200, 200).down().moveBy(20, 0).moveBy(60, 0).moveBy(80, 0).up();
+				await moveend;
+
+				expect(panBy.called).to.equal(inertia);
+				expect(log.length).to.be.greaterThan(2);
+				for (const ev of log) {
+					expect(ev).to.be.an.instanceof(PointerEvent);
+				}
+			});
+		});
+	});
 });

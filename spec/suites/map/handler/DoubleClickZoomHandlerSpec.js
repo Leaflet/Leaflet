@@ -73,4 +73,13 @@ describe('DoubleClickZoomHandler', () => {
 		done();
 	});
 
+
+	it('sets originalEvent to the dblclick event in move and zoom events', () => {
+		const log = [];
+		map.on('movestart move moveend zoomstart zoom zoomend', e => log.push(e.originalEvent));
+		UIEventSimulator.fire('dblclick', container);
+
+		expect(log.length).to.be.greaterThan(2);
+		expect(log.every(ev => ev?.type === 'dblclick')).to.be.true;
+	});
 });

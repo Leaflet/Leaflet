@@ -247,4 +247,18 @@ describe('PinchZoomHandler', () => {
 		removeMapContainer(localMap, localContainer);
 	});
 
+
+	it('sets originalEvent to a pointer event in move and zoom events', (done) => {
+		map.setView([0, 0], 1);
+		const log = [];
+		map.on('movestart move moveend zoomstart zoom zoomend', e => log.push(e.originalEvent));
+		map.once('moveend', () => {
+			expect(log.length).to.be.greaterThan(3);
+			expect(log.every(ev => ev instanceof PointerEvent)).to.be.true;
+			done();
+		});
+
+		new Finger('touch').moveTo(275, 300).down().moveBy(-200, 0).up();
+		new Finger('touch').moveTo(325, 300).down().moveBy(200, 0).up();
+	});
 });

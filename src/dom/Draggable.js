@@ -167,6 +167,9 @@ export class Draggable extends Evented {
 			e.preventDefault();
 		}
 
+		/** @type {PointerEvent} */
+		this._lastEvent = e;
+
 		if (!this._moved) {
 			this.fire('dragstart');
 
@@ -185,7 +188,6 @@ export class Draggable extends Evented {
 		this._newPos = this._startPos.add(offset);
 		this._moving = true;
 
-		this._lastEvent = e;
 		this._updatePosition();
 	}
 

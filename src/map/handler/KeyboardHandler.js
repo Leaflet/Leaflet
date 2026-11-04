@@ -119,11 +119,11 @@ export class KeyboardHandler extends Handler {
 				if (map.options.maxBounds) {
 					offset = map._limitOffset(offset, map.options.maxBounds);
 				}
-				map.panBy(offset);
+				map.panBy(offset, {originalEvent: e});
 			}
 		} else if (dz) {
 			if (!map._zoomInputBlocked()) {
-				map.setZoom(map.getZoom() + k * dz * map.options.zoomDelta);
+				map.setZoom(map.getZoom() + k * dz * map.options.zoomDelta, {originalEvent: e});
 			}
 
 		} else {

@@ -203,4 +203,15 @@ describe('BoxZoomHandler', () => {
 		expect(map.getCenter()).to.be.nearLatLng([50, 100]);
 	});
 
+
+	it('sets originalEvent to the pointerup event in move and zoom events', async () => {
+		const log = [];
+		map.on('movestart move moveend zoomstart zoom zoomend', e => log.push(e.originalEvent));
+
+		finger.moveTo(100, 100).down(shift);
+		await finger.moveBy(100, 100, shift).up();
+
+		expect(log.length).to.be.greaterThan(2);
+		expect(log.every(ev => ev?.type === 'pointerup')).to.be.true;
+	});
 });

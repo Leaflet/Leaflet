@@ -23,7 +23,9 @@ describe('KeyboardHandler', () => {
 		});
 
 		// make keyboard-caused panning instant to cut down on test running time
-		map.panBy = function (offset) { return LeafletMap.prototype.panBy.call(this, offset, {animate: false}); };
+		map.panBy = function (offset, options) {
+			return LeafletMap.prototype.panBy.call(this, offset, {...options, animate: false});
+		};
 
 		map.setView([0, 0], 5);
 
@@ -337,6 +339,19 @@ describe('KeyboardHandler', () => {
 
 			expect(document.activeElement).to.equal(container);
 			expect(container.matches(':focus-visible')).to.be.false;
+		});
+	});
+
+	describe('originalEvent in view change events', () => {
+		[['pan', KEY_ARROW_UP], ['zoom', KEY_PLUS]].forEach(([name, key]) => {
+			it(`is the keydown event for a ${name}`, () => {
+				const log = [];
+				map.on('movestart move moveend zoomstart zoom zoomend', e => log.push(e.originalEvent));
+				UIEventSimulator.fire('keydown', document, key);
+
+				expect(log.length).to.be.greaterThan(1);
+				expect(log.every(ev => ev?.type === 'keydown')).to.be.true;
+			});
 		});
 	});
 });

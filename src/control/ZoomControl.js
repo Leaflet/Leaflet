@@ -87,7 +87,7 @@ export class ZoomControl extends Control {
 	_zoom(e, dir) {
 		const map = this._map;
 		if (!this._disabled && (dir > 0 ? map._zoom < map.getMaxZoom() : map._zoom > map.getMinZoom())) {
-			map.zoomIn(dir * map.options.zoomDelta * (e.shiftKey ? 3 : 1));
+			map.zoomIn(dir * map.options.zoomDelta * (e.shiftKey ? 3 : 1), {originalEvent: e});
 		}
 	}
 
