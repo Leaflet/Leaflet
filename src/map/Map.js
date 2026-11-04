@@ -2352,7 +2352,7 @@ export class LeafletMap extends Evented {
 	}
 
 	/**
-	 * @param {Event} e
+	 * @param {MouseEvent} e
 	 * @param {string} type
 	 */
 	_findEventTargets(e, type) {
@@ -2361,11 +2361,10 @@ export class LeafletMap extends Evented {
 		let target,
 		src = /** @type {Node | null} */ (e.target),
 		dragging = false;
-		const {detail, relatedTarget} = /** @type {MouseEvent} */ (e);
 		const isHover = type === 'pointerout' || type === 'pointerover';
+		const related = /** @type {Node | null} */ (e.relatedTarget);
 		// clicks with `detail` 0 come from `element.click()` or the keyboard, so they can't end a drag
-		const canEndDrag = (type === 'click' || type === 'preclick') && detail > 0;
-		const related = /** @type {Node | null} */ (relatedTarget);
+		const canEndDrag = (type === 'click' || type === 'preclick') && e.detail > 0;
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
@@ -2405,13 +2404,14 @@ export class LeafletMap extends Evented {
 			return;
 		}
 
-		this._fireDOMEvent(e, e.type);
+		// keydown and keyup pass through too, but only fields they share with MouseEvent are read for them
+		this._fireDOMEvent(/** @type {MouseEvent} */ (e), e.type);
 	};
 
 	static _pointerEvents = ['click', 'dblclick', 'pointerover', 'pointerout', 'contextmenu'];
 
 	/**
-	 * @param {Event} e
+	 * @param {MouseEvent} e
 	 * @param {string} type
 	 * @param {DOMEventTarget[] | false} [canvasTargets]
 	 */
@@ -2446,7 +2446,7 @@ export class LeafletMap extends Evented {
 		if (e.type !== 'keydown' && e.type !== 'keyup') {
 			const latlng = (!target._pxRadius || target._pxRadius <= 10) && target.getLatLng?.();
 			data.containerPoint = latlng ?
-				this.latLngToContainerPoint(latlng) : this.pointerEventToContainerPoint(/** @type {MouseEvent} */ (e));
+				this.latLngToContainerPoint(latlng) : this.pointerEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = latlng || this.layerPointToLatLng(data.layerPoint);
 		}

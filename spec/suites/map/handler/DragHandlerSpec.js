@@ -245,6 +245,25 @@ describe('DragHandler', () => {
 			expect(preclickSpy.called).to.be.false;
 		});
 
+		it('triggers click on Enter on a static marker after dragging', async () => {
+			container.style.width = container.style.height = '600px';
+			map = new LeafletMap(container, {
+				dragging: true,
+				inertia: false
+			});
+			map.setView([0, 0], 1);
+			const marker = new Marker(map.getCenter()).addTo(map);
+			const clickSpy = sinon.spy();
+			marker.on('click', clickSpy);
+
+			await new Finger().moveTo(100, 100)
+				.down().moveBy(5, 0).moveBy(20, 20).up();
+
+			marker._icon.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', bubbles: true}));
+			expect(map.dragging.moved()).to.be.true;
+			expect(clickSpy.calledOnce).to.be.true;
+		});
+
 		it('does not trigger preclick nor click when dragging a marker', async () => {
 			container.style.width = container.style.height = '600px';
 			map = new LeafletMap(container, {
