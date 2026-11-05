@@ -71,8 +71,6 @@ export class FullscreenControl extends Control {
 		this._target = this.options.container ?? map.getContainer();
 		/** @type {boolean} */
 		this._fullscreen = false;
-		/** @type {boolean} */
-		this._pseudo = false;
 		this._update();
 
 		DomEvent.disableClickPropagation(link);
@@ -88,11 +86,9 @@ export class FullscreenControl extends Control {
 
 	/** @param {LeafletMap} map */
 	onRemove(map) {
-		// exit synchronously, since the listener below is gone by the time the native exit fires
-		if (this._fullscreen) {
-			if (!this._pseudo) { document.exitFullscreen(); }
-			this._setPseudo(false);
-		}
+		// a native exit fires fullscreenchange after the listener below is gone, so reset the state synchronously
+		this.setFullscreen(false);
+		this._setPseudo(false);
 		DomEvent.off(this._target, 'fullscreenchange', this._onFullscreenChange, this);
 	}
 

@@ -35,8 +35,8 @@ export class KeyboardHandler extends Handler {
 		const shortcuts = this._map.options.ariaKeyShortcuts;
 		if (shortcuts) {
 			// ARIA names physical keys by their unshifted character, so the default is for a US layout
-			container.ariaKeyShortcuts = shortcuts === true ?
-				'ArrowLeft ArrowRight ArrowUp ArrowDown = Plus -' : shortcuts;
+			container.setAttribute('aria-keyshortcuts', shortcuts === true ?
+				'ArrowLeft ArrowRight ArrowUp ArrowDown = Plus -' : shortcuts);
 		}
 
 		on(container, {
