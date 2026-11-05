@@ -18,6 +18,12 @@ describe('Popup', () => {
 	});
 
 
+	it('clears its content when set to an empty string', () => {
+		const popup = new Popup().setLatLng(center).setContent('Old content').openOn(map);
+		popup.setContent('');
+		expect(popup._contentNode.innerHTML).to.equal('');
+	});
+
 	it('closes on map click when map has closePopupOnClick option', () => {
 		map.options.closePopupOnClick = true;
 

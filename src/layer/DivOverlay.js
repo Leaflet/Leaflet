@@ -307,7 +307,7 @@ export class DivOverlay extends LayerBase {
 	}
 
 	_updateContent() {
-		if (!this._content) { return; }
+		if (this._content == null) { return; }
 
 		const node = this._contentNode;
 		// a standalone overlay passes itself
