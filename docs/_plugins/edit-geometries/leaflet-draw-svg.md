@@ -1,12 +1,9 @@
 ---
 name: Leaflet.draw.svg
-category: edit-geometries
 repo: https://github.com/robidev/Leaflet.Draw.Svg
 author: Robin Massink
 author-url: https://github.com/robidev
 demo: https://robidev.github.io/Leaflet.Draw.Svg/local_svg/index.html
-compatible-v0: true
-compatible-v1: true
 compatible-v2: false
 ---
 

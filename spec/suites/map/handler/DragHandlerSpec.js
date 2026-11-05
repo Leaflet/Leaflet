@@ -522,4 +522,32 @@ describe('DragHandler', () => {
 			});
 		});
 	});
+
+	describe('originalEvent in view change events', () => {
+		[false, true].forEach((inertia) => {
+			it(`is the pointer event for every event of a drag (inertia: ${inertia})`, async () => {
+				map = new LeafletMap(container, {dragging: true, inertia, inertiaDeceleration: 100000});
+				map.setView([0, 0], 1);
+
+				const log = [];
+				map.on('movestart move moveend zoomstart zoom zoomend', e => log.push(e.originalEvent));
+				const panBy = sinon.spy(map, 'panBy');
+				const moveend = new Promise((resolve) => { map.once('moveend', resolve); });
+
+				// release right after the last move: headless WebKit runs rAF at ~30fps, so a frame gap in between
+				// would push all but the last drag position out of the 50ms inertia window
+				const finger = new Finger();
+				await finger.moveTo(200, 200).down().moveBy(20, 0).moveBy(60, 0);
+				finger.dispatch('move', 360, 200);
+				finger.dispatch('up', 360, 200);
+				await moveend;
+
+				expect(panBy.called).to.equal(inertia);
+				expect(log.length).to.be.greaterThan(2);
+				for (const ev of log) {
+					expect(ev).to.be.an.instanceof(PointerEvent);
+				}
+			});
+		});
+	});
 });

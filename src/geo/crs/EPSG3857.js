@@ -16,6 +16,7 @@ export class EPSG3857 extends EarthCRS {
 	})();
 }
 
+/** The same CRS as `EPSG3857`, with the legacy `'EPSG:900913'` code for WMS services that still expect it. */
 export class EPSG900913 extends EPSG3857 {
 	static code = 'EPSG:900913';
 }

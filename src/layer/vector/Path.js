@@ -87,8 +87,8 @@ const defaultOptions = {
 /** @typedef {typeof defaultOptions} PathDefaultsValues */
 
 /**
- * An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline,
- * Circle). Do not use it directly. Extends `Layer`.
+ * An abstract class that contains options and methods shared between vector overlays (`Polyline`, `Polygon`,
+ * `Rectangle`, `Circle`, `CircleMarker`). Do not use it directly. Extends `Layer`.
  * @template {PathOptions} [O=PathOptions]
  * @template {InteractiveLayerEventMap} [E=InteractiveLayerEventMap]
  * @extends {Layer<O & PathDefaults, E>}

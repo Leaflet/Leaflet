@@ -6,7 +6,10 @@ import {Bounds} from '../../geometry/Bounds.js';
 /** @import {DragEndEvent, LeafletEvent} from '../../types.js' */
 /** @import {Point} from '../../geometry/Point.js' */
 
-// Makes the map draggable (with panning inertia), enabled by default.
+/**
+ * Makes the map draggable with panning inertia (`map.dragging`), enabled by default. Its `moved()` and `moving()` methods
+ * tell whether the last drag moved the map and whether a drag is in progress.
+ */
 export class DragHandler extends Handler {
 	addHooks() {
 		if (!this._draggable) {
@@ -75,7 +78,7 @@ export class DragHandler extends Handler {
 		}
 
 		map
-			.fire('movestart')
+			._moveStart(false, false, this._draggable._lastEvent)
 			.fire('dragstart');
 
 		if (map.options.inertia) {
@@ -151,7 +154,7 @@ export class DragHandler extends Handler {
 		map.fire('dragend', e);
 
 		if (noInertia) {
-			map.fire('moveend');
+			map._moveEnd(false);
 
 		} else {
 			this._prunePositions(Date.now());
@@ -180,17 +183,19 @@ export class DragHandler extends Handler {
 			}
 
 			if (!offset.x && !offset.y) {
-				map.fire('moveend');
+				map._moveEnd(false);
 
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
+				const originalEvent = map._moveEvent;
 
 				requestAnimationFrame(() => {
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,
 						noMoveStart: true,
-						animate: true
+						animate: true,
+						originalEvent
 					});
 				});
 			}

@@ -1,12 +1,9 @@
 ---
 name: PolarMap.js
-category: basemap-providers
-repo: https://github.com/GeoSensorWebLab/polarmap.js
+repo: https://github.com/UbiSensingAILab/polarmap.js
 author: GeoSensorWeb Lab
 author-url: https://github.com/geosensorweblab
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

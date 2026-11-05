@@ -1,6 +1,4 @@
 import {Renderer} from './Renderer.js';
-import * as DomEvent from '../../dom/DomEvent.js';
-import {mapHandlingDisabled} from '../../dom/DomEventUtil.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
@@ -69,18 +67,24 @@ export class Canvas extends Renderer {
 	onAdd(map) {
 		super.onAdd(map);
 
+		// the map hit-tests canvas renderers topmost first: by pane z-index, then DOM order
+		const z = (/** @type {Canvas} */ r) => +getComputedStyle(/** @type {Element} */ (r._container.parentNode)).zIndex || 0;
+		map._canvases.push(this);
+		map._canvases.sort((a, b) => z(b) - z(a) || (a._container.compareDocumentPosition(b._container) & 2) - 1);
+
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
 		this._draw();
 	}
 
+	/** @param {LeafletMap} map */
+	onRemove(map) {
+		super.onRemove(map);
+		map._canvases = map._canvases.filter(r => r !== this);
+	}
+
 	_initContainer() {
 		const container = this._container = document.createElement('canvas');
-
-		DomEvent.on(container, 'pointermove', this._onPointerMove, this);
-		DomEvent.on(container, 'click dblclick pointerdown pointerup contextmenu', this._onClick, this);
-		DomEvent.on(container, 'pointerout', this._onPointerOut, this);
-		mapHandlingDisabled.add(container);
 
 		/** @type {CanvasRenderingContext2D} */
 		this._ctx = /** @type {CanvasRenderingContext2D} */ (container.getContext('2d'));
@@ -363,7 +367,7 @@ export class Canvas extends Renderer {
 	}
 
 	// Canvas obviously doesn't have pointer events for individual drawn objects,
-	// so we emulate that by calculating what's under the pointer on pointermove/click manually
+	// so the map calls this on its own pointer events to find what's under the pointer
 
 	/**
 	 * Returns the topmost interactive layer under the pointer.
@@ -379,52 +383,6 @@ export class Canvas extends Renderer {
 				return layer;
 			}
 		}
-	}
-
-	/** @param {MouseEvent} e */
-	_onClick(e) {
-		this._fireEvent(this._layerAt(e, e.type === 'click'), e);
-	}
-
-	/** @param {PointerEvent} e */
-	_onPointerMove(e) {
-		const map = this._map;
-		if (!map || map.dragging.moving() || map._animatingZoom) { return; }
-
-		const layer = this._layerAt(e);
-
-		if (layer !== this._hoveredLayer) {
-			this._onPointerOut(e);
-
-			if (layer) {
-				this._container.classList.add('leaflet-interactive'); // change cursor
-				this._fireEvent(layer, e, 'pointerover');
-				/** @type {Path | null | undefined} */
-				this._hoveredLayer = layer;
-			}
-		}
-
-		this._fireEvent(this._hoveredLayer, e);
-	}
-
-	/** @param {PointerEvent} e */
-	_onPointerOut(e) {
-		const layer = this._hoveredLayer;
-		if (layer) {
-			// if we're leaving the layer, fire pointerout
-			this._container.classList.remove('leaflet-interactive');
-			this._fireEvent(layer, e, 'pointerout');
-			this._hoveredLayer = null;
-		}
-	}
-
-	/**
-	 * @param {Path | null | undefined} layer
-	 * @param {MouseEvent} e
-	 * @param {string} [type]
-	 */
-	_fireEvent(layer, e, type) {
-		this._map._fireDOMEvent(e, type || e.type, layer ? [layer] : false);
 	}
 
 	/** @param {Path} layer */

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Multispectral
-category: tile-image-display
 repo: https://github.com/publiclab/leaflet-multispectral
 author: Public Lab
 author-url: https://publiclab.org/
 demo: https://publiclab.github.io/leaflet-multispectral/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

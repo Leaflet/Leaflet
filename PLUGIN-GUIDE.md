@@ -227,9 +227,10 @@ to list what gets published to NPM.
 Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](https://leafletjs.com/plugins.html). To do so:
 
 * [Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the Leaflet repo.
-* In the `docs/_plugins/` folder, copy the `template.md` file and add it to a category folder. Then put the information and links about your plugin into the new plugin file, and set `compatible-v1` and `compatible-v2` to the Leaflet versions it works with.
+* In the `docs/_plugins/` folder, copy the `template.md` file into the category folder that fits your plugin (the folder decides where it's listed). Then put the information and links about your plugin into the new plugin file. If it works with Leaflet 2, set `compatible-v2: true`.
 * Commit the code to your fork.
 * [Open a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from your fork to Leaflet's original repo.
 
 Once the pull request is done, a Leaflet maintainer will have a quick look at your
 plugin and, if everything looks right, your plugin will appear in the list shortly thereafter.
+The list shows the stars and last commit date of each plugin's GitHub or GitLab repository, and sorts plugins by stars.

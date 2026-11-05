@@ -228,7 +228,8 @@ svg.leaflet-zoom-animated {
 
 /* cursors */
 
-.leaflet-interactive {
+.leaflet-interactive,
+.leaflet-container.leaflet-interactive {
 	cursor: pointer;
 }
 
@@ -237,6 +238,7 @@ svg.leaflet-zoom-animated {
 }
 
 .leaflet-crosshair,
+.leaflet-crosshair.leaflet-interactive,
 .leaflet-crosshair .leaflet-interactive {
 	cursor: crosshair;
 }
@@ -257,6 +259,7 @@ svg.leaflet-zoom-animated {
 .leaflet-marker-shadow,
 .leaflet-image-layer,
 .leaflet-pane > svg path,
+.leaflet-pane > canvas,
 .leaflet-tile-container {
 	pointer-events: none;
 }

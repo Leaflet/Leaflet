@@ -1,0 +1,10 @@
+---
+name: Leaflet.ZoomEx
+repo: https://github.com/mfhsieh/leaflet-zoomex/
+author: mfhsieh
+author-url: https://github.com/mfhsieh
+demo: https://mfhsieh.github.io/leaflet-zoomex/
+compatible-v2: false
+---
+
+A Leaflet plugin that displays a zoom control on the map, with a customizable appearance and position using CSS.

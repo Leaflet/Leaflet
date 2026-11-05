@@ -1,12 +1,9 @@
 ---
 name: Leaflet.trace
-category: edit-geometries
 repo: https://github.com/agilvarry/Leaflet.trace
 author: Alex Gilvarry
 author-url: https://github.com/agilvarry
 demo: https://agilvarry.github.io/Leaflet.trace/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

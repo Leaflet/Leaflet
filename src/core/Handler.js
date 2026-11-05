@@ -4,7 +4,8 @@ import {Class} from './Class.js';
 
 /**
  * Abstract class for map interaction handlers, used to inject interaction features like dragging into classes
- * like `Map` and `Marker`.
+ * like `Map` and `Marker`. Each built-in map handler listed below is a `Map` property, e.g. `map.dragging`, that can be
+ * enabled or disabled at runtime.
  *
  * @categoryDescription Extension methods
  * Classes inheriting from `Handler` must implement the two following methods:
@@ -15,7 +16,10 @@ import {Class} from './Class.js';
 export class Handler extends Class {
 	static initHooks = true;
 
-	/** @param {LeafletMap} map */
+	/**
+	 * Creates a handler for the given map, disabled until [`enable`](#handler-enable) is called.
+	 * @param {LeafletMap} map
+	 */
 	constructor(map) {
 		super();
 		this._map = map;

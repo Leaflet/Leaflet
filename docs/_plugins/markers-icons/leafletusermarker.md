@@ -1,0 +1,10 @@
+---
+name: leaflet-usermarker
+repo: https://github.com/heyman/leaflet-usermarker
+author: Jonatan Heyman
+author-url: https://heyman.info/
+demo: 
+compatible-v2: false
+---
+
+Plugin for plotting a marker representing a user - or multiple users - on a map, with support for drawing an accuracy circle.

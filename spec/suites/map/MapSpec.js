@@ -2765,6 +2765,97 @@ describe('Map', () => {
 		});
 	});
 
+	describe('originalEvent in view change events', () => {
+		const types = 'movestart move moveend zoomstart zoom zoomend';
+		let log;
+
+		beforeEach(() => {
+			map.setView([0, 0], 5);
+			log = [];
+			map.on(types, e => log.push([e.type, e.originalEvent]));
+		});
+
+		const expectAll = (originalEvent) => {
+			expect(log.length).to.be.greaterThan(0);
+			for (const [type, ev] of log) {
+				expect(ev, type).to.equal(originalEvent);
+			}
+		};
+		const ended = type => new Promise((resolve) => { map.once(type, resolve); });
+
+		it('is unset for programmatic changes', () => {
+			map.setView([10, 10], 6, {animate: false});
+			expect(log.map(([type]) => type)).to.include.members(['movestart', 'zoomstart', 'zoomend', 'moveend']);
+			expectAll(undefined);
+		});
+
+		it('is passed through from the originalEvent option of every view method', () => {
+			const ev = new Event('custom');
+			const calls = [
+				() => map.setView([10, 10], 6, {animate: false, originalEvent: ev}),
+				() => map.setZoom(4, {animate: false, originalEvent: ev}),
+				() => map.zoomIn(1, {animate: false, originalEvent: ev}),
+				() => map.setZoomAround([5, 5], 7, {animate: false, originalEvent: ev}),
+				() => map.panTo([1, 1], {animate: false, originalEvent: ev}),
+				() => map.panBy([10, 10], {animate: false, originalEvent: ev}),
+				() => map.panBy([0, 0], {originalEvent: ev}),
+				() => map.fitBounds([[0, 0], [20, 20]], {animate: false, originalEvent: ev}),
+				() => map.flyTo([3, 3], 5, {animate: false, originalEvent: ev})
+			];
+			for (const call of calls) {
+				log = [];
+				call();
+				expectAll(ev);
+			}
+		});
+
+		it('lasts through an animated pan', async () => {
+			const ev = new Event('custom');
+			const end = ended('moveend');
+			map.panBy([100, 0], {duration: 0.05, originalEvent: ev});
+			await end;
+			expect(log.filter(([type]) => type === 'move').length).to.be.greaterThan(0);
+			expectAll(ev);
+		});
+
+		it('lasts through an animated zoom', async () => {
+			const ev = new Event('custom');
+			const end = ended('moveend');
+			map.setZoom(6, {originalEvent: ev});
+			await end;
+			expect(log.map(([type]) => type)).to.include.members(['zoomstart', 'zoomend']);
+			expectAll(ev);
+		});
+
+		it('lasts through a fly animation', async () => {
+			const ev = new Event('custom');
+			const end = ended('moveend');
+			map.flyTo([5, 5], 6, {duration: 0.05, originalEvent: ev});
+			await end;
+			expectAll(ev);
+		});
+
+		it('is not inherited by a move started in a moveend listener', () => {
+			const ev = new Event('custom');
+			const nested = [];
+			map.once('moveend', () => {
+				map.on(types, e => nested.push(e.originalEvent));
+				map.setView([20, 20], 3, {animate: false});
+			});
+			map.setView([10, 10], 6, {animate: false, originalEvent: ev});
+			expect(nested.length).to.be.greaterThan(1);
+			expect(nested.every(e => e === undefined)).to.be.true;
+		});
+
+		it('is set by the zoom control', async () => {
+			const end = ended('zoomend');
+			UIEventSimulator.fire('click', container.querySelector('.leaflet-control-zoom-in'));
+			await end;
+			expect(log[0][1].type).to.equal('click');
+			expectAll(log[0][1]);
+		});
+	});
+
 	describe('with reduced motion', () => {
 		beforeEach(() => {
 			const matchMedia = window.matchMedia.bind(window);

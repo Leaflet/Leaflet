@@ -1,12 +1,9 @@
 ---
 name: Terra Draw
-category: edit-geometries
 repo: https://github.com/JamesLMilner/terra-draw
 author: James Milner
 author-url: https://github.com/JamesLMilner
 demo: https://terradraw.io
-compatible-v0: false
-compatible-v1: true
 compatible-v2: false
 ---
 

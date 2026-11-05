@@ -1,12 +1,9 @@
 ---
 name: leaflet-floating-measure
-category: measurement
-repo: https://github.com
+repo: https://github.com/ringraham/leaflet-floating-measure
 author: Ron Ingraham
 author-url: https://enjoythemaps.com
-demo: https://github.io
-compatible-v0: false
-compatible-v1: true
+demo: https://ringraham.github.io/leaflet-floating-measure/
 compatible-v2: false
 ---
 

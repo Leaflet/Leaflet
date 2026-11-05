@@ -1,0 +1,21 @@
+{%- if include.category %}{% assign plugins = site.plugins | where: "category", include.category %}
+{%- else %}{% assign plugins = site.plugins | where: "compatible-v2", "true" %}{% endif %}
+<ul class="plugins">
+{%- for plugin in plugins %}
+	<li>
+		<div class="plugin-info">
+			<div>
+				<span><a class="plugin-name" href="{{ plugin.repo }}">{{ plugin.name | replace: ".", ".<wbr>" }}</a>
+				{%- if include.category and plugin.compatible-v2 == "true" %} <span class="v2" title="Works with Leaflet 2">v2</span>{% endif %}</span>
+				{%- if plugin.stars %} <span class="plugin-stars" title="GitHub stars">★ {{ plugin.stars }}</span>{% endif %}
+			</div>
+			<div class="plugin-meta">
+				<span>{% if plugin.author-url != blank %}<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>{% else %}{{ plugin.author }}{% endif %}
+				{%- if plugin.demo != blank %} · <a href="{{ plugin.demo }}">Demo</a>{% endif %}</span>
+				{%- if plugin.updated %} <time datetime="{{ plugin.updated }}" title="Last commit">{{ plugin.updatedMonth }}</time>{% endif %}
+			</div>
+		</div>
+		<div class="plugin-desc">{{ plugin.content | strip }}</div>
+	</li>
+{%- endfor %}
+</ul>

@@ -1,12 +1,9 @@
 ---
 name: required
-category: required (same name as directory)
 repo: required
 author: required
 author-url:
-demo: required
-compatible-v0:
-compatible-v1: true
+demo:
 compatible-v2: false
 ---
 

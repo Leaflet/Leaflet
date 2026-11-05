@@ -1,0 +1,10 @@
+---
+name: Leaflet.Boating
+repo: https://github.com/cdupre/leaflet.boating
+author: Clément Dupré
+author-url: https://github.com/cdupre
+demo: https://cdupre.github.io/leaflet.boating/
+compatible-v2: true
+---
+
+Leaflet plugin to geolocate the user and display heading, speed and location like a simple navigation app.

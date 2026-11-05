@@ -47,7 +47,8 @@ const defaultOptions = {
  */
 
 /**
- * Base model for Popup and Tooltip. Inherit from it for custom overlays like plugins.
+ * Base model for `Popup` and `Tooltip`; use those to show content on the map. Inherit from it for custom overlays
+ * like plugins.
  * @template {DivOverlayOptions} [O=DivOverlayOptions]
  * @template {DivOverlayEventMap} [E=DivOverlayEventMap]
  * @extends {LayerBase<O & DivOverlayDefaults, E>}
@@ -306,7 +307,7 @@ export class DivOverlay extends LayerBase {
 	}
 
 	_updateContent() {
-		if (!this._content) { return; }
+		if (this._content == null) { return; }
 
 		const node = this._contentNode;
 		// a standalone overlay passes itself

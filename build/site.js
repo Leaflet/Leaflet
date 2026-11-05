@@ -69,22 +69,31 @@ const start = performance.now();
 const config = JSON.parse(readFileSync('build/site.json', 'utf8'));
 const site = {...config.site, ...config.versions[config.version], time: new Date()};
 
-// PREVIEW=1 runs the pages on the checkout's src/ instead of the release, leaving out the v1 ones, which need 1.x
-site.preview = !!process.env.PREVIEW;
-if (site.preview) { config.mounts = config.mounts.filter(m => m.ref !== 'v1'); }
 // the release each pinned ref is at, for the references' version links: `v2` follows `version`, `v1` its mounts
 site.refVersions = {v2: config.version};
 for (const {ref, version} of config.mounts) { if (ref) { site.refVersions[ref] = version; } }
 
+// PREVIEW=1 runs the 2.x pages on the checkout's src/ instead of the release
+site.preview = !!process.env.PREVIEW;
+
 // every page renders with the checkout's layouts and includes, so pinned pages share the current shell
 const engine = createEngine(SITE_DIR);
 
-// the plugins collection: rendered, but not written
+// the plugins collection: rendered, but not written; repo stats come from `node build/plugin-stats.js`, if it ran, and
+// order the lists by stars (ties and plugins without stats stay in file name order)
+const pluginStats = existsSync('build/plugin-stats.json') ? JSON.parse(readFileSync('build/plugin-stats.json', 'utf8')) : {};
 site.plugins = walk(join(SITE_DIR, '_plugins')).map((file) => {
 	const {data, body} = readPage(join(SITE_DIR, '_plugins', file));
+	data.category = dirname(file);
+	const stats = pluginStats[data.repo];
+	if (stats) {
+		data.stars = formatCount(stats.stars);
+		data.updated = stats.updated;
+		data.updatedMonth = new Date(stats.updated).toLocaleDateString('en-US', {month: 'short', year: 'numeric', timeZone: 'UTC'});
+	}
 	data.content = engine.renderContent(body, true, {site, page: data});
 	return data;
-});
+}).sort((a, b) => (pluginStats[b.repo]?.stars ?? -1) - (pluginStats[a.repo]?.stars ?? -1));
 
 // posts, newest first
 site.posts = readdirSync(join(SITE_DIR, '_posts')).sort().reverse().map((file) => {
@@ -142,10 +151,13 @@ for (const [file, {path, site, replace}] of outputs) {
 
 if (site.preview) { cpSync('src', join(out, 'preview'), {recursive: true}); }
 
+// A concurrent build can move DEST away before us or land its own between our two renames. Overlapping builds
+// see practically the same sources, so whichever lands first stays and the other is dropped.
 const old = `${out}-old`;
-if (existsSync(DEST)) { renameSync(DEST, old); }
-renameSync(out, DEST);
+try { renameSync(DEST, old); } catch (err) { if (err.code !== 'ENOENT') { throw err; } }
+try { renameSync(out, DEST); } catch (err) { if (err.code !== 'ENOTEMPTY' && err.code !== 'EEXIST') { throw err; } }
 rmSync(old, {recursive: true, force: true});
+rmSync(out, {recursive: true, force: true});
 
 console.log(`Built ${outputs.size + site.posts.length} files in ${Math.round(performance.now() - start)} ms`);
 
@@ -204,6 +216,11 @@ function readPage(path) {
 }
 
 // Lists files under dir recursively, skipping _ and . prefixed entries, as Jekyll does
+// 950 → "950", 4230 → "4.2K", 12345 → "12K"
+function formatCount(n) {
+	return n < 1000 ? String(n) : n < 9950 ? `${+(n / 1000).toFixed(1)}K` : `${Math.round(n / 1000)}K`;
+}
+
 function walk(dir, prefix = '') {
 	return readdirSync(join(dir, prefix)).sort().flatMap((name) => {
 		const rel = prefix ? `${prefix}/${name}` : name;

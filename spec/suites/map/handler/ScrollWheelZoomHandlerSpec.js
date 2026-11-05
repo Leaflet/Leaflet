@@ -162,4 +162,15 @@ describe('ScrollWheelZoomHandler', () => {
 		clock.tick(100);
 		expect(map.getZoom()).to.be.greaterThan(zoom2);
 	});
+
+	it('sets originalEvent to the wheel event in move and zoom events', (done) => {
+		const log = [];
+		map.on('movestart move moveend zoomstart zoom zoomend', e => log.push(e.originalEvent));
+		map.on('moveend', () => {
+			expect(log.length).to.be.greaterThan(2);
+			expect(log.every(ev => ev?.type === wheel)).to.be.true;
+			done();
+		});
+		UIEventSimulator.fire(wheel, container, scrollIn);
+	});
 });

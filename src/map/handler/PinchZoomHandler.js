@@ -6,7 +6,7 @@ import {Point} from '../../geometry/Point.js';
 
 /** @import {LatLng} from '../../geo/LatLng.js' */
 
-// Adds pinch zoom on touch devices, enabled by default.
+/** Zooms with a two-finger pinch on touch devices (`map.pinchZoom`), enabled by default. */
 export class PinchZoomHandler extends Handler {
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
@@ -93,7 +93,7 @@ export class PinchZoomHandler extends Handler {
 		}
 
 		if (!this._moved) {
-			map._moveStart(true, false);
+			map._moveStart(true, false, e);
 			this._moved = true;
 		}
 
@@ -127,7 +127,7 @@ export class PinchZoomHandler extends Handler {
 		if (this._map._zoomAnimated) {
 			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, !!this._map.options.zoomSnap);
 		} else {
-			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
+			this._map._resetView(this._center, this._map._limitZoom(this._zoom), false, this._map._moveEvent);
 		}
 	}
 }

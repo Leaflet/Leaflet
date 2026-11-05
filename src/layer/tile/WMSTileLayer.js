@@ -8,7 +8,10 @@ import {Bounds} from '../../geometry/Bounds.js';
 /** @import {LeafletMap} from '../../map/Map.js' */
 
 const defaultWmsParams = {
+	/** WMS service name. */
 	service: 'WMS',
+
+	/** WMS request type. */
 	request: 'GetMap',
 
 	/** **(required)** Comma-separated list of WMS layers to show. */
@@ -67,6 +70,7 @@ export class WMSTileLayer extends TileLayer {
 
 	static initHooks = true;
 
+	/** The default WMS request parameters, which every layer copies and overrides with its own options. */
 	static defaultWmsParams = defaultWmsParams;
 
 	/** @type {Defaults<WMSTileLayerOptions>} */

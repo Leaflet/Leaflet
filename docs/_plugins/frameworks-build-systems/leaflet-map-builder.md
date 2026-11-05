@@ -1,13 +1,10 @@
 ---
 name: Leaflet Map Builder
-category: frameworks-build-systems
 repo: https://github.com/gherardovarando/leaflet-map-builder
 author: Gherardo Varando
 author-url: https://github.com/gherardovarando
 demo: https://gherardovarando.github.io/leaflet-map-builder/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 
-It populates a leaflet map from a configuration object, can also creates zoom, layers, attribution draw controls.
+Builds a map from a configuration object, including zoom, layers, attribution and draw controls.

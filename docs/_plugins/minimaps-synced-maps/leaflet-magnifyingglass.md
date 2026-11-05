@@ -1,12 +1,9 @@
 ---
 name: Leaflet.MagnifyingGlass
-category: minimaps-synced-maps
 repo: https://github.com/bbecquet/Leaflet.MagnifyingGlass
 author: Benjamin Becquet
 author-url: https://github.com/bbecquet/
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

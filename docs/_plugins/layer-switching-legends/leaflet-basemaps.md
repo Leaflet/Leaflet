@@ -1,0 +1,10 @@
+---
+name: Leaflet.Basemaps
+repo: https://github.com/consbio/Leaflet.Basemaps
+author: Brendan Ward
+author-url: https://github.com/brendan-ward
+demo: https://consbio.github.io/Leaflet.Basemaps/examples/toggle.html
+compatible-v2: false
+---
+
+A basemap chooser with a preview image from the tile stack.

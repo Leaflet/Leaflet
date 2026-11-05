@@ -21,7 +21,7 @@ const PARAM_MARKS = /^…|\?$/g;
 const BLOCK_COMMENT = /\/\*.*?\*\/\s*/g;
 const FENCE = /```.*?```/gs;
 
-let checker, config, pages, ownerOfInterface, lookup;
+let checker, config, pages, tableRows, ownerOfInterface, lookup;
 
 export function tsModel(dir) {
 	// the compiler resolves source files against its cwd, so a relative ref directory would be resolved twice
@@ -53,6 +53,7 @@ function build(entries) {
 	const top = config.groups.flatMap(g => g.entries.map(entryName));
 	const minis = Object.entries(config.miniclasses).flatMap(([parent, names]) => names.map(name => ({name, parent})));
 	pages = new Set([...top, ...minis.map(m => m.name)]);
+	tableRows = new Set(Object.values(config.tables).flatMap(Object.values).flat());
 
 	// options and event map interfaces → the page that documents their own members: `XOptions` belongs to `X`,
 	// one used by classes without their own to the first such class
@@ -78,7 +79,7 @@ function build(entries) {
 		} else if (config.headers[name]) {
 			raws.push(createNamespace(name, descriptionOf(docOf(lookup(config.headers[name]))), parent));
 		} else if (!decl) {
-			console.warn(`Reference entry ${name} not found`);
+			// `npm run lint:docs` reports it, the build only skips it
 			return;
 		} else if (decl.kind === SK.ClassDeclaration) {
 			raws.push(classPage(name, decl, parent));
@@ -92,6 +93,12 @@ function build(entries) {
 			raws.push(valuePage(name, decl));
 		}
 		const ns = raws.at(-1);
+		const order = config.categoryOrder?.[name];
+		if (order) {
+			// a default (unnamed) section stays first, unlisted ones go last in source order
+			const rank = s => (s.name === null ? -1 : order.includes(s.name) ? order.indexOf(s.name) : order.length);
+			for (const ss of Object.values(ns.supersections)) { ss.sections.sort((a, b) => rank(a) - rank(b)); }
+		}
 		for (const [kind, names] of Object.entries(config.tables[name] ?? {})) {
 			const section = sectionOf(ns, kind, null);
 			for (const n of names) {
@@ -101,15 +108,6 @@ function build(entries) {
 		for (const m of minis) { if (m.parent === name) { add(m.name, ns.name); } }
 	};
 	for (const name of top) { add(name); }
-
-	// by declaration, since a class can be exported under another name (`LeafletMap as Map`)
-	const tableRows = Object.values(config.tables).flatMap(Object.values).flat();
-	const listed = new Set([...pages, ...tableRows, ...config.unlisted].map(lookup));
-	for (const [name, decl] of exports) {
-		if (!listed.has(decl) && isDocumentedPage(decl)) {
-			console.warn(`Documented ${name} is neither in the reference groups nor unlisted`);
-		}
-	}
 
 	const akas = akasOf(raws);
 	return {...resolveModel(raws, akas), toc: tocOf(akas)};
@@ -127,15 +125,6 @@ function tocOf(akas) {
 		pinned: config.groups.flatMap(g => g.toc ?? []),
 		groups: config.groups.filter(g => !g.toc).map(g => ({label: g.label, links: g.entries.map(link)}))
 	};
-}
-
-// a described class or module namespace, which would get a page if listed
-function isDocumentedPage(decl) {
-	if (decl?.kind === SK.ClassDeclaration) { return !!descriptionOf(lastDoc(decl)); }
-	if (decl?.kind === SK.SourceFile) {
-		return !!descriptionOf(moduleDoc(decl));
-	}
-	return false;
 }
 
 // --- raw namespaces -----------------------------------------------------------------------------------------------
@@ -182,6 +171,9 @@ function akasOf(raws) {
 				for (const d of s.items) { d.id ??= kind === 'example' ? null : normalizeName(ns.name, d.name); }
 			}
 		}
+	}
+	for (const [page, kinds] of Object.entries(config.tables)) {
+		for (const row of Object.values(kinds).flat()) { akas[row] = normalizeName(config.display[page] ?? page, row); }
 	}
 	for (const [page, kinds] of Object.entries(config.members)) {
 		for (const [kind, iface] of Object.entries(kinds)) { akas[iface] = normalizeName(config.display[page] ?? page, kind); }
@@ -694,10 +686,11 @@ function referenceParts(node, ctx, seen) {
 	return [name];
 }
 
-// The page a class is documented on: its own, or the nearest documented ancestor's
+// The page or table row a class is documented on: its own, or the nearest documented ancestor's
 function pageOfClass(cls) {
 	for (let c = cls; c; c = baseOf(c)) {
 		const name = config.fold[c.name.text] ?? c.name.text;
+		if (tableRows.has(name)) { return name; }
 		if (pages.has(name)) { return config.display[name] ?? name; }
 	}
 	return null;

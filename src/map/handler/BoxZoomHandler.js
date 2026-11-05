@@ -11,7 +11,10 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 /** @import {Point} from '../../geometry/Point.js' */
 
-// Adds shift-drag zoom interaction to the map (zoom to a selected bounding box), enabled by default.
+/**
+ * Zooms to a box drawn with Shift-drag (`map.boxZoom`), enabled by default. Its `moved()` method tells whether a box is
+ * being drawn or was just drawn.
+ */
 export class BoxZoomHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerDown, this);
@@ -111,7 +114,7 @@ export class BoxZoomHandler extends Handler {
 		// a tiny box can collapse to a single LatLng at very high zoom, which fits at an Infinity zoom when no layer
 		// limits it; unlike fitBounds before a tile layer is added, no layer will come along to clamp it (#6709)
 		if (this._map.getBoundsZoom(bounds) !== Infinity) {
-			this._map.fitBounds(bounds);
+			this._map.fitBounds(bounds, {originalEvent: e});
 		}
 		this._map.fire('boxzoomend', {boxZoomBounds: bounds});
 	}

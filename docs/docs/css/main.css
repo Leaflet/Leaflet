@@ -152,7 +152,7 @@ h2:first-child {
 	margin-top: 1em;
 }
 
-h2:target, article:target > h2 {
+article:target > h2 {
 	color: #1EB300;
 }
 
@@ -536,6 +536,7 @@ table.plugins td:first-child a {
 #toc-copy h4 {
 	margin: 0;
 	padding-bottom: .333em;
+	font-size: 1em;
 	font-weight: 400;
 }
 
@@ -549,8 +550,20 @@ table.plugins td:first-child a {
 	list-style: none;
 }
 
+#toc-copy h4.open + ul {
+	display: block;
+	margin: .1em 0 .6em;
+	padding: 0;
+	font-size: .9375em;
+}
+
 #toc-copy ul li {
-	white-space: nowrap;
+	padding: .15em 0 .15em .75em;
+	border-left: 2px solid #eee;
+}
+
+#toc-copy li:has(> a.current) {
+	border-color: #198900;
 }
 
 #toc-copy h4.current {
@@ -558,14 +571,22 @@ table.plugins td:first-child a {
 	font-weight: 600;
 }
 
+#toc-copy a {
+	color: #555;
+	text-decoration: none;
+}
+
+#toc-copy a:hover {
+	color: black;
+}
+
 #toc-copy a.current {
+	color: #198900;
 	font-weight: 600;
 }
 
 #toc-copy ul li a {
-	position: relative;
-	padding: .25em .5em 0;
-	z-index: 10;
+	display: block;
 }
 
 #toc-copy .toc-col {
@@ -592,15 +613,17 @@ table.plugins td:first-child a {
 		background: white;
 	}
 
+	/* a drawer over the dimmed page */
 	#toc-copy.active {
 		background-color: white;
-		padding: 2em;
-		width: 100%;
+		padding: 2em 1.5em 2em 2em;
+		width: min(17em, 85vw);
 		height: 100%;
 		overflow-x: hidden;
-		overflow-y: scroll;
+		overflow-y: auto;
 		cursor: default;
 		box-sizing: border-box;
+		box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .3);
 	}
 
 	#toc-copy:before,
@@ -640,18 +663,15 @@ table.plugins td:first-child a {
 
 	#toc-copy.active div { display: block; }
 
-	#toc-copy h4.active, #toc-copy h4:hover {
+	#toc-copy h4.open, #toc-copy h4:hover {
 		color: black;
 		cursor: pointer;
 	}
 
-	#toc-copy h4.active + ul {
-		display: block;
-		padding: 0;
-		margin: 0 0 .5em;
+	#toc-copy ul li {
+		padding-top: .2em;
+		padding-bottom: .2em;
 	}
-
-	#toc-copy ul li a { padding: .25em 0; }
 }
 
 @media screen and (min-width: 900px) and (max-width: 1350px) {
@@ -661,7 +681,8 @@ table.plugins td:first-child a {
 	}
 
 	#toc-copy.active {
-		padding: 2.5em;
+		padding: 2.5em 1.5em 2.5em 2.5em;
+		width: min(17.5em, 85vw);
 	}
 
 	#toc-copy:before,
@@ -685,16 +706,24 @@ table.plugins td:first-child a {
 }
 
 @media screen and (width > 1350px) and (min-height: 600px) {
+	/* fills the margin left of the content text: (viewport - content width) / 2, less a gap */
 	#toc-copy {
 		display: block;
 		position: fixed;
 		top: 0;
 		left: 0;
-		width: auto;
-		height: auto;
-		padding: 2em;
+		box-sizing: border-box;
+		width: calc((100vw - 54em) / 2 - 1.5em);
+		max-height: 100vh;
+		overflow-y: auto;
+		padding: 2em 0 2em 1.5em;
 		opacity: 0;
-		transition: opacity .25s ease;
+		visibility: hidden;
+		transition: opacity .25s ease, visibility .25s;
+	}
+
+	.api-page #toc-copy {
+		width: calc((100vw - 60em) / 2 - 1.5em);
 	}
 
 	#toc-copy:before {
@@ -706,52 +735,16 @@ table.plugins td:first-child a {
 		text-transform: uppercase;
 	}
 
-	.scrolled #toc-copy { opacity: 1; }
-
-	#toc-copy h4 { padding-right: 3em; }
-
-	#toc-copy ul {
-		position: absolute;
-		left: 100%;
-		margin: -4.9em 0 0 -3.75em;
-		padding: 3em 6em 3em 0;
+	.scrolled #toc-copy {
+		opacity: 1;
+		visibility: visible;
 	}
 
-	#toc-copy h4.hover + ul {
-		display: block;
-	}
-
-	#toc-copy h4.hover + ul:before {
-		content: '';
-		position: absolute;
-		top: 3.775em;
-		right: 100%;
-		margin-right: .25em;
-		width: .75em;
-		height: 1em;
-		border-top: 2px solid #eee;
-	}
-
-	#toc-copy h4.hover + ul:after {
-		content: '';
-		position: absolute;
-		z-index: -1;
-		top: -1000px;
-		bottom: -1000px;
-		left: 0;
-		width: 11.5em;
-		background: white;
-		border-right: 1px solid #eee;
-	}
-
-	.plugins-page #toc-copy h4.hover + ul:after {
-		width: 15.5em;
-	}
-
-	#toc-copy h4:hover, #toc-copy h4.hover {
+	#toc-copy h4:hover {
 		color: black;
 		cursor: pointer;
 	}
+
 }
 
 /* API docs - tables */

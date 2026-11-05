@@ -1,12 +1,9 @@
 ---
 name: Yii2-locator
-category: 3rd-party-integration
 repo: https://github.com/sjaakp/yii2-locator
 author: Sjaak Priester
 author-url: https://github.com/sjaakp
 demo: https://sjaakpriester.nl/software/locator
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

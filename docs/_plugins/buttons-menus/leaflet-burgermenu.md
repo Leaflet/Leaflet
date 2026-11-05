@@ -1,0 +1,10 @@
+---
+name: leaflet-burgermenu
+repo: https://github.com/BenPortner/leaflet-burgermenu
+author: Benjamin W. Portner
+author-url: https://github.com/BenPortner
+demo: https://benportner.github.io/leaflet-burgermenu/
+compatible-v2: true
+---
+
+A lightweight Leaflet plugin that adds a burger menu with nested submenus to the map interface. Hovering over menu items reveals submenus, and clicking items can trigger custom actions.

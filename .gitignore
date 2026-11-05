@@ -17,3 +17,4 @@ yarn.lock
 .eslintcache
 .vitest-attachments/
 __screenshots__/
+/build/plugin-stats.json

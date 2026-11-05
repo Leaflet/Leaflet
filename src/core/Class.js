@@ -264,7 +264,10 @@ export class Class {
 
 		// NoInfer stops a contextual type (e.g. `const l: Layer = new Circle(…)`) from inferring O through this
 		// property, which would check the constructor options against `LayerOptions` instead of the class's own
-		/** @type {NoInfer<O>} */
+		/**
+		 * The options of the instance, inheriting from the default options of its class.
+		 * @type {NoInfer<O>}
+		 */
 		this.options = Util.setOptions(this);
 
 		this._initHooksLeft = getHookPlan(this.constructor).runners;

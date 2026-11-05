@@ -1,0 +1,10 @@
+---
+name: Leaflet Touch Helper
+repo: https://github.com/perliedman/leaflet-touch-helper
+author: Per Liedman
+author-url: https://github.com/perliedman
+demo: https://www.liedman.net/leaflet-touch-helper/
+compatible-v2: false
+---
+
+Makes it easy to touch vector overlays with thick fingers on a small display by adding a transparent, larger touch surface

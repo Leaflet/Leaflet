@@ -137,7 +137,10 @@ export class ImageOverlay extends Layer {
 		return this;
 	}
 
-	/** @param {{opacity?: number}} styleOpts */
+	/**
+	 * Sets the opacity of the overlay from a style object, so that `FeatureGroup`'s `setStyle` applies to it too.
+	 * @param {{opacity?: number}} styleOpts
+	 */
 	setStyle(styleOpts) {
 		if (styleOpts.opacity) {
 			this.setOpacity(styleOpts.opacity);
