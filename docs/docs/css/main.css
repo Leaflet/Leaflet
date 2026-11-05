@@ -152,7 +152,7 @@ h2:first-child {
 	margin-top: 1em;
 }
 
-h2:target, article:target > h2 {
+article:target > h2 {
 	color: #1EB300;
 }
 

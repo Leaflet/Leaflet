@@ -3,16 +3,19 @@
 <ul class="plugins">
 {%- for plugin in plugins %}
 	<li>
-		<div class="plugin-head">
-			<span>
-				<a class="plugin-repo-url" href="{{ plugin.repo }}">{{ plugin.name }}</a>
-				{%- if include.category and plugin.compatible-v2 == "true" %} <span class="v2" title="Works with Leaflet 2">Leaflet 2 ready</span>{% endif %}
-				<span class="plugin-meta">by {% if plugin.author-url != blank %}<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>{% else %}{{ plugin.author }}{% endif %}
+		<div class="plugin-info">
+			<div>
+				<span><a class="plugin-name" href="{{ plugin.repo }}">{{ plugin.name | replace: ".", ".<wbr>" }}</a>
+				{%- if include.category and plugin.compatible-v2 == "true" %} <span class="v2" title="Works with Leaflet 2">v2</span>{% endif %}</span>
+				{%- if plugin.stars %} <span class="plugin-stars" title="GitHub stars">★ {{ plugin.stars }}</span>{% endif %}
+			</div>
+			<div class="plugin-meta">
+				<span>{% if plugin.author-url != blank %}<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>{% else %}{{ plugin.author }}{% endif %}
 				{%- if plugin.demo != blank %} · <a href="{{ plugin.demo }}">Demo</a>{% endif %}</span>
-			</span>
-			<span class="repo-data"></span>
+				{%- if plugin.updated %} <time datetime="{{ plugin.updated }}" title="Last commit">{{ plugin.updatedMonth }}</time>{% endif %}
+			</div>
 		</div>
-		{{ plugin.content | strip }}
+		<div class="plugin-desc">{{ plugin.content | strip }}</div>
 	</li>
 {%- endfor %}
 </ul>

@@ -6,7 +6,7 @@ bodyclass: plugins-page
 
 ## Leaflet plugins database
 
-While Leaflet is meant to be as lightweight as possible, and focuses on a core set of features, an easy way to extend its functionality is to use third-party plugins. Thanks to the awesome community behind Leaflet, there are literally hundreds of nice plugins to choose from.
+While Leaflet is meant to be as lightweight as possible, and focuses on a core set of features, an easy way to extend its functionality is to use third-party plugins. Thanks to the awesome community behind Leaflet, there are literally hundreds of nice plugins to choose from. Within each section, they're sorted by GitHub stars.
 
 <div id="toc" class="clearfix">
 	<div class="toc-col">
@@ -369,7 +369,7 @@ Leaflet keeps it simple. If you can think of a feature that is not required by a
 
 There are no hard requirements on how to create your own plugin, but all developers are encouraged to read the recommendations in the [plugin guide](https://github.com/Leaflet/Leaflet/blob/main/PLUGIN-GUIDE.md).
 
-Once your plugin is ready, you can submit it: just send a pull request with a new plugin file in [/docs/_plugins/](https://github.com/Leaflet/Leaflet/tree/main/docs/_plugins)to our GitHub repository.
+Once your plugin is ready, you can submit it: copy [`template.md`](https://github.com/Leaflet/Leaflet/blob/main/docs/_plugins/template.md) into the category folder in [/docs/_plugins/](https://github.com/Leaflet/Leaflet/tree/main/docs/_plugins) that fits your plugin, fill it in, and send a pull request to our GitHub repository. If your plugin works with Leaflet 2, set `compatible-v2: true` to have it listed in the [Ready for Leaflet 2](#ready-for-leaflet-2) section too.
 
 <style>
 ul.plugins {
@@ -378,24 +378,34 @@ ul.plugins {
 	border-top: 1px solid #eee;
 }
 ul.plugins li {
+	display: grid;
+	grid-template-columns: 18em minmax(0, 1fr);
+	gap: 0.2em 1.5em;
 	padding: 0.6em 0;
 	border-bottom: 1px solid #eee;
 }
-ul.plugins p {
-	margin: 0.15em 0 0;
-}
-.plugin-head {
+.plugin-info > div {
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: center;
-	gap: 0 1em;
+	align-items: baseline;
+	gap: 0 0.5em;
 }
-.plugin-repo-url {
+.plugin-info > div > :first-child {
+	flex: 1;
+	min-width: 0;
+}
+.plugin-name {
 	font-weight: bold;
+	overflow-wrap: anywhere;
 }
-.plugin-meta {
+.plugin-meta,
+.plugin-stars {
 	color: #777;
+	font-size: 0.9em;
+	font-variant-numeric: tabular-nums;
+}
+.plugin-stars,
+.plugin-meta time {
+	white-space: nowrap;
 }
 .plugin-meta a {
 	color: inherit;
@@ -404,6 +414,9 @@ ul.plugins p {
 .plugin-meta a:hover {
 	text-decoration: underline;
 }
+.plugin-desc p {
+	margin: 0;
+}
 .v2 {
 	font-size: 0.75em;
 	font-weight: bold;
@@ -411,73 +424,24 @@ ul.plugins p {
 	background: #4a9b2f;
 	border-radius: 3px;
 	padding: 0.1em 0.4em;
-	vertical-align: 0.1em;
 	white-space: nowrap;
 }
-.repo-data {
-	white-space: nowrap;
-}
-.repo-data > img {
-	height: 20px;
-	max-width: none;
-	margin-left: 5px;
-	filter: grayscale(1);
-}
-ul.plugins li:hover .repo-data > img {
-	filter: none;
+@media (max-width: 700px) {
+	ul.plugins li {
+		grid-template-columns: minmax(0, 1fr);
+	}
 }
 </style>
 
 <script>
-function loadRepoData() {
-	const regexpGithubCom = /^https?:\/\/(?:www\.)?github\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
-	const regexpGithubIO = /^https?:\/\/([\w\d-_.]+)\.github\.io\/([\w\d-_.]+)\/?/;
-	const regexpGitlabCom = /^https?:\/\/(?:www\.)?gitlab\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
-
-	const rows = document.querySelectorAll('.plugins li');
-	rows.forEach((row) => {
-		try {
-			const repoData = row.querySelector('.repo-data');
-			if (repoData) {
-				const link = row.querySelector('.plugin-repo-url').href;
-				let badges = [];
-
-				const matchGithubCom = link.match(regexpGithubCom);
-				if (matchGithubCom) {
-					const repo = `${matchGithubCom[1]}/${matchGithubCom[2]}`;
-					badges = [
-						`https://badgen.net/github/last-commit/${repo}`,
-						`https://badgen.net/github/stars/${repo}`
-					];
-				}
-
-				const matchGithubIO = link.match(regexpGithubIO);
-				if (matchGithubIO) {
-					const repo = `${matchGithubIO[1]}/${matchGithubIO[2]}`;
-					badges = [
-						`https://badgen.net/github/last-commit/${repo}`,
-						`https://badgen.net/github/stars/${repo}`
-					];
-				}
-
-				const matchGitlabCom = link.match(regexpGitlabCom);
-				if (matchGitlabCom) {
-					const repo = `${matchGitlabCom[1]}/${matchGitlabCom[2]}`;
-					badges = [
-						`https://badgen.net/gitlab/last-commit/${repo}`,
-						`https://badgen.net/gitlab/stars/${repo}`
-					];
-				}
-
-				badges.forEach((badge) => {
-					repoData.innerHTML += `<img src="${badge}" alt="" loading="lazy"/>`;
-				});
-			}
-		} catch (e) {
-			console.error(e);
-		}
-	});
+// shows commit dates as "3 weeks ago" etc., which a build would leave stale until the next one
+{
+	const relTime = new Intl.RelativeTimeFormat('en', {numeric: 'auto'});
+	const units = [['year', 365], ['month', 30], ['week', 7], ['day', 1]];
+	for (const time of document.querySelectorAll('.plugin-meta time')) {
+		const days = (Date.now() - new Date(time.dateTime)) / 864e5;
+		const [unit, size] = units.find(([, size]) => days >= size) ?? units[3];
+		time.textContent = relTime.format(-Math.floor(days / size), unit);
+	}
 }
-loadRepoData();
-
 </script>

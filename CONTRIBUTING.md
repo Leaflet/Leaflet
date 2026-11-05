@@ -160,6 +160,11 @@ The site uses the released Leaflet from jsDelivr. To try the pages with Leaflet 
 run `npm run preview`. The 1.x tutorials at `/examples-v1/` are taken from a pinned commit of the `v1` branch
 (see `refs` in [`build/site.json`](./build/site.json)).
 
+The plugins page shows the stars and last commit date of each plugin repo, and sorts the plugins by stars.
+Locally it shows them only after you run `node build/plugin-stats.js`, which fetches them into `build/plugin-stats.json`
+(it needs a `GITHUB_TOKEN` or the [GitHub CLI](https://cli.github.com/) to be logged in). Run it again to fetch the repos of
+newly added plugins, or with `--refresh` to update all of them.
+
 ### API documentation
 
 The API reference is generated from the JSDoc comments next to every class, method, option and event in `src/`,

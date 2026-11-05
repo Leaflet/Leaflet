@@ -233,3 +233,4 @@ Once your plugin is published, it is a good idea to add it to the [Leaflet plugi
 
 Once the pull request is done, a Leaflet maintainer will have a quick look at your
 plugin and, if everything looks right, your plugin will appear in the list shortly thereafter.
+The list shows the stars and last commit date of each plugin's GitHub or GitLab repository, and sorts plugins by stars.
