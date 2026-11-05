@@ -1,0 +1,13 @@
+---
+name: Leaflet.Legend
+category: layer-switching-legends
+repo: https://github.com/ptma/Leaflet.Legend
+author: JJ Jin
+author-url: https://github.com/ptma
+demo: https://ptma.github.io/Leaflet.Legend/examples/legend.html
+compatible-v0:
+compatible-v1: true
+compatible-v2: false
+---
+
+Display legend symbols and toggle overlays.

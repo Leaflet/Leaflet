@@ -142,10 +142,13 @@ for (const [file, {path, site, replace}] of outputs) {
 
 if (site.preview) { cpSync('src', join(out, 'preview'), {recursive: true}); }
 
+// A concurrent build can move DEST away before us or land its own between our two renames. Overlapping builds
+// see practically the same sources, so whichever lands first stays and the other is dropped.
 const old = `${out}-old`;
-if (existsSync(DEST)) { renameSync(DEST, old); }
-renameSync(out, DEST);
+try { renameSync(DEST, old); } catch (err) { if (err.code !== 'ENOENT') { throw err; } }
+try { renameSync(out, DEST); } catch (err) { if (err.code !== 'ENOTEMPTY' && err.code !== 'EEXIST') { throw err; } }
 rmSync(old, {recursive: true, force: true});
+rmSync(out, {recursive: true, force: true});
 
 console.log(`Built ${outputs.size + site.posts.length} files in ${Math.round(performance.now() - start)} ms`);
 

@@ -1,0 +1,13 @@
+---
+name: Leaflet Panel Layers
+category: layer-switching-legends
+repo: https://github.com/stefanocudini/leaflet-panel-layers
+author: Stefano Cudini
+author-url: https://opengeo.tech/
+demo: 
+compatible-v0:
+compatible-v1: true
+compatible-v2: false
+---
+
+Leaflet Control Layers extended for group of layers and icons legend

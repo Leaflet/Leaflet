@@ -1,0 +1,13 @@
+---
+name: L.DraggableEnhancer
+category: navigation
+repo: https://github.com/mnisvdn/Leaflet.DraggableEnhancer
+author: Vincent Dechandon
+author-url: https://github.com/idawave
+demo: 
+compatible-v0:
+compatible-v1: true
+compatible-v2: false
+---
+
+Modify the default L.Draggable handler (responsible for map panning, ...) to make it work properly if one of the map container's parents has predefined handlers like "event.stopPropagation()' attached to a "mousemove" event for example.

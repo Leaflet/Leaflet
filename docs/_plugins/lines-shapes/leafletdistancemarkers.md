@@ -1,0 +1,13 @@
+---
+name: leaflet-distance-markers
+category: lines-shapes
+repo: https://github.com/adoroszlai/leaflet-distance-markers
+author: Doroszlai, Attila
+author-url: https://github.com/adoroszlai
+demo: http://adoroszlai.github.io/leaflet-distance-markers/
+compatible-v0:
+compatible-v1: true
+compatible-v2: false
+---
+
+Allows displaying markers along a route (L.Polyline) at equivalent distances (eg. one per mile).

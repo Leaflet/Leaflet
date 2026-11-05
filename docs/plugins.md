@@ -16,7 +16,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li> <a href='#basemap-formats'>Basemap formats</a></li>
 			<li> <a href='#non-map-base-layers'>Non-map base layers</a></li>
 			<li> <a href='#tileimage-display'>Tile/image display</a></li>
-			<li> <a href='#tile-load'>Tile load</a></li>
+			<li> <a href='#tile-loading'>Tile loading</a></li>
 			<li> <a href='#vector-tiles'>Vector tiles</a></li>
 		</ul>
 		<h4>Overlay data</h4>
@@ -30,7 +30,9 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	<div class="toc-col">
 		<h4>Overlay display</h4>
 		<ul>
-			<li><a href="#markers--renderers">Markers &amp; renderers</a></li>
+			<li><a href="#markers--icons">Markers &amp; icons</a></li>
+			<li><a href="#lines--shapes">Lines &amp; shapes</a></li>
+			<li><a href="#styling--labels">Styling &amp; labels</a></li>
 			<li><a href="#overlay-animations">Overlay animations</a></li>
 			<li><a href="#clusteringdecluttering">Clustering/decluttering</a></li>
 			<li><a href="#heatmaps">Heatmaps</a></li>
@@ -47,31 +49,27 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	<div class="toc-col">
 		<h4>Map interaction</h4>
 		<ul>
-			<li><a href="#layer-switching-controls">Layer switching controls</a></li>
-			<li><a href="#interactive-panzoom">Interactive pan/zoom</a></li>
-			<li><a href="#bookmarked-panzoom">Bookmarked pan/zoom</a></li>
-			<li><a href="#fullscreen-controls">Fullscreen</a></li>
+			<li><a href="#layer-switching--legends">Layer switching &amp; legends</a></li>
+			<li><a href="#navigation">Navigation</a></li>
 			<li><a href="#minimaps--synced-maps">Minimaps &amp; synced maps</a></li>
+			<li><a href="#location--coordinates">Location &amp; coordinates</a></li>
 			<li><a href="#measurement">Measurement</a></li>
-			<li><a href="#mouse-coordinates">Mouse coordinates</a></li>
-			<li><a href="#events">Events</a></li>
-			<li><a href="#user-interface">User interface</a></li>
-			<li><a href="#printexport">Print/export</a></li>
-			<li><a href="#geolocation">Geolocation</a></li>
+			<li><a href="#buttons--menus">Buttons &amp; menus</a></li>
+			<li><a href="#sidebars--panels">Sidebars &amp; panels</a></li>
+			<li><a href="#print--export">Print &amp; export</a></li>
 		</ul>
 	</div>
 	<div class="toc-col">
-		<h4>Miscellaneous</h4>
+		<h4>Analysis &amp; services</h4>
 		<ul>
 			<li><a href="#geoprocessing">Geoprocessing</a></li>
 			<li><a href="#routing">Routing</a></li>
 			<li><a href="#geocoding">Geocoding</a></li>
-			<li><a href="#plugin-collections">Plugin collections</a></li>
 		</ul>
 		<h4>Integration</h4>
 		<ul>
 			<li><a href="#frameworks--build-systems">Frameworks &amp; build systems</a></li>
-			<li><a href="#third-party-integration">Third-party</a></li>
+			<li><a href="#third-party-services">Third-party services</a></li>
 		</ul>
 		<hr>
 		<a href="#ready-for-leaflet-2">Ready for Leaflet 2</a><br>
@@ -95,7 +93,7 @@ The following plugins allow loading different maps and provide functionality to 
 * [Basemap formats](#basemap-formats)
 * [Non-map base layers](#non-map-base-layers)
 * [Tile/image display](#tileimage-display)
-* [Tile load](#tile-load)
+* [Tile loading](#tile-loading)
 * [Vector tiles](#vector-tiles)
 
 
@@ -124,7 +122,7 @@ The following plugins change the way that tile or image layers are displayed in 
 
 {% include plugin_list.html category="tile-image-display" %}
 
-### Tile load
+### Tile loading
 
 The following plugins change the way that tile layers are loaded into the map.
 
@@ -166,7 +164,7 @@ These plugins create useful overlays from scratch, no loading required.
 
 ### Data providers
 
-Load overlay data from third-party-services. See also [basemap providers](#basemap-providers) and [plugin collections](#collections).
+Load overlay data from third-party services. See also [basemap providers](#basemap-providers).
 
 {% include plugin_list.html category="data-providers" %}
 
@@ -175,22 +173,36 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 
 The following plugins provide new ways of displaying overlay data information.
 
-* [Markers & renderers](#markers--renderers)
+* [Markers & icons](#markers--icons)
+* [Lines & shapes](#lines--shapes)
+* [Styling & labels](#styling--labels)
 * [Overlay animations](#overlay-animations)
 * [Clustering/decluttering](#clusteringdecluttering)
 * [Heatmaps](#heatmaps)
 * [Data visualization](#data-visualization)
 
 
-### Markers & renderers
+### Markers & icons
 
-These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also know these as symbolizers.
+New kinds of markers and icons: icon fonts, SVG and canvas markers, photos, directional symbols, and markers for points outside the view.
 
-{% include plugin_list.html category="markers-renderers" %}
+{% include plugin_list.html category="markers-icons" %}
+
+### Lines & shapes
+
+Draw curves, geodesic lines, arcs and new shapes, or decorate lines with arrows, patterns and offsets.
+
+{% include plugin_list.html category="lines-shapes" %}
+
+### Styling & labels
+
+Style overlays from data, fill them with patterns, or label them. Leaflet users versed in GIS also know these as symbolizers.
+
+{% include plugin_list.html category="styling-labels" %}
 
 ### Overlay animations
 
-These plugins animate markers or some geometries. See also [geometries with time or elevation](#geometryinteraction-time).
+These plugins animate markers or some geometries. See also [time & elevation](#time--elevation).
 
 {% include plugin_list.html category="overlay-animations" %}
 
@@ -242,7 +254,7 @@ Plugins that search for overlays and enhance how to display information about th
 
 ### Area/overlay selection
 
-These plugins help users select either overlays or areas in the map.
+These plugins help users select either overlays or areas in the map, or make overlays easier to hover and click.
 
 {% include plugin_list.html category="area-overlay-selection" %}
 
@@ -251,42 +263,26 @@ These plugins help users select either overlays or areas in the map.
 
 New ways to interact with the map itself.
 
-* [Layer switching controls](#layer-switching-controls)
-* [Interactive pan/zoom](#interactive-panzoom)
-* [Bookmarked pan/zoom](#bookmarked-panzoom)
-* [Fullscreen](#fullscreen-controls)
+* [Layer switching & legends](#layer-switching--legends)
+* [Navigation](#navigation)
 * [Minimaps & synced maps](#minimaps--synced-maps)
+* [Location & coordinates](#location--coordinates)
 * [Measurement](#measurement)
-* [Mouse coordinates](#mouse-coordinates)
-* [Events](#events)
-* [User interface](#user-interface)
-* [Print/export](#printexport)
-* [Geolocation](#geolocation)
+* [Buttons & menus](#buttons--menus)
+* [Sidebars & panels](#sidebars--panels)
+* [Print & export](#print--export)
 
-### Layer switching controls
+### Layer switching & legends
 
-The following plugins enhance or extend `LayersControl`.
+The following plugins enhance or extend `LayersControl`, or add legends for the layers on the map.
 
-{% include plugin_list.html category="layer-switching-controls" %}
+{% include plugin_list.html category="layer-switching-legends" %}
 
+### Navigation
 
-### Interactive pan/zoom
+Change the way the user moves around the map: zoom and pan controls, map rotation, saved and shared views, fullscreen, and control over scroll and touch gestures.
 
-Change the way the user can interactively move around the map.
-
-{% include plugin_list.html category="interactive-pan-zoom" %}
-
-### Bookmarked pan/zoom
-
-Change the way the user is moved around the map, by jumping to predefined/stored places.
-
-{% include plugin_list.html category="bookmarked-pan-zoom" %}
-
-### Fullscreen controls
-
-Allows display of the map in full-screen mode.
-
-{% include plugin_list.html category="fullscreen-controls" %}
+{% include plugin_list.html category="navigation" %}
 
 ### Minimaps & synced maps
 
@@ -294,31 +290,31 @@ Display two maps at once. One of them might be a different size and zoom level, 
 
 {% include plugin_list.html category="minimaps-synced-maps" %}
 
+### Location & coordinates
+
+Show the user's location, display the coordinates under the cursor, or let the user pick a location.
+
+{% include plugin_list.html category="location-coordinates" %}
+
 ### Measurement
 
-Allow the user to measure distances or areas.
+Allow the user to measure distances or areas, or show a scale.
 
 {% include plugin_list.html category="measurement" %}
 
-### Mouse coordinates
+### Buttons & menus
 
-Show the geographical coordinates under the mouse cursor in different ways.
+Buttons, toolbars, context menus, sliders and other custom controls.
 
-{% include plugin_list.html category="mouse-coordinates" %}
+{% include plugin_list.html category="buttons-menus" %}
 
-### Events
+### Sidebars & panels
 
-These plugins extend Leaflet event handling.
+Sidebars, windows, messages and loading indicators.
 
-{% include plugin_list.html category="events" %}
+{% include plugin_list.html category="sidebars-panels" %}
 
-### User interface
-
-Buttons, sliders, toolbars, sidebars, and panels.
-
-{% include plugin_list.html category="user-interface" %}
-
-### Print/export
+### Print & export
 
 Print or export your map.
 
@@ -329,14 +325,8 @@ Print or export your map.
 
 {% include plugin_list.html category="print-export" %}
 
-### Geolocation
 
-Plugins that extend Leaflet's geolocation capabilities.
-
-{% include plugin_list.html category="geolocation" %}
-
-
-## Miscellaneous
+## Analysis & services
 
 ### Geoprocessing
 
@@ -356,14 +346,6 @@ External services that transform an address or the name of a place into latitude
 
 {% include plugin_list.html category="geocoding" %}
 
-### Plugin collections
-
-Sets of plugins that span several categories.
-
-Plugin developers: please keep future plugins in individual repositories.
-
-{% include plugin_list.html category="plugin-collections" %}
-
 
 ## Integration
 
@@ -373,7 +355,7 @@ Ease your development integrating Leaflet into a development framework or automa
 
 {% include plugin_list.html category="frameworks-build-systems" %}
 
-### Third-party integration
+### Third-party services
 
 The following plugins integrate Leaflet into third party services or websites.
 
