@@ -1,7 +1,7 @@
 ---
 name: ngx-leaflet
 category: frameworks-build-systems
-repo: https://github.com/Asymmetrik/ngx-leaflet
+repo: https://github.com/bluehalo/ngx-leaflet
 author: Asymmetrik, Ltd.
 author-url: https://asymmetrik.com/
 demo: 

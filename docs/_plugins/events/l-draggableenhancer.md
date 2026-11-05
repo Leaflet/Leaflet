@@ -1,7 +1,7 @@
 ---
 name: L.DraggableEnhancer
 category: events
-repo: https://github.com/idawave/Leaflet.DraggableEnhancer
+repo: https://github.com/mnisvdn/Leaflet.DraggableEnhancer
 author: Vincent Dechandon
 author-url: https://github.com/idawave
 demo: 

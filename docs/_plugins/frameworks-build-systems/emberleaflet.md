@@ -1,7 +1,7 @@
 ---
 name: ember-leaflet
 category: frameworks-build-systems
-repo: https://miguelcobain.github.io/ember-leaflet/
+repo: https://github.com/adopted-ember-addons/ember-leaflet
 author: Miguel Andrade
 author-url: https://github.com/miguelcobain
 demo: 

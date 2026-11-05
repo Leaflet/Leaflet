@@ -1,7 +1,7 @@
 ---
 name: q-cluster
 category: clustering-decluttering
-repo: https://github.com/spatialdev/q-cluster
+repo: https://github.com/locana-co/q-cluster
 author: Nicholas Hallahan
 author-url: https://github.com/hallahan
 demo: http://spatialdev.github.io/q-cluster/demo/index.html

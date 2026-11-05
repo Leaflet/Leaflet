@@ -1,7 +1,7 @@
 ---
 name: leaflet-ais-tracksymbol-search
 category: markers-renderers
-repo: https://github.com/PowerPan/leaflet-ais-tracksymbol-search
+repo: https://github.com/wattnpapa/leaflet-ais-tracksymbol-search
 author: Johannes Rudolph
 author-url: https://github.com/powerpan
 demo: 

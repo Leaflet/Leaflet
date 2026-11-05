@@ -1,7 +1,7 @@
 ---
 name: Leaflet.mouseCoordinates
 category: mouse-coordinates
-repo: https://github.com/PowerPan/leaflet.mouseCoordinate
+repo: https://github.com/wattnpapa/leaflet.mouseCoordinate
 author: Johannes Rudolph
 author-url: https://github.com/PowerPan
 demo: 

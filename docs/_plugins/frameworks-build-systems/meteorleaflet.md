@@ -1,7 +1,7 @@
 ---
 name: meteor-leaflet
 category: frameworks-build-systems
-repo: https://github.com/bevanhunt/meteor-leaflet
+repo: https://github.com/truemagic-coder/meteor-leaflet
 author: Bevan Hunt
 author-url: https://github.com/bevanhunt
 demo: 
