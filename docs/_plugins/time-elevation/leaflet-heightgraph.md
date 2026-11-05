@@ -7,4 +7,4 @@ demo: https://giscience.github.io/Leaflet.Heightgraph/
 compatible-v2: false
 ---
 
-Inspired by Leaflet.Elevation this Leaflet plugin allows you to view interactive height profiles stored as GeoJSON featuring the handy ability to visualize arbitrary segments (e.g. surface types or steepness categories) with customized colors stored as properties within the GeoJSON itself.
+Interactive height profiles from GeoJSON, with segments (e.g. surface type or steepness) colored by feature properties. Inspired by Leaflet.Elevation.

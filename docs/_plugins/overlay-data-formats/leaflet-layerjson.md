@@ -7,4 +7,4 @@ demo: https://opengeo.tech/maps/leaflet-layerjson/
 compatible-v2: false
 ---
 
-Simple way for transform any JSON data source in a Leaflet Layer, load JSON data in layer and minimize remote requests with caching system.
+Turns any JSON data source into a Leaflet layer, with caching to minimize remote requests.

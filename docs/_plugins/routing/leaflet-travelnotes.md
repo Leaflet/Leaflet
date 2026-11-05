@@ -7,4 +7,4 @@ demo: https://wwwouaiebe.github.io/TravelNotes/demo/viewer/?fil=aHR0cHM6Ly93d3dv
 compatible-v2: false
 ---
 
-Standalone app with editable markers and routing engine for leaflet. The routing engine have plugins for Mapbox, GraphHopper and OSRM and can be used for car, bike or pedestrian route.
+Standalone app with editable markers and routing for car, bike or walking, with routing engines for Mapbox, GraphHopper and OSRM.

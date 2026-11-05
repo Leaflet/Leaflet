@@ -7,4 +7,4 @@ demo: https://gabriel-russo.github.io/Leaflet.BetterFileLayer/example/
 compatible-v2: false
 ---
 
-The definitive plugin to load your spatialized files into leaflet.
+Load spatial data files of many formats into the map.

@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Modify the default L.Draggable handler (responsible for map panning, ...) to make it work properly if one of the map container's parents has predefined handlers like "event.stopPropagation()' attached to a "mousemove" event for example.
+Makes map panning work when a parent of the map container stops the propagation of `mousemove` events.

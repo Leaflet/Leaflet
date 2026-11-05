@@ -7,7 +7,4 @@ demo: https://meteo-concept.github.io/leaflet-inflatable-markers-group/
 compatible-v2: false
 ---
 
-An alternative to the most excellent Leaflet marker cluster plugin.
-This plugin gives markers two states : an inflated, normal, state and a deflated
-state which shows less information, takes up less space and is used to declutter
-the map.
+An alternative to marker clustering: markers deflate into a smaller, simpler state to declutter the map.

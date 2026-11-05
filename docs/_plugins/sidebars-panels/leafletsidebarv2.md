@@ -7,4 +7,4 @@ demo: https://noerw.github.io/leaflet-sidebar-v2/examples/
 compatible-v2: false
 ---
 
-A responsive, tabbed sidebar with HTML &amp; JS API. Compatible with old (0.7) and current leaflet.
+A responsive, tabbed sidebar with HTML &amp; JS API.

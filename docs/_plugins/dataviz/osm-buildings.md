@@ -7,4 +7,4 @@ demo: https://osmbuildings.org/
 compatible-v2: false
 ---
 
-Amazing JS library for visualizing 3D OSM building geometry on top of Leaflet.
+JS library for visualizing 3D OSM buildings on top of Leaflet.

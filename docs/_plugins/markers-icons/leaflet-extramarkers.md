@@ -7,4 +7,4 @@ demo: https://coryasilva.github.io/Leaflet.ExtraMarkers/
 compatible-v2: false
 ---
 
-Shameless copy of Awesome-Markers with more shapes, colors and semantic-ui support
+Awesome-Markers with more shapes, colors and Semantic UI support.

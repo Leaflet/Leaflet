@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Find interesting features near a location using Mapbox Vector Tiles data, to add			interactive functionality to a tile layer with speed and limited bandwidth.
+Find interesting features near a location using Mapbox Vector Tiles data, to add interactive functionality to a tile layer with speed and limited bandwidth.

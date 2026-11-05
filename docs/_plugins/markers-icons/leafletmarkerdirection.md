@@ -7,4 +7,4 @@ demo: https://thomas2077.github.io/leaflet-marker-direction/examples/marker-dire
 compatible-v2: false
 ---
 
-display the path and the direction of the marker.
+Displays the path and the direction of a marker.

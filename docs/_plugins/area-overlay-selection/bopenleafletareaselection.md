@@ -7,4 +7,4 @@ demo: https://bopen.github.io/leaflet-area-selection/
 compatible-v2: false
 ---
 
-leaflet-area-selection allows to easily select a polygonal area on the map.
+Select a polygonal area on the map.

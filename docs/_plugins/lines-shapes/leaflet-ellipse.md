@@ -7,4 +7,4 @@ demo: https://jdfergason.github.io/Leaflet.Ellipse/
 compatible-v2: false
 ---
 
-Leaflet.ellipse place ellipses on map by specifying center point, semi-major axis,			semi-minor axis, and tilt degrees from west.
+Draws ellipses given a center point, semi-major and semi-minor axes, and tilt from west in degrees.

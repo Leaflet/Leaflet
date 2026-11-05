@@ -7,4 +7,4 @@ demo: https://metopio.github.io/leaflet-draggable-tooltips/demo/index.html
 compatible-v2: false
 ---
 
-Makes marker tooltips **draggable** and **pinnable**. Click a marker to keep its tooltip open, then drag it freely across the map. Supports touch, survives pan & zoom, fires custom drag events, and is non-destructive. Only requires Leaflet.
+Makes marker tooltips draggable and pinnable: click a marker to keep its tooltip open, then drag it anywhere. Supports touch and fires drag events.

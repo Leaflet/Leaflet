@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-A Block for the New WordPress Block Editor based on Leaflet, it allow add and custom maps from a visual interface.
+A WordPress block editor block for adding and customizing maps through a visual interface.

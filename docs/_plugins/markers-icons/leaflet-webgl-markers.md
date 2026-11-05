@@ -7,6 +7,4 @@ demo: https://tang-tc.github.io/leaflet-webgl-markers/
 compatible-v2: false
 ---
 
-Renders millions of point markers on a single WebGL canvas, with GPU-side
-Mercator projection, FBO color-coded picking, and zero redraw while dragging or
-zooming. TypeScript-first, ESM, no runtime dependencies beyond Leaflet.
+Renders millions of point markers on a single WebGL canvas, with projection and picking on the GPU and no redraws while panning or zooming.

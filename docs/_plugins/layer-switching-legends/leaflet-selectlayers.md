@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-a Leaflet plugin which adds new control to switch between different layers on the map. New control replaces L.Control.Layers radio button panel with select tag.
+A layer control that replaces the radio buttons of L.Control.Layers with a select element.

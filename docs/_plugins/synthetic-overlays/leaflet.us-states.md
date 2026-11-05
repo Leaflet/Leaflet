@@ -7,4 +7,4 @@ demo: https://ericdalnas.github.io/leaflet.us-states/demo/index.html
 compatible-v2: false
 ---
 
-Extends [leaflet.regions](https://github.com/EricDalnas/leaflet.regions) to render US state boundaries from GeoJSON with per-state color, permanent labels (with zoom-based abbreviation), and click/hover popups. Supports data binding via a `states` key→object map, choropleth coloring, and `defaultVisible: false` to show only specific states with minimal code.
+Renders US state boundaries with per-state colors, permanent labels (abbreviated when zoomed out) and click/hover popups. Built on [leaflet.regions](https://github.com/EricDalnas/leaflet.regions).

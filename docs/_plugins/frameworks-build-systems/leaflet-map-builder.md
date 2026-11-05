@@ -7,4 +7,4 @@ demo: https://gherardovarando.github.io/leaflet-map-builder/
 compatible-v2: false
 ---
 
-It populates a leaflet map from a configuration object, can also creates zoom, layers, attribution draw controls.
+Builds a map from a configuration object, including zoom, layers, attribution and draw controls.

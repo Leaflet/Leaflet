@@ -7,4 +7,4 @@ demo: https://yuukitoriyama.github.io/Leaflet.MousePosition.ts/
 compatible-v2: true
 ---
 
-A fully custmizable coordinate viewer written in TypeScript. You can change how this plugin looks by creating a custom component with JSX.
+A fully customizable coordinate viewer written in TypeScript, with its look defined by a custom JSX component.

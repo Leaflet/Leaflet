@@ -7,4 +7,4 @@ demo: http://lab.digital-democracy.org/leaflet-bing-layer/
 compatible-v2: false
 ---
 
-Add <a href="https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery?redirectedfrom=MSDN">Bing Maps tiles</a> to your Leaflet Map. Requires Leaflet v1.0.0.beta.2 or later.
+Add <a href="https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery?redirectedfrom=MSDN">Bing Maps tiles</a> to your Leaflet Map.

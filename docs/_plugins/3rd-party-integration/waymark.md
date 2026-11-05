@@ -7,4 +7,4 @@ demo: https://www.waymark.dev/
 compatible-v2: false
 ---
 
-Waymark is an open-source mapping plugin for WordPress, designed to help users create beautiful interactive maps. With features like GPX, KML, and GeoJSON import, as well as customizable meta fields and types, Waymark provides a flexible solution for map creation.
+A WordPress plugin for creating interactive maps, with GPX, KML and GeoJSON import and custom meta fields.

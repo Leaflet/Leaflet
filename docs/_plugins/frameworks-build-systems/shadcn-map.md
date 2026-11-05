@@ -1,5 +1,5 @@
 ---
-name: \@shadcn-map/map
+name: @shadcn-map/map
 repo: https://github.com/tonghohin/shadcn-map
 author: Hin Tong
 author-url: https://tonghohin.vercel.app/

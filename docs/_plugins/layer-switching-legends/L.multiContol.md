@@ -7,4 +7,4 @@ demo: https://serene-heyrovsky-2fb229.netlify.app/
 compatible-v2: false
 ---
 
-Leaflet plugin to implements layers control with multiple functionality such as opacity, color, bringToFront, bringToBack, zoomToLayer, delete and legend.
+Layers control with opacity, color, bring to front/back, zoom to layer, delete and legend.

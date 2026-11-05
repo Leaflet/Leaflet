@@ -7,4 +7,4 @@ demo: https://antoniovlx.github.io/leaflet-calendar/examples/index.html
 compatible-v2: false
 ---
 
-leaflet-calendar allows you to add a calendar picker and trigger a custom function when a date is selected.
+Adds a calendar picker that calls a custom function when a date is selected.

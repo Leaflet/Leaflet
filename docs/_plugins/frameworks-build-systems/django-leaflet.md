@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Use Leaflet in your **Django** projects. Includes admin integration, form widget, template tags, and much more!
+Use Leaflet in your Django projects. Includes admin integration, form widget, template tags, and much more!

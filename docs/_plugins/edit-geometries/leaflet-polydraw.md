@@ -7,4 +7,4 @@ demo: https://polydraw.ao-tech.se
 compatible-v2: false
 ---
 
-A powerful plugin for creating and editing polygons on Leaflet maps. It supports freehand drawing, precise point-to-point creation, and smart merging of overlapping shapes. Includes advanced features like hole creation, vertex editing, and drag-and-drop repositioning.
+Draws and edits polygons, freehand or point by point, with merging of overlapping shapes, holes, vertex editing and dragging.

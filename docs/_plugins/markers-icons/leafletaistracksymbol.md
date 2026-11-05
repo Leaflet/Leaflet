@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-AIS Extension for leaflet-tracksymbol It displays AIS Contacts on the Map.
+AIS extension for leaflet-tracksymbol that displays AIS contacts on the map.

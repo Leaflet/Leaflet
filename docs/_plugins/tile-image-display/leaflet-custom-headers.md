@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Leaflet Custom Headers is an extension to `L.TileLayer` that allows you to add **custom headers** to HTTP requests when loading tiles.
+Extends `L.TileLayer` to add custom headers to tile requests.

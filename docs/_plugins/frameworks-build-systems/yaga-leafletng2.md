@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Granular integration into Angular2/4.
+Granular integration into Angular.

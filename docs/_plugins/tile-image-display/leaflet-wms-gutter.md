@@ -6,4 +6,4 @@ demo: https://aronsommer.github.io/leaflet-wms-gutter/
 compatible-v2: false
 ---
 
-Add gutter support to Leaflet's WMS tile layers to prevent icons and symbols from being cut off at tile boundaries. Implements OpenLayers-style gutter rendering using canvas to crop overlapping tiles, ensuring symbols spanning tile boundaries render fully.
+Adds gutter support to WMS tile layers, so that symbols crossing tile boundaries don't get cut off.

@@ -7,4 +7,4 @@ demo: https://rubenspgcavalcante.github.io/leaflet-ant-path/
 compatible-v2: false
 ---
 
-Leaflet.AntPath put a flux animation (like ants walking) into a Polyline.
+Animates a polyline with a flowing dash pattern, like ants walking.

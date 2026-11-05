@@ -1,7 +1,7 @@
 ---
 name: Leaflet.heat
 repo: https://github.com/Leaflet/Leaflet.heat
-author: Vladimir Agafonkin
+author: Volodymyr Agafonkin
 author-url: https://github.com/mourner
 demo: https://leaflet.github.io/Leaflet.heat/demo/
 compatible-v2: true

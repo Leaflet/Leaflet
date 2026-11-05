@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Draw yours polygons with a circle brush like Paint[brush]. Includes turf.js dependencies.
+Draw polygons with a circle brush, like in Paint. Includes turf.js dependencies.

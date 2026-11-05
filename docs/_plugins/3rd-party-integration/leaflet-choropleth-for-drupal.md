@@ -7,8 +7,4 @@ demo: https://www.geodemocracy.com/drupal_geofield_stack_demo/web/leaflet_chorop
 compatible-v2: false
 ---
 
-The Drupal Leaflet Choropleth module provides advanced choropleth mapping capabilities
-for Drupal applications, enabling the visualization of statistical data through
-color-coded geographic regions. This module seamlessly integrates with the
-existing Drupal Leaflet ecosystem to deliver professional-grade thematic mapping
-functionality.
+A Drupal module for choropleth maps of statistical data, integrated with the Drupal Leaflet module.

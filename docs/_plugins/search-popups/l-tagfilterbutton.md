@@ -7,4 +7,4 @@ demo: https://maydemirx.github.io/leaflet-tag-filter-button/
 compatible-v2: false
 ---
 
-LeafLet marker filtering by tags
+Filter markers by tags.

@@ -7,4 +7,4 @@ demo: https://www.open-user-map.com/demo/
 compatible-v2: false
 ---
 
-WordPress plugin to let your visitors add locations directly from the frontend - without registration. They drop a marker on the map and provide some location details. After submit the location proposal will be “pending” and wait for your review approval to get published.
+A WordPress plugin that lets visitors add locations from the frontend without registering. New locations wait for your approval before they get published.

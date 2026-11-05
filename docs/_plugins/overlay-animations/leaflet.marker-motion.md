@@ -7,4 +7,4 @@ demo: https://leaflet-marker-motion.vercel.app/
 compatible-v2: false
 ---
 
-Leaflet.MarkerMotion is a powerful open-source plugin for Leaflet that enables smooth marker animation along predefined paths. Perfect for visualizing routes or creating engaging map-based animations.
+Smoothly animates markers along predefined paths, for visualizing routes or map-based animations.

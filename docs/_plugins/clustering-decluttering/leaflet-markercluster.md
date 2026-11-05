@@ -7,4 +7,4 @@ demo: https://leaflet.github.io/Leaflet.markercluster/example/marker-clustering-
 compatible-v2: true
 ---
 
-Beautiful, sophisticated, high performance marker clustering solution with smooth animations and lots of great features. <em>Recommended!</em>
+Beautiful, sophisticated, high performance marker clustering solution with smooth animations and lots of great features.

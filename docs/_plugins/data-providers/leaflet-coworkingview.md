@@ -7,4 +7,4 @@ demo: https://coworkingview.github.io/flex-office-data/leaflet/
 compatible-v2: false
 ---
 
-Leaflet layer that loads the CoworkingView Price Index (`GET /v1/market/rates`) and adds one marker per city with the median price. CC BY 4.0.
+Shows the CoworkingView Price Index as one marker per city, with the median coworking price.

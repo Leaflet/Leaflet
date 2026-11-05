@@ -7,4 +7,4 @@ demo: https://gherardovarando.github.io/leaflet-csvtiles/demo/index.html
 compatible-v2: false
 ---
 
-Load points from tiled csv files, using the amazing <a href="https://www.papaparse.com/">PapaParse</a> library.
+Load points from tiled CSV files, using <a href="https://www.papaparse.com/">PapaParse</a>.

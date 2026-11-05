@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Interactive and flexible shortcode to create multiple maps in posts and pages,			and to add multiple markers on those maps.
+Interactive and flexible shortcode to create multiple maps in posts and pages, and to add multiple markers on those maps.

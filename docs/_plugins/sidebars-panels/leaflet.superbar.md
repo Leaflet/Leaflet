@@ -7,4 +7,4 @@ demo: https://amrhh.github.io/leaflet.superbar/
 compatible-v2: false
 ---
 
-leaflet.superbar allows users to import and manage vector layers on a map, with full customization of the sidebar’s appearance and behavior to match their application's style.
+A customizable sidebar for importing and managing vector layers on a map.

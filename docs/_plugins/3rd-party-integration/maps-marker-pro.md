@@ -7,5 +7,4 @@ demo: https://demo.mapsmarker.com
 compatible-v2: false
 ---
 
-A WordPress plugin / comprehensive geo-content management system that allows users to pin, organize and share their favorite places and tracks as well as elevation charts. 
-Also integrates several leaflet plugins like leaflet-bing-layer, leaflet-edgebuffer, leaflet-fullscreen, leaflet-gesture-handling, leaflet-minimap, leaflet.gridlayer.googlemutant, leaflet.locatecontrol, leaflet.markercluster and leaflet-geoman-free.
+A WordPress plugin for pinning, organizing and sharing places and tracks, with elevation charts. Bundles several Leaflet plugins, including markercluster, fullscreen, minimap and locatecontrol.

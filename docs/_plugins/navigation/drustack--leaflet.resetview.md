@@ -7,4 +7,4 @@ demo: https://drustack.github.io/Leaflet.ResetView/
 compatible-v2: false
 ---
 
-A reset view control for Leaflet. Design for [Drupal Leaflet Module](https://www.drupal.org/project/leaflet) integration.
+A reset view control, designed for the [Drupal Leaflet module](https://www.drupal.org/project/leaflet).

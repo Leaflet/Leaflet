@@ -7,6 +7,4 @@ demo: https://samanbey.github.io/leaflet-mapwithlabels/examples/example.html
 compatible-v2: false
 ---
 
-Extends L.Map with automatic labeling.
-Labels layers if the label option is present.
-Labels are dynamically generalized to avoid overlaps.
+Extends L.Map with automatic labeling of layers that have a `label` option, generalizing labels to avoid overlaps.

@@ -7,4 +7,4 @@ demo: https://blog.cyclemap.link/Leaflet.Geodesic/complex-interactive.html
 compatible-v2: false
 ---
 
-Draw geodesic lines and circles. A geodesic line is the shortest path between two given points on the earth surface. It uses Vincenty's formulae for highest precision and distance calculation. Written in TypeScript and available via CDN.
+Draws geodesic lines and circles (shortest paths on the Earth's surface), using Vincenty's formulae for high precision.

@@ -7,4 +7,4 @@ demo: https://drustack.github.io/Leaflet.SyncView/
 compatible-v2: false
 ---
 
-A sync view control for Leaflet. Design for [Drupal Leaflet Module](https://www.drupal.org/project/leaflet) integration.
+A sync view control, designed for the [Drupal Leaflet module](https://www.drupal.org/project/leaflet).

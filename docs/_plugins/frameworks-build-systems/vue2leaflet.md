@@ -7,4 +7,4 @@ demo: https://vue2-leaflet.netlify.app/quickstart/
 compatible-v2: false
 ---
 
-<a href="https://github.com/vue-leaflet/Vue2Leaflet">Vue2Leaflet</a> is a JavaScript library for the <a href="https://vuejs.org/">Vue.js</a> framework that wraps Leaflet, making it easy to create reactive maps.
+A JavaScript library for the <a href="https://vuejs.org/">Vue.js</a> framework that wraps Leaflet, making it easy to create reactive maps.

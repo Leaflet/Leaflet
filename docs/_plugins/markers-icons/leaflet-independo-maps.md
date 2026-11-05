@@ -7,4 +7,4 @@ demo: https://independo-gmbh.github.io/leaflet-independo-maps/
 compatible-v2: false
 ---
 
-Leaflet plugin for displaying points of interest (POIs) as pictograms on a map. It supports customizable marker layouts, accessibility enhancements, and pluggable POI and pictogram services, making it ideal for interactive and inclusive maps.
+Displays points of interest as pictograms, with customizable layouts, accessibility features and pluggable POI and pictogram services.

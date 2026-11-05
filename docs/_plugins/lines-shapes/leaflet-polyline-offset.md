@@ -7,4 +7,4 @@ demo: http://bbecquet.github.io/Leaflet.PolylineOffset/examples/example.html
 compatible-v2: false
 ---
 
-Adds to <code>L.Polyline</code> the ability to be shifted with a relative pixel offset, without modifying its actual <code>LatLng</code>s. The offset value can be either negative or positive, for left- or right-side offset, and remains constant across zoom levels.
+Shifts polylines left or right by a pixel offset without changing their coordinates. The offset stays the same across zoom levels.

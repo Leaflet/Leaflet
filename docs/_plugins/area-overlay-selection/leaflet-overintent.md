@@ -7,4 +7,4 @@ demo: https://makinacorpus.github.io/Leaflet.OverIntent/
 compatible-v2: false
 ---
 
-Adds a new event ``mouseintent``, that differs from ``mouseover`` since it reflects user			intentions to aim a particular layer.
+Adds a `mouseintent` event which, unlike `mouseover`, reflects the user's intention to aim at a particular layer.

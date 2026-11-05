@@ -7,4 +7,4 @@ demo: https://stephangeorg.github.io/leaflet-routeboxer/example/
 compatible-v2: false
 ---
 
-This is a Leaflet implementation of the RouteBoxer Class from Google. The Leaflet RouteBoxer class generates a set of L.LatLngBounds objects that are guaranteed to cover every point within a specified distance of a path.
+A Leaflet port of Google's RouteBoxer: generates a set of bounds that covers every point within a given distance of a path.

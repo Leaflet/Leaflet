@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-This plugin allows you to increase the click tolerance of canvas powered layers, making it possible to increase the clickable area of vector layers beyond their visible extent. Useful when your features are difficult to click otherwise.
+Extends the clickable area of canvas-rendered vector layers beyond their visible shape, for features that are hard to click otherwise.

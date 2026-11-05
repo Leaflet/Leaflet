@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Seven plugins for various features, independent of the MapBBCode library.			From circular and popup icons to buttons, layer switcher, better search and attribution.
+Seven plugins for various features, independent of the MapBBCode library: from circular and popup icons to buttons, layer switcher, better search and attribution.
