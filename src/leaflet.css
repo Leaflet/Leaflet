@@ -348,9 +348,21 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	font: bold 22px "Lucida Console", Monaco, monospace;
 }
 
-.leaflet-control-zoom a {
+.leaflet-control-zoom a,
+.leaflet-control-fullscreen a {
 	display: grid;
 	place-items: center;
+}
+
+/* fullscreen control without the Fullscreen API */
+
+.leaflet-pseudo-fullscreen {
+	position: fixed !important;
+	inset: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	margin: 0 !important;
+	z-index: 99999;
 }
 
 

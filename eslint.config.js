@@ -80,6 +80,11 @@ export default [
 				includeWebApis: {preset: 'auto', ignore: ['devicepixelratio']},
 				includeJsBuiltins: {preset: 'auto'},
 			}],
+			// use-baseline can't see instance members without type info, which typescript-eslint can't get from TS 7
+			'no-restricted-syntax': ['error', {
+				selector: 'AssignmentExpression > MemberExpression.left[property.name=/^(role|aria[A-Z]\\w*)$/]',
+				message: 'ARIA reflection is Baseline 2023 (Firefox 119), use setAttribute instead.'
+			}],
 		},
 	},
 	{

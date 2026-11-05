@@ -34,6 +34,7 @@ import type {Polyline, PolylineDefaultsValues} from './layer/vector/Polyline.js'
 import type {Renderer, RendererEvents} from './layer/vector/Renderer.js';
 import type {AttributionControl, AttributionControlDefaultsValues} from './control/AttributionControl.js';
 import type {ControlDefaultsValues} from './control/Control.js';
+import type {FullscreenControlDefaultsValues} from './control/FullscreenControl.js';
 import type {LayersControlDefaultsValues, LayersControlEventProps} from './control/LayersControl.js';
 import type {ScaleControlDefaultsValues} from './control/ScaleControl.js';
 import type {ZoomControlDefaultsValues} from './control/ZoomControl.js';
@@ -292,6 +293,8 @@ export interface ZoomControlDefaults extends Omit<ZoomControlDefaultsValues, key
 export interface ZoomControlOptions extends ControlOptions, Partial<ZoomControlDefaults> {}
 export interface AttributionControlDefaults extends Omit<AttributionControlDefaultsValues, keyof ControlOptions> {}
 export interface AttributionControlOptions extends ControlOptions, Partial<AttributionControlDefaults> {}
+export interface FullscreenControlDefaults extends Omit<FullscreenControlDefaultsValues, keyof ControlOptions> {}
+export interface FullscreenControlOptions extends ControlOptions, Partial<FullscreenControlDefaults> {}
 export interface ScaleControlDefaults extends Omit<ScaleControlDefaultsValues, keyof ControlOptions> {}
 export interface ScaleControlOptions extends ControlOptions, Partial<ScaleControlDefaults> {}
 export interface LayersControlDefaults extends Omit<LayersControlDefaultsValues, keyof ControlOptions> {}
