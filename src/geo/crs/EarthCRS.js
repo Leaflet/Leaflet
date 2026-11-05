@@ -9,8 +9,7 @@ import {haversineDistance} from '../LatLng.js';
  * returns meters.
  */
 export class EarthCRS extends CRS {
-	/** @type {[number, number]} */
-	static wrapLng = [-180, 180];
+	static wrapLng = /** @type {[number, number]} */ ([-180, 180]);
 
 	/**
 	 * The mean Earth radius in meters used by [`distance`](#earthcrs-distance), as recommended by the International

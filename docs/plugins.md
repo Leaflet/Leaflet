@@ -89,20 +89,11 @@ Plugins that already work with Leaflet 2.0. Ported yours? [Mark it](#develop-you
 
 The following plugins allow loading different maps and provide functionality to tile and image layers.
 
-* [Basemap providers](#basemap-providers)
-* [Basemap formats](#basemap-formats)
-* [Non-map base layers](#non-map-base-layers)
-* [Tile/image display](#tileimage-display)
-* [Tile loading](#tile-loading)
-* [Vector tiles](#vector-tiles)
-
-
 ### Basemap providers
 
 Ready-to-go basemaps, with little or no configuration at all.
 
 {% include plugin_list.html category="basemap-providers" %}
-
 
 ### Basemap formats
 
@@ -134,15 +125,9 @@ Plugins to display [vector tiles](https://github.com/mapbox/vector-tile-spec).
 
 {% include plugin_list.html category="vector-tiles" %}
 
-
 ## Overlay data
 
 The following plugins provide new ways of loading overlay data (GIS vector data): points, lines and polygons.
-
-* [Overlay data formats](#overlay-data-formats)
-* [Dynamic data loading](#dynamiccustom-data-loading)
-* [Synthetic overlays](#synthetic-overlays)
-* [Data providers](#data-providers)
 
 ### Overlay data formats
 
@@ -168,19 +153,9 @@ Load overlay data from third-party services. See also [basemap providers](#basem
 
 {% include plugin_list.html category="data-providers" %}
 
-
 ## Overlay display
 
 The following plugins provide new ways of displaying overlay data information.
-
-* [Markers & icons](#markers--icons)
-* [Lines & shapes](#lines--shapes)
-* [Styling & labels](#styling--labels)
-* [Overlay animations](#overlay-animations)
-* [Clustering/decluttering](#clusteringdecluttering)
-* [Heatmaps](#heatmaps)
-* [Data visualization](#data-visualization)
-
 
 ### Markers & icons
 
@@ -224,15 +199,9 @@ Powerful multi-purpose libraries for data visualization.
 
 {% include plugin_list.html category="dataviz" %}
 
-
 ## Overlay interaction
 
 The following plugins enable users to interact with overlay data: edit geometries, select areas or features, interact with the time dimension, search features and display information about them.
-
-* [Edit geometries](#edit-geometries)
-* [Time & elevation](#time--elevation)
-* [Search & popups](#search--popups)
-* [Area/overlay selection](#areaoverlay-selection)
 
 ### Edit geometries
 
@@ -258,19 +227,9 @@ These plugins help users select either overlays or areas in the map, or make ove
 
 {% include plugin_list.html category="area-overlay-selection" %}
 
-
 ## Map interaction
 
 New ways to interact with the map itself.
-
-* [Layer switching & legends](#layer-switching--legends)
-* [Navigation](#navigation)
-* [Minimaps & synced maps](#minimaps--synced-maps)
-* [Location & coordinates](#location--coordinates)
-* [Measurement](#measurement)
-* [Buttons & menus](#buttons--menus)
-* [Sidebars & panels](#sidebars--panels)
-* [Print & export](#print--export)
 
 ### Layer switching & legends
 
@@ -325,7 +284,6 @@ Print or export your map.
 
 {% include plugin_list.html category="print-export" %}
 
-
 ## Analysis & services
 
 ### Geoprocessing
@@ -346,7 +304,6 @@ External services that transform an address or the name of a place into latitude
 
 {% include plugin_list.html category="geocoding" %}
 
-
 ## Integration
 
 ### Frameworks & build systems
@@ -360,8 +317,6 @@ Ease your development integrating Leaflet into a development framework or automa
 The following plugins integrate Leaflet into third party services or websites.
 
 {% include plugin_list.html category="3rd-party-integration" %}
-
-
 
 ## Develop your own
 

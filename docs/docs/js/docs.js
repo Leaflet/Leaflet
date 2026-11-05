@@ -8,79 +8,35 @@ if (toc) {
 	tocCopy.innerHTML = toc.innerHTML;
 	document.getElementsByClassName('container')[0].appendChild(tocCopy);
 
-	// a hovered group opens its flyout at once, unless the pointer is heading for the open flyout's links: then the
-	// switch waits until it stops doing so, so it can cross the headings below on its way
-	const floating = window.matchMedia('(width > 1350px) and (min-height: 600px)');
-	const trail = [];
-	let open, pending, timer;
-
+	// one group is expanded at a time: the one being read, until a heading click picks another (or collapses it)
+	let open;
 	const openGroup = function openGroup(label) {
-		clearTimeout(timer);
-		pending = null;
-		trail.length = 0;
-		open?.classList.remove('hover');
+		open?.classList.remove('open');
 		open = label;
-		open?.classList.add('hover');
+		open?.classList.add('open');
 	};
 
-	// whether the pointer's last few moves (since the flyout opened) point between the flyout's top and bottom left
-	// corners
-	const aiming = function aiming(to = trail.at(-1)) {
-		const from = trail[0];
-		if (!open || !from || to.x <= from.x) { return false; }
-		const {left, top, bottom} = open.nextElementSibling.getBoundingClientRect();
-		if (left <= from.x) { return false; }
-		const slope = (to.y - from.y) / (to.x - from.x);
-		return slope >= (top - from.y) / (left - from.x) && slope <= (bottom - from.y) / (left - from.x);
-	};
-
-	tocCopy.addEventListener('pointermove', (e) => {
-		trail.push({x: e.clientX, y: e.clientY});
-		if (trail.length > 4) { trail.shift(); }
-		if (pending && !aiming()) { openGroup(pending); }
-	});
-
-	const keepGroup = function keepGroup() {
-		clearTimeout(timer);
-		pending = null;
-	};
-	const enterGroup = function enterGroup(e) {
-		if (this === open) {
-			keepGroup();
-		} else if (aiming({x: e.clientX, y: e.clientY})) {
-			clearTimeout(timer);
-			pending = this;
-			timer = setTimeout(openGroup, 300, this);
-		} else {
-			openGroup(this);
-		}
-	};
-
-	// floating, a heading jumps to its first entry; behind the menu button, it expands its group
 	const clickGroup = function clickGroup() {
-		if (floating.matches) {
-			this.nextElementSibling.querySelector('a').click();
-		} else {
-			this.classList.toggle('active');
-		}
+		openGroup(this === open ? null : this);
 	};
-
-	for (const menu of tocCopy.querySelectorAll('ul')) {
-		menu.addEventListener('pointerenter', keepGroup);
-	}
 	for (const label of tocCopy.querySelectorAll('h4')) {
-		label.addEventListener('pointerenter', enterGroup);
 		label.addEventListener('click', clickGroup);
 	}
-	tocCopy.addEventListener('pointerleave', () => {
-		timer = setTimeout(openGroup, 200, null);
-	});
 
+	// behind the menu button: the button toggles the drawer, and following a link or clicking the page outside closes it
+	const narrow = window.matchMedia('(max-width: 1350px)');
 	tocCopy.addEventListener('click', function (e) {
-		if (e.target.nodeName !== 'H4') {
+		if (narrow.matches && (e.target === this || e.target.closest('a'))) {
 			this.classList.toggle('active');
 		}
 	});
+	document.addEventListener('click', (e) => {
+		if (tocCopy.classList.contains('active') && !tocCopy.contains(e.target)) {
+			e.preventDefault();
+			e.stopPropagation();
+			tocCopy.classList.remove('active');
+		}
+	}, true);
 
 	const scrollPos = function scrollPos() {
 		const scroll = window.scrollY;
@@ -98,29 +54,46 @@ if (toc) {
 		scrollPos();
 	});
 
-	// highlights the TOC entries of the last target scrolled past the sticky heading, and their groups
+	// highlights the TOC entries of the last target scrolled past the sticky heading, and opens their group; a group's
+	// own section (a plugin group's intro, before its first category) counts as part of the group
 	const targets = new Map();
+	const add = function add(el, group, link) {
+		const target = targets.get(el) ?? {group, links: []};
+		if (link) { target.links.push(link); }
+		targets.set(el, target);
+	};
 	for (const a of tocCopy.querySelectorAll('a[href^="#"]')) {
 		const el = document.getElementById(decodeURIComponent(a.hash.slice(1)));
-		if (el) { targets.set(el, [...(targets.get(el) ?? []), a]); }
+		if (el) { add(el, a.closest('ul')?.previousElementSibling, a); }
+	}
+	for (const label of tocCopy.querySelectorAll('h4')) {
+		const first = label.nextElementSibling.querySelector('a');
+		let el = document.getElementById(decodeURIComponent(first.hash.slice(1)));
+		if (el?.nodeName !== 'H3') { continue; }
+		do { el = el.previousElementSibling; } while (el && el.nodeName !== 'H2' && el.nodeName !== 'H3');
+		if (el?.nodeName === 'H2') { add(el, label); }
 	}
 	const sorted = [...targets.keys()].sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+
+	// a target counts as reached 100px from the top, or lower if following a link to it lands it lower
+	const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+	const reached = new Map(sorted.map(el => [el, Math.max(100, padding + parseFloat(getComputedStyle(el).scrollMarginTop) + 2)]));
 	let current, frame;
 
 	const highlight = function highlight() {
 		frame = null;
 		let found;
 		for (const el of sorted) {
-			if (el.getBoundingClientRect().top > 100) { break; }
+			if (el.getBoundingClientRect().top > reached.get(el)) { break; }
 			found = el;
 		}
 		if (found === current) { return; }
 		for (const el of tocCopy.querySelectorAll('.current')) { el.classList.remove('current'); }
+		const group = targets.get(found)?.group;
+		if (group !== targets.get(current)?.group) { openGroup(group); }
 		current = found;
-		for (const a of targets.get(current) ?? []) {
-			a.classList.add('current');
-			a.closest('ul').previousElementSibling.classList.add('current');
-		}
+		group?.classList.add('current');
+		for (const a of targets.get(current)?.links ?? []) { a.classList.add('current'); }
 	};
 
 	highlight();
