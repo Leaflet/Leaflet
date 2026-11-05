@@ -1,12 +1,12 @@
 {%- assign major = site.latest_leaflet_version | split: "." | first -%}
-{%- if site.preview %}
+{%- if major == "1" %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+	<script src="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
+{%- elsif site.preview %}
 	<link rel="stylesheet" href="/preview/leaflet.css"/>
 	<script type="importmap">{"imports": {"leaflet": "/preview/Leaflet.js"}}</script>
 {%- else %}
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
-{%- if major == "1" %}
-	<script src="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
-{%- else %}
 	<script type="importmap">
 		{
 			"imports": {
@@ -17,5 +17,4 @@
 			}
 		}
 	</script>
-{%- endif %}
 {%- endif %}

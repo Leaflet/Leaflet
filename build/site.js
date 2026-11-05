@@ -69,12 +69,12 @@ const start = performance.now();
 const config = JSON.parse(readFileSync('build/site.json', 'utf8'));
 const site = {...config.site, ...config.versions[config.version], time: new Date()};
 
-// PREVIEW=1 runs the pages on the checkout's src/ instead of the release, leaving out the v1 ones, which need 1.x
-site.preview = !!process.env.PREVIEW;
-if (site.preview) { config.mounts = config.mounts.filter(m => m.ref !== 'v1'); }
 // the release each pinned ref is at, for the references' version links: `v2` follows `version`, `v1` its mounts
 site.refVersions = {v2: config.version};
 for (const {ref, version} of config.mounts) { if (ref) { site.refVersions[ref] = version; } }
+
+// PREVIEW=1 runs the 2.x pages on the checkout's src/ instead of the release
+site.preview = !!process.env.PREVIEW;
 
 // every page renders with the checkout's layouts and includes, so pinned pages share the current shell
 const engine = createEngine(SITE_DIR);
