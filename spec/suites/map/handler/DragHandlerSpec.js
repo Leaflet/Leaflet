@@ -534,13 +534,17 @@ describe('DragHandler', () => {
 				const panBy = sinon.spy(map, 'panBy');
 				const moveend = new Promise((resolve) => { map.once('moveend', resolve); });
 
-				// release right after the last move: headless WebKit runs rAF at ~30fps, so a frame gap in between
-				// would push all but the last drag position out of the 50ms inertia window
+				// a stalled CI runner can push all but the last drag position out of the 50ms inertia window, so make
+				// time advance per call instead of per wall clock; it still moves forward for the inertia animation
+				let now = Date.now();
+				const clock = sinon.stub(Date, 'now').callsFake(() => (now += 5));
+
 				const finger = new Finger();
 				await finger.moveTo(200, 200).down().moveBy(20, 0).moveBy(60, 0);
 				finger.dispatch('move', 360, 200);
 				finger.dispatch('up', 360, 200);
 				await moveend;
+				clock.restore();
 
 				expect(panBy.called).to.equal(inertia);
 				expect(log.length).to.be.greaterThan(2);
