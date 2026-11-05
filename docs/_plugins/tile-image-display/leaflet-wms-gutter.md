@@ -1,11 +1,8 @@
 ---
 name: Leaflet WMS Gutter
-category: tile-image-display
 repo: https://github.com/aronsommer/leaflet-wms-gutter
 author: Aron Sommer
 demo: https://aronsommer.github.io/leaflet-wms-gutter/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

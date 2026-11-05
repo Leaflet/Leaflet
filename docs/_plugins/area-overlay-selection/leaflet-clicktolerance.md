@@ -1,12 +1,9 @@
 ---
 name: Leaflet.ClickTolerance
-category: area-overlay-selection
 repo: https://github.com/geoloep/Leaflet.ClickTolerance
 author: Geoloep
 author-url: https://github.com/geoloep
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

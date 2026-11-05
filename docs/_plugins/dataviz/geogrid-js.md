@@ -1,12 +1,9 @@
 ---
 name: geogrid.js
-category: dataviz
 repo: https://github.com/giscience/geogrid.js
 author: F.-B. Mocnik,
 author-url: http://www.mocnik-science.net/
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.LayerTreePlugin
-category: layer-switching-legends
 repo: https://github.com/bambrikii/leaflet-layer-tree-plugin
 author: Alexander Arakelyan
 author-url: https://github.com/bambrikii
-demo: https://rawgit.com/bambrikii/leaflet-layer-tree-plugin/master/examples/basic-example.htm
-compatible-v0:
-compatible-v1: true
+demo: https://raw.githack.com/bambrikii/leaflet-layer-tree-plugin/master/examples/basic-example.htm
 compatible-v2: false
 ---
 

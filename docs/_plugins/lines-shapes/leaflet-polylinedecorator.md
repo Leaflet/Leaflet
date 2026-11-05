@@ -1,12 +1,9 @@
 ---
 name: Leaflet.PolylineDecorator
-category: lines-shapes
 repo: https://github.com/bbecquet/Leaflet.PolylineDecorator
 author: Benjamin Becquet
 author-url: https://github.com/bbecquet
 demo: https://bbecquet.github.io/Leaflet.PolylineDecorator/example/example.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

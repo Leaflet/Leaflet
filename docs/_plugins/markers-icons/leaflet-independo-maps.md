@@ -1,12 +1,9 @@
 ---
 name: Leaflet.IndependoMaps
-category: markers-icons
 repo: https://github.com/independo-gmbh/leaflet-independo-maps
 author: Independo GmbH
 author-url: https://www.independo.app
 demo: https://independo-gmbh.github.io/leaflet-independo-maps/
-compatible-v0: false
-compatible-v1: true
 compatible-v2: false
 ---
 

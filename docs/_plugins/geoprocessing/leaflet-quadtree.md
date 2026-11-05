@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Quadtree
-category: geoprocessing
-repo: https://ibesora.github.io/Leaflet.Quadtree/
+repo: https://github.com/ibesora/Leaflet.Quadtree
 author: ibesora
 author-url: https://github.com/ibesora
 demo: https://ibesora.github.io/Leaflet.Quadtree/demos/cullingGeoJSON/demo.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

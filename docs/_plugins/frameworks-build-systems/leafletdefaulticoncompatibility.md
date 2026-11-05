@@ -1,12 +1,9 @@
 ---
 name: leaflet-defaulticon-compatibility
-category: frameworks-build-systems
 repo: https://github.com/ghybs/leaflet-defaulticon-compatibility
 author: ghybs
 author-url: https://github.com/ghybs
 demo: https://ghybs.github.io/leaflet-defaulticon-compatibility/webpack-demo.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

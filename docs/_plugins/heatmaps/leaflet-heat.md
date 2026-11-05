@@ -1,12 +1,9 @@
 ---
 name: Leaflet.heat
-category: heatmaps
 repo: https://github.com/Leaflet/Leaflet.heat
 author: Vladimir Agafonkin
 author-url: https://github.com/mourner
 demo: https://leaflet.github.io/Leaflet.heat/demo/
-compatible-v0:
-compatible-v1: true
 compatible-v2: true
 ---
 

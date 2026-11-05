@@ -1,11 +1,9 @@
 ---
 name: leaflet.us-states
-category: synthetic-overlays
 repo: https://github.com/EricDalnas/leaflet.us-states
 author: Eric Dalnas
 author-url: https://github.com/EricDalnas
 demo: https://ericdalnas.github.io/leaflet.us-states/demo/index.html
-compatible-v1: true
 compatible-v2: false
 ---
 

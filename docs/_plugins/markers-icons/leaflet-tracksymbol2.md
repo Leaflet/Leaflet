@@ -1,12 +1,9 @@
 ---
 name: leaflet-tracksymbol2
-category: markers-icons
 repo: https://github.com/org-arl/leaflet-tracksymbol2
 author: ARL
 author-url: https://github.com/org-arl
 demo: https://org-arl.github.io/leaflet-tracksymbol2/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

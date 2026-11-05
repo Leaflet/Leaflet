@@ -1,12 +1,9 @@
 ---
 name: Leaflet.GroupedLayerControl
-category: layer-switching-legends
 repo: https://github.com/ismyrnow/leaflet-groupedlayercontrol
 author: Ishmael Smyrnow
 author-url: https://github.com/ismyrnow
-demo: https://ismyrnow.github.io/leaflet-groupedlayercontrol/example/advanced.html
-compatible-v0:
-compatible-v1: true
+demo: https://ismyrnow.github.io/leaflet-groupedlayercontrol/example/leaflet-v1/advanced.html
 compatible-v2: false
 ---
 

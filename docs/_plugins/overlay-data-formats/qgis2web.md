@@ -1,12 +1,9 @@
 ---
 name: qgis2web
-category: overlay-data-formats
 repo: https://github.com/qgis2web/qgis2web
 author: Tom Chadwin
 author-url: https://github.com/tomchadwin
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

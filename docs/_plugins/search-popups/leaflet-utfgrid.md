@@ -1,12 +1,9 @@
 ---
 name: Leaflet.utfgrid
-category: search-popups
 repo: https://github.com/danzel/Leaflet.utfgrid
 author: Dave Leaver
 author-url: https://github.com/danzel
 demo: 
-compatible-v0: false
-compatible-v1: true
 compatible-v2: false
 ---
 

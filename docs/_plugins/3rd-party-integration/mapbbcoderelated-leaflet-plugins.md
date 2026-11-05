@@ -1,12 +1,9 @@
 ---
 name: MapBBCode-related leaflet plugins
-category: 3rd-party-integration
-repo: http://mapbbcode.org/leaflet.html
+repo: https://mapbbcode.org/leaflet.html
 author: Ilya Zverev
 author-url: https://github.com/zverik
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

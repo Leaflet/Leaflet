@@ -1,12 +1,9 @@
 ---
 name: leaflet-mapwithlabels
-category: styling-labels
 repo: https://github.com/samanbey/leaflet-mapwithlabels
 author: Mátyás Gede
 author-url: https://github.com/samanbey
 demo: https://samanbey.github.io/leaflet-mapwithlabels/examples/example.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

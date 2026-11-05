@@ -1,12 +1,9 @@
 ---
 name: Waymark
-category: 3rd-party-integration
 repo: https://github.com/OpenGIS/waymark-wp
 author: morehawes
 author-url: https://wordpress.org/plugins/waymark/
 demo: https://www.waymark.dev/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

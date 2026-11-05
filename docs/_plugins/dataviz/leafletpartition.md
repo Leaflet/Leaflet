@@ -1,12 +1,9 @@
 ---
 name: leaflet-partition
-category: dataviz
 repo: https://github.com/locknono/leaflet-partition
 author: locknono
 author-url: https://github.com/locknono
 demo: https://locknono.github.io/leaflet-partition/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

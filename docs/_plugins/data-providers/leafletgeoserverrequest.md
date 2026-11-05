@@ -1,12 +1,9 @@
 ---
 name: leaflet-geoserver-request
-category: data-providers
 repo: https://github.com/iamtekson/leaflet-geoserver-request
 author: Iamtekson
 author-url: https://github.com/iamtekson
 demo: https://iamtekson.github.io/leaflet-geoserver-request/examples/maps.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

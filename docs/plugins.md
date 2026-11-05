@@ -410,8 +410,9 @@ ul.plugins p {
 	color: #fff;
 	background: #4a9b2f;
 	border-radius: 3px;
-	padding: 0 0.4em;
-	vertical-align: 0.15em;
+	padding: 0.1em 0.4em;
+	vertical-align: 0.1em;
+	white-space: nowrap;
 }
 .repo-data {
 	white-space: nowrap;

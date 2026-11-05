@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Control.Layers.Tree
-category: layer-switching-legends
 repo: https://github.com/jjimenezshaw/Leaflet.Control.Layers.Tree
 author: Javier Jimenez Shaw
 author-url: https://github.com/jjimenezshaw/
 demo: https://jjimenezshaw.github.io/Leaflet.Control.Layers.Tree/examples/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

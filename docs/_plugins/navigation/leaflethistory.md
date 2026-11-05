@@ -1,12 +1,9 @@
 ---
 name: Leaflet-History
-category: navigation
 repo: https://github.com/cscott530/leaflet-history
 author: Chris Scott
 author-url: https://github.com/cscott530
 demo: https://cscott530.github.io/leaflet-history/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

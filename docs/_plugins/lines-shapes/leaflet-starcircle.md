@@ -1,12 +1,9 @@
 ---
 name: Leaflet.StarCircle
-category: lines-shapes
 repo: https://github.com/haelue/Leaflet.StarCircle
 author: Haelue
 author-url: https://github.com/haelue/
 demo: https://haelue.github.io/Leaflet.StarCircle/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

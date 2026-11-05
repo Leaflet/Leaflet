@@ -1,12 +1,9 @@
 ---
 name: Basemaps with Vector Tiles
-category: vector-tiles
 repo: https://github.com/maptiler/leaflet-maptilersdk
 author: J. Lurie | MapTiler
 author-url: https://github.com/maptiler
 demo: https://docs.maptiler.com/leaflet/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

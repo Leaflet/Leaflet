@@ -1,12 +1,9 @@
 ---
 name: Leaflet.GestureHandling
-category: navigation
 repo: https://github.com/elmarquis/Leaflet.GestureHandling/
 author: Andy Marquis
 author-url: https://github.com/elmarquis
 demo: https://elmarquis.github.io/Leaflet.GestureHandling/examples/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

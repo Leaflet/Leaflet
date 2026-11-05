@@ -1,12 +1,9 @@
 ---
 name: Leaflet.MakiMarkers
-category: markers-icons
 repo: https://github.com/jseppi/Leaflet.MakiMarkers
 author: James Seppi
 author-url: https://github.com/jseppi
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

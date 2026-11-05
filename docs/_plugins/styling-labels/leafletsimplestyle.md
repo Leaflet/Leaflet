@@ -1,12 +1,9 @@
 ---
 name: leaflet-simplestyle
-category: styling-labels
 repo: https://github.com/rowanwins/leaflet-simplestyle
 author: Rowan Winsemius
 author-url: https://github.com/rowanwins/
 demo: https://rowanwins.github.io/leaflet-simplestyle/example/basic.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet Polyline Offset
-category: lines-shapes
 repo: https://github.com/bbecquet/Leaflet.PolylineOffset
 author: Benjamin Becquet
 author-url: https://github.com/bbecquet
 demo: http://bbecquet.github.io/Leaflet.PolylineOffset/examples/example.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.VectorGrid
-category: vector-tiles
 repo: https://github.com/Leaflet/Leaflet.VectorGrid
 author: Iván Sánchez
 author-url: https://github.com/IvanSanchez
 demo: https://github.com/Leaflet/Leaflet.VectorGrid#demos
-compatible-v0: false
-compatible-v1: true
 compatible-v2: false
 ---
 

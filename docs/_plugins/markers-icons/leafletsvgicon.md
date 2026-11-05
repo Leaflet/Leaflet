@@ -1,12 +1,9 @@
 ---
 name: Leaflet-SVGIcon
-category: markers-icons
 repo: https://github.com/iatkin/leaflet-svgicon
 author: Ilya Atkin
 author-url: https://github.com/iatkin
 demo: http://iatkin.github.io/leaflet-svgicon/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet WebGL Markers
-category: markers-icons
 repo: https://github.com/tang-tc/leaflet-webgl-markers
 author: Tang Chen
 author-url: https://github.com/tang-tc
 demo: https://tang-tc.github.io/leaflet-webgl-markers/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

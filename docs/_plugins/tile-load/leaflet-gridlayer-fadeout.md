@@ -1,12 +1,9 @@
 ---
 name: Leaflet.GridLayer.FadeOut
-category: tile-load
 repo: https://gitlab.com/IvanSanchez/Leaflet.GridLayer.FadeOut
 author: Iván Sánchez
 author-url: https://github.com/IvanSanchez
 demo: https://ivansanchez.gitlab.io/Leaflet.GridLayer.FadeOut/demo.html
-compatible-v0: false
-compatible-v1: true
 compatible-v2: false
 ---
 

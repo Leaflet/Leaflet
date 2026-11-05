@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Polyline.Arrugator
-category: lines-shapes
 repo: https://gitlab.com/IvanSanchez/leaflet.polyline.arrugator
 author: Iván Sánchez
 author-url: https://ivan.sanchezortega.es
 demo: https://ivansanchez.gitlab.io/Leaflet.Polyline.Arrugator/demo.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

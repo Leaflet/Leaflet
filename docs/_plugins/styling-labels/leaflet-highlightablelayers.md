@@ -1,12 +1,9 @@
 ---
 name: Leaflet.HighlightableLayers
-category: styling-labels
 repo: https://github.com/FacilMap/Leaflet.HighlightableLayers
 author: Candid Dauth
 author-url: https://github.com/cdauth/
 demo: https://unpkg.com/leaflet-highlightable-layers/example.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

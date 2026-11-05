@@ -1,12 +1,9 @@
 ---
 name: Leaflet.ColorIcon
-category: markers-icons
 repo: https://github.com/shevekk/Leaflet.ColorIcon
 author: Maxence Martin (shevek)
 author-url: https://github.com/shevekk
-demo: http://dataexplorer.hd.free.fr/Leaflet.ColorIcon/examples/basic/
-compatible-v0: false
-compatible-v1: true
+demo:
 compatible-v2: false
 ---
 

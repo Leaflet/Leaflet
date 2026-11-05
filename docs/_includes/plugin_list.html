@@ -6,7 +6,7 @@
 		<div class="plugin-head">
 			<span>
 				<a class="plugin-repo-url" href="{{ plugin.repo }}">{{ plugin.name }}</a>
-				{%- if include.category and plugin.compatible-v2 == "true" %} <span class="v2" title="Works with Leaflet 2">v2</span>{% endif %}
+				{%- if include.category and plugin.compatible-v2 == "true" %} <span class="v2" title="Works with Leaflet 2">Leaflet 2 ready</span>{% endif %}
 				<span class="plugin-meta">by {% if plugin.author-url != blank %}<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>{% else %}{{ plugin.author }}{% endif %}
 				{%- if plugin.demo != blank %} · <a href="{{ plugin.demo }}">Demo</a>{% endif %}</span>
 			</span>

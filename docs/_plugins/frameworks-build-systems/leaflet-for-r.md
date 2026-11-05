@@ -1,12 +1,9 @@
 ---
 name: Leaflet for R
-category: frameworks-build-systems
 repo: https://github.com/rstudio/leaflet
 author: RStudio team
 author-url: https://github.com/rstudio/
 demo: https://rstudio.github.io/leaflet/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Rrose
-category: search-popups
 repo: https://github.com/erictheise/rrose
 author: Eric Theise
 author-url: https://github.com/erictheise
 demo: https://erictheise.com/rrose/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

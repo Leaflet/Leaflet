@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Polydraw
-category: edit-geometries
 repo: https://github.com/AndreasOlausson/leaflet-polydraw
 author: AndreasOlausson
 author-url: https://github.com/AndreasOlausson
 demo: https://polydraw.ao-tech.se
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

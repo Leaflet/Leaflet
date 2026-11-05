@@ -1,12 +1,9 @@
 ---
 name: Geocoding from MapTiler 
-category: geocoding
 repo: https://github.com/maptiler/maptiler-geocoding-control
 author: MapTiler Team
 author-url: https://github.com/maptiler
 demo: https://docs.maptiler.com/leaflet/geocoding-control/
-compatible-v0:
-compatible-v1: true
 compatible-v2: true
 ---
 

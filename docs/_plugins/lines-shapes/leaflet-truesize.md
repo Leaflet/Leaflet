@@ -1,12 +1,9 @@
 ---
 name: Leaflet Truesize
-category: lines-shapes
-repo: https://wbkd.github.io/leaflet-truesize/
+repo: https://github.com/wbkd/leaflet-truesize
 author: webkid
 author-url: https://webkid.io/
 demo: https://wbkd.github.io/leaflet-truesize/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

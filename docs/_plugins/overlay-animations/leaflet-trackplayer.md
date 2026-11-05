@@ -1,12 +1,9 @@
 ---
 name: Leaflet.TrackPlayer
-category: overlay-animations
 repo: https://github.com/weijun-lab/Leaflet.TrackPlayer
 author: Jun Wei
 author-url: https://github.com/weijun-lab/
 demo: https://weijun-lab.github.io/Leaflet.TrackPlayer/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

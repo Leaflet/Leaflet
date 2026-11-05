@@ -1,12 +1,9 @@
 ---
 name: Leaflet-Solr-Heatmap
-category: heatmaps
 repo: https://github.com/mejackreed/leaflet-solr-heatmap
 author: Jack Reed
 author-url: https://github.com/mejackreed
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: mapbox-gl-leaflet
-category: vector-tiles
 repo: https://github.com/mapbox/mapbox-gl-leaflet
 author: Tom MacWright
 author-url: https://github.com/tmcw
-demo: https://rawgit.com/mapbox/mapbox-gl-leaflet/master/examples/basic.html
-compatible-v0:
-compatible-v1: true
+demo: https://raw.githack.com/mapbox/mapbox-gl-leaflet/master/examples/basic.html
 compatible-v2: false
 ---
 

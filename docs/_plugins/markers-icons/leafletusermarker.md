@@ -1,12 +1,9 @@
 ---
 name: leaflet-usermarker
-category: markers-icons
 repo: https://github.com/heyman/leaflet-usermarker
 author: Jonatan Heyman
 author-url: https://heyman.info/
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

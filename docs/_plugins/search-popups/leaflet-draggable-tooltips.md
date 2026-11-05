@@ -1,12 +1,9 @@
 ---
 name: Leaflet Draggable Tooltips
-category: search-popups
 repo: https://github.com/Metopio/leaflet-draggable-tooltips
 author: Metopio
 author-url: https://metopio.com/
 demo: https://metopio.github.io/leaflet-draggable-tooltips/demo/index.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

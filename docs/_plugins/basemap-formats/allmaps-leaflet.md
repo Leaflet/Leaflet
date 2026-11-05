@@ -1,12 +1,9 @@
 ---
 name: allmaps-leaflet
-category: basemap-formats
 repo: https://github.com/allmaps/allmaps/tree/main/packages/leaflet
 author: Allmaps
 author-url: https://www.allmaps.org
 demo: https://observablehq.com/@allmaps/leaflet-plugin
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

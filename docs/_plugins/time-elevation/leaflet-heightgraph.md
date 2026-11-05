@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Heightgraph
-category: time-elevation
 repo: https://github.com/GIScience/Leaflet.Heightgraph
 author: Robin Boldt
 author-url: https://github.com/boldtrn
 demo: https://giscience.github.io/Leaflet.Heightgraph/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

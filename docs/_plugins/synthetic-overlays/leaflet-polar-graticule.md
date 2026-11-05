@@ -1,12 +1,9 @@
 ---
 name: Leaflet.PolarGraticule
-category: synthetic-overlays
 repo: https://github.com/anton-seaice/Leaflet.PolarGraticule
 author: Anton Steketee
 author-url: https://github.com/anton-seaice
 demo: https://anton-seaice.github.io/Leaflet.PolarGraticule/examples/antarctic.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

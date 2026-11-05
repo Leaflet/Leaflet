@@ -1,12 +1,9 @@
 ---
 name: leaflet.superbar
-category: sidebars-panels
 repo: https://github.com/amrHH/leaflet.superbar
 author: Amr Hamadeh, Chihab Haddouche
 author-url: https://github.com/amrHH
 demo: https://amrhh.github.io/leaflet.superbar/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

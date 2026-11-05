@@ -1,12 +1,9 @@
 ---
 name: Open User Map
-category: 3rd-party-integration
 repo: https://wordpress.org/plugins/open-user-map/
 author: 100plugins
 author-url: https://www.open-user-map.com/?ref=leafletjs.com
 demo: https://www.open-user-map.com/demo/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

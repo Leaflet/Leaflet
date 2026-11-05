@@ -1,12 +1,9 @@
 ---
 name: leaflet-icon-pulse
-category: markers-icons
 repo: https://github.com/mapshakers/leaflet-icon-pulse
 author: mapshakers
 author-url: https://github.com/mapshakers
 demo: http://mapshakers.com/projects/leaflet-pulse-icon/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

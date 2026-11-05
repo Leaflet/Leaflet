@@ -1,12 +1,9 @@
 ---
 name: leaflet-burgermenu
-category: buttons-menus
 repo: https://github.com/BenPortner/leaflet-burgermenu
 author: Benjamin W. Portner
 author-url: https://github.com/BenPortner
 demo: https://benportner.github.io/leaflet-burgermenu/
-compatible-v0: unknown
-compatible-v1: true
 compatible-v2: true
 ---
 

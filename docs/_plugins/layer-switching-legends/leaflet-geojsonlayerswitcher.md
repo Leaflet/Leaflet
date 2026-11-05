@@ -1,12 +1,9 @@
 ---
 name: Leaflet.GeojsonLayerSwitcher
-category: layer-switching-legends
 repo: https://github.com/easymountain-mhikes/Leaflet.GeojsonLayerSwitcher
 author: Easy-Mountain
 author-url: https://github.com/easymountain
 demo: https://github.com/easymountain/Leaflet.GeojsonLayerSwitcher#demo
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

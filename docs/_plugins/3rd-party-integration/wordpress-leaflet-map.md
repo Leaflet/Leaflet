@@ -1,12 +1,9 @@
 ---
 name: WordPress Leaflet Map
-category: 3rd-party-integration
 repo: https://github.com/bozdoz/wp-plugin-leaflet-map
 author: Benjamin J DeLong
 author-url: https://bozdoz.com/projects/leaflet-map
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

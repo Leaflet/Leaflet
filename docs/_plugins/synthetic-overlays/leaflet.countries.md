@@ -1,11 +1,9 @@
 ---
 name: leaflet.countries
-category: synthetic-overlays
 repo: https://github.com/EricDalnas/leaflet.countries
 author: Eric Dalnas
 author-url: https://github.com/EricDalnas
 demo: https://ericdalnas.github.io/leaflet.countries/demo/index.html
-compatible-v1: true
 compatible-v2: false
 ---
 

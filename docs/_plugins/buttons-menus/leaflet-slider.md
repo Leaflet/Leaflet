@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Slider
-category: buttons-menus
 repo: https://github.com/Eclipse1979/leaflet-slider
 author: EPP
 author-url: https://github.com/Eclipse1979
 demo: https://eclipse1979.github.io/leaflet.slider/example/leaflet-slider.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

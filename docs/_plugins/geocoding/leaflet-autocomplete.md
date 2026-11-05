@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Autocomplete
-category: geocoding
 repo: https://github.com/tomickigrzegorz/Leaflet.Autocomplete
 author: Grzegorz Tomicki
 author-url: https://github.com/tomickigrzegorz
 demo: https://tomickigrzegorz.github.io/Leaflet.Autocomplete/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.CityAutocompleteUSA
-category: geocoding
 repo: https://github.com/slbarriosdev/leaflet-city-autocomplete-usa
 author: Sergio Barrios
 author-url: https://github.com/slbarriosdev
 demo: https://slbarriosdev.github.io/leaflet-city-autocomplete-usa/demo/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

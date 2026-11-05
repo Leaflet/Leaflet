@@ -1,12 +1,9 @@
 ---
 name: Leaflet.BoxZoom
-category: navigation
 repo: https://github.com/gregallensworth/L.Control.BoxZoom
 author: Greg Allensworth
 author-url: https://github.com/gregallensworth/L.Control.BoxZoom
 demo: https://gregallensworth.github.io/L.Control.BoxZoom/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.AlmostOver
-category: area-overlay-selection
 repo: https://github.com/makinacorpus/Leaflet.AlmostOver
 author: Mathieu Leplatre
 author-url: https://github.com/makinacorpus/
 demo: https://makinacorpus.github.io/Leaflet.AlmostOver/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

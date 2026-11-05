@@ -1,12 +1,9 @@
 ---
 name: Leaflet.DonutCluster
-category: clustering-decluttering
 repo: https://github.com/kalisio/Leaflet.DonutCluster
 author: Kalisio contributors
 author-url: https://github.com/kalisio
 demo: https://jsfiddle.net/b43c1xkf/1/embedded/result,html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.ellipse
-category: lines-shapes
 repo: https://github.com/jdfergason/Leaflet.Ellipse
 author: JD Fergason
 author-url: https://github.com/jdfergason
 demo: https://jdfergason.github.io/Leaflet.Ellipse/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

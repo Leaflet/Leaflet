@@ -82,6 +82,7 @@ const engine = createEngine(SITE_DIR);
 // the plugins collection: rendered, but not written
 site.plugins = walk(join(SITE_DIR, '_plugins')).map((file) => {
 	const {data, body} = readPage(join(SITE_DIR, '_plugins', file));
+	data.category = dirname(file);
 	data.content = engine.renderContent(body, true, {site, page: data});
 	return data;
 });

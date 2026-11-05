@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Spin
-category: sidebars-panels
 repo: https://github.com/makinacorpus/Leaflet.Spin
 author: Mathieu Leplatre
 author-url: https://github.com/leplatrem
 demo: https://makinacorpus.github.io/Leaflet.Spin/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

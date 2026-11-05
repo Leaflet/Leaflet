@@ -1,12 +1,9 @@
 ---
 name: location-picker
-category: location-coordinates
 repo: https://github.com/cyphercodes/location-picker
 author: Rayan Salhab
 author-url: https://github.com/cyphercodes
 demo: https://cyphercodes.github.io/location-picker/
-compatible-v0:
-compatible-v1: true
 compatible-v2: true
 ---
 

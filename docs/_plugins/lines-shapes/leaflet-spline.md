@@ -1,12 +1,9 @@
 ---
 name: leaflet-spline
-category: lines-shapes
 repo: https://github.com/slutske22/leaflet-spline
 author: Seth Lutske
 author-url: https://github.com/slutske22/
 demo: https://slutske22.github.io/leaflet-spline/
-compatible-v0: false
-compatible-v1: true
 compatible-v2: false
 ---
 

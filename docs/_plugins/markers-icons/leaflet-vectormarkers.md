@@ -1,12 +1,9 @@
 ---
 name: Leaflet.VectorMarkers
-category: markers-icons
 repo: https://github.com/hiasinho/Leaflet.vector-markers
 author: Mathias Schneider
 author-url: https://github.com/hiasinho
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

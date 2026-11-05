@@ -1,12 +1,9 @@
 ---
 name: Leaflet RouteBoxer
-category: routing
 repo: https://github.com/StephanGeorg/leaflet-routeboxer
 author: Stephan Georg
 author-url: https://github.com/StephanGeorg
 demo: https://stephangeorg.github.io/leaflet-routeboxer/example/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

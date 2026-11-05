@@ -1,12 +1,9 @@
 ---
 name: Leaflet.GridLayer.Relief
-category: time-elevation
 repo: https://github.com/glandais/leaflet-relief
 author: Gabriel Landais
 author-url: https://github.com/glandais
 demo: https://glandais.github.io/leaflet-relief/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

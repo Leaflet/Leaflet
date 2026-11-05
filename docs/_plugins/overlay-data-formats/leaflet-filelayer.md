@@ -1,12 +1,9 @@
 ---
 name: Leaflet.FileLayer
-category: overlay-data-formats
 repo: https://github.com/makinacorpus/Leaflet.FileLayer
 author: Mathieu Leplatre
 author-url: https://github.com/leplatrem
 demo: 
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

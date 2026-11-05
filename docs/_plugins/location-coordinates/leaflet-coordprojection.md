@@ -1,12 +1,9 @@
 ---
 name: Leaflet.CoordProjection
-category: location-coordinates
 repo: https://github.com/edihasaj/leaflet-coord-projection
 author: Edi Hasaj
 author-url: https://github.com/edihasaj
 demo: https://edihasaj.github.io/leaflet-coord-projection/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.MousePosition.ts
-category: location-coordinates
 repo: https://github.com/YUUKIToriyama/Leaflet.MousePosition.ts
 author: Yuuki Toriyama
 author-url: https://github.com/YUUKIToriyama
 demo: https://yuukitoriyama.github.io/Leaflet.MousePosition.ts/
-compatible-v0:
-compatible-v1: true
 compatible-v2: true
 ---
 

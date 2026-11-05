@@ -1,12 +1,9 @@
 ---
 name: Leaflet.Mapcodes
-category: location-coordinates
 repo: https://github.com/matlads/Leaflet.Mapcodes
 author: Martin Atukunda
 author-url: https://github.com/matlads
 demo: http://matlads.github.io/Leaflet.Mapcodes/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: leaflet-sidepanel
-category: sidebars-panels
 repo: https://github.com/cyclingbyte/Leaflet.SidePanel
 author: cyclingbyte
 author-url: https://github.com/cyclingbyte
 demo: https://cyclingbyte.github.io/Leaflet.SidePanel/
-compatible-v0: false
-compatible-v1: true
 compatible-v2: false
 ---
 

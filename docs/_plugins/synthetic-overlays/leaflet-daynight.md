@@ -1,12 +1,9 @@
 ---
 name: leaflet-daynight
-category: synthetic-overlays
 repo: https://github.com/LoganD900/leaflet-daynight
 author: Logan Day
 author-url: https://github.com/LoganD900
 demo: https://logand900.github.io/leaflet-daynight/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

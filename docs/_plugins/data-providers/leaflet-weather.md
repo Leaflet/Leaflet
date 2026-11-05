@@ -1,12 +1,9 @@
 ---
 name: Leaflet Weather
-category: data-providers
 repo: https://github.com/oskosk/Leaflet.Weather
 author: Osk
 author-url: https://github.com/oskosk
 demo: https://oskosk.github.io/Leaflet.Weather/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

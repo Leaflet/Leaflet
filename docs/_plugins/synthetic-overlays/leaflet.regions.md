@@ -1,11 +1,9 @@
 ---
 name: leaflet.regions
-category: synthetic-overlays
 repo: https://github.com/EricDalnas/leaflet.regions
 author: Eric Dalnas
 author-url: https://github.com/EricDalnas
 demo: https://ericdalnas.github.io/leaflet.regions/demo/index.html
-compatible-v1: true
 compatible-v2: false
 ---
 

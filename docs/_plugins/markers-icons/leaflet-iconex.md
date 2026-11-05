@@ -1,12 +1,9 @@
 ---
 name: Leaflet.IconEx
-category: markers-icons
 repo: https://github.com/mfhsieh/leaflet-iconex/
 author: mfhsieh
 author-url: https://github.com/mfhsieh
 demo: https://mfhsieh.github.io/leaflet-iconex/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

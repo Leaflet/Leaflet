@@ -1,12 +1,9 @@
 ---
 name: Leaflet.LabelsRenderer
-category: styling-labels
 repo: https://github.com/CarMi0Proggramer/leaflet-labels-renderer
 author: Carlos Miguel
 author-url: https://github.com/CarMi0Proggramer
 demo: https://leaflet-labels-renderer.onrender.com
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

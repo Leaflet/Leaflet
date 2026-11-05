@@ -1,12 +1,9 @@
 ---
 name: Leaflet-active-area
-category: navigation
 repo: https://github.com/Mappy/Leaflet-active-area
 author: Mappy
 author-url: https://github.com/Mappy
 demo: https://techblog.mappy.com/Leaflet-active-area/examples/index.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

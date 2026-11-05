@@ -1,12 +1,9 @@
 ---
 name: Leaflet.River
-category: lines-shapes
 repo: https://github.com/ggolikov/Leaflet.River
 author: Grigory Golikov
 author-url: https://github.com/ggolikov
 demo: https://ggolikov.github.io/Leaflet.River/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

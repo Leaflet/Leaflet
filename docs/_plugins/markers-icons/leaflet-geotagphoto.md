@@ -1,12 +1,9 @@
 ---
 name: Leaflet.GeotagPhoto
-category: markers-icons
 repo: https://github.com/nypl-spacetime/Leaflet.GeotagPhoto
 author: Bert Spaan
 author-url: https://github.com/bertspaan
-demo: http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/camera.html
-compatible-v0:
-compatible-v1: true
+demo:
 compatible-v2: false
 ---
 

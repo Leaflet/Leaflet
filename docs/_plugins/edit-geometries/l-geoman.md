@@ -1,12 +1,9 @@
 ---
 name: Leaflet-Geoman
-category: edit-geometries
 repo: https://github.com/geoman-io/leaflet-geoman
 author: Geoman
 author-url: https://github.com/geoman-io
 demo: https://geoman.io/demo/leaflet
-compatible-v0: false
-compatible-v1: true
 compatible-v2: false
 ---
 

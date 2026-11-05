@@ -1,12 +1,9 @@
 ---
 name: Leaflet.geojsonCSS
-category: styling-labels
 repo: https://github.com/albburtsev/Leaflet.geojsonCSS
 author: Alexander Burtsev
 author-url: https://github.com/albburtsev/
 demo: http://albburtsev.github.io/Leaflet.geojsonCSS/src/demo/demo.html
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

@@ -1,12 +1,9 @@
 ---
 name: Leaflet.magicMarker
-category: overlay-animations
 repo: https://github.com/Sylvenas/leaflet.magicMarker
 author: Sylvenas
 author-url: https://github.com/react-map
 demo:
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

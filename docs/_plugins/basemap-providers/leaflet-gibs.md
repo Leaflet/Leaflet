@@ -1,12 +1,9 @@
 ---
 name: Leaflet.GIBS
-category: basemap-providers
 repo: https://github.com/aparshin/leaflet-GIBS
 author: Alexander Parshin
 author-url: https://github.com/aparshin
 demo: http://aparshin.github.io/leaflet-GIBS/examples/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 

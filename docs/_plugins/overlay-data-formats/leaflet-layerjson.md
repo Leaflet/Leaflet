@@ -1,12 +1,9 @@
 ---
 name: Leaflet LayerJSON
-category: overlay-data-formats
 repo: https://github.com/stefanocudini/leaflet-layerJSON
 author: Stefano Cudini
 author-url: https://opengeo.tech/
 demo: https://opengeo.tech/maps/leaflet-layerjson/
-compatible-v0:
-compatible-v1: true
 compatible-v2: false
 ---
 
