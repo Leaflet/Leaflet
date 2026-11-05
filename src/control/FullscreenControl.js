@@ -103,7 +103,16 @@ export class FullscreenControl extends Control {
 
 	/** Enters fullscreen mode, or exits it if the map is already fullscreen. */
 	toggle() {
-		if (this._fullscreen) {
+		return this.setFullscreen(!this._fullscreen);
+	}
+
+	/**
+	 * Enters fullscreen mode if `on` is `true`, or exits it otherwise. Does nothing if the map is already in that mode.
+	 * @param {boolean} on
+	 */
+	setFullscreen(on) {
+		if (on === this._fullscreen) { return this; }
+		if (!on) {
 			if (this._pseudo) { this._setPseudo(false); } else { document.exitFullscreen(); }
 		} else if (this.options.pseudo || !document.fullscreenEnabled) {
 			this._setPseudo(true);

@@ -32,6 +32,23 @@ describe('FullscreenControl', () => {
 		expect(exit.calledOnce).to.equal(true);
 	});
 
+	it('sets fullscreen explicitly, ignoring no-op calls', () => {
+		const control = new FullscreenControl({pseudo: true}).addTo(map),
+		enter = sinon.spy(), exit = sinon.spy();
+		map.on({enterfullscreen: enter, exitfullscreen: exit});
+
+		control.setFullscreen(false);
+		expect(exit.called).to.equal(false);
+
+		control.setFullscreen(true).setFullscreen(true);
+		expect(control.isFullscreen()).to.equal(true);
+		expect(enter.calledOnce).to.equal(true);
+
+		control.setFullscreen(false).setFullscreen(false);
+		expect(control.isFullscreen()).to.equal(false);
+		expect(exit.calledOnce).to.equal(true);
+	});
+
 	it('exits pseudo-fullscreen on Escape unless something else handled it', () => {
 		const control = new FullscreenControl({pseudo: true}).addTo(map).toggle(),
 		prevented = new KeyboardEvent('keydown', {key: 'Escape', cancelable: true});
