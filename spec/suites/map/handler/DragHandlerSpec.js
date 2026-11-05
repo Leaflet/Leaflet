@@ -526,7 +526,7 @@ describe('DragHandler', () => {
 	describe('originalEvent in view change events', () => {
 		[false, true].forEach((inertia) => {
 			it(`is the pointer event for every event of a drag (inertia: ${inertia})`, async () => {
-				map = new LeafletMap(container, {dragging: true, inertia});
+				map = new LeafletMap(container, {dragging: true, inertia, inertiaDeceleration: 100000});
 				map.setView([0, 0], 1);
 
 				const log = [];
