@@ -151,6 +151,20 @@ describe('Polygon', () => {
 
 	});
 
+	describe('#closestLayerPoint', () => {
+		it('includes the segment closing the ring', () => {
+			const polygon = new Polygon([[55, 37], [56, 38], [55, 39]]).addTo(map);
+			const p = map.latLngToLayerPoint([54.9, 38]);
+
+			const expected = map.latLngToLayerPoint([55, 38]);
+
+			const closest = polygon.closestLayerPoint(p);
+			expect(closest.x).to.be.closeTo(expected.x, 1);
+			expect(closest.y).to.be.closeTo(expected.y, 1);
+			expect(closest.distance).to.be.closeTo(p.y - expected.y, 1);
+		});
+	});
+
 	describe('#getCenter', () => {
 		it('should compute center of a big simple polygon around equator', () => {
 			const latlngs = [
