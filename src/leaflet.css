@@ -279,7 +279,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 }
 
 .leaflet-container a {
-	color: #0078a8;
+	color: #006e9d;
 }
 
 /* prevent showing outline-box on Chromium when clicking on a vector with a tooltip */
@@ -433,14 +433,16 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 /* attribution and scale controls */
 
 .leaflet-container .leaflet-control-attribution {
-	background: rgba(255, 255, 255, 0.8);
 	margin: 0;
 }
 
+/* attribution links are told apart from text by contrast alone (WCAG 1.4.1 via G183): link vs text >= 3:1 and
+   link vs background >= 4.5:1 even over black tiles, which only fits with black text and >= 0.85 background alpha */
 .leaflet-control-attribution,
 .leaflet-control-scale-line {
 	padding: 0 5px;
-	color: #333;
+	color: #000;
+	background: rgba(255, 255, 255, 0.9);
 	line-height: 1.4;
 }
 
@@ -476,7 +478,6 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	padding: 2px 5px 1px;
 	white-space: nowrap;
 	box-sizing: border-box;
-	background: rgba(255, 255, 255, 0.8);
 	text-shadow: 1px 1px #fff;
 }
 
