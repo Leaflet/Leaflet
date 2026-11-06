@@ -745,6 +745,12 @@ export class LeafletMap extends Evented {
 
 		this._stop();
 
+		// the end of a running zoom animation would override the new view, so apply it afterwards
+		if (this._animatingZoom) {
+			this._pendingView = {center, zoom, options};
+			return this;
+		}
+
 		if (this._loaded && !options.reset) {
 
 			if (options.animate !== undefined) {
@@ -2229,6 +2235,7 @@ export class LeafletMap extends Evented {
 	}
 
 	_stop() {
+		this._pendingView = null;
 		cancelAnimationFrame(this._flyToFrame);
 		cancelAnimationFrame(this._zoomAnimFrame);
 		this._panAnim?.stop();
@@ -2859,6 +2866,13 @@ export class LeafletMap extends Evented {
 		this._fireMove('move');
 
 		this._moveEnd(true);
+
+		// read after moveend, since its listeners may have queued a newer view or stopped the map
+		const view = this._pendingView;
+		if (view) {
+			this._pendingView = null;
+			this.setView(view.center, view.zoom, view.options);
+		}
 	}
 }
 

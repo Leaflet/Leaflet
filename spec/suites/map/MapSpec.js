@@ -280,6 +280,43 @@ describe('Map', () => {
 
 			map.setView([51.505, -0.09], 13, {pan: {noMoveStart: true}});
 		});
+
+		describe('during a zoom animation', () => {
+			let clock;
+
+			beforeEach(() => {
+				map.setView([0, 0], 13);
+				clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout']});
+				map._animateZoom(new LatLng(0.0005, 0.0005), 14, true);
+			});
+
+			afterEach(() => {
+				clock.restore();
+			});
+
+			it('applies the latest view after the animation', () => {
+				map.setView([0.001, 0.001], 15, {animate: false});
+				map.setView([0.002, 0.002], 16, {animate: false});
+				clock.tick(250);
+				expect(map.getZoom()).to.equal(16);
+				expect(map.getCenter()).to.be.nearLatLng([0.002, 0.002]);
+			});
+
+			it('applies a new center after the animation', () => {
+				map.setView([0.001, 0.001], undefined, {animate: false});
+				clock.tick(250);
+				expect(map.getZoom()).to.equal(14);
+				expect(map.getCenter()).to.be.nearLatLng([0.001, 0.001]);
+			});
+
+			it('drops the waiting view when stopped', () => {
+				map.setView([0.001, 0.001], 15, {animate: false});
+				map.stop();
+				clock.tick(250);
+				expect(map.getZoom()).to.equal(14);
+				expect(map.getCenter()).to.be.nearLatLng([0.0005, 0.0005]);
+			});
+		});
 	});
 
 	describe('#setZoom', () => {
