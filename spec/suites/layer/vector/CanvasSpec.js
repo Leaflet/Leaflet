@@ -364,6 +364,65 @@ describe('Canvas', () => {
 		});
 	});
 
+	describe('draw order', () => {
+		let layers;
+
+		// walks the renderer's draw list both ways, so a broken prev or next link fails too
+		function drawOrder() {
+			const renderer = map.getRenderer(layers[0]), forward = [], backward = [];
+			for (let o = renderer._drawFirst; o; o = o.next) { forward.push(layers.indexOf(o.layer)); }
+			for (let o = renderer._drawLast; o; o = o.prev) { backward.unshift(layers.indexOf(o.layer)); }
+			expect(backward).to.eql(forward);
+			return forward;
+		}
+
+		beforeEach(() => {
+			layers = [0, 1, 2, 3].map(() => new CircleMarker([0, 0]).addTo(map));
+		});
+
+		it('follows the order layers were added in', () => {
+			expect(drawOrder()).to.eql([0, 1, 2, 3]);
+		});
+
+		it('moves layers to the front', () => {
+			layers[1].bringToFront();
+			expect(drawOrder()).to.eql([0, 2, 3, 1]);
+			layers[0].bringToFront();
+			expect(drawOrder()).to.eql([2, 3, 1, 0]);
+			layers[0].bringToFront();
+			expect(drawOrder()).to.eql([2, 3, 1, 0]);
+		});
+
+		it('moves layers to the back', () => {
+			layers[2].bringToBack();
+			expect(drawOrder()).to.eql([2, 0, 1, 3]);
+			layers[3].bringToBack();
+			expect(drawOrder()).to.eql([3, 2, 0, 1]);
+			layers[3].bringToBack();
+			expect(drawOrder()).to.eql([3, 2, 0, 1]);
+		});
+
+		it('unlinks removed layers and appends re-added ones', () => {
+			layers[0].remove();
+			expect(drawOrder()).to.eql([1, 2, 3]);
+			layers[2].remove();
+			expect(drawOrder()).to.eql([1, 3]);
+			layers[3].remove();
+			expect(drawOrder()).to.eql([1]);
+
+			layers[1].bringToFront();
+			layers[1].bringToBack();
+			expect(drawOrder()).to.eql([1]);
+
+			layers[1].remove();
+			expect(drawOrder()).to.eql([]);
+
+			layers[2].addTo(map);
+			layers[0].addTo(map);
+			expect(drawOrder()).to.eql([2, 0]);
+		});
+	});
+
 	describe('Canvas #remove', () => {
 		it('can remove the map without errors', (done) => {
 			new Polygon(latLngs).addTo(map);

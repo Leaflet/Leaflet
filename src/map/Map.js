@@ -875,7 +875,7 @@ export class LeafletMap extends Evented {
 
 		let zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
 
-		zoom = (typeof options.maxZoom === 'number') ? Math.min(options.maxZoom, zoom) : zoom;
+		zoom = Math.min(options.maxZoom ?? Infinity, zoom);
 
 		if (zoom === Infinity) {
 			return {
@@ -1948,7 +1948,7 @@ export class LeafletMap extends Evented {
 	 * @param {LatLngExpression} latlng
 	 */
 	latLngToLayerPoint(latlng) {
-		return this.project(new LatLng(latlng))._subtract(this.getPixelOrigin());
+		return this.project(latlng)._subtract(this.getPixelOrigin());
 	}
 
 	/**
@@ -2011,7 +2011,7 @@ export class LeafletMap extends Evented {
 	 * @param {PointExpression} point
 	 */
 	containerPointToLatLng(point) {
-		const layerPoint = this.containerPointToLayerPoint(new Point(point));
+		const layerPoint = this.containerPointToLayerPoint(point);
 		return this.layerPointToLatLng(layerPoint);
 	}
 
@@ -2021,7 +2021,7 @@ export class LeafletMap extends Evented {
 	 * @param {LatLngExpression} latlng
 	 */
 	latLngToContainerPoint(latlng) {
-		return this.layerPointToContainerPoint(this.latLngToLayerPoint(new LatLng(latlng)));
+		return this.layerPointToContainerPoint(this.latLngToLayerPoint(latlng));
 	}
 
 	/**
