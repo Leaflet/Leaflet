@@ -1,6 +1,7 @@
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 
 /** @import {Defaults, DivOverlayEventMap, PointExpression, PopupDefaults, PopupOptions, ZoomAnimEvent} from '../types.js' */
@@ -151,7 +152,9 @@ export class Popup extends DivOverlay {
 		}
 		map._popup = this;
 
-		return super.openOn(map);
+		super.openOn(map);
+		this._updateSourceAria(true); // the source may have changed while open, e.g. within a FeatureGroup
+		return this;
 	}
 
 	/** @param {LeafletMap} map */
@@ -159,6 +162,7 @@ export class Popup extends DivOverlay {
 		super.onAdd(map);
 
 		map.fire('popupopen', {popup: this});
+		this._updateSourceAria(true);
 
 		if (this._source) {
 			this._source.fire('popupopen', {popup: this}, true);
@@ -172,9 +176,16 @@ export class Popup extends DivOverlay {
 
 	/** @param {LeafletMap} map */
 	onRemove(map) {
+		// closing removes the focused element, which would send focus back to the start of the page
+		if (this._container.contains(document.activeElement)) {
+			const el = /** @type {HTMLElement | null | undefined} */ (this._source?.getElement?.());
+			(el && el.tabIndex >= 0 ? el : map._container).focus();
+		}
+
 		super.onRemove(map);
 
 		map.fire('popupclose', {popup: this});
+		this._updateSourceAria(false);
 
 		if (this._source) {
 			this._source.fire('popupclose', {popup: this}, true);
@@ -198,9 +209,24 @@ export class Popup extends DivOverlay {
 		return events;
 	}
 
+	// marks a source that acts as a button (e.g. a keyboard-accessible marker) as a disclosure for the popup
+	/** @param {boolean} open */
+	_updateSourceAria(open) {
+		this._ariaSource?.setAttribute('aria-expanded', 'false');
+		this._ariaSource?.removeAttribute('aria-controls');
+
+		const el = this._source?.getElement?.();
+		/** @type {Element | null | undefined} */
+		this._ariaSource = el?.getAttribute('role') === 'button' ? el : null;
+		this._ariaSource?.setAttribute('aria-expanded', String(open));
+		if (open) { this._ariaSource?.setAttribute('aria-controls', this._container.id); }
+	}
+
 	_initLayout() {
 		const prefix = 'leaflet-popup',
 		container = this._container = DomUtil.create('div', `${prefix} ${this.options.className || ''} leaflet-zoom-animated`);
+
+		container.id = `leaflet-popup-${Util.stamp(this)}`;
 
 		const wrapper = this._wrapper = DomUtil.create('div', `${prefix}-content-wrapper`, container);
 		this._contentNode = DomUtil.create('div', `${prefix}-content`, wrapper);
