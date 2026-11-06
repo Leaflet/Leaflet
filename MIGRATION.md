@@ -25,10 +25,10 @@ The guide has two parts:
 module script:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.1/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.2/dist/leaflet.css">
 
 <script type="importmap">
-	{"imports": {"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.1/dist/leaflet.js"}}
+	{"imports": {"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.2/dist/leaflet.js"}}
 </script>
 
 <script type="module">
@@ -40,7 +40,8 @@ module script:
 </script>
 ```
 
-Variables in a module script aren't global. If other scripts on the page need the map, assign it to `window` yourself.
+Variables in a module script aren't global. If other scripts on the page need the map, assign it to `window`
+yourself.
 
 If you'd rather keep a global `L`, use `dist/leaflet-global.js` with a regular script tag. It mirrors the module
 exports, so the rest of this guide still applies (`new L.Marker(...)`, `L.ZoomControl`). It no longer supports AMD,
@@ -304,8 +305,8 @@ Return values and methods, all **Silent**:
 - `setView(center, zoom, true)` no longer forces a view reset. Use `setView(center, zoom, {reset: true})`.
 - `closeTooltip()` returns the layer instead of the tooltip, and `isTooltipOpen()` returns `false` instead of
   `undefined` when no tooltip is bound.
-- Popups and tooltips are no longer `instanceof Layer`. They still work with `addTo()`,
-  `openOn()` and `map.addLayer()`.
+- Popups and tooltips are no longer `instanceof Layer`. They still work with `addTo()`, `openOn()` and
+  `map.addLayer()`.
 
 CSS and DOM, all **Silent**:
 
@@ -357,6 +358,9 @@ This part covers code that subclasses Leaflet classes, adds hooks or uses its in
 too, especially [sections 7](#7-write-custom-classes-as-es-classes) and
 [8](#8-use-the-platform-instead-of-removed-utilities).
 
+If your plugin was ported to a 2.0 alpha, check it against the beta: `extend()` and `initialize()` were removed in
+2.0.0-beta.1, so code like `Control.extend({...})` that ran on the alphas throws "not a function" now.
+
 ### 11. Support 1.x and 2.0 from one release
 
 ES classes can extend the 1.x classes too, so a plugin can support both versions:
@@ -382,21 +386,32 @@ MyLayer.mergeOptions({opacity: 0.5});
 1. Use `class X extends L.Layer` with a `constructor()`, not `extend` or `initialize`. `Layer` doesn't apply options
    passed to `super()` in either version, so call `L.Util.setOptions(this, options)` yourself, as 1.x `initialize`
    methods did. Classes like `Control` and `Marker` take options in `super()` in both versions.
-2. Set defaults with `X.mergeOptions({...})` after the class, after giving it its own `prototype.options` on 1.x as
-   above. `static defaultOptions` is the 2.0 way, but 1.x doesn't read it.
+2. Set defaults with `X.mergeOptions({...})` after the class. On 1.x, first give the class its own
+   `prototype.options`, as above. `static defaultOptions` is the 2.0 way, but 1.x doesn't read it.
 3. Reach renamed classes through the namespace, `import * as L from 'leaflet'`, and fall back:
    `L.ZoomControl ?? L.Control.Zoom`. A static import of a flat name fails on 1.x.
 4. Use `new` instead of factories. It works on both versions.
 5. Pick event names by version (`L.version.startsWith('1.')`) instead of listening to both `mouse*` and `pointer*`.
-
-Declare both versions in `peerDependencies`: `"leaflet": "^1.9.0 || ^2.0.0-beta.1"`. A plain `^2.0.0` doesn't match
-the betas, so npm refuses to install the plugin next to one.
-
-On 1.x, `addInitHook` on an ES class adds the hook to its parent, so it runs for every `L.Layer`. Only add hooks to
-your own classes on 2.0.
+6. Read a Leaflet class's defaults with `L.Marker.defaultOptions ?? L.Marker.prototype.options`.
 
 `include()`, `mergeOptions()` and `addInitHook()` keep their 1.x signatures. `setDefaultOptions()`, added in the 2.0
-alphas, is a deprecated alias of `mergeOptions()`.
+alphas, is a deprecated alias of `mergeOptions()`. On 1.x, `addInitHook` on an ES class adds the hook to its parent,
+so it runs for every `L.Layer`. Add hooks to your own classes only on 2.0.
+
+If apps subclass your class with 1.x `extend()`, your class needs two more things on 1.x:
+
+- `extend()` copies only the parent's own statics, so copy `extend`, `include`, `mergeOptions` and `addInitHook` from
+  the Leaflet class onto yours.
+- A subclass's `initialize()` calls its parent's `initialize()`, not the constructor, so give your class an
+  `initialize()` that runs the same setup.
+
+Declare both versions in `peerDependencies`: `"leaflet": "^1.9.0 || ^2.0.0-beta.1"`. A plain `^2.0.0` doesn't match
+the betas, so npm refuses to install the plugin next to one. For `<script>` users of either version, publish a script
+build next to the module, as in [the plugin guide](PLUGIN-GUIDE.md#script-tags-and-the-global-build).
+
+[Leaflet.heat](https://github.com/Leaflet/Leaflet.heat) is a short, complete example of this recipe.
+[Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) is a larger one, and also supports
+subclassing with `extend()` (at the end of `src/MarkerClusterGroup.js`).
 
 ### 12. Init hooks run after the whole constructor
 
@@ -406,6 +421,10 @@ finished. A hook on `Layer` sees a fully built `Polygon`, as in 1.x.
 For a class of your own that extends a Leaflet class, hooks run before the body of your constructor. If other
 code adds hooks to your class and they need its fields, mark the class with `static initHooks = true` and end its
 constructor with `this.callInitHooks()`.
+
+A hook that only creates a helper object (`layer.editing`, `map.pm`) or fills in a default option is often better
+as a lazy getter or an option read with a fallback. Both work on both versions and on instances created before the
+plugin loaded; see [the plugin guide](PLUGIN-GUIDE.md#adding-to-leaflet-classes).
 
 ### 13. Removed internals
 
@@ -447,4 +466,5 @@ declare module 'leaflet' {
 Augment `Map`, not `LeafletMap`. Augmenting both loses one of them. A layer whose `getEvents()` adds its own map
 events should add them to `MapEventMap`.
 
-Subclasses pass their options and events as generic parameters: `class MyGroup extends FeatureGroup<Layer, MyOptions>`.
+Subclasses pass their options and events as generic parameters:
+`class MyGroup extends FeatureGroup<Layer, MyOptions>`.
