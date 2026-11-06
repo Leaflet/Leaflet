@@ -660,6 +660,19 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	border-right-color: #fff;
 }
 
+/* Increased contrast */
+
+@media (prefers-contrast: more) {
+	.leaflet-control-attribution,
+	.leaflet-control-scale-line {
+		background: #fff;
+	}
+
+	.leaflet-control-attribution a {
+		text-decoration: underline;
+	}
+}
+
 /* Printing */
 
 @media print {
