@@ -7,6 +7,7 @@ import {Point} from '../geometry/Point.js';
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Layer} from './Layer.js' */
+/** @import {Marker} from './marker/Marker.js' */
 
 const defaultOptions = {
 	/** `Map pane` where the popup will be added. */
@@ -172,6 +173,12 @@ export class Popup extends DivOverlay {
 
 	/** @param {LeafletMap} map */
 	onRemove(map) {
+		// closing removes the focused element, which would send focus back to the start of the page
+		if (this._container.contains(document.activeElement)) {
+			const icon = /** @type {Marker | undefined} */ (this._source)?._icon;
+			(icon && icon.tabIndex >= 0 ? icon : map._container).focus();
+		}
+
 		super.onRemove(map);
 
 		map.fire('popupclose', {popup: this});

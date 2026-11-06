@@ -342,6 +342,43 @@ describe('Popup', () => {
 		expect(map.hasLayer(popup)).to.be.true;
 	});
 
+	describe('focus on close', () => {
+		it('moves focus to the marker when the close button is clicked', () => {
+			const marker = new Marker(center).bindPopup('Null Island').addTo(map);
+			marker.openPopup();
+
+			const button = marker.getPopup()._closeButton;
+			button.focus();
+			UIEventSimulator.fire('click', button);
+
+			expect(marker.isPopupOpen()).to.be.false;
+			expect(document.activeElement).to.equal(marker._icon);
+		});
+
+		it('moves focus to the map when closing a popup without a focusable source', () => {
+			const popup = new Popup().setLatLng(center).setContent('Null Island').openOn(map);
+
+			popup._closeButton.focus();
+			UIEventSimulator.fire('click', popup._closeButton);
+
+			expect(popup.isOpen()).to.be.false;
+			expect(document.activeElement).to.equal(container);
+		});
+
+		it('leaves focus alone when it is outside the popup', () => {
+			const marker = new Marker(center).bindPopup('Null Island').addTo(map);
+			const input = document.createElement('input');
+			document.body.append(input);
+			marker.openPopup();
+
+			input.focus();
+			marker.closePopup();
+
+			expect(document.activeElement).to.equal(input);
+			input.remove();
+		});
+	});
+
 	describe('autoPan option should pan popup into visibility', () => {
 		// Helper function which calculates the offset of the map-container & popup-container in pixel
 		function getPopupOffset(map, popup) {

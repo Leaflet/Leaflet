@@ -2,7 +2,6 @@ import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
-/** @import {Marker} from '../../layer/marker/Marker.js' */
 
 /**
  * Pans and zooms the map with the keyboard (`map.keyboard`), enabled by default. Rebind keys by changing the static
@@ -94,14 +93,8 @@ export class KeyboardHandler extends Handler {
 		if (e.key !== 'Escape' || e.defaultPrevented || !popup?.isOpen() || !popup.options.closeOnEscapeKey ||
 			map._controlContainer.contains(target)) { return; }
 
-		const inPopup = popup._container.contains(target),
-		icon = /** @type {Marker | undefined} */ (popup._source)?._icon;
-
 		map.closePopup();
 		e.preventDefault();
-
-		// closing removes the focused element, which would send focus back to the start of the page
-		if (inPopup) { (icon && icon.tabIndex >= 0 ? icon : map._container).focus(); }
 	}
 
 	/** @param {KeyboardEvent} e */
