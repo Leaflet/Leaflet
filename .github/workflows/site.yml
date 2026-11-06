@@ -62,7 +62,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: build-site
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     permissions:
       pages: write
       id-token: write
