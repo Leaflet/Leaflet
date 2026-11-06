@@ -71,6 +71,20 @@ describe('VideoOverlay', () => {
 		expect(getComputedStyle(stretchedOverlay.getElement()).objectFit).to.equal('fill');
 	});
 
+	it('uses the z-index specified in options', () => {
+		const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm';
+
+		const overlay = new VideoOverlay(videoUrl, videoBounds, {zIndex: 20}).addTo(map);
+		expect(overlay.getElement().style.zIndex).to.equal('20');
+	});
+
+	it('sets the z-index when added to the map, e.g. by the layers control', () => {
+		const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm';
+
+		const overlay = new VideoOverlay(videoUrl, videoBounds).setZIndex(10).addTo(map);
+		expect(overlay.getElement().style.zIndex).to.equal('10');
+	});
+
 	async function dragOverVideo(controls) {
 		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
