@@ -99,7 +99,9 @@ const WHITESPACE_RE = /\s+/;
  * @param {string} str
  */
 export function splitWords(str) {
-	return str.trim().split(WHITESPACE_RE);
+	// a single word is the common case, and splitting allocates a lot more than the array
+	const trimmed = str.trim();
+	return WHITESPACE_RE.test(trimmed) ? trimmed.split(WHITESPACE_RE) : [trimmed];
 }
 
 /**
