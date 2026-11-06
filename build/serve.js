@@ -1,11 +1,24 @@
 // A static server for local development: `node build/serve.js [dir]`, on port $PORT or the first free one from 8080.
-// Never caches, lists directories without an index.html, and serves the root's 404.html for missing files.
+// Never caches, lists directories without an index.html, and serves the root's 404.html for missing files. `--site`
+// serves _site/ while rebuilding it on changes (`--preview` passes PREVIEW=1 to the build), in-process rather than
+// with shell `&`, since cmd.exe would only start the server after the never-ending watcher exits.
 
 import {createServer} from 'node:http';
 import {createReadStream, readdirSync, statSync} from 'node:fs';
 import {join, extname, resolve, sep} from 'node:path';
+import {spawn} from 'node:child_process';
 
-const root = resolve(process.argv[2] ?? '.');
+const args = process.argv.slice(2);
+const site = args.includes('--site');
+const root = resolve(site ? '_site' : args.find(a => !a.startsWith('--')) ?? '.');
+
+if (site) {
+	const env = args.includes('--preview') ? {...process.env, PREVIEW: '1'} : process.env;
+	const watchArgs = ['--watch-path=docs', '--watch-path=src', '--watch-path=build', '--watch-preserve-output', 'build/site.js'];
+	const watcher = spawn(process.execPath, watchArgs, {stdio: 'inherit', env});
+	process.on('exit', () => watcher.kill());
+	for (const signal of ['SIGINT', 'SIGTERM']) { process.on(signal, () => process.exit()); }
+}
 
 const TYPES = {
 	'.html': 'text/html; charset=utf-8',

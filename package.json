@@ -70,8 +70,8 @@
     "typecheck": "tsc --noEmit",
     "test:types": "tsc -p spec/types",
     "site": "node build/site.js",
-    "serve": "node --watch-path=docs --watch-path=src --watch-path=build --watch-preserve-output build/site.js & node build/serve.js _site",
-    "preview": "PREVIEW=1 npm run serve",
+    "serve": "node build/serve.js --site",
+    "preview": "node build/serve.js --site --preview",
     "pin-release": "node build/pin-release.js",
     "prepare": "husky",
     "version": "node build/version.js && git add src/Leaflet.js"
