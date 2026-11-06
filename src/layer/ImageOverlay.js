@@ -297,4 +297,9 @@ export class ImageOverlay extends Layer {
 	getCenter() {
 		return this._bounds.getCenter();
 	}
+
+	// like on paths, popups open where the overlay was clicked, so another click moves them
+	_togglesPopupOnClick() {
+		return false;
+	}
 }

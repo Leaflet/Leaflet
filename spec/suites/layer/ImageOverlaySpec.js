@@ -163,6 +163,19 @@ describe('ImageOverlay', () => {
 		});
 	});
 
+	describe('popup', () => {
+		it('moves an open popup to the clicked point instead of closing it', () => {
+			const overlay = new ImageOverlay('', imageBounds, {interactive: true}).addTo(map).bindPopup('Hi');
+
+			overlay.fire('click', {latlng: [40.72, -74.2]});
+			expect(overlay.isPopupOpen()).to.be.true;
+
+			overlay.fire('click', {latlng: [40.76, -74.13]});
+			expect(overlay.isPopupOpen()).to.be.true;
+			expect(overlay.getPopup().getLatLng()).to.be.nearLatLng([40.76, -74.13]);
+		});
+	});
+
 	describe('crossOrigin option', () => {
 		let overlay;
 		const blankUrl = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
