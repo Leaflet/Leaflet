@@ -49,10 +49,10 @@ export class ZoomControl extends Control {
 		options = this.options;
 
 		/** @type {HTMLAnchorElement} */
-		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
+		this._zoomInButton  = this._createButton(options.zoomInText, map.translate(options.zoomInTitle),
 			`${zoomName}-in`,  container, e => this._zoom(e, 1));
 		/** @type {HTMLAnchorElement} */
-		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
+		this._zoomOutButton = this._createButton(options.zoomOutText, map.translate(options.zoomOutTitle),
 			`${zoomName}-out`, container, e => this._zoom(e, -1));
 
 		this._updateDisabled();

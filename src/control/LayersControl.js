@@ -265,7 +265,7 @@ export class LayersControl extends Control {
 
 		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
 		link.href = '#';
-		link.title = this.options.title;
+		link.title = this._map.translate(this.options.title);
 		link.setAttribute('role', 'button');
 		section.setAttribute('aria-label', link.title);
 

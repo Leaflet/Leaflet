@@ -1,4 +1,4 @@
-import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, TileLayer, Util, LayersControl, LatLng, FullscreenControl} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
@@ -48,6 +48,33 @@ describe('Map', () => {
 			const map1 = new LeafletMap(container1);
 			expect(container1.getAttribute('role')).to.equal('group');
 			expect(container1.getAttribute('aria-label')).to.equal('My custom map name');
+			removeMapContainer(map1, container1);
+		});
+	});
+
+	describe('translate', () => {
+		const fr = {'Map': 'Carte', 'Zoom in': 'Zoom avant', 'Layers': 'Couches', 'Enter fullscreen': 'Plein écran', 'Close popup': 'Fermer'};
+
+		it('returns the text unchanged by default or when the option is unset', () => {
+			expect(map.translate('Zoom in')).to.equal('Zoom in');
+			map.options.translate = undefined;
+			expect(map.translate('Zoom in')).to.equal('Zoom in');
+		});
+
+		it('translates built-in labels', () => {
+			const container1 = createContainer();
+			const map1 = new LeafletMap(container1, {translate: text => fr[text]}).setView([0, 0], 1);
+			new LayersControl().addTo(map1);
+			new FullscreenControl().addTo(map1);
+			new Popup().setLatLng([0, 0]).setContent('x').openOn(map1);
+			const q = selector => container1.querySelector(selector);
+
+			expect(container1.getAttribute('aria-label')).to.equal('Carte');
+			expect(q('.leaflet-control-zoom-in').title).to.equal('Zoom avant');
+			expect(q('.leaflet-control-zoom-out').title).to.equal('Zoom out');
+			expect(q('.leaflet-control-layers-toggle').title).to.equal('Couches');
+			expect(q('.leaflet-control-fullscreen a').title).to.equal('Plein écran');
+			expect(q('.leaflet-popup-close-button').getAttribute('aria-label')).to.equal('Fermer');
 			removeMapContainer(map1, container1);
 		});
 	});

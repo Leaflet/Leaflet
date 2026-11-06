@@ -215,7 +215,7 @@ export class Popup extends DivOverlay {
 		if (this.options.closeButton) {
 			const closeButton = this._closeButton = DomUtil.create('a', `${prefix}-close-button`, container);
 			closeButton.setAttribute('role', 'button'); // overrides the implicit role=link of <a> elements #7399
-			closeButton.setAttribute('aria-label', this.options.closeButtonLabel);
+			closeButton.setAttribute('aria-label', this._map.translate(this.options.closeButtonLabel));
 
 			closeButton.href = '#close';
 			closeButton.textContent = '\u00D7';
