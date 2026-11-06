@@ -5,6 +5,10 @@ describe('VideoOverlay', () => {
 	let container, map;
 	const videoBounds = new LatLngBounds([[32, -130], [13, -100]]);
 
+	// empty data URIs so no test has to fetch a real video over the network
+	const videoUrl = 'data:video/webm;base64,';
+	const videoUrls = [videoUrl, 'data:video/mp4;base64,'];
+
 	beforeEach(() => {
 		container = createContainer();
 		map = new LeafletMap(container);
@@ -16,22 +20,12 @@ describe('VideoOverlay', () => {
 	});
 
 	it('create VideoOverlay', () => {
-		const videoUrls = [
-			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
-			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
-		];
-
 		const videoOverlay = new VideoOverlay(videoUrls, videoBounds).addTo(map);
 
 		expect(map.hasLayer(videoOverlay)).to.be.true;
 	});
 
 	it('create VideoOverlay from a video element with source elements', () => {
-		const videoUrls = [
-			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
-			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
-		];
-
 		const video = document.createElement('video');
 		for (const url of videoUrls) {
 			const source = document.createElement('source');
@@ -49,8 +43,6 @@ describe('VideoOverlay', () => {
 	});
 
 	it('create VideoOverlay from a video element with a src attribute', () => {
-		const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm';
-
 		const video = document.createElement('video');
 		video.src = videoUrl;
 
@@ -62,8 +54,6 @@ describe('VideoOverlay', () => {
 	});
 
 	it('stretches the video to its bounds with keepAspectRatio: false', () => {
-		const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm';
-
 		const keptOverlay = new VideoOverlay(videoUrl, videoBounds).addTo(map);
 		const stretchedOverlay = new VideoOverlay(videoUrl, videoBounds, {keepAspectRatio: false}).addTo(map);
 
@@ -72,25 +62,16 @@ describe('VideoOverlay', () => {
 	});
 
 	it('uses the z-index specified in options', () => {
-		const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm';
-
 		const overlay = new VideoOverlay(videoUrl, videoBounds, {zIndex: 20}).addTo(map);
 		expect(overlay.getElement().style.zIndex).to.equal('20');
 	});
 
 	it('sets the z-index when added to the map, e.g. by the layers control', () => {
-		const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm';
-
 		const overlay = new VideoOverlay(videoUrl, videoBounds).setZIndex(10).addTo(map);
 		expect(overlay.getElement().style.zIndex).to.equal('10');
 	});
 
 	async function dragOverVideo(controls) {
-		const videoUrls = [
-			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
-			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
-		];
-
 		const videoOverlay = new VideoOverlay(videoUrls, videoBounds, {interactive: true, controls}).addTo(map);
 		expect(map.hasLayer(videoOverlay)).to.be.true;
 

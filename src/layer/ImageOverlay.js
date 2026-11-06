@@ -143,7 +143,7 @@ export class ImageOverlay extends Layer {
 	 * @param {{opacity?: number}} styleOpts
 	 */
 	setStyle(styleOpts) {
-		if (styleOpts.opacity !== undefined) {
+		if (styleOpts.opacity != null) {
 			this.setOpacity(styleOpts.opacity);
 		}
 		return this;
