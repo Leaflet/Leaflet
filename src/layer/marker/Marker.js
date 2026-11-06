@@ -57,7 +57,7 @@ const defaultOptions = {
 	 */
 	rotation: null,
 
-	/** If `true`, the marker will get on top of others when you hover the pointer over it. */
+	/** If `true`, the marker will get on top of others while the pointer is over it or it has keyboard focus. */
 	riseOnHover: false,
 
 	/** The z-index offset used for the `riseOnHover` feature. */
@@ -316,10 +316,7 @@ export class Marker extends Layer {
 		this._icon = icon;
 
 		if (options.riseOnHover) {
-			this.on({
-				pointerover: this._bringToFront,
-				pointerout: this._resetZIndex
-			});
+			DomEvent.on(icon, 'pointerover pointerout focusin focusout', this._updateRise, this);
 		}
 
 		if (this.options.autoPanOnFocus) {
@@ -357,14 +354,12 @@ export class Marker extends Layer {
 	}
 
 	_removeIcon() {
+		const icon = /** @type {HTMLElement} */ (this._icon);
 		if (this.options.riseOnHover) {
-			this.off({
-				pointerover: this._bringToFront,
-				pointerout: this._resetZIndex
-			});
+			DomEvent.off(icon, 'pointerover pointerout focusin focusout', this._updateRise, this);
+			this._hovered = false;
 		}
 
-		const icon = /** @type {HTMLElement} */ (this._icon);
 		if (this.options.autoPanOnFocus) {
 			DomEvent.off(icon, 'focus', this._panOnFocus, this);
 		}
@@ -388,7 +383,7 @@ export class Marker extends Layer {
 		/** @type {number} */
 		this._zIndex = pos.y + this.options.zIndexOffset;
 
-		this._resetZIndex();
+		this._updateRise();
 	}
 
 	/** @param {Point} pos */
@@ -512,6 +507,19 @@ export class Marker extends Layer {
 
 		if (this._shadow) {
 			this._shadow.style.opacity = `${opacity}`;
+		}
+	}
+
+	/** @param {Event} [e] */
+	_updateRise(e) {
+		if (e?.type.startsWith('pointer')) {
+			/** @type {boolean} */
+			this._hovered = e.type === 'pointerover';
+		}
+		if (this.options.riseOnHover && (this._hovered || this._icon?.matches(':focus-within'))) {
+			this._bringToFront();
+		} else {
+			this._resetZIndex();
 		}
 	}
 

@@ -451,6 +451,47 @@ describe('Marker', () => {
 		});
 	});
 
+	describe('riseOnHover', () => {
+		it('rises while hovered or focused', () => {
+			const marker = new Marker([0, 0], {riseOnHover: true}).addTo(map);
+			const base = Number(marker._icon.style.zIndex);
+			const z = () => Number(marker._icon.style.zIndex) - base;
+
+			UIEventSimulator.fire('pointerover', marker._icon);
+			expect(z()).to.equal(250);
+			marker._icon.focus();
+			UIEventSimulator.fire('pointerout', marker._icon);
+			expect(z()).to.equal(250);
+			marker._icon.blur();
+			expect(z()).to.equal(0);
+
+			marker._icon.focus();
+			expect(z()).to.equal(250);
+			UIEventSimulator.fire('pointerover', marker._icon);
+			marker._icon.blur();
+			expect(z()).to.equal(250);
+			UIEventSimulator.fire('pointerout', marker._icon);
+			expect(z()).to.equal(0);
+		});
+
+		it('stays risen when moved', () => {
+			const marker = new Marker([0, 0], {riseOnHover: true}).addTo(map);
+			marker._icon.focus();
+			marker.setLatLng([10, 10]);
+
+			const risen = Number(marker._icon.style.zIndex);
+			marker._icon.blur();
+			expect(risen - Number(marker._icon.style.zIndex)).to.equal(250);
+		});
+
+		it('doesn\'t rise on focus without riseOnHover', () => {
+			const marker = new Marker([0, 0]).addTo(map);
+			const base = marker._icon.style.zIndex;
+			marker._icon.focus();
+			expect(marker._icon.style.zIndex).to.equal(base);
+		});
+	});
+
 	describe('events', () => {
 		it('fires click event when clicked', () => {
 			const spy = sinon.spy();
