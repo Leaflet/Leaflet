@@ -23,6 +23,9 @@ const defaultOptions = {
 
 	position: 'topright',
 
+	/** The title of the toggle button and the accessible label of the layers list. */
+	title: 'Layers',
+
 	/**
 	 * If `true`, the control will assign zIndexes in increasing order to all of
 	 * its layers so that the order is preserved when switching them on/off.
@@ -262,7 +265,7 @@ export class LayersControl extends Control {
 
 		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
 		link.href = '#';
-		link.title = 'Layers';
+		link.title = this.options.title;
 		link.setAttribute('role', 'button');
 		section.setAttribute('aria-label', link.title);
 

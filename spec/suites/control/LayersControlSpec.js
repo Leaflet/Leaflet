@@ -239,6 +239,12 @@ describe('LayersControl', () => {
 		expect(map._container.querySelector('.leaflet-control-layers-list').getAttribute('aria-label')).to.equal('Layers');
 	});
 
+	it('uses a custom title', () => {
+		new LayersControl(null, null, {title: 'Couches'}).addTo(map);
+		expect(map._container.querySelector('.leaflet-control-layers-toggle').title).to.equal('Couches');
+		expect(map._container.querySelector('.leaflet-control-layers-list').getAttribute('aria-label')).to.equal('Couches');
+	});
+
 	describe('collapse when collapsed: true', () => {
 		it('expands on "Enter" keydown when toggle is focused', () => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
