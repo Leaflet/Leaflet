@@ -316,7 +316,19 @@ const defaultOptions = {
 	 * Whether an [attribution control](#attributioncontrol) is added to the map by default.
 	 * @category Control options
 	 */
-	attributionControl: true
+	attributionControl: true,
+
+	/**
+	 * A function that translates the English text Leaflet and plugins show to users, such as control titles and
+	 * accessible labels, e.g. `text => i18next.t(text)`. If it returns `undefined`, the text stays in English.
+	 * Text is translated when it's rendered, so set it before adding controls and opening popups.
+	 * @category Localization options
+	 * @param {string} text
+	 * @returns {string | undefined}
+	 */
+	translate(text) {
+		return text;
+	}
 };
 
 /** @typedef {typeof defaultOptions} MapDefaultsValues */
@@ -1854,6 +1866,16 @@ export class LeafletMap extends Evented {
 		return this._container;
 	}
 
+	/**
+	 * Translates the given English text with the [`translate`](#map-translate) option. Use it for any text
+	 * a plugin shows to users.
+	 * @category Other methods
+	 * @param {string} text
+	 * @returns {string}
+	 */
+	translate(text) {
+		return this.options.translate?.(text) ?? text;
+	}
 
 	/**
 	 * Returns the scale factor to be applied to a map transition from zoom level
@@ -2054,7 +2076,7 @@ export class LeafletMap extends Evented {
 		}
 
 		if (!container.hasAttribute('aria-label')) {
-			container.setAttribute('aria-label', 'Map');
+			container.setAttribute('aria-label', this.translate('Map'));
 		}
 	}
 

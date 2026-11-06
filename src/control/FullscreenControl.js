@@ -147,7 +147,7 @@ export class FullscreenControl extends Control {
 	_update() {
 		const link = /** @type {HTMLAnchorElement} */ (this._link),
 		{options} = this,
-		title = this._fullscreen ? options.exitTitle : options.enterTitle;
+		title = this._map.translate(this._fullscreen ? options.exitTitle : options.enterTitle);
 
 		link.innerHTML = this._fullscreen ? options.exitText : options.enterText;
 		link.title = title;
