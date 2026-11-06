@@ -101,6 +101,7 @@ export class Layer extends LayerBase {
 	bindPopup(content, options) {
 		/** @type {Popup | null | undefined} */
 		this._popup = this._initOverlay(Popup, this._popup, content, options);
+		this._popup._updateSourceAria(this._popup.isOpen());
 		this.on({
 			click: this._openPopup,
 			remove: this.closePopup,
@@ -121,6 +122,9 @@ export class Layer extends LayerBase {
 				remove: this.closePopup,
 				move: this._movePopup
 			});
+			const el = /** @type {{getElement?: () => Element | undefined}} */ (this).getElement?.();
+			el?.removeAttribute('aria-expanded');
+			el?.removeAttribute('aria-controls');
 			this._popup = null;
 		}
 		return this;

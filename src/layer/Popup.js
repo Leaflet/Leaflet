@@ -1,6 +1,7 @@
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 
 /** @import {Defaults, DivOverlayEventMap, PointExpression, PopupDefaults, PopupOptions, ZoomAnimEvent} from '../types.js' */
@@ -152,7 +153,9 @@ export class Popup extends DivOverlay {
 		}
 		map._popup = this;
 
-		return super.openOn(map);
+		super.openOn(map);
+		this._updateSourceAria(true); // the source may have changed while open, e.g. within a FeatureGroup
+		return this;
 	}
 
 	/** @param {LeafletMap} map */
@@ -160,6 +163,7 @@ export class Popup extends DivOverlay {
 		super.onAdd(map);
 
 		map.fire('popupopen', {popup: this});
+		this._updateSourceAria(true);
 
 		if (this._source) {
 			this._source.fire('popupopen', {popup: this}, true);
@@ -182,6 +186,7 @@ export class Popup extends DivOverlay {
 		super.onRemove(map);
 
 		map.fire('popupclose', {popup: this});
+		this._updateSourceAria(false);
 
 		if (this._source) {
 			this._source.fire('popupclose', {popup: this}, true);
@@ -205,9 +210,27 @@ export class Popup extends DivOverlay {
 		return events;
 	}
 
+	// marks a source that acts as a button (e.g. a keyboard-accessible marker) as a disclosure for the popup
+	/** @param {boolean} open */
+	_updateSourceAria(open) {
+		const prev = this._ariaSource;
+		prev?.setAttribute('aria-expanded', 'false');
+		prev?.removeAttribute('aria-controls');
+
+		const el = /** @type {Layer & {getElement?: () => Element | undefined}} */ (this._source)?.getElement?.();
+		/** @type {Element | null} */
+		this._ariaSource = el?.getAttribute('role') === 'button' ? el : null;
+		if (!this._ariaSource) { return; }
+
+		this._ariaSource.setAttribute('aria-expanded', String(open));
+		if (open) { this._ariaSource.setAttribute('aria-controls', this._container.id); }
+	}
+
 	_initLayout() {
 		const prefix = 'leaflet-popup',
 		container = this._container = DomUtil.create('div', `${prefix} ${this.options.className || ''} leaflet-zoom-animated`);
+
+		container.id = `leaflet-popup-${Util.stamp(this)}`;
 
 		const wrapper = this._wrapper = DomUtil.create('div', `${prefix}-content-wrapper`, container);
 		this._contentNode = DomUtil.create('div', `${prefix}-content`, wrapper);

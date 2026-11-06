@@ -342,6 +342,61 @@ describe('Popup', () => {
 		expect(map.hasLayer(popup)).to.be.true;
 	});
 
+	describe('aria-expanded on the source', () => {
+		it('reflects the popup state on a marker', () => {
+			const marker = new Marker(center).bindPopup('Null Island').addTo(map);
+			const icon = marker._icon;
+			expect(icon.getAttribute('aria-expanded')).to.equal('false');
+			expect(icon.hasAttribute('aria-controls')).to.be.false;
+
+			marker.openPopup();
+			expect(icon.getAttribute('aria-expanded')).to.equal('true');
+			expect(icon.getAttribute('aria-controls')).to.equal(marker.getPopup().getElement().id);
+			expect(document.getElementById(icon.getAttribute('aria-controls'))).to.equal(marker.getPopup().getElement());
+
+			marker.closePopup();
+			expect(icon.getAttribute('aria-expanded')).to.equal('false');
+			expect(icon.hasAttribute('aria-controls')).to.be.false;
+		});
+
+		it('is set when binding to a marker already on the map', () => {
+			const marker = new Marker(center).addTo(map);
+			expect(marker._icon.hasAttribute('aria-expanded')).to.be.false;
+			marker.bindPopup('Null Island');
+			expect(marker._icon.getAttribute('aria-expanded')).to.equal('false');
+		});
+
+		it('is removed on unbind', () => {
+			const marker = new Marker(center).bindPopup('Null Island').addTo(map);
+			marker.unbindPopup();
+			expect(marker._icon.hasAttribute('aria-expanded')).to.be.false;
+		});
+
+		it('survives an icon change while open', () => {
+			const marker = new Marker(center).bindPopup('Null Island').addTo(map);
+			marker.openPopup();
+			marker.setIcon(new DivIcon());
+			expect(marker._icon.getAttribute('aria-expanded')).to.equal('true');
+		});
+
+		it('is not set on non-button markers', () => {
+			const marker = new Marker(center, {interactive: false}).bindPopup('Null Island').addTo(map);
+			marker.openPopup();
+			expect(marker._icon.hasAttribute('aria-expanded')).to.be.false;
+		});
+
+		it('moves between markers of a group', () => {
+			const a = new Marker(center), b = new Marker(center);
+			new FeatureGroup([a, b]).bindPopup('Null Island').addTo(map);
+
+			UIEventSimulator.fire('click', a._icon);
+			expect(a._icon.getAttribute('aria-expanded')).to.equal('true');
+			UIEventSimulator.fire('click', b._icon);
+			expect(a._icon.getAttribute('aria-expanded')).to.equal('false');
+			expect(b._icon.getAttribute('aria-expanded')).to.equal('true');
+		});
+	});
+
 	describe('focus on close', () => {
 		it('moves focus to the marker when the close button is clicked', () => {
 			const marker = new Marker(center).bindPopup('Null Island').addTo(map);

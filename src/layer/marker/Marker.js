@@ -315,6 +315,10 @@ export class Marker extends Layer {
 		/** @type {HTMLElement | null | undefined} */
 		this._icon = icon;
 
+		if (this._popup?._source === this) {
+			this._popup._updateSourceAria(this._popup.isOpen());
+		}
+
 		DomEvent.on(icon, 'focusin focusout', this._updateRise, this);
 		if (options.riseOnHover) {
 			DomEvent.on(icon, 'pointerover pointerout', this._updateRise, this);
