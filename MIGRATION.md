@@ -284,15 +284,20 @@ Map and layer options:
   becomes `new Circle(latlng, {radius: 200})`.
 - **Silent:** `aria-keyshortcuts` is no longer set on the map container, because it only matched US keyboards. Set
   `ariaKeyShortcuts: true` to bring it back, or pass a string for other layouts.
+- **Silent:** with `detectRetina` on a retina screen, `minNativeZoom` and `maxNativeZoom` now request the right
+  zoom level from the server. If you added 1 to them to work around this, remove it.
 
-Behavior:
+Events and input:
 
-- **Silent:** the `leaflet-dragging` class is set on the map container instead of `<body>`. CSS like
-  `body.leaflet-dragging .sidebar` no longer matches. Use the `dragstart` and `dragend` events, or
-  `map.dragging.moving()`.
-- **Silent:** text inside the map is no longer selectable, except in popups and controls. If you put text in custom
-  panes or in controls placed elsewhere on the page, set `user-select: text` on it.
 - **Silent:** Enter and Space fire `click` on a focused marker, so `click` listeners also run from the keyboard.
+- **Silent:** the `<canvas>` of a canvas renderer has `pointer-events: none`, and the map finds the path under the
+  pointer itself. Paths, markers and overlays below a canvas now get events, but DOM listeners added to the canvas
+  element no longer fire. Listen on the layers or the map instead.
+- **Silent:** `DomEvent.on(el, 'dblclick', ...)` no longer simulates double taps in iOS Safari, which doesn't fire
+  `dblclick` on touch. The map still simulates them for everything inside it.
+
+Return values and methods:
+
 - **Silent:** the GeoJSON `filter` and `onEachFeature` callbacks get a Feature when the input is a bare geometry
   (the same object as `layer.feature`), and features with a `null` geometry are skipped.
 - **Silent:** `latLngToLayerPoint` and `latLngToContainerPoint` return fractional pixel values. Round them if you
@@ -302,6 +307,14 @@ Behavior:
   instead of `undefined` when no tooltip is bound.
 - **Silent:** popups and tooltips are no longer `instanceof Layer`. They still work with `addTo()`, `openOn()` and
   `map.addLayer()`.
+
+CSS and DOM:
+
+- **Silent:** the `leaflet-dragging` class is set on the map container instead of `<body>`. CSS like
+  `body.leaflet-dragging .sidebar` no longer matches. Use the `dragstart` and `dragend` events, or
+  `map.dragging.moving()`.
+- **Silent:** text inside the map is no longer selectable, except in popups and controls. If you put text in custom
+  panes or in controls placed elsewhere on the page, set `user-select: text` on it.
 - **Silent:** tiles no longer have `filter: inherit` in the CSS. Page-wide rules like `img {filter: ...}` now apply
   to tiles, and a filter on a tile container is no longer applied twice.
 - **Silent:** the map container has `isolation: isolate`, so `z-index` inside the map only orders things within the
@@ -414,6 +427,9 @@ constructor with `this.callInitHooks()`.
   `DomEvent.disableClickPropagation` and `DomEvent.stopPropagation`.
 - `KeyboardHandler.keyCodes` → `KeyboardHandler.keys`, which holds `KeyboardEvent.key` values instead of key codes.
 - `LayersControl.onRemove` takes `map`, like `onAdd`, and `collapse()` takes no event.
+- `Canvas` no longer handles pointer events itself, so `_onClick`, `_onPointerMove`, `_handlePointerHover`,
+  `_handlePointerOut` and `_fireEvent` are gone. The map calls `_layerAt(e, click)` on each canvas renderer to find
+  the path under the pointer, so override that to customize hit-testing.
 - `openPopup()` without a `latlng` throws on a layer that has `_latlng` but no `getLatLng()`, `getCenter()` or
   `getBounds()`.
 

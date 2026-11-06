@@ -3,6 +3,52 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 2.0.0-beta.2 (2026-11-06)
+
+The second beta of Leaflet 2.0 adds a built-in **fullscreen control**, a way to **translate** the built-in text, and **canvas layers that no longer block clicks** on the layers below them, along with over a dozen bug fixes.
+
+**Plugin authors:** if your plugin works with Leaflet 2.0, set `compatible-v2: true` in its entry in [`docs/_plugins`](https://github.com/Leaflet/Leaflet/tree/main/docs/_plugins) to list it under "Ready for Leaflet 2" on the [plugins page](https://leafletjs.com/plugins.html). See the [migration guide](https://github.com/Leaflet/Leaflet/blob/main/MIGRATION.md#part-2-plugins-and-extensions) for what changed for plugins, and [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) and [Leaflet.heat](https://github.com/Leaflet/Leaflet.heat) for examples of plugins ported to support both 1.9 and 2.0.
+
+### ❇️ New features
+
+* Add `FullscreenControl`, an opt-in control that makes the map fullscreen, replacing the `leaflet.fullscreen` plugins. It adds 0.5 kB gzipped only when imported, and falls back to filling the window on iPhone ([#10531](https://github.com/Leaflet/Leaflet/pull/10531))
+* Add a `translate` map option to translate the built-in text, such as control titles and accessible labels: `translate: text => i18next.t(text)` ([#10534](https://github.com/Leaflet/Leaflet/pull/10534), [#9092](https://github.com/Leaflet/Leaflet/issues/9092))
+* Add `originalEvent` to `movestart`, `move`, `moveend`, `zoomstart`, `zoom` and `zoomend` when the user changes the view, so listeners can tell user moves from programmatic ones ([#10525](https://github.com/Leaflet/Leaflet/pull/10525))
+* Add a `title` option to `LayersControl`
+
+### ✨ Improvements
+
+* Make canvas renderers transparent to pointer events, so SVG paths, markers, overlays and other canvas renderers below them get clicks and hovers ([#10523](https://github.com/Leaflet/Leaflet/pull/10523), [#3888](https://github.com/Leaflet/Leaflet/issues/3888), [#4135](https://github.com/Leaflet/Leaflet/issues/4135), [#5739](https://github.com/Leaflet/Leaflet/issues/5739), [#5886](https://github.com/Leaflet/Leaflet/issues/5886), [#6205](https://github.com/Leaflet/Leaflet/issues/6205), [#7049](https://github.com/Leaflet/Leaflet/issues/7049))
+* Stop throttling hover events on canvas paths, so they respond as quickly as SVG paths ([#9514](https://github.com/Leaflet/Leaflet/issues/9514))
+* Draw the zoom control's + and − as SVG, so they're crisp and centered with any font
+
+### ♿️ Accessibility
+
+* Raise markers with `riseOnHover` on keyboard focus too ([#8078](https://github.com/Leaflet/Leaflet/issues/8078))
+* Fix Enter and Space on a focused marker doing nothing after a drag ([#10529](https://github.com/Leaflet/Leaflet/pull/10529) by [@Enfiladeguide](https://github.com/Enfiladeguide))
+* Fix Escape being ignored by the map after closing a popup
+* Set `aria-describedby` on a layer whenever its tooltip opens, however it was opened
+
+### 🐞 Bug fixes
+
+* Fix paths jumping when they're changed or added during a zoom animation or pinch ([#9373](https://github.com/Leaflet/Leaflet/issues/9373))
+* Fix `setView` and other view changes being ignored during a zoom animation, they now apply once it ends ([#10407](https://github.com/Leaflet/Leaflet/pull/10407) by [@yellowman](https://github.com/yellowman), [#1289](https://github.com/Leaflet/Leaflet/issues/1289))
+* Fix `minNativeZoom` and `maxNativeZoom` requesting the wrong zoom level with `detectRetina` on retina screens ([#10111](https://github.com/Leaflet/Leaflet/issues/10111), [#8850](https://github.com/Leaflet/Leaflet/issues/8850))
+* Fix `closestLayerPoint` on polygons ignoring the segment that closes the ring ([#9098](https://github.com/Leaflet/Leaflet/issues/9098), [#9114](https://github.com/Leaflet/Leaflet/pull/9114))
+* Fix a second click on an image, video or SVG overlay closing its popup instead of moving it, as on paths ([#7849](https://github.com/Leaflet/Leaflet/issues/7849))
+* Fix `zIndex` and `setZIndex()` being ignored on video and SVG overlays, and `zIndex: 0` and `opacity: 0` being ignored on all image overlays ([#10533](https://github.com/Leaflet/Leaflet/pull/10533) by [@b84330808](https://github.com/b84330808))
+* Fix `setContent('')` leaving the old content in a popup or tooltip ([#10532](https://github.com/Leaflet/Leaflet/pull/10532) by [@Don-Yin](https://github.com/Don-Yin))
+* Fix markers losing their altitude after a drag ([#9694](https://github.com/Leaflet/Leaflet/issues/9694), [#9689](https://github.com/Leaflet/Leaflet/issues/9689))
+* Fix a double tap firing `dblclick` three times on iOS with a canvas renderer ([#10524](https://github.com/Leaflet/Leaflet/pull/10524))
+* Fix a click firing after a long-press `contextmenu` on iOS
+* Fix gaps in the API docs ([#7213](https://github.com/Leaflet/Leaflet/issues/7213), [#7936](https://github.com/Leaflet/Leaflet/issues/7936))
+
+### ⚠️ Breaking changes
+
+* The `<canvas>` element of a canvas renderer no longer receives pointer events, so DOM listeners added to it don't fire; listen on the layers or the map instead. The private `Canvas` methods `_onClick`, `_onPointerMove`, `_handlePointerHover`, `_handlePointerOut` and `_fireEvent` are gone; the map calls `_layerAt()` to find the path under the pointer ([#10523](https://github.com/Leaflet/Leaflet/pull/10523))
+* `DomEvent.on(el, 'dblclick', ...)` no longer simulates double taps on iOS for elements outside a map ([#10524](https://github.com/Leaflet/Leaflet/pull/10524))
+* With `detectRetina`, `minNativeZoom` and `maxNativeZoom` are now adjusted like `maxZoom`. If you added 1 to them to work around [#10111](https://github.com/Leaflet/Leaflet/issues/10111), remove it
+
 ## 2.0.0-beta.1 (2026-11-02)
 
 The first beta of Leaflet 2.0, and a big step up from the alpha. Leaflet is now **fully tree-shakeable** (a map with a tile layer is 25.6 kB gzipped, down from 38 kB), ships its own **TypeScript types**, and is built from **plain ES classes**. The default marker icon now **works out of the box** with any bundler and can be **colored and rotated**. Panning, zooming and rendering are smoother and faster, keyboard and screen reader support is much better, and over 40 bugs are fixed, including the infamous seams between tiles.
