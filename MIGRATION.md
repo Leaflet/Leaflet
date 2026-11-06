@@ -287,40 +287,39 @@ Map and layer options:
 - **Silent:** with `detectRetina` on a retina screen, `minNativeZoom` and `maxNativeZoom` now request the right
   zoom level from the server. If you added 1 to them to work around this, remove it.
 
-Events and input:
+Events and input, all **Silent**:
 
-- **Silent:** Enter and Space fire `click` on a focused marker, so `click` listeners also run from the keyboard.
-- **Silent:** the `<canvas>` of a canvas renderer has `pointer-events: none`, and the map finds the path under the
-  pointer itself. Paths, markers and overlays below a canvas now get events, but DOM listeners added to the canvas
-  element no longer fire. Listen on the layers or the map instead.
-- **Silent:** `DomEvent.on(el, 'dblclick', ...)` no longer simulates double taps in iOS Safari, which doesn't fire
-  `dblclick` on touch. The map still simulates them for everything inside it.
+- Enter and Space fire `click` on a focused marker, so `click` listeners also run from the keyboard.
+- The `<canvas>` of a canvas renderer has `pointer-events: none`, and the map finds the path under the pointer itself.
+  Paths, markers and overlays below a canvas now get events, but DOM listeners added to the canvas element no longer
+  fire. Listen on the layers or the map instead.
+- `DomEvent.on(el, 'dblclick', ...)` no longer simulates double taps in iOS Safari, which doesn't fire `dblclick` on
+  touch. The map still simulates them for everything inside it.
 
-Return values and methods:
+Return values and methods, all **Silent**:
 
-- **Silent:** the GeoJSON `filter` and `onEachFeature` callbacks get a Feature when the input is a bare geometry
-  (the same object as `layer.feature`), and features with a `null` geometry are skipped.
-- **Silent:** `latLngToLayerPoint` and `latLngToContainerPoint` return fractional pixel values. Round them if you
-  need integers.
-- **Silent:** `setView(center, zoom, true)` no longer forces a view reset. Use `setView(center, zoom, {reset: true})`.
-- **Silent:** `closeTooltip()` returns the layer instead of the tooltip, and `isTooltipOpen()` returns `false`
-  instead of `undefined` when no tooltip is bound.
-- **Silent:** popups and tooltips are no longer `instanceof Layer`. They still work with `addTo()`, `openOn()` and
-  `map.addLayer()`.
+- The GeoJSON `filter` and `onEachFeature` callbacks get a Feature when the input is a bare geometry (the same object
+  as `layer.feature`), and features with a `null` geometry are skipped.
+- `latLngToLayerPoint` and `latLngToContainerPoint` return fractional pixel values. Round them if you need integers.
+- `setView(center, zoom, true)` no longer forces a view reset. Use `setView(center, zoom, {reset: true})`.
+- `closeTooltip()` returns the layer instead of the tooltip, and `isTooltipOpen()` returns `false` instead of
+  `undefined` when no tooltip is bound.
+- Popups and tooltips are no longer `instanceof Layer`. They still work with `addTo()`,
+  `openOn()` and `map.addLayer()`.
 
-CSS and DOM:
+CSS and DOM, all **Silent**:
 
-- **Silent:** the `leaflet-dragging` class is set on the map container instead of `<body>`. CSS like
+- The `leaflet-dragging` class is set on the map container instead of `<body>`. CSS like
   `body.leaflet-dragging .sidebar` no longer matches. Use the `dragstart` and `dragend` events, or
   `map.dragging.moving()`.
-- **Silent:** text inside the map is no longer selectable, except in popups and controls. If you put text in custom
-  panes or in controls placed elsewhere on the page, set `user-select: text` on it.
-- **Silent:** tiles no longer have `filter: inherit` in the CSS. Page-wide rules like `img {filter: ...}` now apply
-  to tiles, and a filter on a tile container is no longer applied twice.
-- **Silent:** the map container has `isolation: isolate`, so `z-index` inside the map only orders things within the
-  map. Dropdowns and dialogs on the page no longer end up under map panes and controls, but a pane or control can't
-  be raised above page elements either. To put the whole map on top, set `z-index` on the map container.
-- **Silent:** the layers control list is a `<fieldset>` instead of a `<section>`. Update CSS that targets it by tag.
+- Text inside the map is no longer selectable, except in popups and controls. If you put text in custom panes or in
+  controls placed elsewhere on the page, set `user-select: text` on it.
+- Tiles no longer have `filter: inherit` in the CSS. Page-wide rules like `img {filter: ...}` now apply to tiles, and
+  a filter on a tile container is no longer applied twice.
+- The map container has `isolation: isolate`, so `z-index` inside the map only orders things within the map. Dropdowns
+  and dialogs on the page no longer end up under map panes and controls, but a pane or control can't be raised above
+  page elements either. To put the whole map on top, set `z-index` on the map container.
+- The layers control list is a `<fieldset>` instead of a `<section>`. Update CSS that targets it by tag.
 
 Defaults that changed:
 

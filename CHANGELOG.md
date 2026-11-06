@@ -12,7 +12,7 @@ The second beta of Leaflet 2.0 adds a built-in **fullscreen control**, a way to 
 ### ❇️ New features
 
 * Add `FullscreenControl`, an opt-in control that makes the map fullscreen, replacing the `leaflet.fullscreen` plugins. It adds 0.5 kB gzipped only when imported, and falls back to filling the window on iPhone ([#10531](https://github.com/Leaflet/Leaflet/pull/10531))
-* Add a `translate` map option to translate the built-in text, such as control titles and accessible labels: `translate: text => i18next.t(text)` ([#10534](https://github.com/Leaflet/Leaflet/pull/10534), [#9092](https://github.com/Leaflet/Leaflet/issues/9092))
+* Add a `translate` map option to translate the built-in text, such as control titles and accessible labels: `translate: text => i18next.t(text)`. Plugins can call `map.translate(text)` so their text gets translated the same way ([#10534](https://github.com/Leaflet/Leaflet/pull/10534), [#9092](https://github.com/Leaflet/Leaflet/issues/9092))
 * Add `originalEvent` to `movestart`, `move`, `moveend`, `zoomstart`, `zoom` and `zoomend` when the user changes the view, so listeners can tell user moves from programmatic ones ([#10525](https://github.com/Leaflet/Leaflet/pull/10525))
 * Add a `title` option to `LayersControl`
 
