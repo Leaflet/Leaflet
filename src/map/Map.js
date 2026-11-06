@@ -318,10 +318,12 @@ const defaultOptions = {
 	 */
 	attributionControl: true,
 
+	// docs/examples/accessibility lists every built-in text passed through this, so update it when adding one
 	/**
 	 * A function that translates the English text Leaflet and plugins show to users, such as control titles and
 	 * accessible labels, e.g. `text => i18next.t(text)`. If it returns `undefined`, the text stays in English.
-	 * Text is translated when it's rendered, so set it before adding controls and opening popups.
+	 * Text is translated when it's rendered, so set it before adding controls and opening popups. See [all built-in
+	 * texts](https://leafletjs.com/examples/accessibility/#translate-built-in-text) with an example translation.
 	 * @category Localization options
 	 * @param {string} text
 	 * @returns {string | undefined}

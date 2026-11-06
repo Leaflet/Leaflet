@@ -44,6 +44,28 @@ In the case of `DivIcon`s,
 [custom HTML](/reference.html#divicon-html)
 can otherwise provide a visual or non-visual label.
 
+### Translate built-in text
+
+Screen readers announce the titles and labels of Leaflet's controls, which are in English by default.
+On a site in another language, translate them with the [`translate`](/reference.html#map-translate) map option.
+Here's every built-in text with a Ukrainian translation:
+
+```js
+const uk = {
+	'Map': 'Мапа',
+	'Zoom in': 'Наблизити',
+	'Zoom out': 'Віддалити',
+	'Layers': 'Шари',
+	'Enter fullscreen': 'На весь екран',
+	'Exit fullscreen': 'Вийти з повноекранного режиму',
+	'Close popup': 'Закрити'
+};
+
+const map = new LeafletMap('map', {translate: text => uk[text]});
+```
+
+If you already use an i18n library, pass its function instead, e.g. `text => i18next.t(text)`.
+
 ### Test your maps
 
 The best way to discover accessibility issues
