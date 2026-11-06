@@ -1,0 +1,2 @@
+{%- if include.category %}{% assign plugins = site.plugins | where: "category", include.category %}{% else %}{% assign plugins = site.plugins | where: "compatible-v2", "true" %}{% endif -%}
+<span class="toc-count">{{ plugins | size }}</span>

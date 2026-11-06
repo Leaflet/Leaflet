@@ -8,72 +8,84 @@ bodyclass: plugins-page
 
 While Leaflet is meant to be as lightweight as possible, and focuses on a core set of features, an easy way to extend its functionality is to use third-party plugins. Thanks to the awesome community behind Leaflet, there are literally hundreds of nice plugins to choose from. Within each section, they're sorted by GitHub stars.
 
-<div id="toc" class="clearfix">
-	<div class="toc-col">
-		<h4>Tile &amp; image layers</h4>
-		<ul>
-			<li> <a href='#basemap-providers'>Basemap providers</a></li>
-			<li> <a href='#basemap-formats'>Basemap formats</a></li>
-			<li> <a href='#non-map-base-layers'>Non-map base layers</a></li>
-			<li> <a href='#tileimage-display'>Tile/image display</a></li>
-			<li> <a href='#tile-loading'>Tile loading</a></li>
-			<li> <a href='#vector-tiles'>Vector tiles</a></li>
-		</ul>
-		<h4>Overlay data</h4>
-		<ul>
-			<li> <a href='#overlay-data-formats'>Overlay data formats</a></li>
-			<li> <a href='#dynamiccustom-data-loading'>Dynamic data loading</a></li>
-			<li> <a href='#synthetic-overlays'>Synthetic overlays</a></li>
-			<li> <a href='#data-providers'>Data providers</a></li>
-		</ul>
-	</div>
-	<div class="toc-col">
-		<h4>Overlay display</h4>
-		<ul>
-			<li><a href="#markers--icons">Markers &amp; icons</a></li>
-			<li><a href="#lines--shapes">Lines &amp; shapes</a></li>
-			<li><a href="#styling--labels">Styling &amp; labels</a></li>
-			<li><a href="#overlay-animations">Overlay animations</a></li>
-			<li><a href="#clusteringdecluttering">Clustering/decluttering</a></li>
-			<li><a href="#heatmaps">Heatmaps</a></li>
-			<li><a href="#data-visualization">Data visualization</a></li>
-		</ul>
-		<h4>Overlay interaction</h4>
-		<ul>
-			<li><a href="#edit-geometries">Edit geometries</a></li>
-			<li><a href="#time--elevation">Time &amp; elevation</a></li>
-			<li><a href="#search--popups">Search &amp; popups</a></li>
-			<li><a href="#areaoverlay-selection">Area/overlay selection</a></li>
-		</ul>
-	</div>
-	<div class="toc-col">
-		<h4>Map interaction</h4>
-		<ul>
-			<li><a href="#layer-switching--legends">Layer switching &amp; legends</a></li>
-			<li><a href="#navigation">Navigation</a></li>
-			<li><a href="#minimaps--synced-maps">Minimaps &amp; synced maps</a></li>
-			<li><a href="#location--coordinates">Location &amp; coordinates</a></li>
-			<li><a href="#measurement">Measurement</a></li>
-			<li><a href="#buttons--menus">Buttons &amp; menus</a></li>
-			<li><a href="#sidebars--panels">Sidebars &amp; panels</a></li>
-			<li><a href="#print--export">Print &amp; export</a></li>
-		</ul>
-	</div>
-	<div class="toc-col">
-		<h4>Analysis &amp; services</h4>
-		<ul>
-			<li><a href="#geoprocessing">Geoprocessing</a></li>
-			<li><a href="#routing">Routing</a></li>
-			<li><a href="#geocoding">Geocoding</a></li>
-		</ul>
-		<h4>Integration</h4>
-		<ul>
-			<li><a href="#frameworks--build-systems">Frameworks &amp; build systems</a></li>
-			<li><a href="#third-party-services">Third-party services</a></li>
-		</ul>
+<div id="toc" class="toc-flow">
+	<div class="toc-v2">
+		<a href="#ready-for-leaflet-2">Ready for Leaflet 2</a>
 		<hr>
-		<a href="#ready-for-leaflet-2">Ready for Leaflet 2</a><br>
-		<a href="#develop-your-own">Develop your own</a>
+	</div>
+	<div class="toc-groups">
+		<div class="toc-group">
+			<h4>Tile &amp; image layers</h4>
+			<ul>
+				<li><a href="#basemap-providers">{% include plugin_count.html category="basemap-providers" %}Basemap providers</a></li>
+				<li><a href="#raster-formats--large-images">{% include plugin_count.html category="raster-formats" %}Raster formats &amp; large images</a></li>
+				<li><a href="#tile--image-effects">{% include plugin_count.html category="tile-image-display" %}Tile &amp; image effects</a></li>
+				<li><a href="#tile-loading">{% include plugin_count.html category="tile-load" %}Tile loading</a></li>
+				<li><a href="#vector-tiles--gl-maps">{% include plugin_count.html category="vector-tiles" %}Vector tiles &amp; GL maps</a></li>
+			</ul>
+		</div>
+		<div class="toc-group">
+			<h4>Overlay data</h4>
+			<ul>
+				<li><a href="#data-formats">{% include plugin_count.html category="overlay-data-formats" %}Data formats</a></li>
+				<li><a href="#realtime--dynamic-data">{% include plugin_count.html category="realtime-dynamic-data" %}Realtime &amp; dynamic data</a></li>
+				<li><a href="#grids--boundaries">{% include plugin_count.html category="grids-boundaries" %}Grids &amp; boundaries</a></li>
+				<li><a href="#data-providers">{% include plugin_count.html category="data-providers" %}Data providers</a></li>
+			</ul>
+		</div>
+		<div class="toc-group">
+			<h4>Integration</h4>
+			<ul>
+				<li><a href="#frameworks--build-systems">{% include plugin_count.html category="frameworks-build-systems" %}Frameworks &amp; build systems</a></li>
+				<li><a href="#cms--app-integrations">{% include plugin_count.html category="cms-app-integrations" %}CMS &amp; app integrations</a></li>
+			</ul>
+		</div>
+		<div class="toc-group">
+			<h4>Overlay display</h4>
+			<ul>
+				<li><a href="#markers--icons">{% include plugin_count.html category="markers-icons" %}Markers &amp; icons</a></li>
+				<li><a href="#lines--shapes">{% include plugin_count.html category="lines-shapes" %}Lines &amp; shapes</a></li>
+				<li><a href="#styling--labels">{% include plugin_count.html category="styling-labels" %}Styling &amp; labels</a></li>
+				<li><a href="#animations">{% include plugin_count.html category="overlay-animations" %}Animations</a></li>
+				<li><a href="#clustering--decluttering">{% include plugin_count.html category="clustering-decluttering" %}Clustering &amp; decluttering</a></li>
+				<li><a href="#heatmaps">{% include plugin_count.html category="heatmaps" %}Heatmaps</a></li>
+				<li><a href="#data-visualization">{% include plugin_count.html category="dataviz" %}Data visualization</a></li>
+			</ul>
+		</div>
+		<div class="toc-group">
+			<h4>Overlay interaction</h4>
+			<ul>
+				<li><a href="#edit-geometries">{% include plugin_count.html category="edit-geometries" %}Edit geometries</a></li>
+				<li><a href="#time--elevation">{% include plugin_count.html category="time-elevation" %}Time &amp; elevation</a></li>
+				<li><a href="#search--filter">{% include plugin_count.html category="search-filter" %}Search &amp; filter</a></li>
+				<li><a href="#hover-click--popups">{% include plugin_count.html category="hover-click-popups" %}Hover, click &amp; popups</a></li>
+				<li><a href="#area-selection">{% include plugin_count.html category="area-selection" %}Area selection</a></li>
+			</ul>
+		</div>
+		<div class="toc-group">
+			<h4>Map interaction</h4>
+			<ul>
+				<li><a href="#layer-switching--legends">{% include plugin_count.html category="layer-switching-legends" %}Layer switching &amp; legends</a></li>
+				<li><a href="#navigation">{% include plugin_count.html category="navigation" %}Navigation</a></li>
+				<li><a href="#minimaps--synced-maps">{% include plugin_count.html category="minimaps-synced-maps" %}Minimaps &amp; synced maps</a></li>
+				<li><a href="#location--coordinates">{% include plugin_count.html category="location-coordinates" %}Location &amp; coordinates</a></li>
+				<li><a href="#measurement">{% include plugin_count.html category="measurement" %}Measurement</a></li>
+				<li><a href="#buttons--menus">{% include plugin_count.html category="buttons-menus" %}Buttons &amp; menus</a></li>
+				<li><a href="#sidebars--panels">{% include plugin_count.html category="sidebars-panels" %}Sidebars &amp; panels</a></li>
+				<li><a href="#print--export">{% include plugin_count.html category="print-export" %}Print &amp; export</a></li>
+			</ul>
+		</div>
+		<div class="toc-group">
+			<h4>Analysis &amp; services</h4>
+			<ul>
+				<li><a href="#geoprocessing--projections">{% include plugin_count.html category="geoprocessing" %}Geoprocessing &amp; projections</a></li>
+				<li><a href="#routing">{% include plugin_count.html category="routing" %}Routing</a></li>
+				<li><a href="#geocoding">{% include plugin_count.html category="geocoding" %}Geocoding</a></li>
+			</ul>
+		</div>
+		<div class="toc-group toc-dev">
+			<a href="#develop-your-own">Develop your own</a>
+		</div>
 	</div>
 </div>
 
@@ -95,19 +107,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 
 {% include plugin_list.html category="basemap-providers" %}
 
-### Basemap formats
+<a id="basemap-formats"></a><a id="non-map-base-layers"></a>
 
-Plugins for loading basemaps or GIS raster layers in common (albeit non-default) formats.
+### Raster formats & large images
 
-{% include plugin_list.html category="basemap-formats" %}
+Load basemaps and GIS raster layers in formats beyond plain tile URLs, such as WMS, WMTS, GeoTIFF and MBTiles, or show really big non-map images, such as IIIF and DeepZoom.
 
-### Non-map base layers
+{% include plugin_list.html category="raster-formats" %}
 
-Sometimes you don't want to load a map, just big custom images. **Really** big ones.
-
-{% include plugin_list.html category="non-map-base-layers" %}
-
-### Tile/image display
+### Tile & image effects
 
 The following plugins change the way that tile or image layers are displayed in the map.
 
@@ -119,9 +127,11 @@ The following plugins change the way that tile layers are loaded into the map.
 
 {% include plugin_list.html category="tile-load" %}
 
-### Vector tiles
+<a id="vector-tiles"></a>
 
-Plugins to display [vector tiles](https://github.com/mapbox/vector-tile-spec).
+### Vector tiles & GL maps
+
+Display [vector tiles](https://github.com/mapbox/vector-tile-spec), or add a MapLibre or Mapbox GL map to Leaflet as a layer.
 
 {% include plugin_list.html category="vector-tiles" %}
 
@@ -129,29 +139,49 @@ Plugins to display [vector tiles](https://github.com/mapbox/vector-tile-spec).
 
 The following plugins provide new ways of loading overlay data (GIS vector data): points, lines and polygons.
 
-### Overlay data formats
+### Data formats
 
 Load your own data from various GIS formats.
 
 {% include plugin_list.html category="overlay-data-formats" %}
 
-### Dynamic/custom data loading
+<a id="dynamiccustom-data-loading"></a>
 
-Load dynamic data which is updated in the map, or load GIS vector data in non-standard ways.
+### Realtime & dynamic data
 
-{% include plugin_list.html category="dynamic-custom-data-loading" %}
+Load data that keeps updating on the map, from live tracking to periodic refreshes.
 
-### Synthetic overlays
+{% include plugin_list.html category="realtime-dynamic-data" %}
 
-These plugins create useful overlays from scratch, no loading required.
+<a id="synthetic-overlays"></a>
 
-{% include plugin_list.html category="synthetic-overlays" %}
+### Grids & boundaries
+
+Overlays that need no data of your own: graticules and reference grids, day and night, time zones, and ready-made boundary layers.
+
+{% include plugin_list.html category="grids-boundaries" %}
 
 ### Data providers
 
 Load overlay data from third-party services. See also [basemap providers](#basemap-providers).
 
 {% include plugin_list.html category="data-providers" %}
+
+## Integration
+
+### Frameworks & build systems
+
+Ease your development integrating Leaflet into a development framework or automating some of the javascript/CSS work for complex applications.
+
+{% include plugin_list.html category="frameworks-build-systems" %}
+
+<a id="third-party-services"></a>
+
+### CMS & app integrations
+
+Leaflet maps in WordPress, Drupal, Joomla, forums and other apps, without writing code.
+
+{% include plugin_list.html category="cms-app-integrations" %}
 
 ## Overlay display
 
@@ -175,13 +205,13 @@ Style overlays from data, fill them with patterns, or label them. Leaflet users 
 
 {% include plugin_list.html category="styling-labels" %}
 
-### Overlay animations
+### Animations
 
 These plugins animate markers or some geometries. See also [time & elevation](#time--elevation).
 
 {% include plugin_list.html category="overlay-animations" %}
 
-### Clustering/decluttering
+### Clustering & decluttering
 
 When you are displaying a lot of data, these plugins will make your map look cleaner.
 
@@ -215,17 +245,27 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 
 {% include plugin_list.html category="time-elevation" %}
 
-### Search & popups
+<a id="search--popups"></a>
 
-Plugins that search for overlays and enhance how to display information about them.
+### Search & filter
 
-{% include plugin_list.html category="search-popups" %}
+Search for markers and features on the map, or filter them by their properties. To search for addresses and places, see [geocoding](#geocoding).
 
-### Area/overlay selection
+{% include plugin_list.html category="search-filter" %}
 
-These plugins help users select either overlays or areas in the map, or make overlays easier to hover and click.
+### Hover, click & popups
 
-{% include plugin_list.html category="area-overlay-selection" %}
+Make overlays easier to hover and click, find what is under the cursor, and enhance popups and tooltips.
+
+{% include plugin_list.html category="hover-click-popups" %}
+
+<a id="areaoverlay-selection"></a>
+
+### Area selection
+
+Let users select an area on the map, or select features by drawing around them.
+
+{% include plugin_list.html category="area-selection" %}
 
 ## Map interaction
 
@@ -286,9 +326,11 @@ Print or export your map.
 
 ## Analysis & services
 
-### Geoprocessing
+<a id="geoprocessing"></a>
 
-The following plugins perform several sorts of geoprocessing (mathematical and topological operations on points, lines and polygons).
+### Geoprocessing & projections
+
+Geometry operations, spatial indexes and antimeridian handling, plus support for other projections and coordinate systems.
 
 {% include plugin_list.html category="geoprocessing" %}
 
@@ -303,20 +345,6 @@ The following plugins use external services to calculate driving or walking rout
 External services that transform an address or the name of a place into latitude and longitude (or vice versa).
 
 {% include plugin_list.html category="geocoding" %}
-
-## Integration
-
-### Frameworks & build systems
-
-Ease your development integrating Leaflet into a development framework or automating some of the javascript/CSS work for complex applications.
-
-{% include plugin_list.html category="frameworks-build-systems" %}
-
-### Third-party services
-
-The following plugins integrate Leaflet into third party services or websites.
-
-{% include plugin_list.html category="3rd-party-integration" %}
 
 ## Develop your own
 

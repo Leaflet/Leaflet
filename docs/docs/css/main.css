@@ -402,9 +402,37 @@ table.plugins td:first-child a {
 	font-weight: bold;
 }
 
-.plugins-page .toc-col {
-	float: left;
-	width: 25%;
+/* the padding stands in for the bottom margin of the last list, which a column break drops */
+.plugins-page #toc .toc-groups {
+	columns: 3;
+	margin-left: 0;
+	padding-bottom: 25px;
+}
+.plugins-page #toc .toc-dev a {
+	font-weight: 700;
+}
+
+/* only in the floating TOC, since the section follows the TOC right away */
+#toc .toc-v2 {
+	display: none;
+}
+
+.toc-count {
+	display: inline-block; /* keeps it out of the link underline */
+	width: 1.5em;
+	margin-right: .6em;
+	text-align: right;
+	text-indent: 0;
+	color: #999;
+	font-size: .8em;
+	font-weight: 400;
+}
+
+/* hanging indent past the count (its width and margin at .8em), for names that wrap */
+.plugins-page #toc li a {
+	display: block;
+	padding-left: 1.68em;
+	text-indent: -1.68em;
 }
 
 /* API docs */
@@ -496,6 +524,7 @@ table.plugins td:first-child a {
 
 #toc h4 {
 	margin-top: 0;
+	margin-bottom: .5em;
 }
 
 #toc ul {
@@ -587,6 +616,9 @@ table.plugins td:first-child a {
 
 #toc-copy ul li a {
 	display: block;
+}
+#toc-copy .toc-count {
+	display: none;
 }
 
 #toc-copy .toc-col {
@@ -892,7 +924,8 @@ tr:target {
 		margin-bottom: 25px;
 		columns: 2;
 	}
-	#toc .toc-groups {
+	#toc .toc-groups,
+	.plugins-page #toc .toc-groups {
 		columns: 2;
 		margin: 0;
 	}
