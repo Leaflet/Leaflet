@@ -8,7 +8,6 @@ import {Point} from '../geometry/Point.js';
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Layer} from './Layer.js' */
-/** @import {Marker} from './marker/Marker.js' */
 
 const defaultOptions = {
 	/** `Map pane` where the popup will be added. */
@@ -179,8 +178,8 @@ export class Popup extends DivOverlay {
 	onRemove(map) {
 		// closing removes the focused element, which would send focus back to the start of the page
 		if (this._container.contains(document.activeElement)) {
-			const icon = /** @type {Marker | undefined} */ (this._source)?._icon;
-			(icon && icon.tabIndex >= 0 ? icon : map._container).focus();
+			const el = /** @type {HTMLElement | null | undefined} */ (this._source?.getElement?.());
+			(el && el.tabIndex >= 0 ? el : map._container).focus();
 		}
 
 		super.onRemove(map);
@@ -213,17 +212,14 @@ export class Popup extends DivOverlay {
 	// marks a source that acts as a button (e.g. a keyboard-accessible marker) as a disclosure for the popup
 	/** @param {boolean} open */
 	_updateSourceAria(open) {
-		const prev = this._ariaSource;
-		prev?.setAttribute('aria-expanded', 'false');
-		prev?.removeAttribute('aria-controls');
+		this._ariaSource?.setAttribute('aria-expanded', 'false');
+		this._ariaSource?.removeAttribute('aria-controls');
 
-		const el = /** @type {Layer & {getElement?: () => Element | undefined}} */ (this._source)?.getElement?.();
-		/** @type {Element | null} */
+		const el = this._source?.getElement?.();
+		/** @type {Element | null | undefined} */
 		this._ariaSource = el?.getAttribute('role') === 'button' ? el : null;
-		if (!this._ariaSource) { return; }
-
-		this._ariaSource.setAttribute('aria-expanded', String(open));
-		if (open) { this._ariaSource.setAttribute('aria-controls', this._container.id); }
+		this._ariaSource?.setAttribute('aria-expanded', String(open));
+		if (open) { this._ariaSource?.setAttribute('aria-controls', this._container.id); }
 	}
 
 	_initLayout() {

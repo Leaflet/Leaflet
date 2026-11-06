@@ -122,7 +122,7 @@ export class Layer extends LayerBase {
 				remove: this.closePopup,
 				move: this._movePopup
 			});
-			const el = /** @type {{getElement?: () => Element | undefined}} */ (this).getElement?.();
+			const el = this.getElement?.();
 			el?.removeAttribute('aria-expanded');
 			el?.removeAttribute('aria-controls');
 			this._popup = null;

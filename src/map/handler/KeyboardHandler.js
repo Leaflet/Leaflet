@@ -2,7 +2,6 @@ import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
-
 /**
  * Pans and zooms the map with the keyboard (`map.keyboard`), enabled by default. Rebind keys by changing the static
  * `KeyboardHandler.keys` object of `KeyboardEvent.key` values per action.
