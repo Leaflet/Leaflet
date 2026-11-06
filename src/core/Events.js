@@ -32,11 +32,13 @@ const warnedEvents = new Set();
 
 /**
  * @typedef {{fn: Function, ctx: any, once?: boolean}} EventListener
- * @typedef {{index: Map<Function, Map<any, EventListener>>, removed: number}} EventIndex
+ * @typedef {Map<Function, EventListener | Map<any, EventListener>>} ListenerIndex
+ * @typedef {{index: ListenerIndex, removed: number}} EventIndex
  */
 
-// Past `INDEX_SIZE` listeners of a type, they're indexed by function and context for constant-time lookups, and
-// removed ones stay in the array until half of it is removed; below it, removal makes a filtered copy of the array.
+// Past `INDEX_SIZE` listeners of a type, they're indexed by function (then by context if
+// a function has several) for constant-time lookups, and removed ones stay in the array
+// until half of it is removed; below it, removal makes a filtered copy of the array.
 function removedFn() {}
 const INDEX_SIZE = 32;
 
@@ -287,6 +289,7 @@ export class Evented extends Class {
 
 		// set the removed listener to noop so that's not called if remove happens in fire
 		listener.fn = removedFn;
+		listener.ctx = undefined;
 
 		if (!indexed) {
 			// a new array rather than in-place removal, in case `fire` is iterating the old one
@@ -298,9 +301,13 @@ export class Evented extends Class {
 			return;
 		}
 
-		const byContext = /** @type {Map<any, EventListener>} */ (indexed.index.get(fn));
-		byContext.delete(context);
-		if (!byContext.size) { indexed.index.delete(fn); }
+		const entry = indexed.index.get(fn);
+		if (entry instanceof Map) {
+			entry.delete(context);
+			if (!entry.size) { indexed.index.delete(fn); }
+		} else {
+			indexed.index.delete(fn);
+		}
 
 		if (++indexed.removed === listeners.length) {
 			this._removeType(type);
@@ -342,12 +349,12 @@ export class Evented extends Class {
 			const {length} = listeners;
 			for (let i = 0; i < length; i++) {
 				const l = listeners[i];
-				// off overwrites l.fn, so we need to copy fn to a variable
-				const fn = l.fn;
+				// off overwrites these, so we need to copy them first
+				const {fn, ctx} = l;
 				if (l.once) {
-					this.off(type, /** @type {any} */ (fn), l.ctx);
+					this.off(type, /** @type {any} */ (fn), ctx);
 				}
-				fn.call(l.ctx || this, event);
+				fn.call(ctx || this, event);
 			}
 		}
 
@@ -491,25 +498,27 @@ export class Evented extends Class {
 
 /**
  * @param {EventListener[]} listeners
- * @param {Map<Function, Map<any, EventListener>> | undefined} index
+ * @param {ListenerIndex | undefined} index
  * @param {unknown} fn
  * @param {unknown} context
  */
 function findListener(listeners, index, fn, context) {
-	return index ?
-		index.get(/** @type {Function} */ (fn))?.get(context) :
-		listeners.find(l => l.fn === fn && l.ctx === context);
+	if (!index) { return listeners.find(l => l.fn === fn && l.ctx === context); }
+	const entry = index.get(/** @type {Function} */ (fn));
+	return entry instanceof Map ? entry.get(context) : entry?.ctx === context ? entry : undefined;
 }
 
 /**
- * @param {Map<Function, Map<any, EventListener>>} index
+ * @param {ListenerIndex} index
  * @param {EventListener} listener
  */
 function addToIndex(index, listener) {
-	let byContext = index.get(listener.fn);
-	if (!byContext) {
-		byContext = new Map();
-		index.set(listener.fn, byContext);
+	const entry = index.get(listener.fn);
+	if (!entry) {
+		index.set(listener.fn, listener);
+	} else if (entry instanceof Map) {
+		entry.set(listener.ctx, listener);
+	} else {
+		index.set(listener.fn, new Map([[entry.ctx, entry], [listener.ctx, listener]]));
 	}
-	byContext.set(listener.ctx, listener);
 }
