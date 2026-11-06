@@ -1,12 +1,12 @@
 {
 	"refs": {
 		"v1": "0412763d42ebba1da6f153e4073f6654e5de8a21",
-		"v2": "3a68ea6b0a1bbff829f28340d8716ee586824064"
+		"v2": "a235bdd2f98d293bc732e5788618b79aec3c5146"
 	},
 	"site": {
 		"cartocdn_key": "cb1_2i38_1_bb6349bf813f7d7c3fe79a8c"
 	},
-	"version": "2.0.0-beta.1",
+	"version": "2.0.0-beta.2",
 	"versions": {
 		"1.9.4": {
 			"latest_leaflet_version": "1.9.4",
@@ -19,6 +19,12 @@
 			"integrity_hash_css": "sha256-RwBOaSN3kFqUIUAZaMmmo5grrEMRXwBCe0sCRJgqydk=",
 			"integrity_hash_uglified": "sha256-KSSQ64wnHC2i4zVNU79jUjWmdKCIJjLj/gkifFEluvo=",
 			"integrity_hash_global_uglified": "sha256-LJoXVjge1e1SC/7nC0F1sZTitcnujiT8fR9WfxzQitA="
+		},
+		"2.0.0-beta.2": {
+			"latest_leaflet_version": "2.0.0-beta.2",
+			"integrity_hash_css": "sha256-wxn0bvASs4VWLkNdZLbtMJxJSk7hbXmj96XO2R0y0bk=",
+			"integrity_hash_uglified": "sha256-6inY4DmZyVCdH2vZdiOfWSG8DJyavmOjc4WZgu15j9E=",
+			"integrity_hash_global_uglified": "sha256-8NZyazzrmaQXhtk/LXGmOpSO6zW1v4TcWNOemoEE3IY="
 		}
 	},
 	"mounts": [
