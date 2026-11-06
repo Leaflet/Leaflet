@@ -1,4 +1,4 @@
-import {DivIcon, DefaultIcon, LatLng, LayerGroup, LeafletMap, Marker, Point} from 'leaflet';
+import {DivIcon, DefaultIcon, Icon, LatLng, LayerGroup, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -201,6 +201,67 @@ describe('Marker', () => {
 
 			expect(marker._icon.parentNode).to.equal(map._panes.markerPane);
 			expect(marker._shadow.parentNode).to.equal(map._panes.shadowPane);
+		});
+
+		it('clears the size and anchor of the previous icon from reused elements', () => {
+			const {iconUrl} = DefaultIcon.defaultOptions;
+			const marker = new Marker([0, 0], {icon: new Icon({
+				iconUrl,
+				iconSize: [50, 60],
+				iconAnchor: [5, 6],
+				shadowUrl: iconUrl,
+				shadowSize: [70, 80],
+				shadowAnchor: [7, 8]
+			})}).addTo(map);
+			const {_icon: oldIcon, _shadow: oldShadow} = marker;
+
+			marker.setIcon(new Icon({iconUrl: `${iconUrl}?2`, shadowUrl: `${iconUrl}?2`}));
+
+			expect(marker._icon).to.equal(oldIcon);
+			expect(marker._shadow).to.equal(oldShadow);
+			for (const {style} of [marker._icon, marker._shadow]) {
+				expect(style.width).to.equal('');
+				expect(style.height).to.equal('');
+				expect(style.marginLeft).to.equal('');
+				expect(style.marginTop).to.equal('');
+				expect(style.transformOrigin).to.equal('');
+			}
+		});
+
+		it('lets CSS size a DivIcon that replaces a sized one', () => {
+			const marker = new Marker([0, 0], {icon: new DivIcon()}).addTo(map);
+
+			marker.setIcon(new DivIcon({iconSize: 'auto'}));
+			expect(marker._icon.style.width).to.equal('');
+			expect(marker._icon.style.height).to.equal('');
+
+			marker.setIcon(new DivIcon());
+			marker.setIcon(new DivIcon({iconSize: [100, 'auto']}));
+			expect(marker._icon.style.width).to.equal('100px');
+			expect(marker._icon.style.height).to.equal('');
+		});
+
+		it('clears the background position of the previous DivIcon', () => {
+			const marker = new Marker([0, 0], {icon: new DivIcon({bgPos: [10, 20]})}).addTo(map);
+			expect(marker._icon.style.backgroundPosition).to.equal('-10px -20px');
+
+			marker.setIcon(new DivIcon());
+
+			expect(marker._icon.style.backgroundPosition).to.equal('');
+		});
+
+		it('clears the crossOrigin of the previous icon', () => {
+			const {iconUrl} = DefaultIcon.defaultOptions;
+			const marker = new Marker([0, 0], {icon: new Icon({iconUrl, crossOrigin: true})}).addTo(map);
+			const oldIcon = marker._icon;
+			expect(oldIcon.getAttribute('crossorigin')).to.equal('');
+
+			marker.setIcon(new Icon({iconUrl: `${iconUrl}?2`, crossOrigin: 'use-credentials'}));
+			expect(oldIcon.getAttribute('crossorigin')).to.equal('use-credentials');
+
+			marker.setIcon(new Icon({iconUrl}));
+			expect(marker._icon).to.equal(oldIcon);
+			expect(oldIcon.hasAttribute('crossorigin')).to.be.false;
 		});
 
 		it('accepts an icon without createShadow', () => {

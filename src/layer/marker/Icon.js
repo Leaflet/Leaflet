@@ -173,6 +173,8 @@ export class Icon extends Class {
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
 			// the DOM types leave out '', which is how the attribute spells 'anonymous'
 			img.crossOrigin = /** @type {HTMLImageElement['crossOrigin']} */ (this.options.crossOrigin === true ? '' : this.options.crossOrigin);
+		} else {
+			img.crossOrigin = null;
 		}
 
 		return img;
@@ -196,6 +198,10 @@ export class Icon extends Class {
 		const anchor = Point.validate(anchorPosition) && new Point(anchorPosition);
 
 		img.className = `leaflet-marker-${name} ${options.className || ''}`;
+
+		// a marker reuses the element of its previous icon, which may have set any of these
+		const {style} = img;
+		style.marginLeft = style.marginTop = style.transformOrigin = style.width = style.height = '';
 
 		if (anchor) {
 			img.style.marginLeft = `${-anchor.x}px`;
