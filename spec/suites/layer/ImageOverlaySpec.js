@@ -1,4 +1,4 @@
-import {LatLngBounds, LeafletMap, ImageOverlay} from 'leaflet';
+import {LatLngBounds, LeafletMap, ImageOverlay, SVGOverlay} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -19,6 +19,17 @@ describe('ImageOverlay', () => {
 	describe('#setStyle', () => {
 		it('sets opacity', () => {
 			const overlay = new ImageOverlay().setStyle({opacity: 0.5});
+			expect(overlay.options.opacity).to.equal(0.5);
+		});
+
+		it('sets an opacity of 0', () => {
+			const overlay = new ImageOverlay('', imageBounds).addTo(map).setStyle({opacity: 0});
+			expect(overlay.options.opacity).to.equal(0);
+			expect(overlay.getElement().style.opacity).to.equal('0');
+		});
+
+		it('keeps the opacity if the style does not set it', () => {
+			const overlay = new ImageOverlay('', imageBounds, {opacity: 0.5}).setStyle({color: 'red'});
 			expect(overlay.options.opacity).to.equal(0.5);
 		});
 	});
@@ -126,6 +137,27 @@ describe('ImageOverlay', () => {
 			const overlay = new ImageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.eql('20');
+		});
+
+		it('should use a z-index of 0 specified in options', () => {
+			const overlay = new ImageOverlay('', imageBounds, {zIndex: 0});
+			overlay.addTo(map);
+			expect(overlay._image.style.zIndex).to.eql('0');
+		});
+
+		it('should use the z-index specified in options for an SVG overlay', () => {
+			const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+			const overlay = new SVGOverlay(svg, imageBounds, {zIndex: 20}).addTo(map);
+			expect(svg.style.zIndex).to.eql('20');
+
+			overlay.setZIndex(30);
+			expect(svg.style.zIndex).to.eql('30');
+		});
+
+		it('should set the z-index of an SVG overlay when it is added to the map', () => {
+			const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+			new SVGOverlay(svg, imageBounds).setZIndex(10).addTo(map);
+			expect(svg.style.zIndex).to.eql('10');
 		});
 
 		it('should be fluent', () => {

@@ -101,6 +101,7 @@ export class ImageOverlay extends Layer {
 	onAdd(map) {
 		if (!this._image) {
 			this._initImage();
+			this._updateZIndex();
 
 			if (this.options.opacity < 1) {
 				this._updateOpacity();
@@ -142,7 +143,7 @@ export class ImageOverlay extends Layer {
 	 * @param {{opacity?: number}} styleOpts
 	 */
 	setStyle(styleOpts) {
-		if (styleOpts.opacity) {
+		if (styleOpts.opacity !== undefined) {
 			this.setOpacity(styleOpts.opacity);
 		}
 		return this;
@@ -241,10 +242,6 @@ export class ImageOverlay extends Layer {
 		}
 
 		img.decoding = this.options.decoding;
-
-		if (this.options.zIndex) {
-			this._updateZIndex();
-		}
 
 		if (wasElementSupplied) {
 			this._url = img.src;
