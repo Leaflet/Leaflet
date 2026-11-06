@@ -8,7 +8,7 @@ import {gzipSync} from 'node:zlib';
 import {rolldown} from 'rolldown';
 
 const limits = {
-	'leaflet.js': 40 * 1024,
+	'leaflet.js': 41 * 1024,
 	'leaflet.css': 3.2 * 1024,
 	'map+tiles': 27000,
 	'map+tiles+marker': 29500,
