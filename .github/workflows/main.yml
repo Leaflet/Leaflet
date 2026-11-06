@@ -50,6 +50,8 @@ jobs:
       - name: Build base
         if: env.BASE_SHA && !startsWith(env.BASE_SHA, '0000000')
         run: |
+          # a PR is checked out merged into the current base branch, which may be ahead of pull_request.base.sha
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then BASE_SHA=$(git cat-file -p HEAD | awk '/^parent/ {print $2; exit}'); fi
           git fetch --depth=1 origin "$BASE_SHA"
           git checkout "$BASE_SHA" && npm ci && npm run build
 
