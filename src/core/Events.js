@@ -294,22 +294,20 @@ export class Evented extends Class {
 			sourceTarget: /** @type {{sourceTarget?: Evented}} */ (data)?.sourceTarget || this
 		};
 
-		if (this._events) {
-			const listeners = this._events[type];
-			if (listeners) {
-				// stays NaN-safe for classes that include Evented.prototype without running its constructor
-				this._firingCount = (this._firingCount + 1) || 1;
-				for (const l of listeners) {
-					// off overwrites l.fn, so we need to copy fn to a variable
-					const fn = l.fn;
-					if (l.once) {
-						this.off(type, /** @type {any} */ (fn), l.ctx);
-					}
-					fn.call(l.ctx || this, event);
+		const listeners = this._events?.[type];
+		if (listeners) {
+			// stays NaN-safe for classes that include Evented.prototype without running its constructor
+			this._firingCount = (this._firingCount + 1) || 1;
+			for (const l of listeners) {
+				// off overwrites l.fn, so we need to copy fn to a variable
+				const fn = l.fn;
+				if (l.once) {
+					this.off(type, /** @type {any} */ (fn), l.ctx);
 				}
-
-				this._firingCount--;
+				fn.call(l.ctx || this, event);
 			}
+
+			this._firingCount--;
 		}
 
 		if (propagate) {
@@ -382,11 +380,7 @@ export class Evented extends Class {
 	 * @param {unknown} [context]
 	 */
 	_listens(type, fn, context) {
-		if (!this._events) {
-			return false;
-		}
-
-		const listeners = this._events[type] ?? [];
+		const listeners = this._events?.[type] ?? [];
 		if (!fn) {
 			return !!listeners.length;
 		}

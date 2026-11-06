@@ -24,10 +24,10 @@ let lastPointerType;
  * @param {HTMLElement} el
  */
 export function enablePointerDetection(el) {
-	el.addEventListener('pointerdown', _onSet, {capture: true});
-	el.addEventListener('pointermove', _onUpdate, {capture: true});
-	el.addEventListener('pointerup', _onDelete, {capture: true});
-	el.addEventListener('pointercancel', _onDelete, {capture: true});
+	el.addEventListener('pointerdown', _onSet, true);
+	el.addEventListener('pointermove', _onUpdate, true);
+	el.addEventListener('pointerup', _onDelete, true);
+	el.addEventListener('pointercancel', _onDelete, true);
 	activePointers.clear();
 }
 
@@ -36,10 +36,10 @@ export function enablePointerDetection(el) {
  * @param {HTMLElement} el
  */
 export function disablePointerDetection(el) {
-	el.removeEventListener('pointerdown', _onSet, {capture: true});
-	el.removeEventListener('pointermove', _onUpdate, {capture: true});
-	el.removeEventListener('pointerup', _onDelete, {capture: true});
-	el.removeEventListener('pointercancel', _onDelete, {capture: true});
+	el.removeEventListener('pointerdown', _onSet, true);
+	el.removeEventListener('pointermove', _onUpdate, true);
+	el.removeEventListener('pointerup', _onDelete, true);
+	el.removeEventListener('pointercancel', _onDelete, true);
 }
 
 // capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones

@@ -273,16 +273,13 @@ export class Popup extends DivOverlay {
 		style.minWidth = `${this.options.minWidth}px`;
 		style.height = '';
 
-		const height = container.offsetHeight,
-		maxHeight = this.options.maxHeight,
-		scrolledClass = 'leaflet-popup-scrolled';
+		const maxHeight = this.options.maxHeight,
+		scrolled = !!maxHeight && container.offsetHeight > maxHeight;
 
-		if (maxHeight && height > maxHeight) {
+		if (scrolled) {
 			style.height = `${maxHeight}px`;
-			container.classList.add(scrolledClass);
-		} else {
-			container.classList.remove(scrolledClass);
 		}
+		container.classList.toggle('leaflet-popup-scrolled', scrolled);
 
 		this._containerWidth = this._container.offsetWidth;
 		this._containerHeight = this._container.offsetHeight;

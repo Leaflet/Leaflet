@@ -205,14 +205,9 @@ export class Layer extends LayerBase {
 		DomEvent.stopPropagation(e);
 
 		const target = /** @type {Layer} */ (e.propagatedFrom ?? e.target);
-		if (this._popup._source === target && target._togglesPopupOnClick()) {
-			// treat it like a marker and figure out
-			// if we should toggle it open/closed
-			if (this._map.hasLayer(this._popup)) {
-				this.closePopup();
-			} else {
-				this.openPopup(e.latlng);
-			}
+		// clicking a marker-like source again toggles its popup closed
+		if (this._popup._source === target && target._togglesPopupOnClick() && this._map.hasLayer(this._popup)) {
+			this.closePopup();
 			return;
 		}
 		this._popup._source = target;

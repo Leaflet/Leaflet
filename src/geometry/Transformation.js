@@ -33,14 +33,7 @@ export class Transformation {
 	 * @param {number} [d]
 	 */
 	constructor(a, b, c, d) {
-		if (Array.isArray(a)) {
-			// use array properties
-			this._a = a[0];
-			this._b = a[1];
-			this._c = a[2];
-			this._d = a[3];
-			return;
-		}
+		if (Array.isArray(a)) { [a, b, c, d] = a; }
 		this._a = a;
 		this._b = /** @type {number} */ (b);
 		this._c = /** @type {number} */ (c);

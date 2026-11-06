@@ -136,15 +136,11 @@ export class LatLng {
 	static validate(lat, lng, alt) {
 		if (lat instanceof LatLng || (typeof lat === 'object' && lat !== null && 'lat' in lat)) {
 			return true;
-		} else if (lat && Array.isArray(lat) && typeof lat[0] !== 'object') {
-			if (lat.length === 3 || lat.length === 2) {
-				return true;
-			}
-			return false;
-		} else if ((lat || lat === 0) && (lng || lng === 0)) {
-			return true;
 		}
-		return false;
+		if (Array.isArray(lat) && typeof lat[0] !== 'object') {
+			return lat.length === 3 || lat.length === 2;
+		}
+		return !!((lat || lat === 0) && (lng || lng === 0));
 	}
 
 

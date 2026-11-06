@@ -278,7 +278,7 @@ export class ImageOverlay extends Layer {
 	}
 
 	_updateZIndex() {
-		if (this._image && this.options.zIndex !== undefined && this.options.zIndex !== null) {
+		if (this._image && this.options.zIndex != null) {
 			this._image.style.zIndex = `${this.options.zIndex}`;
 		}
 	}

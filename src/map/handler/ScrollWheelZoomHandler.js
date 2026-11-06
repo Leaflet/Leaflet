@@ -41,12 +41,12 @@ export class ScrollWheelZoomHandler extends Handler {
 	_performZoom() {
 		const map = this._map,
 		zoom = map.getZoom(),
-		snap = this._map.options.zoomSnap ?? 0;
+		snap = map.options.zoomSnap ?? 0;
 
 		map._stop(); // stop panning and fly animations if any
 
 		// map the delta with a sigmoid function to -4..4 range leaning on -1..1
-		const d2 = this._delta / (this._map.options.wheelPxPerZoomLevel * 4),
+		const d2 = this._delta / (map.options.wheelPxPerZoomLevel * 4),
 		d3 = 4 * Math.log(2 / (1 + Math.exp(-Math.abs(d2)))) / Math.LN2,
 		d4 = snap ? Math.ceil(d3 / snap) * snap : d3,
 		// with reduced motion, only zooms by up to one level are animated, so a hard scroll is capped to that

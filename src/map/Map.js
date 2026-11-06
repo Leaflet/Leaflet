@@ -958,11 +958,9 @@ export class LeafletMap extends Evented {
 		}
 
 		if (!this._panAnim) {
-			this._panAnim = new PosAnimation();
-
-			this._panAnim.on({
-				'step': this._onPanTransitionStep,
-				'end': this._onPanTransitionEnd
+			this._panAnim = new PosAnimation().on({
+				step: this._onPanTransitionStep,
+				end: this._onPanTransitionEnd
 			}, this);
 		}
 
@@ -1040,7 +1038,7 @@ export class LeafletMap extends Evented {
 
 		const start = Date.now(),
 		S = (r(1) - r0) / rho,
-		duration = options.duration ? 1000 * options.duration : 1000 * S * 0.8;
+		duration = 1000 * (options.duration || S * 0.8);
 
 		const frame = () => {
 			const t = (Date.now() - start) / duration,
@@ -1348,9 +1346,7 @@ export class LeafletMap extends Evented {
 	_handleGeolocationResponse(pos) {
 		if (!this._container._leaflet_id) { return; }
 
-		const lat = pos.coords.latitude,
-		lng = pos.coords.longitude,
-		latlng = new LatLng(lat, lng),
+		const latlng = new LatLng(pos.coords.latitude, pos.coords.longitude),
 		bounds = latlng.toBounds(pos.coords.accuracy * 2),
 		options = this._locateOptions;
 
@@ -1392,9 +1388,7 @@ export class LeafletMap extends Evented {
 
 		layer._mapToAdd = this;
 
-		if (layer.beforeAdd) {
-			layer.beforeAdd(this);
-		}
+		layer.beforeAdd?.(this);
 
 		this.whenReady(layer._layerAdd, layer);
 
@@ -1644,7 +1638,7 @@ export class LeafletMap extends Evented {
 	remove() {
 
 		this._initEvents(true);
-		if (this.options.maxBounds) { this.off('moveend', this._panInsideMaxBounds); }
+		this.off('moveend', this._panInsideMaxBounds);
 
 		if (this._containerId !== this._container._leaflet_id) {
 			throw new Error('Map container is being reused by another instance');
@@ -2094,16 +2088,11 @@ export class LeafletMap extends Evented {
 		this._fadeAnimated = this.options.fadeAnimation;
 
 		// leaflet-touch and leaflet-retina have no rules in leaflet.css, but plugin stylesheets still target them
-		const classes = ['leaflet-container', 'leaflet-touch'];
+		container.classList.add('leaflet-container', 'leaflet-touch');
+		container.classList.toggle('leaflet-retina', window.devicePixelRatio > 1);
+		container.classList.toggle('leaflet-fade-anim', !!this._fadeAnimated);
 
-		if (window.devicePixelRatio > 1) { classes.push('leaflet-retina'); }
-		if (this._fadeAnimated) { classes.push('leaflet-fade-anim'); }
-
-		container.classList.add(...classes);
-
-		const {position} = getComputedStyle(container);
-
-		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed' && position !== 'sticky') {
+		if (!['absolute', 'relative', 'fixed', 'sticky'].includes(getComputedStyle(container).position)) {
 			container.style.position = 'relative';
 		}
 
@@ -2216,13 +2205,11 @@ export class LeafletMap extends Evented {
 	/**
 	 * @param {LatLng} center
 	 * @param {number} [zoom]
-	 * @param {{flyTo?: boolean, pinch?: boolean}} [data]
+	 * @param {{flyTo?: boolean, pinch?: boolean, round?: boolean}} [data]
 	 * @param {boolean} [suppressEvent]
 	 */
 	_move(center, zoom, data, suppressEvent) {
-		if (zoom === undefined) {
-			zoom = this._zoom;
-		}
+		zoom ??= this._zoom;
 		const zoomChanged = this._zoom !== zoom;
 
 		this._zoom = zoom;
@@ -2233,14 +2220,11 @@ export class LeafletMap extends Evented {
 		/** @type {Point} */
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
-		if (!suppressEvent) {
-			if (zoomChanged || (data?.pinch)) {	// Always fire 'zoom' if pinching because #3530
-				this._fireMove('zoom', data);
-			}
-
-			this._fireMove('move', data);
-		} else if (data?.pinch) {	// Always fire 'zoom' if pinching because #3530
+		if (zoomChanged && !suppressEvent || data?.pinch) {	// Always fire 'zoom' if pinching because #3530
 			this._fireMove('zoom', data);
+		}
+		if (!suppressEvent) {
+			this._fireMove('move', data);
 		}
 		return this;
 	}
@@ -2828,7 +2812,7 @@ export class LeafletMap extends Evented {
 		this._zoomAnimFrame = requestAnimationFrame(() => {
 			this._zoomAnimFrame = 0;
 			this
-				._moveStart(true, options.noMoveStart ?? false, options.originalEvent)
+				._moveStart(true, options.noMoveStart, options.originalEvent)
 				._animateZoom(center, zoom, true);
 		});
 

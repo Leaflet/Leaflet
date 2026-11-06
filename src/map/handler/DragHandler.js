@@ -62,17 +62,17 @@ export class DragHandler extends Handler {
 		const map = this._map;
 
 		map._stop();
-		if (this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
-			const bounds = new LatLngBounds(this._map.options.maxBounds);
+		if (map.options.maxBounds && map.options.maxBoundsViscosity) {
+			const bounds = new LatLngBounds(map.options.maxBounds);
 
 			/** @type {Bounds | null} */
 			this._offsetLimit = new Bounds(
-				this._map.latLngToContainerPoint(bounds.getNorthWest()).multiplyBy(-1),
-				this._map.latLngToContainerPoint(bounds.getSouthEast()).multiplyBy(-1)
-					.add(this._map.getSize()));
+				map.latLngToContainerPoint(bounds.getNorthWest()).multiplyBy(-1),
+				map.latLngToContainerPoint(bounds.getSouthEast()).multiplyBy(-1)
+					.add(map.getSize()));
 
 			/** @type {number} */
-			this._viscosity = Math.min(1.0, Math.max(0.0, this._map.options.maxBoundsViscosity));
+			this._viscosity = Math.min(1.0, Math.max(0.0, map.options.maxBoundsViscosity));
 		} else {
 			this._offsetLimit = null;
 		}

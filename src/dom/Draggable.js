@@ -222,10 +222,8 @@ export class Draggable extends Evented {
 		this._draggingContainer?.classList.remove('leaflet-dragging');
 		this._draggingContainer = null;
 
-		if (this._lastTarget) {
-			this._lastTarget.classList.remove('leaflet-drag-target');
-			this._lastTarget = null;
-		}
+		this._lastTarget?.classList.remove('leaflet-drag-target');
+		this._lastTarget = null;
 
 		DomEvent.off(this._dragStartTarget, 'pointermove', this._onMove, this);
 		DomEvent.off(this._dragStartTarget, 'pointerup pointercancel lostpointercapture', this._onUp, this);

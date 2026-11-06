@@ -340,7 +340,7 @@ export class GridLayer extends Layer {
 	}
 
 	_updateZIndex() {
-		if (this._container && this.options.zIndex !== undefined && this.options.zIndex !== null) {
+		if (this._container && this.options.zIndex != null) {
 			this._container.style.zIndex = `${this.options.zIndex}`;
 		}
 	}
@@ -599,9 +599,7 @@ export class GridLayer extends Layer {
 			/** @type {number | undefined} */
 			this._tileZoom = tileZoom;
 
-			if (this._abortLoading) {
-				this._abortLoading();
-			}
+			this._abortLoading?.();
 
 			this._updateLevels();
 			this._resetGrid();
@@ -765,7 +763,7 @@ export class GridLayer extends Layer {
 		// sort tile queue to load tiles in order of their distance to center
 		queue.sort((a, b) => a.distanceTo(tileCenter) - b.distanceTo(tileCenter));
 
-		if (queue.length !== 0) {
+		if (queue.length) {
 			// if it's the first batch of tiles to load
 			if (!this._loading) {
 				/** @type {boolean} */

@@ -270,13 +270,11 @@ export class Polyline extends Path {
 		}
 
 		const parts = this._parts;
-		let i, j, k, len, len2, segment, points;
+		let k = 0;
 
-		for (i = 0, k = 0, len = this._rings.length; i < len; i++) {
-			points = this._rings[i];
-
-			for (j = 0, len2 = points.length; j < len2 - 1; j++) {
-				segment = LineUtil.clipSegment(points[j], points[j + 1], bounds, !!j);
+		for (const points of this._rings) {
+			for (let j = 0, len = points.length; j < len - 1; j++) {
+				const segment = LineUtil.clipSegment(points[j], points[j + 1], bounds, !!j);
 
 				if (!segment) { continue; }
 
@@ -284,7 +282,7 @@ export class Polyline extends Path {
 				parts[k].push(segment[0]);
 
 				// if segment goes out of screen, or it's the last one, it's the end of the line part
-				if ((segment[1] !== points[j + 1]) || (j === len2 - 2)) {
+				if ((segment[1] !== points[j + 1]) || (j === len - 2)) {
 					parts[k].push(segment[1]);
 					k++;
 				}
@@ -325,19 +323,14 @@ export class Polyline extends Path {
 	 * @param {boolean} [closed]
 	 */
 	_containsPoint(p, closed) {
-		let i, j, k, len, len2, part;
 		const w = this._clickTolerance();
 
 		if (!this._pxBounds?.contains(p)) { return false; }
 
 		// hit detection for polylines
-		for (i = 0, len = this._parts.length; i < len; i++) {
-			part = this._parts[i];
-
-			for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
-				if (!closed && (j === 0)) { continue; }
-
-				if (LineUtil.pointToSegmentDistance(p, part[k], part[j]) <= w) {
+		for (const part of this._parts) {
+			for (let j = closed ? 0 : 1, len = part.length; j < len; j++) {
+				if (LineUtil.pointToSegmentDistance(p, part[(j || len) - 1], part[j]) <= w) {
 					return true;
 				}
 			}

@@ -125,43 +125,44 @@ export class TileLayer extends GridLayer {
 	constructor(url, options) {
 		super(/** @type {Partial<O & TileLayerDefaults>} */ (options));
 
-		options = Util.setOptions(this, options);
+		Util.setOptions(this, options);
+		const opts = this.options;
 
 		// Set required OpenStreetMap attribution if it hasn't been specified
-		if (isOSMUrl(url) && options.attribution === null) {
-			options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+		if (isOSMUrl(url) && opts.attribution === null) {
+			opts.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 		}
 		this._url = upgradeOSMUrl(url);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (this.options.detectRetina && window.devicePixelRatio > 1 && this.options.maxZoom > 0) {
+		if (opts.detectRetina && window.devicePixelRatio > 1 && opts.maxZoom > 0) {
 
-			const tileSize = this.options.tileSize;
-			this.options.tileSize = tileSize instanceof Point ? tileSize.divideBy(2).floor() : Math.floor(tileSize / 2);
+			const tileSize = opts.tileSize;
+			opts.tileSize = tileSize instanceof Point ? tileSize.divideBy(2).floor() : Math.floor(tileSize / 2);
 
-			if (!this.options.zoomReverse) {
-				this.options.zoomOffset++;
-				this.options.maxZoom = Math.max(this.options.minZoom, this.options.maxZoom - 1);
+			if (!opts.zoomReverse) {
+				opts.zoomOffset++;
+				opts.maxZoom = Math.max(opts.minZoom, opts.maxZoom - 1);
 			} else {
-				this.options.zoomOffset--;
-				this.options.minZoom = Math.min(this.options.maxZoom, this.options.minZoom + 1);
+				opts.zoomOffset--;
+				opts.minZoom = Math.min(opts.maxZoom, opts.minZoom + 1);
 			}
 
-			this.options.minZoom = Math.max(0, this.options.minZoom);
+			opts.minZoom = Math.max(0, opts.minZoom);
 
 			// either way, the tile at zoom z is now the server's z + 1 tile, so native zooms shift down by one
-			if (this.options.maxNativeZoom !== undefined) { this.options.maxNativeZoom--; }
-			if (this.options.minNativeZoom !== undefined) { this.options.minNativeZoom--; }
-		} else if (!this.options.zoomReverse) {
+			if (opts.maxNativeZoom !== undefined) { opts.maxNativeZoom--; }
+			if (opts.minNativeZoom !== undefined) { opts.minNativeZoom--; }
+		} else if (!opts.zoomReverse) {
 			// make sure maxZoom is gte minZoom
-			this.options.maxZoom = Math.max(this.options.minZoom, this.options.maxZoom);
+			opts.maxZoom = Math.max(opts.minZoom, opts.maxZoom);
 		} else {
 			// make sure minZoom is lte maxZoom
-			this.options.minZoom = Math.min(this.options.maxZoom, this.options.minZoom);
+			opts.minZoom = Math.min(opts.maxZoom, opts.minZoom);
 		}
 
-		if (typeof this.options.subdomains === 'string') {
-			this.options.subdomains = this.options.subdomains.split('');
+		if (typeof opts.subdomains === 'string') {
+			opts.subdomains = opts.subdomains.split('');
 		}
 
 		this.callInitHooks();
@@ -294,21 +295,13 @@ export class TileLayer extends GridLayer {
 
 	// stops loading all tiles in the background layer
 	_abortLoading() {
-		let i, tile;
-		for (i of Object.keys(this._tiles)) {
-			if (this._tiles[i].coords.z !== this._tileZoom) {
-				tile = /** @type {HTMLImageElement} */ (this._tiles[i].el);
-
-				if (!tile.complete) {
-					tile.setAttribute('src', '');
-					const coords = this._tiles[i].coords;
-					tile.remove();
-					delete this._tiles[i];
-					this.fire('tileabort', {
-						tile,
-						coords
-					});
-				}
+		for (const [key, {coords, el}] of Object.entries(this._tiles)) {
+			const tile = /** @type {HTMLImageElement} */ (el);
+			if (coords.z !== this._tileZoom && !tile.complete) {
+				tile.setAttribute('src', '');
+				tile.remove();
+				delete this._tiles[key];
+				this.fire('tileabort', {tile, coords});
 			}
 		}
 	}

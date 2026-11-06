@@ -103,14 +103,8 @@ export class Point {
 	 * @param {unknown} [y]
 	 */
 	static validate(x, y) {
-		if (x instanceof Point || Array.isArray(x)) {
-			return true;
-		} else if (x && typeof x === 'object' && 'x' in x && 'y' in x) {
-			return true;
-		} else if ((x || x === 0) && (y || y === 0)) {
-			return true;
-		}
-		return false;
+		return x instanceof Point || Array.isArray(x) || (x && typeof x === 'object' && 'x' in x && 'y' in x) ||
+			!!((x || x === 0) && (y || y === 0));
 	}
 
 	/** Returns a copy of the current point. */

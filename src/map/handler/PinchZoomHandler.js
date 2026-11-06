@@ -56,8 +56,8 @@ export class PinchZoomHandler extends Handler {
 
 		map._stop();
 
-		DomEvent.on(this._map._container, 'pointermove', this._onPointerMove, this);
-		DomEvent.on(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
+		DomEvent.on(map._container, 'pointermove', this._onPointerMove, this);
+		DomEvent.on(map._container, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		e.preventDefault();
 	}
@@ -99,9 +99,9 @@ export class PinchZoomHandler extends Handler {
 
 		cancelAnimationFrame(this._animRequest);
 
-		const moveFn = map._move.bind(map, this._center, this._zoom, {pinch: true, round: false}, undefined);
+		const center = this._center, zoom = this._zoom;
 		/** @type {number} */
-		this._animRequest = requestAnimationFrame(moveFn.bind(this));
+		this._animRequest = requestAnimationFrame(() => map._move(center, zoom, {pinch: true, round: false}));
 
 		e.preventDefault();
 	}
@@ -123,11 +123,14 @@ export class PinchZoomHandler extends Handler {
 		this._zooming = false;
 		cancelAnimationFrame(this._animRequest);
 
+		const map = this._map,
+		zoom = map._limitZoom(this._zoom);
+
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
-		if (this._map._zoomAnimated) {
-			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, !!this._map.options.zoomSnap);
+		if (map._zoomAnimated) {
+			map._animateZoom(this._center, zoom, true, !!map.options.zoomSnap);
 		} else {
-			this._map._resetView(this._center, this._map._limitZoom(this._zoom), false, this._map._moveEvent);
+			map._resetView(this._center, zoom, false, map._moveEvent);
 		}
 	}
 }

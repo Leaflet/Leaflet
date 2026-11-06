@@ -361,12 +361,9 @@ export class Marker extends Layer {
 	_removeIcon() {
 		const icon = /** @type {HTMLElement} */ (this._icon);
 		DomEvent.off(icon, 'pointerover pointerout focusin focusout', this._updateRise, this);
-		this._hovered = this._focused = false;
-
-		if (this.options.autoPanOnFocus) {
-			DomEvent.off(icon, 'focus', this._panOnFocus, this);
-		}
+		DomEvent.off(icon, 'focus', this._panOnFocus, this);
 		DomEvent.off(icon, 'keydown', this._onKeyDown, this);
+		this._hovered = this._focused = false;
 
 		icon.remove();
 		this.removeInteractiveTarget(icon);
@@ -502,14 +499,10 @@ export class Marker extends Layer {
 	}
 
 	_updateOpacity() {
-		const opacity = this.options.opacity;
-
-		if (this._icon) {
-			this._icon.style.opacity = `${opacity}`;
-		}
-
-		if (this._shadow) {
-			this._shadow.style.opacity = `${opacity}`;
+		for (const el of [this._icon, this._shadow]) {
+			if (el) {
+				el.style.opacity = `${this.options.opacity}`;
+			}
 		}
 	}
 

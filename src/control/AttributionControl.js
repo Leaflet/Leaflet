@@ -114,10 +114,7 @@ export class AttributionControl extends Control {
 	addAttribution(text) {
 		if (!text) { return this; }
 
-		if (!this._attributions[text]) {
-			this._attributions[text] = 0;
-		}
-		this._attributions[text]++;
+		this._attributions[text] = (this._attributions[text] || 0) + 1;
 
 		this._update();
 
@@ -142,17 +139,8 @@ export class AttributionControl extends Control {
 	_update() {
 		if (!this._map) { return; }
 
-		const attribs = Object.keys(this._attributions).filter(i => this._attributions[i]);
+		const attribs = Object.keys(this._attributions).filter(i => this._attributions[i]).join(', ');
 
-		const prefixAndAttribs = [];
-
-		if (this.options.prefix) {
-			prefixAndAttribs.push(this.options.prefix);
-		}
-		if (attribs.length) {
-			prefixAndAttribs.push(attribs.join(', '));
-		}
-
-		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
+		this._container.innerHTML = [this.options.prefix, attribs].filter(Boolean).join(' <span aria-hidden="true">|</span> ');
 	}
 }

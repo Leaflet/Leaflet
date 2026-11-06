@@ -72,7 +72,7 @@ export class Circle extends CircleMarker {
 				(Math.cos(lat * d) * Math.cos(lat2 * d)))) / d;
 
 			if (isNaN(lngR) || lngR === 0) {
-				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
+				lngR = latR / Math.cos(lat * d); // Fallback for edge case, #2425
 			}
 
 			this._point = p.subtract(renderer._pathOrigin);

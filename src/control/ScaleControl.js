@@ -117,18 +117,12 @@ export class ScaleControl extends Control {
 
 	/** @param {number} maxMeters */
 	_updateImperial(maxMeters) {
-		const maxFeet = maxMeters * 3.2808399;
-		let maxMiles, miles, feet;
+		const maxFeet = maxMeters * 3.2808399,
+		inMiles = maxFeet > 5280,
+		max = inMiles ? maxFeet / 5280 : maxFeet,
+		num = this._getRoundNum(max);
 
-		if (maxFeet > 5280) {
-			maxMiles = maxFeet / 5280;
-			miles = this._getRoundNum(maxMiles);
-			this._updateScale(this._iScale, `${miles} mi`, miles / maxMiles);
-
-		} else {
-			feet = this._getRoundNum(maxFeet);
-			this._updateScale(this._iScale, `${feet} ft`, feet / maxFeet);
-		}
+		this._updateScale(this._iScale, `${num} ${inMiles ? 'mi' : 'ft'}`, num / max);
 	}
 
 	/**
