@@ -3,7 +3,7 @@
 
 import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, copyFileSync, cpSync, rmSync, renameSync, statSync}
 	from 'node:fs';
-import {execSync} from 'node:child_process';
+import {execFileSync} from 'node:child_process';
 import {join, dirname} from 'node:path';
 import {Liquid} from 'liquidjs';
 import {Marked} from 'marked';
@@ -237,7 +237,14 @@ function treeDir(sha) {
 		const tmp = `${dir}.tmp`;
 		rmSync(tmp, {recursive: true, force: true});
 		mkdirSync(tmp, {recursive: true});
-		execSync(`git archive ${sha} ${SITE_DIR} src build | tar -x -C ${tmp}`);
+		// no shell pipe: its exit status is tar's, so a failed git archive would cache an empty dir for good
+		let archive;
+		try {
+			archive = execFileSync('git', ['archive', sha, SITE_DIR, 'src', 'build'], {maxBuffer: 1 << 30, stdio: ['ignore', 'pipe', 'pipe']});
+		} catch (err) {
+			throw new Error(`Can't read pinned commit ${sha}; fetch the branch it's on (e.g. \`git fetch origin v1\`).\n${err.stderr}`, {cause: err});
+		}
+		execFileSync('tar', ['-x', '-C', tmp], {input: archive});
 		renameSync(tmp, dir);
 	}
 	return dir;
