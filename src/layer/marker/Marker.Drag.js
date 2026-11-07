@@ -79,9 +79,11 @@ export class MarkerDrag extends Handler {
 		dy = Math.max(iconPos.y - max.y, 0) + Math.min(iconPos.y - min.y, 0);
 
 		if (dx || dy) {
-			// pan faster the deeper the icon goes into the padding, but not past maxBounds (#6219)
+			// pan faster the deeper the icon goes into the padding, but not past maxBounds
 			const movement = map._limitOffset(new Point(dx / padding.x * speed, dy / padding.y * speed),
-				map.options.maxBounds);
+				map.options.maxBounds)._round();
+
+			if (!movement.x && !movement.y) { return; }
 
 			map.panBy(movement, {animate: false});
 

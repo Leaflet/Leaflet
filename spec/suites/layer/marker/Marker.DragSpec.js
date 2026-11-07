@@ -124,7 +124,7 @@ describe('Marker.Drag', () => {
 
 			// hold the marker at the edge, then drag it back and release
 			const finger = new Finger(pointerType);
-			await finger.moveTo(300, 280).down().moveBy(5, 0).moveTo(590, 280);
+			await finger.moveTo(300, 280).down().moveBy(5, 0).moveTo(587, 280);
 			await new Promise((resolve) => { setTimeout(resolve, 100); });
 			await finger.moveTo(300, 280).up();
 
