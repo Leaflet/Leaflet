@@ -1777,8 +1777,9 @@ export class LeafletMap extends Evented {
 		size = this.getSize().subtract(padding),
 		boundsSize = new Bounds(this.project(se, zoom), this.project(nw, zoom)).getSize(),
 		snap = this.options.zoomSnap,
-		scalex = size.x / boundsSize.x,
-		scaley = size.y / boundsSize.y,
+		// padding larger than the map leaves no room: zoom out, not in
+		scalex = Math.max(size.x, 0) / boundsSize.x,
+		scaley = Math.max(size.y, 0) / boundsSize.y,
 		scale = inside ? Math.max(scalex, scaley) : Math.min(scalex, scaley);
 
 		zoom = this.getScaleZoom(scale, zoom);
