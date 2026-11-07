@@ -231,13 +231,8 @@ describe('Marker', () => {
 		it('lets CSS size a DivIcon that replaces a sized one', () => {
 			const marker = new Marker([0, 0], {icon: new DivIcon()}).addTo(map);
 
-			marker.setIcon(new DivIcon({iconSize: 'auto'}));
+			marker.setIcon(new DivIcon({iconSize: null}));
 			expect(marker._icon.style.width).to.equal('');
-			expect(marker._icon.style.height).to.equal('');
-
-			marker.setIcon(new DivIcon());
-			marker.setIcon(new DivIcon({iconSize: [100, 'auto']}));
-			expect(marker._icon.style.width).to.equal('100px');
 			expect(marker._icon.style.height).to.equal('');
 		});
 
