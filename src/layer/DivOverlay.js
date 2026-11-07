@@ -16,6 +16,9 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ((layer: Layer) => string | HTMLElement | DocumentFragment)} OverlayContent
  */
 
+/** @type {WeakMap<DocumentFragment, ChildNode[]>} */
+const fragmentNodes = new WeakMap();
+
 const defaultOptions = {
 	/** If true, the popup/tooltip will listen to the pointer events. */
 	interactive: false,
@@ -31,7 +34,8 @@ const defaultOptions = {
 
 	/**
 	 * Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-	 * passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
+	 * passed to the function. The function should return a `String`, `HTMLElement` or `DocumentFragment` to be
+	 * used in the overlay.
 	 * String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent`
 	 * instead.
 	 * @type {OverlayContent}
@@ -209,8 +213,9 @@ export class DivOverlay extends LayerBase {
 	/**
 	 * Sets the HTML content of the overlay. A `String` argument is rendered as HTML; if it may contain
 	 * untrusted input, sanitize it (e.g. with DOMPurify) or pass an `HTMLElement` with safe `textContent`
-	 * instead. If a function is passed the source layer will be passed to the function. The function
-	 * should return a `String` or `HTMLElement` to be used in the overlay.
+	 * instead. A `DocumentFragment` can be passed as well. If a function is passed the source layer will be
+	 * passed to the function. The function should return a `String`, `HTMLElement` or `DocumentFragment` to be
+	 * used in the overlay.
 	 * @param {OverlayContent} content
 	 */
 	setContent(content) {
@@ -308,8 +313,11 @@ export class DivOverlay extends LayerBase {
 
 		if (typeof content === 'string') {
 			node.innerHTML = content;
-		} else if (!(content instanceof DocumentFragment) || content.hasChildNodes()) {
-			// inserting a fragment empties it, so its nodes are already in place on later updates (#3922)
+		} else if (content instanceof DocumentFragment) {
+			// inserting a fragment empties it, so keep its nodes to insert them again on later updates
+			if (content.hasChildNodes()) { fragmentNodes.set(content, [...content.childNodes]); }
+			node.replaceChildren(...fragmentNodes.get(content) ?? []);
+		} else {
 			node.replaceChildren(content);
 		}
 
