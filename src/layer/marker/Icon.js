@@ -204,14 +204,14 @@ export class Icon extends Class {
 		style.marginLeft = style.marginTop = style.transformOrigin = style.width = style.height = '';
 
 		if (anchor) {
-			img.style.marginLeft = `${-anchor.x}px`;
-			img.style.marginTop  = `${-anchor.y}px`;
-			img.style.transformOrigin = `${anchor.x}px ${anchor.y}px`;
+			style.marginLeft = `${-anchor.x}px`;
+			style.marginTop  = `${-anchor.y}px`;
+			style.transformOrigin = `${anchor.x}px ${anchor.y}px`;
 		}
 
 		if (size) {
-			img.style.width  = `${size.x}px`;
-			img.style.height = `${size.y}px`;
+			style.width  = `${size.x}px`;
+			style.height = `${size.y}px`;
 		}
 	}
 
