@@ -114,6 +114,23 @@ describe('Marker.Drag', () => {
 			expect(map.getCenter()).to.be.nearLatLng([0, 11.25]);
 			expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 419.0625]);
 		});
+
+		// https://github.com/Leaflet/Leaflet/issues/6219
+		it('keeps the marker under the pointer when autoPan hits maxBounds', async () => {
+			map.setView([0, 0], 3, {animate: false});
+			const maxBounds = map.getBounds();
+			map.setMaxBounds(maxBounds);
+			const marker = new Marker([0, 0], {draggable: true, autoPan: true}).addTo(map);
+
+			// hold the marker at the edge, then drag it back and release
+			const finger = new Finger(pointerType);
+			await finger.moveTo(300, 280).down().moveBy(5, 0).moveTo(590, 280);
+			await new Promise((resolve) => { setTimeout(resolve, 100); });
+			await finger.moveTo(300, 280).up();
+
+			expect(map.latLngToContainerPoint(marker.getLatLng())).to.be.near([300, 300]);
+			expect(maxBounds.contains(map.getBounds())).to.be.true;
+		});
 	});
 
 	describe.each(['mouse', 'touch'])('changing the icon with %s', (pointerType) => {
