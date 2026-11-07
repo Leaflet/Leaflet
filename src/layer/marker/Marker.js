@@ -298,7 +298,7 @@ export class Marker extends Layer {
 			}
 
 			if (icon instanceof HTMLImageElement) {
-				icon.alt = options.alt ?? '';
+				icon.alt = this._map.translate(options.alt) ?? '';
 			}
 		}
 
