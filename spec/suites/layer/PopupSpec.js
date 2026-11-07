@@ -24,6 +24,18 @@ describe('Popup', () => {
 		expect(popup._contentNode.innerHTML).to.equal('');
 	});
 
+	// https://github.com/Leaflet/Leaflet/issues/3922
+	it('keeps fragment content when reopened', () => {
+		const button = document.createElement('button');
+		const fragment = document.createDocumentFragment();
+		fragment.append(button);
+
+		const marker = new Marker(center).addTo(map).bindPopup(fragment).openPopup();
+		marker.closePopup().openPopup();
+
+		expect(marker.getPopup()._contentNode.firstChild).to.equal(button);
+	});
+
 	it('closes on map click when map has closePopupOnClick option', () => {
 		map.options.closePopupOnClick = true;
 

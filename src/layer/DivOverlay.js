@@ -10,9 +10,10 @@ import * as DomUtil from '../dom/DomUtil.js';
 /** @import {Layer, OverlayTriggerEvents} from './Layer.js' */
 
 /**
- * Content of a popup or tooltip: HTML, an element, or a function that gets the layer it's bound to and returns
- * either.
- * @typedef {string | HTMLElement | ((layer: Layer) => string | HTMLElement)} OverlayContent
+ * Content of a popup or tooltip: HTML, an element or fragment, or a function that gets the layer it's bound to
+ * and returns one of these.
+ * @typedef {string | HTMLElement | DocumentFragment |
+ * ((layer: Layer) => string | HTMLElement | DocumentFragment)} OverlayContent
  */
 
 const defaultOptions = {
@@ -307,7 +308,8 @@ export class DivOverlay extends LayerBase {
 
 		if (typeof content === 'string') {
 			node.innerHTML = content;
-		} else {
+		} else if (!(content instanceof DocumentFragment) || content.hasChildNodes()) {
+			// inserting a fragment empties it, so its nodes are already in place on later updates (#3922)
 			node.replaceChildren(content);
 		}
 
