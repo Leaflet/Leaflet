@@ -449,6 +449,107 @@ describe('Events', () => {
 
 			expect(spy.callCount).to.eql(1);
 		});
+
+		it('does not call listeners added during fire until the next one', () => {
+			const obj = new Evented(),
+			spy = sinon.spy();
+
+			obj.once('test', () => obj.on('test', spy));
+			obj.fire('test');
+			expect(spy.called).to.be.false;
+
+			obj.on('test2', () => obj.on('test2', spy));
+			obj.fire('test2');
+			expect(spy.called).to.be.false;
+
+			obj.fire('test2');
+			expect(spy.calledOnce).to.be.true;
+		});
+
+		it('handles many listeners of the same type', () => {
+			const obj = new Evented(),
+			calls = [],
+			fn = function () { calls.push(this); },
+			ctxs = Array.from({length: 100}, (_, i) => ({i}));
+
+			for (const ctx of ctxs) { obj.on('test', fn, ctx); }
+			for (const ctx of ctxs) { obj.on('test', fn, ctx); }
+			obj.fire('test');
+			expect(calls).to.eql(ctxs);
+
+			const odd = ctxs.filter(ctx => ctx.i % 2);
+			for (const ctx of ctxs) {
+				if (!(ctx.i % 2)) { obj.off('test', fn, ctx); }
+			}
+			obj.on('test', fn, ctxs[0]);
+			calls.length = 0;
+			obj.fire('test');
+			expect(calls).to.eql([...odd, ctxs[0]]);
+
+			expect(obj.listens('test', fn, ctxs[0])).to.be.true;
+			expect(obj.listens('test', fn, ctxs[2])).to.be.false;
+
+			for (const ctx of ctxs) { obj.off('test', fn, ctx); }
+			expect(obj.listens('test')).to.be.false;
+		});
+
+		it('handles removing many listeners during fire', () => {
+			const obj = new Evented(),
+			spy = sinon.spy(),
+			ctxs = Array.from({length: 100}, () => ({}));
+
+			obj.on('test', () => {
+				for (const ctx of ctxs) { obj.off('test', spy, ctx); }
+			});
+			for (const ctx of ctxs) { obj.on('test', spy, ctx); }
+			obj.fire('test');
+
+			expect(spy.called).to.be.false;
+			expect(obj.listens('test', spy, ctxs[0])).to.be.false;
+		});
+
+		it('handles many listeners with distinct functions', () => {
+			const obj = new Evented(),
+			calls = [],
+			fns = Array.from({length: 50}, (_, i) => () => calls.push(i)),
+			ctx = {};
+
+			for (const fn of fns) { obj.on('test', fn); }
+			obj.on('test', fns[0], ctx);
+			expect(obj.listens('test', fns[1])).to.be.true;
+			expect(obj.listens('test', fns[1], ctx)).to.be.false;
+			expect(obj.listens('test', fns[0], ctx)).to.be.true;
+
+			obj.off('test', fns[1], ctx);
+			obj.off('test', fns[0]);
+			obj.off('test', fns[2]);
+			obj.fire('test');
+			expect(calls).to.eql([1, ...[...fns.keys()].slice(3), 0]);
+			expect(obj.listens('test', fns[0])).to.be.false;
+			expect(obj.listens('test', fns[0], ctx)).to.be.true;
+		});
+
+		it('calls once listeners of many contexts with their context', () => {
+			const obj = new Evented(),
+			calls = [],
+			fn = function () { calls.push(this); },
+			ctxs = Array.from({length: 50}, () => ({}));
+
+			for (const ctx of ctxs) { obj.once('test', fn, ctx); }
+			obj.fire('test');
+			obj.fire('test');
+			expect(calls).to.eql(ctxs);
+		});
+
+		it('does not keep removed contexts of many listeners', () => {
+			const obj = new Evented(),
+			fn = () => {},
+			ctxs = Array.from({length: 50}, () => ({}));
+
+			for (const ctx of ctxs) { obj.on('test', fn, ctx); }
+			obj.off('test', fn, ctxs[0]);
+			expect(obj._events.test.some(l => l.ctx === ctxs[0])).to.be.false;
+		});
 	});
 
 	describe('#clearEventListeners', () => {

@@ -31,6 +31,18 @@ import * as Util from './Util.js';
 const warnedEvents = new Set();
 
 /**
+ * @typedef {{fn: Function, ctx: any, once?: boolean}} EventListener
+ * @typedef {Map<Function, EventListener | Map<any, EventListener>>} ListenerIndex
+ * @typedef {{index: ListenerIndex, removed: number}} EventIndex
+ */
+
+// Past `INDEX_SIZE` listeners of a type, they're indexed by function (then by context if
+// a function has several) for constant-time lookups, and removed ones stay in the array
+// until half of it is removed; below it, removal makes a filtered copy of the array.
+function removedFn() {}
+const INDEX_SIZE = 32;
+
+/**
  * @typedef {Object} LeafletEventProps
  * @property {string} type The event type (e.g. `'click'`).
  * @property {Evented} target The object that fired the event. For propagated events, the last
@@ -72,11 +84,12 @@ export class Evented extends Class {
 
 	constructor() {
 		super();
-		/** @type {{[type: string]: Array<{fn: Function, ctx: any, once?: boolean}>} | undefined} */
+		/** @type {{[type: string]: EventListener[] | undefined} | undefined} */
 		this._events = undefined;
+		/** @type {{[type: string]: EventIndex | undefined} | undefined} */
+		this._eventIndexes = undefined;
 		/** @type {{[id: number]: Evented} | undefined} */
 		this._eventParents = undefined;
-		this._firingCount = 0;
 		this.callInitHooks();
 	}
 
@@ -157,7 +170,7 @@ export class Evented extends Class {
 
 		if (!arguments.length) {
 			// clear all listeners if called without arguments
-			this._events = undefined;
+			this._events = this._eventIndexes = undefined;
 
 		} else if (typeof types === 'object') {
 			for (const [type, f] of Object.entries(types)) {
@@ -207,25 +220,35 @@ export class Evented extends Class {
 			return;
 		}
 
-		// check if fn already there
-		if (this._listens(type, fn, context) !== false) {
-			return;
-		}
-
 		if (context === this) {
 			// Less memory footprint.
 			context = undefined;
 		}
 
-		/** @type {{fn: Function, ctx: any, once?: boolean}} */
-		const newListener = {fn, ctx: context};
-		if (_once) {
-			newListener.once = true;
+		this._events ??= {};
+		const listeners = this._events[type] ??= [];
+		const index = this._eventIndexes?.[type]?.index;
+
+		// check if fn already there
+		if (findListener(listeners, index, fn, context)) {
+			return;
 		}
 
-		this._events ??= {};
-		this._events[type] ??= [];
-		this._events[type].push(newListener);
+		/** @type {EventListener} */
+		const listener = {fn, ctx: context};
+		if (_once) {
+			listener.once = true;
+		}
+		listeners.push(listener);
+
+		if (index) {
+			addToIndex(index, listener);
+
+		} else if (listeners.length > INDEX_SIZE) {
+			const newIndex = new Map();
+			for (const l of listeners) { addToIndex(newIndex, l); }
+			(this._eventIndexes ??= {})[type] = {index: newIndex, removed: 0};
+		}
 	}
 
 	/**
@@ -234,25 +257,18 @@ export class Evented extends Class {
 	 * @param {unknown} [context]
 	 */
 	_off(type, fn, context) {
-		if (!this._events) {
-			return;
-		}
-
-		let listeners = this._events[type];
-		if (!listeners) {
+		const events = this._events;
+		const listeners = events?.[type];
+		if (!events || !listeners) {
 			return;
 		}
 
 		if (arguments.length === 1) { // remove all
-			if (this._firingCount) {
-				// Set all removed listeners to noop
-				// so they are not called if remove happens in fire
-				for (const listener of listeners) {
-					listener.fn = Util.falseFn;
-				}
+			// make sure the listeners are not called if removed during fire
+			for (const listener of listeners) {
+				listener.fn = removedFn;
 			}
-			// clear all listeners for a type if function isn't specified
-			delete this._events[type];
+			this._removeType(type);
 			return;
 		}
 
@@ -261,19 +277,52 @@ export class Evented extends Class {
 			return;
 		}
 
-		// find fn and remove it
-		const index = /** @type {number | false} */ (this._listens(type, fn, context));
-		if (index !== false) {
-			const listener = listeners[index];
-			if (this._firingCount) {
-				// set the removed listener to noop so that's not called if remove happens in fire
-				listener.fn = Util.falseFn;
-
-				/* copy array in case events are being fired */
-				this._events[type] = listeners = listeners.slice();
-			}
-			listeners.splice(index, 1);
+		if (context === this) {
+			context = undefined;
 		}
+
+		const indexed = this._eventIndexes?.[type];
+		const listener = findListener(listeners, indexed?.index, fn, context);
+		if (!listener) {
+			return;
+		}
+
+		// set the removed listener to noop so that's not called if remove happens in fire
+		listener.fn = removedFn;
+		listener.ctx = undefined;
+
+		if (!indexed) {
+			// a new array rather than in-place removal, in case `fire` is iterating the old one
+			if (listeners.length === 1) {
+				this._removeType(type);
+			} else {
+				events[type] = listeners.filter(l => l !== listener);
+			}
+			return;
+		}
+
+		const entry = indexed.index.get(fn);
+		if (entry instanceof Map) {
+			entry.delete(context);
+			if (!entry.size) { indexed.index.delete(fn); }
+		} else {
+			indexed.index.delete(fn);
+		}
+
+		if (++indexed.removed === listeners.length) {
+			this._removeType(type);
+
+		} else if (indexed.removed * 2 >= listeners.length) {
+			events[type] = listeners.filter(l => l.fn !== removedFn);
+			indexed.removed = 0;
+		}
+	}
+
+	/** @param {string} type */
+	_removeType(type) {
+		// unset rather than deleted, which would turn the object into a slower and larger dictionary
+		if (this._events) { this._events[type] = undefined; }
+		if (this._eventIndexes) { this._eventIndexes[type] = undefined; }
 	}
 
 	/**
@@ -296,18 +345,17 @@ export class Evented extends Class {
 
 		const listeners = this._events?.[type];
 		if (listeners) {
-			// stays NaN-safe for classes that include Evented.prototype without running its constructor
-			this._firingCount = (this._firingCount + 1) || 1;
-			for (const l of listeners) {
-				// off overwrites l.fn, so we need to copy fn to a variable
-				const fn = l.fn;
+			// listeners added during fire are appended past `length`, so they're only called on the next one
+			const {length} = listeners;
+			for (let i = 0; i < length; i++) {
+				const l = listeners[i];
+				// off overwrites these, so we need to copy them first
+				const {fn, ctx} = l;
 				if (l.once) {
-					this.off(type, /** @type {any} */ (fn), l.ctx);
+					this.off(type, /** @type {any} */ (fn), ctx);
 				}
-				fn.call(l.ctx || this, event);
+				fn.call(ctx || this, event);
 			}
-
-			this._firingCount--;
 		}
 
 		if (propagate) {
@@ -356,10 +404,10 @@ export class Evented extends Class {
 			context = undefined;
 		}
 
-		if (this._events?.[type]?.length) {
-			if (this._listens(type, _fn, context) !== false) {
-				return true;
-			}
+		const listeners = this._events?.[type];
+		// a type is unset when its last listener is removed, so if it's there, it has some
+		if (listeners && (!_fn || findListener(listeners, this._eventIndexes?.[type]?.index, _fn, context === this ? undefined : context))) {
+			return true;
 		}
 
 		if (propagate) {
@@ -371,28 +419,6 @@ export class Evented extends Class {
 			}
 		}
 		return false;
-	}
-
-	// returns the index (number) or false
-	/**
-	 * @param {string} type
-	 * @param {unknown} [fn]
-	 * @param {unknown} [context]
-	 */
-	_listens(type, fn, context) {
-		const listeners = this._events?.[type] ?? [];
-		if (!fn) {
-			return !!listeners.length;
-		}
-
-		if (context === this) {
-			// Less memory footprint.
-			context = undefined;
-		}
-
-		const index = listeners.findIndex(l => l.fn === fn && l.ctx === context);
-		return index === -1 ? false : index;
-
 	}
 
 	/**
@@ -469,3 +495,30 @@ export class Evented extends Class {
 		}
 	}
 };
+
+/**
+ * @param {EventListener[]} listeners
+ * @param {ListenerIndex | undefined} index
+ * @param {unknown} fn
+ * @param {unknown} context
+ */
+function findListener(listeners, index, fn, context) {
+	if (!index) { return listeners.find(l => l.fn === fn && l.ctx === context); }
+	const entry = index.get(/** @type {Function} */ (fn));
+	return entry instanceof Map ? entry.get(context) : entry?.ctx === context ? entry : undefined;
+}
+
+/**
+ * @param {ListenerIndex} index
+ * @param {EventListener} listener
+ */
+function addToIndex(index, listener) {
+	const entry = index.get(listener.fn);
+	if (!entry) {
+		index.set(listener.fn, listener);
+	} else if (entry instanceof Map) {
+		entry.set(listener.ctx, listener);
+	} else {
+		index.set(listener.fn, new Map([[entry.ctx, entry], [listener.ctx, listener]]));
+	}
+}
