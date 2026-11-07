@@ -93,7 +93,8 @@ export class Layer extends LayerBase {
 	 * Binds a popup to the layer with the passed `content` and sets up the necessary event listeners. A
 	 * `String` argument is rendered as HTML; if it may contain untrusted input, sanitize it (e.g. with
 	 * DOMPurify) or pass an `HTMLElement` with safe `textContent` instead. If a `Function` is passed it
-	 * will receive the layer as the first argument and should return a `String` or `HTMLElement`.
+	 * will receive the layer as the first argument and should return a `String`, `HTMLElement` or
+	 * `DocumentFragment`.
 	 * @category Popup methods
 	 * @param {OverlayContent | Popup} content
 	 * @param {Partial<PopupOptions>} [options]
@@ -223,7 +224,8 @@ export class Layer extends LayerBase {
 	 * Binds a tooltip to the layer with the passed `content` and sets up the necessary event listeners.
 	 * A `String` argument is rendered as HTML; if it may contain untrusted input, sanitize it (e.g. with
 	 * DOMPurify) or pass an `HTMLElement` with safe `textContent` instead. If a `Function` is passed it
-	 * will receive the layer as the first argument and should return a `String` or `HTMLElement`.
+	 * will receive the layer as the first argument and should return a `String`, `HTMLElement` or
+	 * `DocumentFragment`.
 	 * @category Tooltip methods
 	 * @param {OverlayContent | Tooltip} content
 	 * @param {Partial<TooltipOptions>} [options]

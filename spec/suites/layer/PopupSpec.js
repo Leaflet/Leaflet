@@ -24,6 +24,39 @@ describe('Popup', () => {
 		expect(popup._contentNode.innerHTML).to.equal('');
 	});
 
+	// https://github.com/Leaflet/Leaflet/issues/3922
+	it('keeps fragment content when reopened', () => {
+		const button = document.createElement('button');
+		const fragment = document.createDocumentFragment();
+		fragment.append(button);
+
+		const marker = new Marker(center).addTo(map).bindPopup(fragment).openPopup();
+		marker.closePopup().openPopup();
+
+		expect(marker.getPopup()._contentNode.firstChild).to.equal(button);
+	});
+
+	it('keeps fragment content when a group popup switches between fragments', () => {
+		const marker1 = new Marker(center);
+		const marker2 = new Marker([54.6, 38.2]);
+		const group = new FeatureGroup([marker1, marker2]).addTo(map);
+
+		const buttons = new Map(), fragments = new Map();
+		for (const marker of [marker1, marker2]) {
+			const button = document.createElement('button');
+			const fragment = document.createDocumentFragment();
+			fragment.append(button);
+			buttons.set(marker, button);
+			fragments.set(marker, fragment);
+		}
+		group.bindPopup(layer => fragments.get(layer));
+
+		for (const marker of [marker1, marker2, marker1]) {
+			group.fire('click', {latlng: marker.getLatLng(), propagatedFrom: marker});
+			expect(group.getPopup()._contentNode.firstChild).to.equal(buttons.get(marker));
+		}
+	});
+
 	it('closes on map click when map has closePopupOnClick option', () => {
 		map.options.closePopupOnClick = true;
 
