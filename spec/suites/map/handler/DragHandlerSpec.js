@@ -84,6 +84,22 @@ describe('DragHandler', () => {
 			expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 		});
 
+		it('pans on Shift-drag only when box zoom is disabled', async () => {
+			map = new LeafletMap(container, {inertia: false}).setView([0, 0], 1);
+			const spy = sinon.spy();
+			map.on('dragstart', spy);
+			const shift = {shiftKey: true};
+			const shiftDrag = () => new Finger().moveTo(200, 200).down(shift).moveBy(50, 50, shift).up(shift);
+
+			map.boxZoom.disable();
+			await shiftDrag();
+			expect(spy.calledOnce).to.be.true;
+
+			map.boxZoom.enable();
+			await shiftDrag();
+			expect(spy.calledOnce).to.be.true;
+		});
+
 		describe('with fractional pointer coordinates', () => {
 			const dprDescriptor = Object.getOwnPropertyDescriptor(window, 'devicePixelRatio');
 

@@ -18,10 +18,12 @@ import {Bounds} from '../../geometry/Bounds.js';
 export class BoxZoomHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerDown, this);
+		this._map._container.classList.add('leaflet-box-zoom');
 	}
 
 	removeHooks() {
 		DomEvent.off(this._map._container, 'pointerdown', this._onPointerDown, this);
+		this._map._container.classList.remove('leaflet-box-zoom');
 	}
 
 	/** Returns `true` if a box is being drawn or was just drawn, e.g. to ignore the click that ends it. */

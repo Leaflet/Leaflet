@@ -117,7 +117,8 @@ export class Draggable extends Evented {
 			return;
 		}
 
-		if (Draggable._dragging || e.shiftKey || (e.button !== 0 && e.pointerType !== 'touch')) { return; }
+		const boxZoom = e.shiftKey && this._element.closest('.leaflet-container')?.classList.contains('leaflet-box-zoom');
+		if (Draggable._dragging || boxZoom || (e.button !== 0 && e.pointerType !== 'touch')) { return; }
 		Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
 		DomUtil.disableImageDrag();
