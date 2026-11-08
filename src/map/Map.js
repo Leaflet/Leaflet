@@ -800,7 +800,8 @@ export class LeafletMap extends Evented {
 		}
 
 		// animation didn't start, just reset the map view
-		this._resetView(latlng, zoom, options.pan?.noMoveStart, originalEvent);
+		this._resetView(this.options.worldCopyJump ? this.wrapLatLng(latlng) : latlng, zoom, options.pan?.noMoveStart,
+			originalEvent);
 
 		return this;
 	}
@@ -957,16 +958,11 @@ export class LeafletMap extends Evented {
 	 * @param {PanOptions} [options]
 	 */
 	panBy(offset, options) {
-		const target = this._targetView,
-		zoom = target?.zoom ?? this._zoom,
-		pixels = new Point(offset).round(),
-		center = this.unproject(this.project(target?.center ?? this.getCenter(), zoom).add(pixels), zoom);
-
 		// pan from where a running animation is heading, so that panTo(c) then panBy(o) ends at c + o
-		if (target) { return this.setView(center, zoom, {pan: options}); }
+		const {center = this.getCenter(), zoom = this._zoom} = this._targetView ?? {},
+		newCenter = this.unproject(this.project(center, zoom).add(new Point(offset).round()), zoom);
 
-		this._targetView = {center, zoom};
-		return this._panBy(pixels, options);
+		return this.setView(newCenter, zoom, {pan: options});
 	}
 
 	/**
@@ -978,15 +974,6 @@ export class LeafletMap extends Evented {
 
 		if (!offset.x && !offset.y) {
 			return this._moveStart(false, true, options.originalEvent)._moveEnd(false);
-		}
-		// If we pan too far, Chrome gets issues with tiles
-		// and makes them disappear or appear in the wrong place (slightly offset) #2602
-		const size = this.getSize();
-		if (options.animate !== true && !size.contains(offset)) {
-			const center = this.unproject(this.project(this.getCenter()).add(offset));
-			this._resetView(this.options.worldCopyJump ? this.wrapLatLng(center) : center, this.getZoom(), false,
-				options.originalEvent);
-			return this;
 		}
 
 		if (!this._panAnim) {
@@ -1000,7 +987,7 @@ export class LeafletMap extends Evented {
 		this._moveStart(false, options.noMoveStart, options.originalEvent);
 
 		// with reduced motion, only short pans are animated unless animate: true is specified
-		const tooFarForReducedMotion = this._prefersReducedMotion() && !size.divideBy(2).contains(offset);
+		const tooFarForReducedMotion = this._prefersReducedMotion() && !this.getSize().divideBy(2).contains(offset);
 		if (options.animate === true || (options.animate !== false && !tooFarForReducedMotion)) {
 			this._mapPane.classList.add('leaflet-pan-anim');
 
@@ -2758,7 +2745,7 @@ export class LeafletMap extends Evented {
 	 */
 	_tryAnimatedPan(center, options) {
 		// difference between the new and current centers in pixels
-		const offset = this._getCenterOffset(center)._trunc();
+		const offset = this._getCenterOffset(center)._round();
 
 		// don't animate too far unless animate: true specified in options
 		if (options?.animate !== true && !this.getSize().contains(offset)) { return false; }
