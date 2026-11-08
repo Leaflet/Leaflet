@@ -101,7 +101,7 @@ export class PinchZoomHandler extends Handler {
 
 		const center = this._center, zoom = this._zoom;
 		/** @type {number} */
-		this._animRequest = requestAnimationFrame(() => map._move(center, zoom, {pinch: true, round: false}));
+		this._animRequest = requestAnimationFrame(() => map._move(center, zoom, {pinch: true}));
 
 		e.preventDefault();
 	}

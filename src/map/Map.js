@@ -557,6 +557,8 @@ const defaultOptions = {
  * @typedef {Object} ViewChangeEventProps
  * @property {Event} [originalEvent] The DOM event that triggered the change: set when the user moves or zooms the
  *   map (or when it's passed in the [`originalEvent`](#zoomoptions-originalevent) option), and unset otherwise.
+ * @property {boolean} [flyTo] `true` in `move` and `zoom` events fired on each [`flyTo`](#map-flyto) animation frame.
+ * @property {boolean} [pinch] `true` in `move` and `zoom` events fired while the user pinch-zooms the map.
  */
 
 /**
@@ -2215,7 +2217,7 @@ export class LeafletMap extends Evented {
 	/**
 	 * @param {LatLng} center
 	 * @param {number} [zoom]
-	 * @param {{flyTo?: boolean, pinch?: boolean, round?: boolean}} [data]
+	 * @param {{flyTo?: boolean, pinch?: boolean}} [data]
 	 * @param {boolean} [suppressEvent]
 	 */
 	_move(center, zoom, data, suppressEvent) {
