@@ -575,6 +575,13 @@ describe('Map', () => {
 			expect(boundsZoom).to.eql(7); // result expected for EPSG:25833
 		});
 
+		it('returns the min zoom when padding is larger than the map', () => {
+			container.style.height = height;
+			container.style.width = '1024px';
+			const big = new Point(2000, 2000);
+			expect(map.getBoundsZoom(wideBounds, false, big)).to.equal(map.getMinZoom());
+		});
+
 		it('respects the \'inside\' parameter', () => {
 			container.style.height = height;
 			container.style.width = '1024px'; // Make sure the width is defined
