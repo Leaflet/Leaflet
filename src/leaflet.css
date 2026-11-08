@@ -165,6 +165,11 @@
 	pointer-events: none;
 }
 
+.leaflet-top:has(.leaflet-control-layers-expanded),
+.leaflet-bottom:has(.leaflet-control-layers-expanded) {
+	z-index: 1001;
+}
+
 .leaflet-top {
 	top: 0;
 }
