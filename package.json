@@ -5,10 +5,8 @@
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "@e18e/eslint-plugin": "^0.8.1",
-    "@eslint/compat": "^2.1.1",
     "@eslint/css": "^2.0.1",
     "@mourner/yeahml": "1.1.0",
-    "@vitest/browser": "^5.1.0",
     "@vitest/browser-playwright": "^5.1.0",
     "@vitest/coverage-v8": "^5.1.0",
     "@vitest/ui": "^5.1.0",
@@ -16,7 +14,6 @@
     "eslint-config-mourner": "^5.0.2",
     "eslint-plugin-baseline-js": "^0.7.7",
     "eslint-plugin-html": "^8.2.1",
-    "eslint-plugin-import-x": "4.17.1",
     "husky": "^9.1.7",
     "leafdoc": "^2.4.0",
     "lightningcss": "^1.33.0",
@@ -86,10 +83,9 @@
   ],
   "license": "BSD-2-Clause",
   "lint-staged": {
-    "*.(js|mjs|md)": "eslint --cache --fix"
+    "*.{js,mjs,md,css}": "eslint --cache --fix"
   },
   "allowScripts": {
-    "unrs-resolver@1.12.2": true,
     "fsevents@2.3.3": true
   },
   "dependencies": {
