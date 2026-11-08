@@ -76,7 +76,7 @@ describe('Map', () => {
 			expect(q('.leaflet-control-layers-toggle').title).to.equal('Couches');
 			expect(q('.leaflet-control-fullscreen a').title).to.equal('Plein écran');
 			expect(q('.leaflet-popup-close-button').getAttribute('aria-label')).to.equal('Fermer');
-			expect(q('.leaflet-marker-icon').alt.to.equal('Marqueur'));
+			expect(q('.leaflet-marker-icon').alt).to.equal('Marqueur');
 			removeMapContainer(map1, container1);
 		});
 	});
