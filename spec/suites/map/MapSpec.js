@@ -2348,34 +2348,25 @@ describe('Map', () => {
 			expect(map._layersMaxZoom).to.equal(10);
 		});
 
-		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
-		it('update zoom levels when min zoom is NaN in a layer that is added to map, so that min zoom becomes NaN,', () => {
-			map._addZoomLimit(new TileLayer('', {minZoom: NaN}));
-			expect(isNaN(map._layersMinZoom)).to.be.true;
+		it('uses the default minimum zoom when a layer has only a valid maximum', () => {
+			map.addLayer(new GridLayer({minZoom: NaN, maxZoom: 12}));
+			expect(map.getMinZoom()).to.equal(0);
+			expect(map.getMaxZoom()).to.equal(12);
+			map.setView([0, 0], 15);
+			expect(map.getZoom()).to.equal(12);
 		});
 
-		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
-		it('update zoom levels when max zoom is NaN in a layer that is added to map, so that max zoom becomes NaN', () => {
-			map._addZoomLimit(new TileLayer('', {maxZoom: NaN}));
-			expect(isNaN(map._layersMaxZoom)).to.be.true;
-		});
-
-		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
-		// Test is clearly wrong, but kept for future fixes
-		// it("update zoom levels when min zoom is NaN in at least one of many layers that are added to map, so that min zoom becomes NaN", function () {
-		// 	map._addZoomLimit(new TileLayer("", {minZoom: 6}));
-		// 	map._addZoomLimit(new TileLayer("", {minZoom: NaN})); --> Results in maxZoom = NaN --> _updateZoomLevels is not called.
-		// 	Not same logic as for maxZoom.
-		// 	map._addZoomLimit(new TileLayer("", {minZoom: 4}));
-		// 	expect(isNaN(map._layersMinZoom)).to.be.true;
-		// });
-
-		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
-		it('update zoom levels when max zoom is NaN in at least one of many layers that are added to map, so that max zoom becomes NaN', () => {
-			map._addZoomLimit(new TileLayer('', {maxZoom: 10}));
-			map._addZoomLimit(new TileLayer('', {maxZoom: 8}));
-			map._addZoomLimit(new TileLayer('', {maxZoom: NaN}));
-			expect(isNaN(map._layersMaxZoom)).to.be.true;
+		it('keeps the maximum zoom from other layers when one maximum is NaN', () => {
+			const layer = new GridLayer({minZoom: 5, maxZoom: NaN});
+			map.addLayer(new GridLayer({minZoom: 7, maxZoom: 10}));
+			map.addLayer(layer);
+			expect(map.getMinZoom()).to.equal(5);
+			expect(map.getMaxZoom()).to.equal(10);
+			map.setView([0, 0], 15);
+			expect(map.getZoom()).to.equal(10);
+			map.removeLayer(layer);
+			expect(map.getMinZoom()).to.equal(7);
+			expect(map.getMaxZoom()).to.equal(10);
 		});
 
 		it('doesn\'t update zoom levels when min and max zoom are both NaN in a layer that is added to map', () => {
