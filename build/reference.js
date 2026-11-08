@@ -185,7 +185,7 @@ export function resolveModel(raws, akas) {
 	const inheritableSectionsOf = (name, kind) => sectionsOf(all[name], kind).filter(s => !s.uninheritable);
 
 	const item = (d, id = d.id) => ({id, name: d.name, params: d.params, type: d.type, default: d.default,
-		comments: d.comments});
+		comments: d.comments, translatable: d.translatable});
 
 	const namespace = (ns) => {
 		const ancestors = ancestorsOf(ns.name);
@@ -285,7 +285,8 @@ export function leafdocModel(dir) {
 					params: Object.values(d.params ?? {}),
 					type: d.type,
 					default: d.defaultValue,
-					comments: text(d.comments)
+					comments: text(d.comments),
+					translatable: d.translatable
 				}))
 			}))
 		}]))

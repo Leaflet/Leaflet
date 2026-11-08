@@ -322,8 +322,17 @@ const defaultOptions = {
 	/**
 	 * A function that translates the English text Leaflet and plugins show to users, such as control titles and
 	 * accessible labels, e.g. `text => i18next.t(text)`. If it returns `undefined`, the text stays in English.
-	 * Text is translated when it's rendered, so set it before adding controls and opening popups. See [all built-in
-	 * texts](https://leafletjs.com/examples/accessibility/#translate-built-in-text) with an example translation.
+	 * Text is translated when it's rendered, so set it before adding controls and opening popups.
+	 * You can identify translatable text in the documentation by the
+	 * <a class="translatable-badge" href="#map-translate" alt="Link to translate option">Translatable</a>
+	 * badge.
+	 *
+	 * See [Translate built-in text](https://leafletjs.com/examples/accessibility/#translate-built-in-text)
+	 * for an example of how to provide translations.
+	 *
+	 * You can also use the plugin [Leaflet.Translations](https://github.com/Leaflet/Leaflet.Translations),
+	 * which provides predefined translations for various languages.
+	 *
 	 * @category Localization options
 	 * @param {string} text
 	 * @returns {string | undefined}

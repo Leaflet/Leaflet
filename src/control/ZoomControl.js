@@ -16,13 +16,19 @@ const defaultOptions = {
 	/** The text set on the 'zoom in' button. */
 	zoomInText: '<svg width="12" height="12" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6h12M6 0v12"/></svg>',
 
-	/** The title set on the 'zoom in' button. */
+	/**
+	 * The title set on the 'zoom in' button.
+	 * @translatable
+	*/
 	zoomInTitle: 'Zoom in',
 
 	/** The text set on the 'zoom out' button. */
 	zoomOutText: '<svg width="12" height="12" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6h12"/></svg>',
 
-	/** The title set on the 'zoom out' button. */
+	/**
+	 * The title set on the 'zoom out' button.
+	 * @translatable
+	 */
 	zoomOutTitle: 'Zoom out'
 };
 
