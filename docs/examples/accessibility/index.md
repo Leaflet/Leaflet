@@ -53,6 +53,7 @@ Here's every built-in text with a Ukrainian translation:
 ```js
 const uk = {
 	'Map': 'Мапа',
+	'Marker': 'Маркер',
 	'Zoom in': 'Наблизити',
 	'Zoom out': 'Віддалити',
 	'Layers': 'Шари',
