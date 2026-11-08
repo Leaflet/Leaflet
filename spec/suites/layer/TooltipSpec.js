@@ -37,11 +37,20 @@ describe('Tooltip', () => {
 
 		const element = layer.getElement();
 
-		UIEventSimulator.fire('focus', element);
+		element.focus();
 
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 
-		UIEventSimulator.fire('blur', element);
+		element.blur();
+		expect(map.hasLayer(layer._tooltip)).to.be.false;
+	});
+
+	it('doesn\'t open on marker focus that isn\'t focus-visible (e.g. by mouse)', () => {
+		const layer = new Marker(center).addTo(map);
+
+		layer.bindTooltip('Tooltip');
+		layer.getElement().focus({focusVisible: false});
+
 		expect(map.hasLayer(layer._tooltip)).to.be.false;
 	});
 
@@ -52,11 +61,11 @@ describe('Tooltip', () => {
 
 		const element = layer.getElement();
 
-		UIEventSimulator.fire('focus', element);
+		element.focus();
 
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 
-		UIEventSimulator.fire('blur', element);
+		element.blur();
 		expect(map.hasLayer(layer._tooltip)).to.be.false;
 	});
 
@@ -69,20 +78,20 @@ describe('Tooltip', () => {
 		const element1 = marker1.getElement();
 		const element2 = marker2.getElement();
 
-		UIEventSimulator.fire('focus', element1);
+		element1.focus();
 
 		expect(map.hasLayer(group._tooltip)).to.be.true;
 		expect(group._tooltip._container.innerHTML).to.equal('Group tooltip: Marker 1');
 
-		UIEventSimulator.fire('blur', element1);
+		element1.blur();
 		expect(map.hasLayer(group._tooltip)).to.be.false;
 
-		UIEventSimulator.fire('focus', element2);
+		element2.focus();
 
 		expect(map.hasLayer(group._tooltip)).to.be.true;
 		expect(group._tooltip._container.innerHTML).to.equal('Group tooltip: Marker 2');
 
-		UIEventSimulator.fire('blur', element2);
+		element2.blur();
 		expect(map.hasLayer(group._tooltip)).to.be.false;
 	});
 
@@ -103,7 +112,7 @@ describe('Tooltip', () => {
 		layer.bindTooltip('Tooltip');
 		const element = layer.getElement();
 
-		UIEventSimulator.fire('focus', element);
+		element.focus();
 
 		const tooltip = layer.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
@@ -117,7 +126,7 @@ describe('Tooltip', () => {
 
 		const element = marker2.getElement();
 
-		UIEventSimulator.fire('focus', element);
+		element.focus();
 
 		const tooltip = group.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
@@ -663,7 +672,7 @@ describe('Tooltip', () => {
 		const layer = new Marker(center).addTo(map).bindTooltip('Tooltip');
 
 		map.removeLayer(layer).addLayer(layer);
-		UIEventSimulator.fire('focus', layer.getElement());
+		layer.getElement().focus();
 
 		expect(layer.isTooltipOpen()).to.be.true;
 	});

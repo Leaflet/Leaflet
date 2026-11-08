@@ -380,8 +380,10 @@ export class Layer extends LayerBase {
 			return;
 		}
 
+		// open only on keyboard focus: an element clicked with the mouse keeps focus and gets it again whenever the
+		// window is refocused or a popup closes, which would open the tooltip without the pointer over the layer
 		const handler = () => {
-			if (this._tooltip) {
+			if (this._tooltip && el.matches(':focus-visible')) {
 				this._tooltip._source = layer;
 				this.openTooltip();
 			}
