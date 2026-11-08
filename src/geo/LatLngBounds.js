@@ -224,8 +224,8 @@ export class LatLngBounds {
 		sw2 = bounds.getSouthWest(),
 		ne2 = bounds.getNorthEast(),
 
-		latOverlaps = (ne2.lat > sw.lat) && (sw2.lat < ne.lat),
-		lngOverlaps = (ne2.lng > sw.lng) && (sw2.lng < ne.lng);
+		latOverlaps = Math.max(sw.lat, sw2.lat) < Math.min(ne.lat, ne2.lat),
+		lngOverlaps = Math.max(sw.lng, sw2.lng) < Math.min(ne.lng, ne2.lng);
 
 		return latOverlaps && lngOverlaps;
 	}

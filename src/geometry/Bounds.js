@@ -183,8 +183,8 @@ export class Bounds {
 		max = this.max,
 		min2 = bounds.min,
 		max2 = bounds.max,
-		xOverlaps = (max2.x > min.x) && (min2.x < max.x),
-		yOverlaps = (max2.y > min.y) && (min2.y < max.y);
+		xOverlaps = Math.max(min.x, min2.x) < Math.min(max.x, max2.x),
+		yOverlaps = Math.max(min.y, min2.y) < Math.min(max.y, max2.y);
 
 		return xOverlaps && yOverlaps;
 	}
