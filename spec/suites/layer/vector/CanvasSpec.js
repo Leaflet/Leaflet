@@ -332,6 +332,16 @@ describe('Canvas', () => {
 		});
 	});
 
+	describe('#_extendRedrawBounds', () => {
+		it('pads by a string weight numerically', () => {
+			const layer = new Polygon(latLngs, {weight: '3'}).addTo(map);
+			map.getRenderer(layer)._redrawBounds = null;
+			layer.redraw();
+			const {min, max} = map.getRenderer(layer)._redrawBounds;
+			expect([min.x, min.y, max.x, max.y]).to.eql([-5.5, -5.5, 105.5, 105.5]);
+		});
+	});
+
 	describe('#bringToBack', () => {
 		it('is a no-op for layers not on a map', () => {
 			const path = new Polyline([[1, 2], [3, 4], [5, 6]]);

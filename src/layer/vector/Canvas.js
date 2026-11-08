@@ -207,7 +207,7 @@ export class Canvas extends Renderer {
 	/** @param {Path} layer */
 	_extendRedrawBounds(layer) {
 		if (layer._pxBounds) {
-			const padding = (layer.options.weight ?? 0) + 1;
+			const padding = (+layer.options.weight || 0) + 1;
 			this._redrawBounds ??= new Bounds();
 			this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
 			this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));

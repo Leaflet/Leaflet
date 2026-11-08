@@ -123,7 +123,7 @@ export class Polygon extends Polyline {
 		// polygons need a different clipping algorithm so we redefine that
 
 		let bounds = this._renderer._bounds;
-		const w = this.options.weight,
+		const w = +this.options.weight, // a string weight would concatenate in Point#add
 		p = new Point(w, w);
 
 		// increase clip padding by stroke width to avoid stroke on clip edges

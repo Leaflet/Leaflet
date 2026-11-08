@@ -377,4 +377,15 @@ describe('Polygon', () => {
 			}
 		});
 	});
+
+	describe('#_clipPoints', () => {
+		it('handles a string weight after panning', () => {
+			const poly = new Polygon([], {weight: '3'}).addTo(map);
+			map.panBy([-300, -300], {animate: false});
+			map.panBy([-300, -300], {animate: false});
+			const b = map.getBounds();
+			poly.setLatLngs([b.getSouthWest(), b.getNorthWest(), b.getNorthEast()]);
+			expect(poly._parts).to.have.length(1);
+		});
+	});
 });
