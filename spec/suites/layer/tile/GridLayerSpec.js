@@ -350,6 +350,50 @@ describe('GridLayer', () => {
 		});
 	});
 
+	describe('fractional zoom outside min/maxZoom', () => {
+		let grid, created;
+
+		beforeEach(() => {
+			map.options.zoomSnap = 0.1;
+			map.options.minZoom = 0;
+			map.options.maxZoom = 5;
+			created = 0;
+			grid = new GridLayer({minZoom: 2, maxZoom: 3});
+			grid.createTile = function () {
+				created++;
+				return document.createElement('div');
+			};
+		});
+
+		it('hides the layer just past maxZoom without creating tiles', () => {
+			map.setView([0, 0], 3);
+			grid.addTo(map);
+			expect(created).to.be.above(0);
+
+			created = 0;
+			map.setZoom(3.1, {animate: false});
+			map.setZoom(3.2, {animate: false});
+			expect(created).to.equal(0);
+			expect(grid._tileZoom).to.equal(undefined);
+			expect(Object.keys(grid._tiles)).to.have.length(0);
+		});
+
+		it('hides the layer just below minZoom without creating tiles', () => {
+			map.setView([0, 0], 1.9);
+			grid.addTo(map);
+			expect(created).to.equal(0);
+			expect(grid._tileZoom).to.equal(undefined);
+		});
+
+		it('does not create tiles on redraw past maxZoom', () => {
+			map.setView([0, 0], 3.1);
+			grid.addTo(map);
+			grid.redraw();
+			expect(created).to.equal(0);
+			expect(Object.keys(grid._tiles)).to.have.length(0);
+		});
+	});
+
 	describe('min/maxNativeZoom option', () => {
 		it('calls createTile() with maxNativeZoom when map zoom is larger', (done) => {
 			map.setView([0, 0], 10);

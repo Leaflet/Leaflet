@@ -285,7 +285,7 @@ export class GridLayer extends Layer {
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
-			const tileZoom = this._clampZoom(Math.round(this._map.getZoom()));
+			const tileZoom = this._getTileZoom(this._map.getZoom());
 			if (tileZoom !== this._tileZoom) {
 				this._tileZoom = tileZoom;
 				this._updateLevels();
@@ -448,9 +448,7 @@ export class GridLayer extends Layer {
 			return;
 		}
 
-		const zoom = this._map.getZoom();
-		if (zoom > /** @type {number} */ (this.options.maxZoom) ||
-			zoom < this.options.minZoom) {
+		if (this._getTileZoom(this._map.getZoom()) === undefined) {
 			this._removeAllTiles();
 			return;
 		}
@@ -576,6 +574,13 @@ export class GridLayer extends Layer {
 		return zoom;
 	}
 
+	/** @param {number} zoom */
+	_getTileZoom(zoom) {
+		const {minZoom, maxZoom = Infinity} = this.options;
+		if (zoom < minZoom || zoom > maxZoom) { return undefined; }
+		return this._clampZoom(Math.round(zoom));
+	}
+
 	/**
 	 * @param {LatLng} center
 	 * @param {number} zoom
@@ -583,15 +588,7 @@ export class GridLayer extends Layer {
 	 * @param {boolean} [noUpdate]
 	 */
 	_setView(center, zoom, noPrune, noUpdate) {
-		/** @type {number | undefined} */
-		let tileZoom = Math.round(zoom);
-		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
-		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
-			tileZoom = undefined;
-		} else {
-			tileZoom = this._clampZoom(tileZoom);
-		}
-
+		const tileZoom = this._getTileZoom(zoom);
 		const tileZoomChanged = this.options.updateWhenZooming && (tileZoom !== this._tileZoom);
 
 		if (!noUpdate || tileZoomChanged) {
