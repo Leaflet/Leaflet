@@ -94,3 +94,14 @@ div.section-comments {
 section.collapsable pre {
     margin:0;
 }
+
+.translatable-badge {
+    display: inline-block;
+    padding: 0.15em 0.5em;
+    background-color: #b5d99c;
+    border-radius: 100px;
+    font-size: 0.75em;
+    margin: 0 0.5em;
+    font-weight: 700;
+    text-decoration: none;
+}

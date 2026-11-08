@@ -59,7 +59,10 @@ const defaultOptions = {
 	/** Controls the presence of a close button in the popup. */
 	closeButton: true,
 
-	/** Specifies the 'aria-label' attribute of the close button. */
+	/**
+	 * Specifies the 'aria-label' attribute of the close button.
+	 * @translatable
+	*/
 	closeButtonLabel: 'Close popup',
 
 	/**

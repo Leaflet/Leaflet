@@ -23,7 +23,10 @@ const defaultOptions = {
 
 	position: 'topright',
 
-	/** The title of the toggle button and the accessible label of the layers list. */
+	/**
+	 * The title of the toggle button and the accessible label of the layers list.
+	 * @translatable
+	 */
 	title: 'Layers',
 
 	/**

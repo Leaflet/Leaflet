@@ -16,13 +16,19 @@ const defaultOptions = {
 	/** The text set on the button while the map is not fullscreen. */
 	enterText: '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 5V1h4m4 0h4v4m0 4v4H9m-4 0H1V9"/></svg>',
 
-	/** The title set on the button while the map is not fullscreen. */
+	/**
+	 * The title set on the button while the map is not fullscreen.
+	 * @translatable
+	 */
 	enterTitle: 'Enter fullscreen',
 
 	/** The text set on the button while the map is fullscreen. */
 	exitText: '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 1v4H1m8-4v4h4m0 4H9v4m-4 0V9H1"/></svg>',
 
-	/** The title set on the button while the map is fullscreen. */
+	/**
+	 * The title set on the button while the map is fullscreen.
+	 * @translatable
+	 */
 	exitTitle: 'Exit fullscreen',
 
 	/**

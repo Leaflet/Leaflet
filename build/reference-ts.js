@@ -505,11 +505,13 @@ function memberRow(ns, kind, sym, ctx, decl = declOf(sym)) {
 	}
 	def = tagsOf(doc).filter(t => tagName(t) === 'default').map(t => text(t.comment))[0] ?? def;
 
+	const translatable = hasTag(doc, 'translatable');
+
 	// members of an interface or typedef take its category
 	const container = isTypedefMember(decl) ? decl.parent.parent : decl.parent?.kind === SK.InterfaceDeclaration ? decl.parent : null;
 	const category = categoryOf(doc) ?? categoryOf(lastDoc(container));
 	addItem(sectionOf(ns, kind, category, ctx.cats[category ?? LABELS[kind]]), {key: sym.name, name: sym.name, comments,
-		type: type || null, default: kind === 'option' || kind === 'pane' ? def : null});
+		type: type || null, default: kind === 'option' || kind === 'pane' ? def : null, translatable});
 }
 
 function isTypedefMember(decl) {
