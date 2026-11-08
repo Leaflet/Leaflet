@@ -289,6 +289,20 @@ describe('Tooltip', () => {
 		expect(spy.calledOnce).to.be.true;
 	});
 
+	it('is positioned the same way in a right-to-left container', () => {
+		const directions = ['left', 'right', 'top', 'bottom', 'center'];
+		const rects = () => directions.map((direction) => {
+			const tooltip = new Tooltip({permanent: true, direction}).setLatLng(center).setContent('Tooltip').addTo(map);
+			const {left, top} = tooltip.getElement().getBoundingClientRect();
+			tooltip.remove();
+			return {left, top};
+		});
+
+		const ltr = rects();
+		container.style.direction = 'rtl';
+		expect(rects()).to.eql(ltr);
+	});
+
 	it('replaces the direction class when the direction changes', () => {
 		const layer = new Marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true, direction: 'center'});

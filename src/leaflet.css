@@ -9,7 +9,8 @@
 .leaflet-pane > canvas,
 .leaflet-zoom-box,
 .leaflet-image-layer,
-.leaflet-layer {
+.leaflet-layer,
+.leaflet-tooltip {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -587,7 +588,6 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 /* Tooltip */
 /* Base styles for the element that has a tooltip */
 .leaflet-tooltip {
-	position: absolute;
 	padding: 6px;
 	background-color: #fff;
 	border: 1px solid #fff;
