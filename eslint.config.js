@@ -12,6 +12,8 @@ export default [
 	includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
 	{
 		ignores: [
+			'debug/vector/route.js',
+			'debug/vector/us-states.js',
 			'docs/examples/choropleth/us-states.js',
 			'docs/examples/geojson/sample-geojson.js',
 			'docs/examples/map-panes/eu-countries.js',
