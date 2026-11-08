@@ -238,10 +238,11 @@ export class TileLayer extends GridLayer {
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
-			z: this._getZoomForUrl()
+			z: this._getZoomForUrl(coords.z)
 		});
-		if (this._map && !(this._map.options.crs.infinite)) {
-			const invertedY = this._globalTileRange.max.y - coords.y;
+		const worldBounds = this._map?.getPixelWorldBounds(coords.z);
+		if (worldBounds) {
+			const invertedY = this._pxBoundsToTileRange(worldBounds).max.y - coords.y;
 			if (this.options.tms) {
 				data['y'] = invertedY;
 			}
@@ -274,8 +275,8 @@ export class TileLayer extends GridLayer {
 		done(e, tile);
 	}
 
-	_getZoomForUrl() {
-		let zoom = /** @type {number} */ (this._tileZoom);
+	/** @param {number} zoom */
+	_getZoomForUrl(zoom) {
 		const maxZoom = this.options.maxZoom,
 		zoomReverse = this.options.zoomReverse,
 		zoomOffset = this.options.zoomOffset;

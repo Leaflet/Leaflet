@@ -319,6 +319,14 @@ describe('TileLayer', () => {
 			});
 		});
 
+		it('uses coords.z for {z} and {-y}, regardless of the current zoom', () => {
+			const coords = Object.assign(new Point(2, 3), {z: 4});
+			expect(new TileLayer('http://example.com/{z}/{x}/{y}.png').getTileUrl(coords))
+				.to.eql('http://example.com/4/2/3.png');
+			const layer = new TileLayer('http://example.com/{z}/{x}/{-y}.png').addTo(map);
+			expect(layer.getTileUrl(coords)).to.eql('http://example.com/4/2/12.png');
+		});
+
 		it('replaces {r} with @2x on high-DPI screens', () => {
 			const layer = new TileLayer('http://example.com/{z}/{x}/{y}{r}.png').addTo(map);
 			const dpr = sinon.stub(window, 'devicePixelRatio').value(1);
@@ -591,10 +599,7 @@ describe('TileLayer', () => {
 		it('requests no tiles beyond min/maxNativeZoom with detectRetina', () => {
 			const dpr = sinon.stub(window, 'devicePixelRatio').value(2);
 			const url = 'http://example.com/{z}/{x}/{y}.png';
-			const zooms = layer => [0, 3, 10].map((zoom) => {
-				layer._tileZoom = layer._clampZoom(zoom);
-				return layer._getZoomForUrl();
-			});
+			const zooms = layer => [0, 3, 10].map(zoom => layer._getZoomForUrl(layer._clampZoom(zoom)));
 
 			expect(zooms(new TileLayer(url, {detectRetina: true, minNativeZoom: 3, maxNativeZoom: 5}))).to.eql([3, 4, 5]);
 			expect(zooms(new TileLayer(url, {
