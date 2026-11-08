@@ -163,12 +163,14 @@ export class Tooltip extends DivOverlay {
 		}
 		const [fx, fy] = directions[direction];
 
-		pos._add(shift)._subtract(new Point(container.offsetWidth * fx, container.offsetHeight * fy, true));
-
 		for (const d in directions) {
 			container.classList.toggle(`leaflet-tooltip-${d}`, d === direction);
 		}
-		DomUtil.setPosition(container, pos);
+		// a percentage translate follows the tooltip's own size, so it never has to be measured (which would
+		// force a reflow per tooltip on every zoom); browsers without CSS round() ignore the second value
+		container.style.translate = `${-fx * 100}% ${-fy * 100}%`;
+		container.style.translate = `round(${-fx * 100}%, 1px) round(${-fy * 100}%, 1px)`;
+		DomUtil.setPosition(container, pos._add(shift));
 	}
 
 	_updatePosition() {

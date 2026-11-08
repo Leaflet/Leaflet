@@ -303,6 +303,28 @@ describe('Tooltip', () => {
 		expect(rects()).to.eql(ltr);
 	});
 
+	it('does not measure itself again when the map zooms', () => {
+		new Tooltip({permanent: true, direction: 'top'}).setLatLng(center).setContent('Tooltip').addTo(map);
+		const offsetWidth = sinon.spy(HTMLElement.prototype, 'offsetWidth', ['get']);
+
+		map.setZoom(8, {animate: false});
+		offsetWidth.get.restore();
+
+		expect(offsetWidth.get.called).to.be.false;
+	});
+
+	it('keeps its position when its content is changed in place', async () => {
+		const tooltip = new Tooltip({permanent: true, direction: 'top'}).setLatLng(center).setContent('<span>T</span>').addTo(map);
+		const el = tooltip.getElement();
+		const centerX = () => { const {left, right} = el.getBoundingClientRect(); return (left + right) / 2; };
+		const before = centerX();
+
+		el.firstChild.textContent = 'A much longer tooltip';
+		await new Promise((resolve) => { requestAnimationFrame(() => setTimeout(resolve)); });
+
+		expect(centerX()).to.be.closeTo(before, 1);
+	});
+
 	it('replaces the direction class when the direction changes', () => {
 		const layer = new Marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true, direction: 'center'});
