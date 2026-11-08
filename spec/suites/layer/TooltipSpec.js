@@ -37,7 +37,7 @@ describe('Tooltip', () => {
 
 		const element = layer.getElement();
 
-		element.focus();
+		element.focus({focusVisible: true});
 
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 
@@ -61,7 +61,7 @@ describe('Tooltip', () => {
 
 		const element = layer.getElement();
 
-		element.focus();
+		element.focus({focusVisible: true});
 
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 
@@ -78,7 +78,7 @@ describe('Tooltip', () => {
 		const element1 = marker1.getElement();
 		const element2 = marker2.getElement();
 
-		element1.focus();
+		element1.focus({focusVisible: true});
 
 		expect(map.hasLayer(group._tooltip)).to.be.true;
 		expect(group._tooltip._container.innerHTML).to.equal('Group tooltip: Marker 1');
@@ -86,7 +86,7 @@ describe('Tooltip', () => {
 		element1.blur();
 		expect(map.hasLayer(group._tooltip)).to.be.false;
 
-		element2.focus();
+		element2.focus({focusVisible: true});
 
 		expect(map.hasLayer(group._tooltip)).to.be.true;
 		expect(group._tooltip._container.innerHTML).to.equal('Group tooltip: Marker 2');
@@ -112,7 +112,7 @@ describe('Tooltip', () => {
 		layer.bindTooltip('Tooltip');
 		const element = layer.getElement();
 
-		element.focus();
+		element.focus({focusVisible: true});
 
 		const tooltip = layer.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
@@ -126,7 +126,7 @@ describe('Tooltip', () => {
 
 		const element = marker2.getElement();
 
-		element.focus();
+		element.focus({focusVisible: true});
 
 		const tooltip = group.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
@@ -672,7 +672,7 @@ describe('Tooltip', () => {
 		const layer = new Marker(center).addTo(map).bindTooltip('Tooltip');
 
 		map.removeLayer(layer).addLayer(layer);
-		layer.getElement().focus();
+		layer.getElement().focus({focusVisible: true});
 
 		expect(layer.isTooltipOpen()).to.be.true;
 	});
