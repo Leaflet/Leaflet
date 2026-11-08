@@ -186,5 +186,17 @@ describe('LatLngBounds', () => {
 		it('returns false if just touches the boundary of the given bounds', () => {
 			expect(a.overlaps([[25, 40], [55, 50]])).to.eql(false);
 		});
+
+		it('does not overlap a point or line inside the bounds', () => {
+			for (const inner of [
+				new LatLngBounds([20, 20], [20, 20]),
+				new LatLngBounds([20, 20], [20, 25]),
+				new LatLngBounds([20, 20], [25, 20]),
+			]) {
+				expect(a.intersects(inner)).to.be.true;
+				expect(a.overlaps(inner)).to.be.false;
+				expect(inner.overlaps(a)).to.be.false;
+			}
+		});
 	});
 });

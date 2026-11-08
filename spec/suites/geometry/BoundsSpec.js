@@ -139,6 +139,18 @@ describe('Bounds', () => {
 		it('returns false if bounds not overlaps', () => {
 			expect(a.overlaps([[100, 100], [120, 120]])).to.eql(false);
 		});
+
+		it('does not overlap a point or line inside the bounds', () => {
+			for (const inner of [
+				new Bounds([20, 20], [20, 20]),
+				new Bounds([20, 20], [20, 25]),
+				new Bounds([20, 20], [25, 20]),
+			]) {
+				expect(a.intersects(inner)).to.be.true;
+				expect(a.overlaps(inner)).to.be.false;
+				expect(inner.overlaps(a)).to.be.false;
+			}
+		});
 	});
 
 	describe('#getBottomLeft', () => {
