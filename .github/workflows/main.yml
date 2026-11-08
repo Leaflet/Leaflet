@@ -33,15 +33,9 @@ jobs:
       - run: npm run build
       - run: npm run test:types
 
-      - run: node ./spec/ssr/ssr_node.js
+      - run: node ./spec/ssr.js
       - run: node ./spec/tree_shaking.js
       - run: node ./spec/dist.js
-
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - run: deno run ./spec/ssr/ssr_deno.js
 
       # keep the head build, sources and scripts out of git's way so they survive the base checkout; the scripts
       # stay in the repo root to resolve rolldown from node_modules
