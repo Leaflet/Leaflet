@@ -53,7 +53,7 @@ describe('Map', () => {
 	});
 
 	describe('translate', () => {
-		const fr = {'Map': 'Carte', 'Zoom in': 'Zoom avant', 'Layers': 'Couches', 'Enter fullscreen': 'Plein écran', 'Close popup': 'Fermer'};
+		const fr = {'Map': 'Carte', 'Marker': 'Marqueur', 'Zoom in': 'Zoom avant', 'Layers': 'Couches', 'Enter fullscreen': 'Plein écran', 'Close popup': 'Fermer'};
 
 		it('returns the text unchanged by default or when the option is unset', () => {
 			expect(map.translate('Zoom in')).to.equal('Zoom in');
@@ -67,6 +67,7 @@ describe('Map', () => {
 			new LayersControl().addTo(map1);
 			new FullscreenControl().addTo(map1);
 			new Popup().setLatLng([0, 0]).setContent('x').openOn(map1);
+			new Marker([0, 0]).addTo(map1);
 			const q = selector => container1.querySelector(selector);
 
 			expect(container1.getAttribute('aria-label')).to.equal('Carte');
@@ -75,6 +76,7 @@ describe('Map', () => {
 			expect(q('.leaflet-control-layers-toggle').title).to.equal('Couches');
 			expect(q('.leaflet-control-fullscreen a').title).to.equal('Plein écran');
 			expect(q('.leaflet-popup-close-button').getAttribute('aria-label')).to.equal('Fermer');
+			expect(q('.leaflet-marker-icon').alt.to.equal('Marqueur'));
 			removeMapContainer(map1, container1);
 		});
 	});
