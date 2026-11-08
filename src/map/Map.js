@@ -2321,8 +2321,12 @@ export class LeafletMap extends Evented {
 
 		for (const l of Object.values(this._zoomBoundLayers)) {
 			const options = l.options;
-			minZoom = Math.min(minZoom, options.minZoom ?? Infinity);
-			maxZoom = Math.max(maxZoom, options.maxZoom ?? -Infinity);
+			if (options.minZoom != null && !Number.isNaN(options.minZoom)) {
+				minZoom = Math.min(minZoom, options.minZoom);
+			}
+			if (options.maxZoom != null && !Number.isNaN(options.maxZoom)) {
+				maxZoom = Math.max(maxZoom, options.maxZoom);
+			}
 		}
 
 		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
