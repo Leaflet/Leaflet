@@ -31,6 +31,10 @@ const ENTITY = /&(#x[\da-f]+|#\d+|amp|lt|gt|quot|copy);/gi;
 const ENTITIES = {amp: '&', lt: '<', gt: '>', quot: '"', copy: '©'};
 const SPECIAL_CHAR = /[&<>]/g;
 const SPECIAL_ENTITIES = {'&': 'amp', '<': 'lt', '>': 'gt'};
+const PLUGIN_TEMPLATE = 'template.md';
+const PLUGIN_LIST_CATEGORY = /plugin_list\.html category="([^"]+)"/g;
+const PLUGIN_REQUIRED = ['name', 'repo', 'author'];
+const PLUGIN_FIELDS = [...PLUGIN_REQUIRED, 'author-url', 'demo', 'compatible-v2'];
 
 // VS Code's GitHub theme, recolored to match how github.com highlights code; its comment color also fails AA on the
 // code background, unlike the one GitHub uses now
@@ -82,7 +86,9 @@ const engine = createEngine(SITE_DIR);
 // the plugins collection: rendered, but not written; repo stats come from `node build/plugin-stats.js`, if it ran, and
 // order the lists by stars (ties and plugins without stats stay in file name order)
 const pluginStats = existsSync('build/plugin-stats.json') ? JSON.parse(readFileSync('build/plugin-stats.json', 'utf8')) : {};
-site.plugins = walk(join(SITE_DIR, '_plugins')).map((file) => {
+const pluginFiles = walk(join(SITE_DIR, '_plugins')).filter(file => file !== PLUGIN_TEMPLATE);
+checkPlugins(pluginFiles);
+site.plugins = pluginFiles.map((file) => {
 	const {data, body} = readPage(join(SITE_DIR, '_plugins', file));
 	data.category = dirname(file);
 	const stats = pluginStats[data.repo];
@@ -208,6 +214,33 @@ function createEngine(dir) {
 
 // Splits front matter off a file; returns null for files without it (static files).
 // Values are all strings, so templates compare flags with "true".
+// Fails the build on plugin entries the plugins page would drop or misrender: a folder that isn't one of its
+// categories, missing or unknown front matter fields, or a `compatible-v2` that isn't `true` or `false`
+function checkPlugins(files) {
+	const plugins = readFileSync(join(SITE_DIR, 'plugins.md'), 'utf8');
+	const categories = new Set(Array.from(plugins.matchAll(PLUGIN_LIST_CATEGORY), m => m[1]));
+	const problems = [];
+	for (const file of files) {
+		const page = readPage(join(SITE_DIR, '_plugins', file));
+		if (!page) {
+			problems.push(`${file}: no front matter`);
+			continue;
+		}
+		const {data} = page;
+		if (!categories.has(dirname(file))) { problems.push(`${file}: "${dirname(file)}" is not a category in plugins.md`); }
+		for (const key of PLUGIN_REQUIRED) {
+			if (!data[key]) { problems.push(`${file}: missing \`${key}\``); }
+		}
+		for (const key of Object.keys(data)) {
+			if (!PLUGIN_FIELDS.includes(key)) { problems.push(`${file}: unknown field \`${key}\``); }
+		}
+		if (data['compatible-v2'] !== 'true' && data['compatible-v2'] !== 'false') {
+			problems.push(`${file}: \`compatible-v2\` must be true or false`);
+		}
+	}
+	if (problems.length) { throw new Error(`Invalid plugin entries:\n${problems.join('\n')}`); }
+}
+
 function readPage(path) {
 	const buf = readFileSync(path);
 	if (buf.toString('latin1', 0, 3) !== '---') { return null; }
