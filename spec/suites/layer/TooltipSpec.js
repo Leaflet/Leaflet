@@ -480,6 +480,13 @@ describe('Tooltip', () => {
 		layer.closeTooltip();
 	});
 
+	it('can call toggleTooltip while not on the map', () => {
+		const layer = new Marker(center);
+		layer.bindTooltip('Tooltip');
+		layer.toggleTooltip();
+		expect(layer.isTooltipOpen()).to.be.false;
+	});
+
 	it('returns the layer from closeTooltip with or without a bound tooltip', () => {
 		const layer = new Marker(center).addTo(map);
 		expect(layer.closeTooltip()).to.equal(layer);
