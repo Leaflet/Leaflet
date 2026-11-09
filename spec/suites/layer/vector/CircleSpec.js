@@ -24,6 +24,12 @@ describe('Circle', () => {
 		it('throws when the radius is passed as the second argument', () => {
 			expect(() => new Circle([0, 0], 200)).to.throw('the radius is an option');
 		});
+
+		it('converts a numeric string radius and throws on a non-numeric one', () => {
+			expect(new Circle([0, 0], {radius: '200'}).getRadius()).to.equal(200);
+			expect(() => new Circle([0, 0], {radius: NaN})).to.throw('Invalid radius');
+			expect(() => new Circle([0, 0], {radius: '200m'})).to.throw('Invalid radius');
+		});
 	});
 
 	describe('#getBounds', () => {

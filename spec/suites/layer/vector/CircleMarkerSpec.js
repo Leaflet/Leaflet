@@ -63,6 +63,26 @@ describe('CircleMarker', () => {
 					expect(marker._pxRadius).to.equal(15);
 				});
 			});
+
+			describe('and the radius is a numeric string', () => {
+				it('converts it to a number', () => {
+					const marker = new CircleMarker([0, 0], {radius: '20'}).addTo(map);
+					expect(marker.getRadius()).to.equal(20);
+					expect(marker._pxBounds.max.x - marker._pxBounds.min.x).to.be.below(100);
+
+					marker.setStyle({radius: '15'});
+					expect(marker.getRadius()).to.equal(15);
+					expect(marker.options.radius).to.equal(15);
+				});
+			});
+		});
+	});
+
+	describe('invalid radius', () => {
+		it('throws on a non-numeric radius', () => {
+			expect(() => new CircleMarker([0, 0], {radius: 'big'})).to.throw('Invalid radius: big');
+			expect(() => new CircleMarker([0, 0], {radius: NaN})).to.throw('Invalid radius');
+			expect(() => new CircleMarker([0, 0]).setRadius(null)).to.throw('Invalid radius');
 		});
 	});
 

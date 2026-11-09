@@ -31,9 +31,6 @@ export class Circle extends CircleMarker {
 			throw new Error('Circle: the radius is an option in Leaflet 2. Use new Circle(latlng, {radius}).');
 		}
 		super(latlng, options);
-
-		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
-
 		this.callInitHooks();
 	}
 
