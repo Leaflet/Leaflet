@@ -1,6 +1,5 @@
 import * as Util from '../core/Util.js';
 import {LatLngBounds} from './LatLngBounds.js';
-import {toNumber} from '../geometry/Point.js';
 
 /** @typedef {[number, number, number?]} LatLngTuple */
 /**
@@ -83,13 +82,13 @@ export class LatLng {
 		 * Latitude in degrees
 		 * @type {number}
 		 */
-		this.lat = toNumber(_lat);
+		this.lat = Util.toNumber(_lat);
 
 		/**
 		 * Longitude in degrees
 		 * @type {number}
 		 */
-		this.lng = toNumber(_lng);
+		this.lng = Util.toNumber(_lng);
 
 		if (isNaN(this.lat) || isNaN(this.lng)) {
 			throw new Error(`Invalid LatLng object: (${_lat}, ${_lng})`);
@@ -100,7 +99,7 @@ export class LatLng {
 			 * Altitude in meters (optional)
 			 * @type {number | undefined}
 			 */
-			this.alt = toNumber(_alt);
+			this.alt = Util.toNumber(_alt);
 
 			if (isNaN(this.alt)) {
 				throw new Error(`Invalid LatLng altitude: ${_alt}`);

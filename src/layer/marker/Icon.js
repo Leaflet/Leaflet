@@ -1,6 +1,6 @@
 import {Class} from '../../core/Class.js';
-import {setOptions} from '../../core/Util.js';
-import {Point, toNumber} from '../../geometry/Point.js';
+import {setOptions, toNumber} from '../../core/Util.js';
+import {Point} from '../../geometry/Point.js';
 
 /** @import {Defaults, IconDefaults, IconOptions, PointExpression} from '../../types.js' */
 

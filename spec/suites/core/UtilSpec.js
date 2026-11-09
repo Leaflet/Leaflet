@@ -23,6 +23,21 @@ describe('Util', () => {
 		});
 	});
 
+	describe('#toNumber', () => {
+		it('keeps numbers and converts numeric strings', () => {
+			expect(Util.toNumber(5.5)).to.eql(5.5);
+			expect(Util.toNumber(-Infinity)).to.eql(-Infinity);
+			expect(Util.toNumber('5.5')).to.eql(5.5);
+			expect(Util.toNumber(' 10 ')).to.eql(10);
+		});
+
+		it('returns NaN for anything else', () => {
+			for (const value of ['', ' ', 'foo', null, undefined, true, false, [], [5], {}, NaN]) {
+				expect(Util.toNumber(value)).to.be.NaN;
+			}
+		});
+	});
+
 	describe('#formatNum', () => {
 		it('formats numbers with a given precision', () => {
 			expect(Util.formatNum(13.12325555, 3)).to.eql(13.123);
