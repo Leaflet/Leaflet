@@ -763,12 +763,16 @@ export class LeafletMap extends Evented {
 	 */
 	setView(center, zoom, options) {
 
-		zoom = zoom === undefined ? this._zoom : this._limitZoom(zoom);
+		zoom = zoom === undefined ? this._targetZoom() : this._limitZoom(zoom);
 		const latlng = this._limitCenter(new LatLng(center), zoom, this.options.maxBounds);
 		options ??= {};
 		const originalEvent = options.originalEvent ?? options.zoom?.originalEvent ?? options.pan?.originalEvent;
 
 		this._stop();
+
+		// cleared by the moveend that completes this view, so set it before anything can fire one
+		/** @type {{center: LatLngExpression, zoom: number} | null} */
+		this._targetView = {center, zoom};
 
 		// the end of a running zoom animation would override the new view, so apply it afterwards
 		if (this._animatingZoom) {
@@ -796,7 +800,8 @@ export class LeafletMap extends Evented {
 		}
 
 		// animation didn't start, just reset the map view
-		this._resetView(latlng, zoom, options.pan?.noMoveStart, originalEvent);
+		this._resetView(this.options.worldCopyJump ? this.wrapLatLng(latlng) : latlng, zoom, options.pan?.noMoveStart,
+			originalEvent);
 
 		return this;
 	}
@@ -812,7 +817,8 @@ export class LeafletMap extends Evented {
 			this._zoom = zoom;
 			return this;
 		}
-		return this.setView(this.getCenter(), zoom, {zoom: options});
+		// zoom around where a running animation is heading, so that setView(c) then setZoom(z) ends at c
+		return this.setView(this._targetView?.center ?? this.getCenter(), zoom, {zoom: options});
 	}
 
 	/**
@@ -823,7 +829,7 @@ export class LeafletMap extends Evented {
 	 */
 	zoomIn(delta, options) {
 		delta ??= this.options.zoomDelta;
-		return this.setZoom(this._zoom + delta, options);
+		return this.setZoom(this._targetZoom() + delta, options);
 	}
 
 	/**
@@ -834,7 +840,7 @@ export class LeafletMap extends Evented {
 	 */
 	zoomOut(delta, options) {
 		delta ??= this.options.zoomDelta;
-		return this.setZoom(this._zoom - delta, options);
+		return this.setZoom(this._targetZoom() - delta, options);
 	}
 
 	/**
@@ -941,7 +947,7 @@ export class LeafletMap extends Evented {
 	 * @param {PanOptions} [options]
 	 */
 	panTo(center, options) {
-		return this.setView(center, this._zoom, {pan: options});
+		return this.setView(center, undefined, {pan: options});
 	}
 
 	/**
@@ -952,20 +958,22 @@ export class LeafletMap extends Evented {
 	 * @param {PanOptions} [options]
 	 */
 	panBy(offset, options) {
-		offset = new Point(offset).round();
+		// pan from where a running animation is heading, so that panTo(c) then panBy(o) ends at c + o
+		const {center = this.getCenter(), zoom = this._zoom} = this._targetView ?? {},
+		newCenter = this.unproject(this.project(center, zoom).add(new Point(offset).round()), zoom);
+
+		return this.setView(newCenter, zoom, {pan: options});
+	}
+
+	/**
+	 * @param {Point} offset
+	 * @param {PanOptions} [options]
+	 */
+	_panBy(offset, options) {
 		options ??= {};
 
 		if (!offset.x && !offset.y) {
 			return this._moveStart(false, true, options.originalEvent)._moveEnd(false);
-		}
-		// If we pan too far, Chrome gets issues with tiles
-		// and makes them disappear or appear in the wrong place (slightly offset) #2602
-		const size = this.getSize();
-		if (options.animate !== true && !size.contains(offset)) {
-			const center = this.unproject(this.project(this.getCenter()).add(offset));
-			this._resetView(this.options.worldCopyJump ? this.wrapLatLng(center) : center, this.getZoom(), false,
-				options.originalEvent);
-			return this;
 		}
 
 		if (!this._panAnim) {
@@ -979,7 +987,7 @@ export class LeafletMap extends Evented {
 		this._moveStart(false, options.noMoveStart, options.originalEvent);
 
 		// with reduced motion, only short pans are animated unless animate: true is specified
-		const tooFarForReducedMotion = this._prefersReducedMotion() && !size.divideBy(2).contains(offset);
+		const tooFarForReducedMotion = this._prefersReducedMotion() && !this.getSize().divideBy(2).contains(offset);
 		if (options.animate === true || (options.animate !== false && !tooFarForReducedMotion)) {
 			this._mapPane.classList.add('leaflet-pan-anim');
 
@@ -1013,10 +1021,11 @@ export class LeafletMap extends Evented {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 
-		this._stop();
-
-		targetZoom = targetZoom === undefined ? this._zoom : this._limitZoom(targetZoom);
+		targetZoom = targetZoom === undefined ? this._targetZoom() : this._limitZoom(targetZoom);
 		const center = this._limitCenter(new LatLng(targetCenter), targetZoom, this.options.maxBounds);
+
+		this._stop();
+		this._targetView = {center: targetCenter, zoom: targetZoom};
 
 		const from = this.project(this.getCenter()),
 		to = this.project(center),
@@ -2248,6 +2257,9 @@ export class LeafletMap extends Evented {
 		data = originalEvent && {originalEvent};
 		this._moveEvent = undefined;
 
+		// a zoom animation ending with a queued view isn't where the map is heading yet
+		if (!this._pendingView) { this._targetView = null; }
+
 		if (zoomChanged) {
 			this.fire('zoomend', data);
 		}
@@ -2256,6 +2268,7 @@ export class LeafletMap extends Evented {
 
 	_stop() {
 		this._pendingView = null;
+		this._targetView = null;
 		cancelAnimationFrame(this._flyToFrame);
 		cancelAnimationFrame(this._zoomAnimFrame);
 		this._panAnim?.stop();
@@ -2732,12 +2745,12 @@ export class LeafletMap extends Evented {
 	 */
 	_tryAnimatedPan(center, options) {
 		// difference between the new and current centers in pixels
-		const offset = this._getCenterOffset(center)._trunc();
+		const offset = this._getCenterOffset(center)._round();
 
 		// don't animate too far unless animate: true specified in options
 		if (options?.animate !== true && !this.getSize().contains(offset)) { return false; }
 
-		this.panBy(offset, options);
+		this._panBy(offset, options);
 
 		return true;
 	}
@@ -2791,6 +2804,10 @@ export class LeafletMap extends Evented {
 
 	_nothingToAnimate() {
 		return !this._container.getElementsByClassName('leaflet-zoom-animated').length;
+	}
+
+	_targetZoom() {
+		return this._targetView?.zoom ?? this._zoom;
 	}
 
 	// an animated zoom drops zooms from input until it ends, so hold them as long after an instant zoom too,
