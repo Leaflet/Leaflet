@@ -137,10 +137,10 @@ export class DivOverlay extends LayerBase {
 			} else {
 				layer = this._source;
 			}
-			this._prepareOpen();
-
-			// open the overlay on the map
-			this.openOn(/** @type {Layer} */ (layer)._map);
+			if (this._prepareOpen()) {
+				// open the overlay on the map
+				this.openOn(/** @type {Layer} */ (layer)._map);
+			}
 		}
 		return this;
 	}

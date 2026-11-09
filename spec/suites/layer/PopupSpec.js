@@ -798,6 +798,23 @@ describe('Popup', () => {
 			expect(map.hasLayer(popup)).to.be.false;
 		});
 
+		it('does not open on toggle for empty FeatureGroup', () => {
+			const popup = new Popup();
+			new FeatureGroup([])
+				.addTo(map)
+				.bindPopup(popup)
+				.togglePopup();
+
+			expect(map.hasLayer(popup)).to.be.false;
+		});
+
+		it('does not open on toggle when the layer is not on the map', () => {
+			marker.bindPopup('new layer').remove();
+			marker.togglePopup();
+
+			expect(marker.isPopupOpen()).to.be.false;
+		});
+
 		it('uses only visible layers of FeatureGroup for popup content source', () => {
 			const marker1 = new Marker([1, 1]);
 			const marker2 = new Marker([2, 2]);
