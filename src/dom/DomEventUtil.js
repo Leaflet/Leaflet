@@ -99,3 +99,22 @@ export function simulateDblclick(e) {
 		target.dispatchEvent(new MouseEvent('dblclick', init));
 	}
 }
+
+/**
+ * Makes Space click a `role="button"` link like it clicks a native button (Enter already clicks links natively).
+ * @param {HTMLElement} el
+ */
+export function clickOnSpace(el) {
+	el.addEventListener('keydown', _onSpaceKeyDown);
+}
+
+/**
+ * @this {HTMLElement}
+ * @param {KeyboardEvent} e
+ */
+function _onSpaceKeyDown(e) {
+	if (e.key === ' ' && !e.repeat) {
+		e.preventDefault(); // stop the page from scrolling
+		this.click();
+	}
+}

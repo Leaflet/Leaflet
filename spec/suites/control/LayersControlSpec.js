@@ -246,10 +246,10 @@ describe('LayersControl', () => {
 	});
 
 	describe('collapse when collapsed: true', () => {
-		it('expands on "Enter" keydown when toggle is focused', () => {
+		it('expands on Space keydown when toggle is focused', () => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
-			UIEventSimulator.fire('keydown', toggle, {code: 'Enter'});
+			UIEventSimulator.fire('keydown', toggle, {key: ' '});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
 		});
 
@@ -258,12 +258,6 @@ describe('LayersControl', () => {
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
 			UIEventSimulator.fire('click', toggle);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
-		});
-
-		it('does not expand on "Enter" keydown when toggle is not focused', () => {
-			new LayersControl(null, null, {collapsed: true}).addTo(map);
-			UIEventSimulator.fire('keydown', document, {code: 'Enter'});
-			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
 		});
 
 		it('expands when mouse is over', () => {

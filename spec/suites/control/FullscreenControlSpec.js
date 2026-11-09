@@ -1,5 +1,6 @@
 import {FullscreenControl, LeafletMap} from 'leaflet';
 import sinon from 'sinon';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('FullscreenControl', () => {
@@ -59,6 +60,24 @@ describe('FullscreenControl', () => {
 
 		document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape'}));
 		expect(control.isFullscreen()).to.equal(false);
+	});
+
+	it('toggles on Space, ignoring key repeat', () => {
+		const control = new FullscreenControl({pseudo: true}).addTo(map),
+		link = control.getContainer().querySelector('a'),
+		keydown = new KeyboardEvent('keydown', {key: ' ', bubbles: true, cancelable: true});
+
+		link.dispatchEvent(keydown);
+		expect(control.isFullscreen()).to.equal(true);
+		expect(keydown.defaultPrevented).to.equal(true);
+
+		UIEventSimulator.fire('keydown', link, {key: ' ', repeat: true});
+		expect(control.isFullscreen()).to.equal(true);
+
+		UIEventSimulator.fire('keydown', link, {key: 'a'});
+		expect(control.isFullscreen()).to.equal(true);
+
+		control.toggle();
 	});
 
 	it('exits fullscreen when removed', () => {

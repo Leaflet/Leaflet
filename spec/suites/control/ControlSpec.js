@@ -54,4 +54,10 @@ describe('Control', () => {
 			expect(control.remove()).to.equal(control);
 		});
 	});
+
+	it('zoom buttons click on Space', () => {
+		const zoomIn = sinon.spy(map, 'zoomIn');
+		map.zoomControl._zoomInButton.dispatchEvent(new KeyboardEvent('keydown', {key: ' ', bubbles: true}));
+		expect(zoomIn.calledOnce).to.equal(true);
+	});
 });

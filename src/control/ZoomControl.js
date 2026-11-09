@@ -1,6 +1,7 @@
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
+import {clickOnSpace} from '../dom/DomEventUtil.js';
 
 /** @import {ControlOptions, Defaults, ZoomControlDefaults, ZoomControlOptions} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
@@ -115,6 +116,7 @@ export class ZoomControl extends Control {
 		 */
 		link.setAttribute('role', 'button');
 		link.setAttribute('aria-label', title);
+		clickOnSpace(link);
 
 		DomEvent.disableClickPropagation(link);
 		DomEvent.on(link, 'click', (e) => {

@@ -1,6 +1,7 @@
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
+import {clickOnSpace} from '../dom/DomEventUtil.js';
 
 /** @import {ControlOptions, Defaults, FullscreenControlDefaults, FullscreenControlOptions} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
@@ -72,6 +73,7 @@ export class FullscreenControl extends Control {
 
 		link.href = '#';
 		link.setAttribute('role', 'button');
+		clickOnSpace(link);
 
 		/** @type {HTMLElement} */
 		this._target = this.options.container ?? map.getContainer();

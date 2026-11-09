@@ -101,6 +101,15 @@ describe('Popup', () => {
 		expect(popup.getElement().querySelector('[aria-label="Close popup"]')).not.to.equal(null);
 	});
 
+	it('closes on Space on the close button', () => {
+		const popup = new Popup()
+			.setLatLng(center)
+			.openOn(map);
+
+		UIEventSimulator.fire('keydown', popup._closeButton, {key: ' '});
+		expect(map.hasLayer(popup)).to.equal(false);
+	});
+
 	it('sets a custom \'closeButtonLabel\' on the close button', () => {
 		const closeButtonLabel = 'TestLabel';
 		const popup = new Popup({closeButtonLabel})

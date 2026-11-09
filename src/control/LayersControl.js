@@ -1,6 +1,7 @@
 import {Control} from './Control.js';
 import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
+import {clickOnSpace} from '../dom/DomEventUtil.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /** @import {ControlOptions, Defaults, LayersControlDefaults, LayersControlOptions, LeafletEvent} from '../types.js' */
@@ -270,22 +271,13 @@ export class LayersControl extends Control {
 		link.href = '#';
 		link.title = this._map.translate(this.options.title);
 		link.setAttribute('role', 'button');
+		clickOnSpace(link);
 		section.setAttribute('aria-label', link.title);
 
-		DomEvent.on(link, {
-			/** @this {LayersControl} */
-			keydown(e) {
-				if (e.code === 'Enter') {
-					this._expandSafely();
-				}
-			},
-			// Certain screen readers intercept the key event and instead send a click event
-			/** @this {LayersControl} */
-			click(e) {
-				e.preventDefault();
-				this._expandSafely();
-			}
-		}, this);
+		DomEvent.on(link, 'click', (e) => {
+			e.preventDefault();
+			this._expandSafely();
+		});
 
 		if (!collapsed) {
 			this.expand();

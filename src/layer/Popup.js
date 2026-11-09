@@ -1,5 +1,6 @@
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
+import {clickOnSpace} from '../dom/DomEventUtil.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
@@ -245,6 +246,7 @@ export class Popup extends DivOverlay {
 			const closeButton = this._closeButton = DomUtil.create('a', `${prefix}-close-button`, container);
 			closeButton.setAttribute('role', 'button'); // overrides the implicit role=link of <a> elements #7399
 			closeButton.setAttribute('aria-label', this._map.translate(this.options.closeButtonLabel));
+			clickOnSpace(closeButton);
 
 			closeButton.href = '#close';
 			closeButton.textContent = '\u00D7';
