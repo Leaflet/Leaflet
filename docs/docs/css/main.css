@@ -1153,74 +1153,88 @@ abbr {
 
 /** Begin site dialog **/
 #dialog {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	z-index: 10000;
-	background: rgba(0, 0, 0, 0.24);
-	padding-top: 20px;
-}
-
-/*
-keep focus in dialog
-https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
- */
-#dialog:not(:focus-within) {
-	background-color:rgba(0, 0, 0, 0.25);
-	transition: background-color 0.01s;
-}
-
-#dialog .iframe-container {
-	display: flex;
-	flex-direction: column;
 	box-sizing: border-box;
+	width: 100%;
+	max-width: 41em;
 	max-height: 90%;
+	padding: 0;
+	border: 0;
 	border-radius: 5px;
-	padding: 10px 0px;
-	background: #fff;
-	margin-bottom: 10px;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+	outline: none;
+}
+
+#dialog::backdrop {
+	background: rgba(0, 0, 0, 0.4);
+}
+
+html:has(#dialog[open]) {
+	overflow: hidden;
+}
+
+#dialog .container {
 	position: relative;
+	padding: 10px 2em;
 }
 
-body.dialog .container {
-	padding-bottom: 0;
+@media screen and (max-width: 500px) {
+	#dialog .container {
+		padding: 10px 1.5em;
+	}
 }
 
-body.dialog h1 {
+#dialog h1 {
 	margin: 0.75em 0;
 }
 
-#dialog iframe {
-	flex: 0 1 auto;
-	min-height: 0;
-	width: 100%;
-	border: 0;
-}
-
-.overflowHidden {
-	overflow: hidden;
+#dialog h1 img {
+	max-width: 100%;
+	height: auto;
 }
 
 .close-dialog {
-  width: 40px;
-  height: 40px;
-  top: 10px;
-  right: 20px;
-  position: absolute;
-  font-size: 40px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  color: #000;
+	width: 40px;
+	height: 40px;
+	top: 8px;
+	right: 8px;
+	position: absolute;
+	font-size: 32px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: none;
+	color: #797979;
 	overflow: hidden;
 }
 
-.close-dialog:hover, .close-dialog:focus {
-	color: #797979;
+.close-dialog:hover, .close-dialog:focus-visible {
+	color: #000;
+}
+
+/* sits next to the signature so that it doesn't add to the dialog height */
+.continue-dialog {
+	position: absolute;
+	right: 2em;
+	bottom: calc(1em + 10px);
+	padding: 0.3em 0.9em;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #fff;
+	color: #555;
+	cursor: pointer;
+}
+
+.continue-dialog:hover, .continue-dialog:focus-visible {
+	border-color: #999;
+	color: #000;
+}
+
+@media screen and (max-width: 500px) {
+	.continue-dialog {
+		right: 1.5em;
+	}
 }
 
 blockquote {

@@ -1,58 +1,31 @@
 const SESSION_KEY = 'dialog-session';
-const ONE_DAY_MILLI_SEC = 7 * 24 * 60 * 60 * 1000;
+const WEEK = 7 * 24 * 60 * 60 * 1000;
 
 function openDialog() {
-
-	// keep the last session timestamp in local storage to re-show after 7 days since last time
-	if (localStorage) {
-		const sessionTimestamp = localStorage.getItem(SESSION_KEY);
-		if (sessionTimestamp && Date.now() - sessionTimestamp < ONE_DAY_MILLI_SEC) {
-			return;
-		}
+	// re-show a week after it was last closed
+	try {
+		if (Date.now() - localStorage.getItem(SESSION_KEY) < WEEK) { return; }
+	} catch {
+		// storage is blocked, so show it every time
 	}
 
-	const html = '<div class=\'container iframe-container\'><iframe src=\'/dialog/\'></iframe><button type="submit" class=\'close-dialog\' aria-label=\'close\'>&times;</button></div>';
+	// kept in a template so that pages don't carry the appeal text unless it's shown
+	document.body.append(document.getElementById('dialog-template').content);
+	const dialog = document.getElementById('dialog');
 
-	const dialog = document.createElement('div');
-	dialog.id = 'dialog';
-	dialog.setAttribute('role', 'dialog');
-	dialog.innerHTML = html;
-
-	document.body.insertBefore(dialog, document.body.firstChild);
-
-	// size the frame to its content; the container's max-height makes it scroll when the content doesn't fit
-	const iframe = dialog.querySelector('iframe');
-	iframe.addEventListener('load', () => {
-		const root = iframe.contentDocument.documentElement;
-		new ResizeObserver(() => { iframe.style.height = `${root.offsetHeight}px`; }).observe(root);
+	dialog.addEventListener('close', () => {
+		dialog.remove();
+		try { localStorage.setItem(SESSION_KEY, Date.now()); } catch { /* blocked storage */ }
 	});
 
-	document.body.classList.add('overflowHidden');
-
-	setTimeout(() => {
-		dialog.focus();
-	}, 100);
-
-	function closeDialog() {
-		document.body.removeChild(dialog);
-		document.body.classList.remove('overflowHidden');
-		if (localStorage) {
-			localStorage.setItem(SESSION_KEY, Date.now());
-		}
-	}
-
-	dialog.querySelector('.close-dialog').addEventListener('click', closeDialog);
-
-	// close on clicks on the backdrop around the popup
+	// the content fills the dialog box, so only clicks on the backdrop hit the dialog itself
 	dialog.addEventListener('click', (e) => {
-		if (e.target === dialog) { closeDialog(); }
+		if (e.target === dialog) { dialog.close(); }
 	});
 
-	// keep focus in dialog
-	// https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
-	dialog.addEventListener('transitionend', () => {
-		dialog.querySelector('iframe').focus();
-	});
+	dialog.showModal();
+	// focus the dialog rather than the close button, which would show a focus ring right away
+	dialog.focus();
 }
 
 openDialog();

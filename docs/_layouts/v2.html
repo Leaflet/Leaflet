@@ -20,6 +20,7 @@
 	{% endif %}
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="{% if page.description %}{{ page.description }}{% else %}Leaflet is a modern, lightweight open-source JavaScript library for building powerful interactive maps.{% endif %}" />
 
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
 
@@ -97,10 +98,10 @@
 	</div>
 
 	<nav class="ext-links">
-	  <a class="ext-link github" href="https://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.svg" width="46" /></a>
-	  <a class="ext-link twitter" href="https://twitter.com/LeafletJS" title="Follow LeafletJS on X"><img alt="Follow LeafletJS on X" src="{{root}}docs/images/x-round.svg" width="46" /></a>
-	  <a class="ext-link mastodon" href="https://mapstodon.space/@leaflet" title="Follow @leaflet@mapstodon.space on Mastodon"><img alt="Follow @leaflet@mapstodon.space on Mastodon" src="{{root}}docs/images/mastodon.svg" width="46" /></a>
-	  <a class="ext-link forum" href="https://github.com/Leaflet/Leaflet/discussions" title="Ask for help in GitHub Discussions"><img alt="Ask for help in GitHub Discussions" src="{{root}}docs/images/discussions-round.svg" width="46" /></a>
+	  <a class="ext-link github" href="https://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.svg" width="46" height="46" /></a>
+	  <a class="ext-link twitter" href="https://twitter.com/LeafletJS" title="Follow LeafletJS on X"><img alt="Follow LeafletJS on X" src="{{root}}docs/images/x-round.svg" width="46" height="46" /></a>
+	  <a class="ext-link mastodon" href="https://mapstodon.space/@leaflet" title="Follow @leaflet@mapstodon.space on Mastodon"><img alt="Follow @leaflet@mapstodon.space on Mastodon" src="{{root}}docs/images/mastodon.svg" width="46" height="46" /></a>
+	  <a class="ext-link forum" href="https://github.com/Leaflet/Leaflet/discussions" title="Ask for help in GitHub Discussions"><img alt="Ask for help in GitHub Discussions" src="{{root}}docs/images/discussions-round.svg" width="46" height="46" /></a>
 	</nav>
 
 	<button id="back-to-top" title="Scroll back to top">
@@ -110,6 +111,7 @@
 	</button>
 </footer>
 
+<template id="dialog-template">{% include ukraine.html %}</template>
 <script src="{{ root }}dialog/dialog.js"></script>
 <script src="{{ root }}docs/js/docs.js"></script>
 {% if page.title == 'Documentation' %}
