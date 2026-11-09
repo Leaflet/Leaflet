@@ -791,7 +791,7 @@ describe('Popup', () => {
 			expect(marker.isPopupOpen()).to.be.false;
 		});
 
-		it('should show a popup as opend if it\'s opened', () => {
+		it('should show a popup as open if it\'s opened', () => {
 			marker.bindPopup('new layer').openPopup();
 			expect(marker.isPopupOpen()).to.be.true;
 		});

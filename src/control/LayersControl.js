@@ -424,7 +424,7 @@ export class LayersControl extends Control {
 
 		this._handlingClick = true;
 
-		// Bugfix issue 2318: Should remove all old layers before readding new ones
+		// Bugfix issue 2318: Should remove all old layers before re-adding new ones
 		for (const layer of removedLayers) {
 			this._map.removeLayer(layer);
 		}

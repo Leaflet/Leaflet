@@ -34,7 +34,7 @@ describe('LayersControl', () => {
 			expect(spy.args[1][0].layer).to.equal(baseLayers['Layer 2']);
 		});
 
-		it('works after removing and readding the LayersControl to the map', () => {
+		it('works after removing and re-adding the LayersControl to the map', () => {
 			const baseLayers = {'Layer 1': new TileLayer(''), 'Layer 2': new TileLayer('')},
 			layers = new LayersControl(baseLayers).addTo(map),
 			spy = sinon.spy();
