@@ -37,6 +37,7 @@ const defaultOptions = {
 	/**
 	 * Text for the `alt` attribute of the icon image. [Useful for
 	 * accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+	 * @translatable
 	 */
 	alt: 'Marker',
 
