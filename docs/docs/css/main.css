@@ -41,11 +41,15 @@ p {
 }
 
 a {
-	color: #198900;
+	color: #178400;
+	text-decoration-thickness: 1px;
+	text-underline-offset: .2em;
+	text-decoration-color: color-mix(in srgb, currentColor 60%, transparent);
 }
 
 a:hover, a:focus {
 	color: #160;
+	text-decoration-color: currentColor;
 }
 
 hr {
@@ -137,11 +141,10 @@ video {
 /* headings */
 
 h2 {
-	font-weight: 400;
 	font-size: 2em;
 	font-weight: 300;
 	color: black;
-	margin-top: 1.5em;
+	margin: 1.25em 0 .5em;
 }
 
 h2, h3, h4 {
@@ -157,33 +160,36 @@ article:target > h2 {
 }
 
 h3 {
-	margin-top: 1.5em;
-	padding-top: .5em;
+	margin: 1.5em 0 .4em;
 	color: black;
 	font-weight: 500;
 	font-size: 1.4em;
 }
 
-.blog-page h3 {
-	padding-top: 0;
-}
-
 h4 {
 	font-size: 1.1em;
-	font-weight: 500;
-	margin: 2em 0 1em;
+	font-weight: 600;
+	margin: 1.5em 0 .4em;
+}
+
+/* a heading's small bottom margin would otherwise collapse into the larger top margin of the text it
+   introduces; boxes like maps and code keep their margin, since they lack the leading text has */
+body:not(.api-page) :is(h2, h3, h4) + :is(p, ul, ol) {
+	margin-top: 0;
 }
 
 /* general layout */
 
 .container {
-	max-width: 54em;
+	max-width: 54rem;
 	padding: 0 6em 1.5em;
 	margin: 0 auto;
+	font-size: 1.0625rem;
 }
 
 .api-page .container {
 	max-width: 60em;
+	font-size: 1rem;
 }
 
 .footer {
@@ -244,6 +250,8 @@ h1 {
 
 h1 a {
 	display: block;
+	box-sizing: border-box;
+	max-width: 54rem;
 	margin: auto;
 	padding: 0 2em;
 	transition: 0.8s all;
@@ -286,23 +294,39 @@ h1 a:hover, h1 a:focus {
 	text-decoration: none;
 }
 
-.ext-links {
-	position: fixed;
-	top: 1.5em;
-	right: 1.5em;
+/* the current page is a span, the current section (a tutorial, a reference page) an a.active */
+.nav li > span, .nav a.active {
+	color: black;
+	text-decoration: underline 1px #8cc480;
+	text-underline-offset: .4em;
 }
 
-.ext-link {
+.nav .nav-social {
+	position: fixed;
+	z-index: 400;
+	top: 15px;
+	right: 15px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 0;
+}
+
+.nav-social a {
 	display: block;
-	opacity: 0.7;
-	animation: fadein 1s;
+	padding: 3px;
+	color: #888;
 }
-.ext-link:hover {
-	opacity: 1;
+
+.nav-social svg {
+	display: block;
+	width: 28px;
+	height: 28px;
+	fill: currentColor;
 }
-@keyframes fadein {
-	from { opacity: 0; }
-	to   { opacity: 0.7; }
+
+.nav-social a:hover, .nav-social a:focus-visible {
+	color: #333;
 }
 
 /* content */
@@ -314,9 +338,9 @@ h1 a:hover, h1 a:focus {
 }
 .container pre code {
 	display: block;
-	font-size: 14px;
+	font-size: 14.5px;
 	padding: .75em 1em;
-	border-left: 3px solid #b5d99c;
+	border-left: 3px solid #8cc480;
 	border-radius: 0 6px 6px 0;
 	background: #f8f8f8;
 	color: #1f2328;
@@ -325,7 +349,7 @@ h1 a:hover, h1 a:focus {
 	overflow: auto;
 }
 .container pre {
-	border-radius: 5px;
+	border-radius: 0 6px 6px 0;
 }
 
 .container .map {
@@ -358,6 +382,8 @@ h1 a:hover, h1 a:focus {
 .features h3 {
 	margin: 0 0 .6em;
 	padding: 0;
+	font-size: 1.15em;
+	font-weight: 600;
 }
 .features h4 {
 	margin: 0 0 0.3em;
@@ -367,7 +393,7 @@ h1 a:hover, h1 a:focus {
 
 .example-img {
 	float: left;
-	width: 14em;
+	width: 14rem;
 	max-width: 100%;
 	border-radius: 5px;
 	margin: 0 1.5em 1.5em 0;
@@ -464,37 +490,44 @@ table.plugins td:first-child a {
 #toc .toc-groups {
 	flex: 1;
 	columns: 4;
-	column-gap: 1em;
+	gap: .75em 1em;
 	margin-left: 1.5em;
 }
 #toc .toc-group {
 	break-inside: avoid;
 }
 
+/* reference.css only loads on some of the pages that share this, so the heading margin is set here */
+.api-page h2:has(+ .reference-versions) {
+	margin-bottom: .5em;
+}
 .reference-versions ul {
 	display: flex;
 	flex-wrap: wrap;
 	gap: .5em;
 	padding: 0;
-	margin: 0 0 1.5em;
+	margin: 0 0 1.25em;
 	list-style: none;
 }
 .reference-versions li > * {
-	display: inline-block;
-	padding: .2em .8em;
+	display: block;
+	padding: .3em .75em;
 	border: 1px solid #ddd;
-	border-radius: 1em;
+	border-radius: 4px;
 	text-decoration: none;
 }
+.reference-versions a:hover {
+	border-color: #aaa;
+}
 .reference-versions [aria-current] {
-	border-color: #555;
-	color: #333;
-	font-weight: 700;
+	border-color: #8cc480;
+	background: #f8f8f8;
+	color: black;
 }
 .reference-versions small {
 	font-size: 85%;
 	font-weight: 400;
-	color: #999;
+	color: #767676;
 }
 
 .api-page #toc ~ article > h2 {
@@ -525,6 +558,7 @@ table.plugins td:first-child a {
 #toc h4 {
 	margin-top: 0;
 	margin-bottom: .5em;
+	font-weight: 500;
 }
 
 #toc ul {
@@ -592,7 +626,7 @@ table.plugins td:first-child a {
 }
 
 #toc-copy li:has(> a.current) {
-	border-color: #198900;
+	border-color: #178400;
 }
 
 #toc-copy h4.current {
@@ -610,7 +644,7 @@ table.plugins td:first-child a {
 }
 
 #toc-copy a.current {
-	color: #198900;
+	color: #178400;
 	font-weight: 600;
 }
 
@@ -1016,25 +1050,38 @@ tr:target {
 		padding: 0 2em 1.5em;
 	}
 
+	/* the narrow side padding puts the permalink, and then the stuck class heading, under the ToC button */
+	.api-page article[id] > h2 { text-indent: 40px; }
+	.api-page h2 > .permalink { margin-left: -28px; }
+
+	.nav .nav-social {
+		position: static;
+		display: inline-block;
+		padding-left: .75em;
+	}
+
+	.nav-social a {
+		display: inline-block;
+		padding: 0 .3em;
+		vertical-align: -.15em;
+	}
+
+	.nav-social svg {
+		width: 1em;
+		height: 1em;
+	}
+
+	/* the GitHub text link right before it covers this one */
+	.nav-social .nav-social-github {
+		display: none;
+	}
+
 	.footer {
 		text-align: center;
 	}
 
 	.footer {
 		margin-top: 2em;
-	}
-
-	.ext-links {
-		position: static;
-		margin: 0 auto 2em;
-		text-align: center;
-		clear: both;
-	}
-
-	.ext-link {
-		display: inline-block;
-		vertical-align: middle;
-		margin: .25em;
 	}
 
 	.features {
@@ -1079,11 +1126,15 @@ tr:target {
 		margin: 0 0 .333em;
 	}
 
-	.api-page article[id] > h2 { text-indent: 24px; }
-	.api-page h2 > .permalink { margin-left: -28px; }
-
 	.api-page h2, section:has(table) {
 		overflow-x: auto;
+	}
+}
+
+/* the longest unbreakable signature chunks are wider than the table here */
+@media screen and (max-width: 360px) {
+	.api-page td code nobr {
+		white-space: normal;
 	}
 }
 
@@ -1143,19 +1194,26 @@ iframe[src*='youtube.com'] {
 
 abbr {
 	white-space: nowrap;
+	text-decoration: underline dotted #999;
+	text-decoration-thickness: 1px;
+	text-underline-offset: .2em;
 }
 
 .announcement {
-	background: #eee;
-	padding: 5px 10px;
-	border-radius: 10px;
+	padding: .35em .9em;
+	border-left: 3px solid #8cc480;
+	border-radius: 0 6px 6px 0;
+	background: #f8f8f8;
+}
+.announcement a {
+	color: #147000;
 }
 
 /** Begin site dialog **/
 #dialog {
 	box-sizing: border-box;
 	width: 100%;
-	max-width: 41em;
+	max-width: 42em;
 	max-height: 90%;
 	padding: 0;
 	border: 0;

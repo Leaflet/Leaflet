@@ -5,6 +5,7 @@ html {
 
 h2 {
     margin-top: 2em;
+    margin-bottom: .83em;
 }
 
 #toc ~ article > h2 {

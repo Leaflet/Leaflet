@@ -38,6 +38,12 @@
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 </head>
 <body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
+<svg width="0" height="0" style="position: absolute">
+	<symbol id="icon-github" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></symbol>
+	<symbol id="icon-x" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></symbol>
+	<symbol id="icon-mastodon" viewBox="0 0 74 79"><path fill-rule="evenodd" d="M73.8 17.5C72.7 9 65.3 2.3 56.5 1C55 0.8 49.4 0 36.5 0H36.4C23.4 0 20.6 0.8 19.1 1C10.6 2.3 2.8 8.3 0.9 16.9C-0 21.1 -0.1 25.8 0.1 30.1C0.3 36.3 0.4 42.4 0.9 48.6C1.3 52.6 2 56.7 2.9 60.7C4.7 68 12 74.2 19.1 76.7C26.7 79.3 34.9 79.7 42.8 77.9C43.7 77.7 44.5 77.5 45.4 77.2C47.3 76.6 49.5 75.9 51.2 74.7C51.2 74.7 51.2 74.7 51.2 74.7C51.2 74.7 51.2 74.6 51.2 74.6V68.6C51.2 68.6 51.2 68.6 51.2 68.6C51.2 68.5 51.2 68.5 51.2 68.5C51.1 68.5 51.1 68.5 51.1 68.5C51.1 68.5 51 68.5 51 68.5C46 69.7 40.8 70.3 35.7 70.3C26.7 70.3 24.3 66 23.7 64.3C23.1 62.8 22.8 61.2 22.6 59.6C22.6 59.5 22.6 59.5 22.6 59.5C22.6 59.5 22.7 59.4 22.7 59.4C22.7 59.4 22.7 59.4 22.8 59.4C22.8 59.4 22.8 59.4 22.8 59.4C27.8 60.6 32.9 61.2 38 61.2C39.2 61.2 40.4 61.2 41.6 61.2C46.7 61 52.1 60.7 57.2 59.8C57.3 59.7 57.4 59.7 57.5 59.7C65.5 58.2 73 53.4 73.8 41.2C73.8 40.8 73.9 36.2 73.9 35.7C73.9 34.1 74.5 23.8 73.8 17.5ZM61.2 27V48.1H52.9V27.6C52.9 23.3 51.1 21.1 47.4 21.1C43.4 21.1 41.4 23.7 41.4 28.9V40.1H33.1V28.9C33.1 23.7 31.1 21.1 27.1 21.1C23.5 21.1 21.6 23.3 21.6 27.6V48.1H13.3V27C13.3 22.7 14.4 19.3 16.6 16.8C18.9 14.2 21.8 12.9 25.5 12.9C29.8 12.9 33 14.6 35.2 17.9L37.3 21.3L39.4 17.9C41.5 14.6 44.7 12.9 49 12.9C52.7 12.9 55.7 14.2 58 16.8C60.2 19.3 61.3 22.7 61.2 27Z"/></symbol>
+	<symbol id="icon-discussions" viewBox="0 0 16 16"><path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 10.25 10H7.061l-2.574 2.573A1.458 1.458 0 0 1 2 11.543V10h-.25A1.75 1.75 0 0 1 0 8.25v-5.5C0 1.784.784 1 1.75 1ZM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h3.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13 2a.25.25 0 0 0-.25-.25h-.5a.75.75 0 0 1 0-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 14.25 12H14v1.543a1.458 1.458 0 0 1-2.487 1.03L9.22 12.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.22 2.22v-2.19a.75.75 0 0 1 .75-.75h1a.25.25 0 0 0 .25-.25Z"/></symbol>
+</svg>
 
 <header>
 	<h1><a href="/"><img src="{{ root }}docs/images/logo.svg" alt="Leaflet" width="300" height="80" /></a></h1>
@@ -83,6 +89,12 @@
 		<li>
 			<a href="https://github.com/Leaflet/Leaflet">GitHub</a>
 		</li>
+		<li class="nav-social">
+			<a class="nav-social-github" href="https://github.com/Leaflet/Leaflet" title="Leaflet on GitHub"><svg><use href="#icon-github"/></svg></a>
+			<a href="https://twitter.com/LeafletJS" title="Follow @LeafletJS on X"><svg><use href="#icon-x"/></svg></a>
+			<a href="https://mapstodon.space/@leaflet" title="Follow @leaflet@mapstodon.space on Mastodon"><svg><use href="#icon-mastodon"/></svg></a>
+			<a href="https://github.com/Leaflet/Leaflet/discussions" title="Ask for help in GitHub Discussions"><svg><use href="#icon-discussions"/></svg></a>
+		</li>
 	</ul>
 </nav>
 
@@ -96,13 +108,6 @@
 	<div class="footer">
 		<p>&copy; 2010–{{ 'now' | date: "%Y" }} <a href="https://agafonkin.com">Volodymyr Agafonkin</a>. Maps &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. <a href="{{ root }}blog.html">Blog archive</a>.</p>
 	</div>
-
-	<nav class="ext-links">
-	  <a class="ext-link github" href="https://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.svg" width="46" height="46" /></a>
-	  <a class="ext-link twitter" href="https://twitter.com/LeafletJS" title="Follow LeafletJS on X"><img alt="Follow LeafletJS on X" src="{{root}}docs/images/x-round.svg" width="46" height="46" /></a>
-	  <a class="ext-link mastodon" href="https://mapstodon.space/@leaflet" title="Follow @leaflet@mapstodon.space on Mastodon"><img alt="Follow @leaflet@mapstodon.space on Mastodon" src="{{root}}docs/images/mastodon.svg" width="46" height="46" /></a>
-	  <a class="ext-link forum" href="https://github.com/Leaflet/Leaflet/discussions" title="Ask for help in GitHub Discussions"><img alt="Ask for help in GitHub Discussions" src="{{root}}docs/images/discussions-round.svg" width="46" height="46" /></a>
-	</nav>
 
 	<button id="back-to-top" title="Scroll back to top">
 		<svg viewBox="0 0 16 16">

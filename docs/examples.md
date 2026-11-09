@@ -6,9 +6,9 @@ bodyclass: examples
 
 ## Leaflet Tutorials
 
-<div class="announcement">These tutorials are for Leaflet 2.0, now in beta. Coming from 1.x? See <a href="https://github.com/Leaflet/Leaflet/blob/main/MIGRATION.md">how to migrate</a>. Leaflet 1.9 tutorials are <a href="examples-v1.html">here</a>.</div>
+<div class="announcement">These tutorials are for Leaflet 2.0 beta. Coming from 1.x? See <a href="https://github.com/Leaflet/Leaflet/blob/main/MIGRATION.md">how to migrate</a> or the <a href="examples-v1.html">1.9 tutorials</a>.</div>
 
-Every tutorial here comes with step-by-step code explanation and is easy enough even for beginner JavaScript developers.
+Each tutorial explains its code step by step, simply enough even for JavaScript beginners.
 
 
 {% include tutorial_link.html
