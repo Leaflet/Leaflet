@@ -61,50 +61,49 @@ export class LatLng {
 	 * @param {number} [alt]
 	 */
 	constructor(lat, lng, alt) {
-		const valid = LatLng.validate(lat, lng, alt);
-		if (!valid) {
-			throw new Error(`Invalid LatLng object: (${lat}, ${lng})`);
-		}
-
-		let _lat, _lng, _alt;
 		if (lat instanceof LatLng) {
 			// We can use the same object, no need to clone it
 			// eslint-disable-next-line no-constructor-return
 			return lat;
-		} else if (Array.isArray(lat) && typeof lat[0] !== 'object') {
-			// validated to have 2 or 3 elements
-			_lat = lat[0];
+		}
+
+		let _lat = lat, _lng = lng, _alt = alt;
+		if (Array.isArray(lat)) {
+			_lat = lat.length <= 3 ? lat[0] : NaN;
 			_lng = lat[1];
 			_alt = lat[2];
-		} else if (typeof lat === 'object' && 'lat' in lat) {
+		} else if (typeof lat === 'object' && lat !== null) {
 			_lat = lat.lat;
 			_lng = 'lng' in lat ? lat.lng : lat.lon;
 			_alt = lat.alt;
-		} else {
-			_lat = lat;
-			_lng = lng;
-			_alt = alt;
 		}
-
 
 		/**
 		 * Latitude in degrees
 		 * @type {number}
 		 */
-		this.lat = +_lat;
+		this.lat = Util.toNumber(_lat);
 
 		/**
 		 * Longitude in degrees
 		 * @type {number}
 		 */
-		this.lng = +_lng;
+		this.lng = Util.toNumber(_lng);
 
-		if (_alt !== undefined) {
+		if (isNaN(this.lat) || isNaN(this.lng)) {
+			throw new Error(`Invalid LatLng object: (${_lat}, ${_lng})`);
+		}
+
+		if (_alt != null) {
 			/**
 			 * Altitude in meters (optional)
 			 * @type {number | undefined}
 			 */
-			this.alt = +_alt;
+			this.alt = Util.toNumber(_alt);
+
+			if (isNaN(this.alt)) {
+				throw new Error(`Invalid LatLng altitude: ${_alt}`);
+			}
 		}
 	}
 
@@ -125,20 +124,17 @@ export class LatLng {
 	 * @returns {boolean}
 	 */
 	/**
-	 * @param {unknown} lat
-	 * @param {unknown} [lng]
-	 * @param {unknown} [alt]
+	 * @param {any} lat
+	 * @param {any} [lng]
+	 * @param {any} [alt]
 	 */
 	static validate(lat, lng, alt) {
-		if (lat instanceof LatLng || (typeof lat === 'object' && lat !== null && 'lat' in lat)) {
-			return true;
+		try {
+			return !!new LatLng(lat, lng, alt);
+		} catch {
+			return false;
 		}
-		if (Array.isArray(lat) && typeof lat[0] !== 'object') {
-			return lat.length === 3 || lat.length === 2;
-		}
-		return !!((lat || lat === 0) && (lng || lng === 0));
 	}
-
 
 	/**
 	 * Returns `true` if the given `LatLng` point is at the same position (within a small margin of

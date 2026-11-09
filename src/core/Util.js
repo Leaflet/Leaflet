@@ -92,6 +92,15 @@ export function formatNum(num, precision = 6) {
 	return Math.round(num * pow) / pow;
 }
 
+/**
+ * Returns `value` if it's a number (including `Infinity`), converts it if it's a numeric string, and returns
+ * `NaN` for anything else, unlike `Number()`, which turns `''`, `null` and booleans into `0` or `1`.
+ * @param {unknown} value
+ */
+export function toNumber(value) {
+	return typeof value === 'number' ? value : typeof value === 'string' && value.trim() !== '' ? +value : NaN;
+}
+
 const WHITESPACE_RE = /\s+/;
 
 /**

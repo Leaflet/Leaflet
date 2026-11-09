@@ -232,5 +232,5 @@ export class Bounds {
  * @returns {obj is PointExpression}
  */
 function isPointExpression(obj) {
-	return obj instanceof Point || (Array.isArray(obj) ? typeof obj[0] === 'number' : 'x' in obj);
+	return obj instanceof Point || (Array.isArray(obj) ? typeof obj[0] !== 'object' : 'x' in obj);
 }

@@ -25,6 +25,11 @@ describe('Bounds', () => {
 			expect(b.min).to.eql(new Point(14, 12));
 			expect(b.max).to.eql(new Point(30, 40));
 		});
+
+		it('accepts points with numeric string coordinates', () => {
+			const bounds = new Bounds([[0, 0], ['10', '20']]);
+			expect(bounds.max).to.eql(new Point(10, 20));
+		});
 	});
 
 	describe('#extend', () => {

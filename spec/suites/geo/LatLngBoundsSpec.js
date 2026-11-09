@@ -39,6 +39,12 @@ describe('LatLngBounds', () => {
 			expect(a.getNorthEast()).to.eql(new LatLng(30, 50));
 		});
 
+		it('throws on a point with coordinates that are not numbers', () => {
+			expect(() => a.extend([50, 'foo'])).to.throw('Invalid LatLng');
+			expect(() => a.extend({lat: 50})).to.throw('Invalid LatLng');
+			expect(() => a.extend(['foo', 'bar'])).to.throw('Invalid LatLng');
+		});
+
 		it('extends the bounds by given bounds', () => {
 			a.extend([[20, 50], [8, 40]]);
 			expect(a.getSouthEast()).to.eql(new LatLng(8, 50));

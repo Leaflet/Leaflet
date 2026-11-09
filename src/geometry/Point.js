@@ -1,4 +1,5 @@
-import {formatNum} from '../core/Util.js';
+// a named import of toNumber makes Point#add ~10% slower in V8
+import * as Util from '../core/Util.js';
 
 /** @typedef {[number, number]} PointTuple */
 
@@ -49,38 +50,37 @@ export class Point {
 	 * @param {boolean} [round]
 	 */
 	constructor(x, y, round) {
-
-		const valid = Point.validate(/** @type {any} */ (x), y);
-		if (!valid) {
-			throw new Error(`Invalid Point object: (${x}, ${y})`);
-		}
-
-		let _x, _y;
 		if (x instanceof Point) {
 			// We can use the same object, no need to clone it
 			// eslint-disable-next-line no-constructor-return
 			return x;
-		} else if (Array.isArray(x)) {
+		}
+
+		let _x = x, _y = y;
+		if (Array.isArray(x)) {
 			_x = x[0];
 			_y = x[1];
-		} else if (typeof x === 'object' && 'x' in x && 'y' in x) {
+		} else if (typeof x === 'object' && x !== null) {
 			_x = x.x;
 			_y = x.y;
-		} else {
-			_x = x;
-			_y = /** @type {number} */ (y);
 		}
 
 		/**
 		 * The `x` coordinate of the point
 		 * @type {number}
 		 */
-		this.x = (round ? Math.round(_x) : _x);
+		this.x = round ? Math.round(Util.toNumber(_x)) : Util.toNumber(_x);
 		/**
 		 * The `y` coordinate of the point
 		 * @type {number}
 		 */
-		this.y = (round ? Math.round(_y) : _y);
+		this.y = round ? Math.round(Util.toNumber(_y)) : Util.toNumber(_y);
+
+		// NaN check; isNaN() here makes Point#add ~10% slower in V8
+		// eslint-disable-next-line no-self-compare
+		if (this.x !== this.x || this.y !== this.y) {
+			throw new Error(`Invalid Point object: (${_x}, ${_y})`);
+		}
 	}
 
 	/**
@@ -99,12 +99,15 @@ export class Point {
 	 * @returns {coords is PointExpression}
 	 */
 	/**
-	 * @param {unknown} x
-	 * @param {unknown} [y]
+	 * @param {any} x
+	 * @param {any} [y]
 	 */
 	static validate(x, y) {
-		return x instanceof Point || Array.isArray(x) || (x && typeof x === 'object' && 'x' in x && 'y' in x) ||
-			!!((x || x === 0) && (y || y === 0));
+		try {
+			return !!new Point(x, y);
+		} catch {
+			return false;
+		}
 	}
 
 	/** Returns a copy of the current point. */
@@ -278,6 +281,6 @@ export class Point {
 
 	/** Returns a string representation of the point for debugging purposes. */
 	toString() {
-		return `Point(${formatNum(this.x)}, ${formatNum(this.y)})`;
+		return `Point(${Util.formatNum(this.x)}, ${Util.formatNum(this.y)})`;
 	}
 }
