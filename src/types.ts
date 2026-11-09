@@ -504,6 +504,7 @@ declare module './Leaflet.js' {
 	interface Control<O extends ControlOptions = ControlOptions> {
 		_map: LeafletMap;
 		_container: HTMLElement;
+		_mapEvents: MapListeners;
 
 		/**
 		 * Should return the container DOM element for the control and add listeners
@@ -519,5 +520,12 @@ declare module './Leaflet.js' {
 		 * @uninheritable
 		 */
 		onRemove?(map: LeafletMap): void;
+		/**
+		 * This optional method should return an object like `{zoomend: this._update}` for [`on`](#evented-on).
+		 * The event handlers in this object will be automatically added and removed from the map with your control.
+		 * @category Extension methods
+		 * @uninheritable
+		 */
+		getEvents?(): MapListeners;
 	}
 }

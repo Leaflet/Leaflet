@@ -3,7 +3,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import {clickOnSpace} from '../dom/DomEventUtil.js';
 
-/** @import {ControlOptions, Defaults, ZoomControlDefaults, ZoomControlOptions} from '../types.js' */
+/** @import {ControlOptions, Defaults, MapListeners, ZoomControlDefaults, ZoomControlOptions} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
 /** @satisfies {Defaults<ControlOptions>} */
@@ -63,14 +63,13 @@ export class ZoomControl extends Control {
 			`${zoomName}-out`, container, e => this._zoom(e, -1));
 
 		this._updateDisabled();
-		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
 
 		return container;
 	}
 
-	/** @param {LeafletMap} map */
-	onRemove(map) {
-		map.off('zoomend zoomlevelschange', this._updateDisabled, this);
+	/** @returns {MapListeners} */
+	getEvents() {
+		return {zoomend: this._updateDisabled, zoomlevelschange: this._updateDisabled};
 	}
 
 	/** Disables the zoom buttons. */

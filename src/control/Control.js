@@ -97,7 +97,8 @@ export class Control extends Class {
 			corner.append(container);
 		}
 
-		this._map.on('unload', this.remove, this);
+		this._mapEvents = {...this.getEvents?.(), unload: this.remove};
+		map.on(this._mapEvents, this);
 
 		return this;
 	}
@@ -109,10 +110,9 @@ export class Control extends Class {
 		}
 
 		this._container.remove();
-
+		this._map.off(this._mapEvents, this);
 		this.onRemove?.(this._map);
 
-		this._map.off('unload', this.remove, this);
 		/** @type {any} */ (this)._map = null;
 
 		return this;

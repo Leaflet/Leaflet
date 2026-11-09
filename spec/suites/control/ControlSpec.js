@@ -55,6 +55,37 @@ describe('Control', () => {
 		});
 	});
 
+	describe('#getEvents', () => {
+		it('adds the returned map listeners with the control and removes them with it', () => {
+			const onZoom = sinon.spy();
+			const control = new Control();
+			control.onAdd = onAdd;
+			control.getEvents = () => ({zoomend: onZoom});
+
+			control.addTo(map);
+			map.setZoom(2, {animate: false});
+			expect(onZoom.calledOnce).to.be.true;
+			expect(onZoom.firstCall.thisValue).to.equal(control);
+
+			control.remove();
+			map.setZoom(3, {animate: false});
+			expect(onZoom.calledOnce).to.be.true;
+		});
+
+		it('removes the listeners it added even if getEvents changes', () => {
+			const onZoom = sinon.spy();
+			const control = new Control();
+			control.onAdd = onAdd;
+			control.getEvents = () => ({zoomend: onZoom});
+
+			control.addTo(map);
+			control.getEvents = () => ({});
+			control.remove();
+			map.setZoom(2, {animate: false});
+			expect(onZoom.called).to.be.false;
+		});
+	});
+
 	it('zoom buttons click on Space', () => {
 		const zoomIn = sinon.spy(map, 'zoomIn');
 		map.zoomControl._zoomInButton.dispatchEvent(new KeyboardEvent('keydown', {key: ' ', bubbles: true}));

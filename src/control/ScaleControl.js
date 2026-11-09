@@ -1,7 +1,7 @@
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {ControlOptions, Defaults, ScaleControlDefaults, ScaleControlOptions} from '../types.js' */
+/** @import {ControlOptions, Defaults, MapListeners, ScaleControlDefaults, ScaleControlOptions} from '../types.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
 /** @satisfies {Defaults<ControlOptions>} */
@@ -59,15 +59,14 @@ export class ScaleControl extends Control {
 
 		this._addScales(options, `${className}-line`, container);
 
-		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 		map.whenReady(this._update, this);
 
 		return container;
 	}
 
-	/** @param {LeafletMap} map */
-	onRemove(map) {
-		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
+	/** @returns {MapListeners} */
+	getEvents() {
+		return {[this.options.updateWhenIdle ? 'moveend' : 'move']: this._update};
 	}
 
 	/**

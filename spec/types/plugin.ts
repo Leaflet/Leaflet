@@ -1,5 +1,5 @@
 // Typings of a plugin: `declare module 'leaflet'` merges into the classes, options and event maps it augments.
-import {FeatureGroup, GeoJSON, Layer, LayerGroup, LineUtil, Map, Marker, Polygon, Polyline, Popup, Tooltip} from 'leaflet';
+import {Control, FeatureGroup, GeoJSON, Layer, LayerGroup, LineUtil, Map, Marker, Polygon, Polyline, Popup, Tooltip} from 'leaflet';
 import type {LeafletEvent, LeafletPointerEvent, MarkerEventMap, MarkerOptions, ZoomAnimEvent} from 'leaflet';
 
 declare module 'leaflet' {
@@ -70,6 +70,25 @@ class BadLayer extends Layer {
 }
 new DrawLayer().addTo(map);
 new BadLayer().addTo(map);
+
+// so are map listeners of a control
+class ZoomLevelControl extends Control {
+	onAdd() { return document.createElement('div'); }
+	getEvents() {
+		return {zoomend: this._onZoomEnd};
+	}
+	_onZoomEnd(e: LeafletEvent) { void e.target; }
+}
+class BadControl extends Control {
+	onAdd() { return document.createElement('div'); }
+	// @ts-expect-error not a zoomend event
+	getEvents() {
+		return {zoomend: this._onZoomEnd};
+	}
+	_onZoomEnd(e: {shape: string}) { void e.shape; }
+}
+new ZoomLevelControl().addTo(map);
+new BadControl().addTo(map);
 
 // groups hold layers that popups and tooltips can bind to, which those aren't
 const group = new LayerGroup().addTo(map);

@@ -2,7 +2,8 @@ import {Control} from './Control.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-/** @import {AttributionControlDefaults, AttributionControlOptions, ControlOptions, Defaults} from '../types.js' */
+/** @import {AttributionControlDefaults, AttributionControlOptions, ControlOptions, Defaults, MapListeners}
+	from '../types.js' */
 /** @import {LayerBase} from '../layer/LayerBase.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
@@ -67,15 +68,15 @@ export class AttributionControl extends Control {
 
 		this._update();
 
-		map.on({layeradd: this._addLayer, layerremove: this._removeLayer}, this);
-
 		return this._container;
 	}
 
-	/** @param {LeafletMap} map */
-	onRemove(map) {
-		map.off({layeradd: this._addLayer, layerremove: this._removeLayer}, this);
+	/** @returns {MapListeners} */
+	getEvents() {
+		return {layeradd: this._addLayer, layerremove: this._removeLayer};
+	}
 
+	onRemove() {
 		for (const layer of this._layerAttributions.keys()) {
 			this._removeLayer({layer});
 		}
