@@ -121,6 +121,8 @@ for (const mount of config.mounts) {
 		outputs.set(dest.replace(MARKDOWN_EXT, '.html'), {path: join(dir, file), site: mountSite, replace});
 	}
 }
+// the logo lives at the repo root so that it's easy to find
+outputs.set('docs/images/logo.svg', {path: 'logo.svg', site, replace: []});
 
 // Built aside and swapped in, so concurrent builds don't trip over each other and the server never sees a partial site
 const out = join(CACHE_DIR, `site-${process.pid}`);
