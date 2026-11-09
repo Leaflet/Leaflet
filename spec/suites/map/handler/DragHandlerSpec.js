@@ -1,4 +1,4 @@
-import {DomUtil, LatLng, LeafletMap, Marker, Point} from 'leaflet';
+import {DomUtil, GridLayer, LatLng, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
@@ -378,6 +378,39 @@ describe('DragHandler', () => {
 			// Place under the cursor should follow the pointer, not jump
 			// back to the pane position captured at pointerdown.
 			expect(map._getPosition().subtract(posBeforeMove)).to.be.near(drag);
+		});
+
+		it('drags the map when pressed during a zoom animation, without a click', async () => {
+			map = new LeafletMap(container, {
+				dragging: true,
+				inertia: false
+			});
+			map.setView([0, 0], 1);
+			new GridLayer().addTo(map);
+
+			const clickSpy = sinon.spy();
+			map.on('click', clickSpy);
+
+			const zoomEnded = new Promise((resolve) => { map.once('zoomend', resolve); });
+			await new Promise((resolve) => {
+				map.once('zoomanim', resolve);
+				map.setZoom(2);
+			});
+			expect(map._animatingZoom).to.be.true;
+
+			const rect = container.getBoundingClientRect(),
+			latLng = map.containerPointToLatLng([200 - rect.left, 200 - rect.top]);
+
+			const finger = new Finger();
+			await finger.moveTo(200, 200).down().moveBy(5, 0);
+			expect(map._animatingZoom).to.be.true;
+			await zoomEnded;
+			await finger.moveTo(300, 240).up();
+			UIEventSimulator.fire('click', container, {detail: 1});
+
+			expect(map.getZoom()).to.equal(2);
+			expect(map.latLngToContainerPoint(latLng)).to.be.near([300 - rect.left, 240 - rect.top]);
+			expect(clickSpy.called).to.be.false;
 		});
 
 		it('does not change the center of the map when drag is disabled on click', async () => {
