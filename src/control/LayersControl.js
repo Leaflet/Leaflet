@@ -406,8 +406,7 @@ export class LayersControl extends Control {
 		return label;
 	}
 
-	/** @param {MouseEvent} e */
-	_onInputClick(e) {
+	_onInputClick() {
 		// expanding the control on mobile with a click can cause adding a layer - we don't want this
 		if (this._preventClick) {
 			return;
@@ -449,8 +448,6 @@ export class LayersControl extends Control {
 				break;
 			}
 		}
-
-		this._refocusOnMap(e);
 	}
 
 	_checkDisabledLayers() {

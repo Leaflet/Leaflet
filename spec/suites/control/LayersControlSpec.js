@@ -460,51 +460,12 @@ describe('LayersControl', () => {
 		});
 	});
 
-	it('refocus map after interaction', () => {
-		const baseLayers = {'Layer 1': new TileLayer(''), 'Layer 2': new TileLayer('')},
-		control = new LayersControl(baseLayers).addTo(map);
+	it('keeps focus on the input after a click', () => {
+		const control = new LayersControl({'Layer 1': new TileLayer(''), 'Layer 2': new TileLayer('')}).addTo(map).expand();
+		const input = control._baseLayersList.getElementsByTagName('input')[1];
 
-		const spy = sinon.spy(map.getContainer(), 'focus');
-		map.getContainer().focus();
-		expect(spy.calledOnce).to.be.true;
-
-		// simulate keyboard-click event
-		spy.resetHistory();
-		UIEventSimulator.fire('click', control._baseLayersList.getElementsByTagName('input')[0], {
-			screenX: 0,
-			screenY: 0,
-		});
-		expect(spy.calledOnce).to.be.false;
-
-		// simulate MouseEvent at 0, 1
-		spy.resetHistory();
-		UIEventSimulator.fire('click', control._baseLayersList.getElementsByTagName('input')[0], {
-			screenX: 0,
-			screenY: 1,
-		});
-		expect(spy.calledOnce).to.be.true;
-
-		// simulate MouseEvent
-		spy.resetHistory();
-		UIEventSimulator.fire('click', control._baseLayersList.getElementsByTagName('input')[0], {
-			screenX: 100, // random number - not 0
-			screenY: 100, // random number - not 0
-		});
-		expect(spy.calledOnce).to.be.true;
-		expect(spy.firstCall.args[0]).to.eql({preventScroll: true, focusVisible: false});
-	});
-
-	it('does not scroll the page when refocusing the map', () => {
-		const container = map.getContainer();
-		container.style.marginTop = '3000px';
-		const control = new LayersControl({'Layer 1': new TileLayer('')}).addTo(map);
-		window.scrollTo(0, 0);
-
-		UIEventSimulator.fire('click', control._baseLayersList.getElementsByTagName('input')[0], {
-			screenX: 100,
-			screenY: 100,
-		});
-		expect(document.activeElement).to.equal(container);
-		expect(window.scrollY).to.equal(0);
+		input.focus();
+		UIEventSimulator.fire('click', input, {screenX: 100, screenY: 100});
+		expect(document.activeElement).to.equal(input);
 	});
 });

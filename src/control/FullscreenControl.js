@@ -83,7 +83,6 @@ export class FullscreenControl extends Control {
 		DomEvent.on(link, 'click', (e) => {
 			DomEvent.stop(e);
 			this.toggle();
-			this._refocusOnMap(/** @type {MouseEvent} */ (e));
 		});
 		DomEvent.on(this._target, 'fullscreenchange', this._onFullscreenChange, this);
 
