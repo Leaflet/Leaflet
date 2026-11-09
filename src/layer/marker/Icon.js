@@ -1,6 +1,6 @@
 import {Class} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
-import {Point} from '../../geometry/Point.js';
+import {Point, toNumber} from '../../geometry/Point.js';
 
 /** @import {Defaults, IconDefaults, IconOptions, PointExpression} from '../../types.js' */
 
@@ -186,16 +186,14 @@ export class Icon extends Class {
 	 */
 	_setIconStyles(img, name) {
 		const options = this.options;
-		let sizeOption = options[`${name}Size`];
+		const sizeOption = options[`${name}Size`];
 
-		if (typeof sizeOption === 'number') {
-			sizeOption = [sizeOption, sizeOption];
-		}
+		// a side that isn't a number, like 'auto' in [100, 'auto'], is left to CSS
+		const [width, height] = (typeof sizeOption === 'number' ? [sizeOption, sizeOption] :
+			Array.isArray(sizeOption) ? sizeOption : [sizeOption?.x, sizeOption?.y]).map(toNumber);
 
-		const size = Point.validate(sizeOption) && new Point(sizeOption);
-
-		const anchorPosition = name === 'shadow' && options.shadowAnchor || options.iconAnchor || size && size.divideBy(2);
-		const anchor = Point.validate(anchorPosition) && new Point(anchorPosition);
+		const anchorOption = name === 'shadow' && options.shadowAnchor || options.iconAnchor;
+		const anchor = Point.validate(anchorOption) ? new Point(anchorOption) : {x: width / 2, y: height / 2};
 
 		img.className = `leaflet-marker-${name} ${options.className || ''}`;
 
@@ -203,16 +201,12 @@ export class Icon extends Class {
 		const {style} = img;
 		style.marginLeft = style.marginTop = style.transformOrigin = style.width = style.height = '';
 
-		if (anchor) {
-			style.marginLeft = `${-anchor.x}px`;
-			style.marginTop  = `${-anchor.y}px`;
-			style.transformOrigin = `${anchor.x}px ${anchor.y}px`;
-		}
+		if (!isNaN(anchor.x)) { style.marginLeft = `${-anchor.x}px`; }
+		if (!isNaN(anchor.y)) { style.marginTop = `${-anchor.y}px`; }
+		if (!isNaN(anchor.x) && !isNaN(anchor.y)) { style.transformOrigin = `${anchor.x}px ${anchor.y}px`; }
 
-		if (size) {
-			style.width  = `${size.x}px`;
-			style.height = `${size.y}px`;
-		}
+		if (!isNaN(width)) { style.width = `${width}px`; }
+		if (!isNaN(height)) { style.height = `${height}px`; }
 	}
 
 	/**

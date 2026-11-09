@@ -49,38 +49,37 @@ export class Point {
 	 * @param {boolean} [round]
 	 */
 	constructor(x, y, round) {
-
-		const valid = Point.validate(/** @type {any} */ (x), y);
-		if (!valid) {
-			throw new Error(`Invalid Point object: (${x}, ${y})`);
-		}
-
-		let _x, _y;
 		if (x instanceof Point) {
 			// We can use the same object, no need to clone it
 			// eslint-disable-next-line no-constructor-return
 			return x;
-		} else if (Array.isArray(x)) {
+		}
+
+		let _x = x, _y = y;
+		if (Array.isArray(x)) {
 			_x = x[0];
 			_y = x[1];
-		} else if (typeof x === 'object' && 'x' in x && 'y' in x) {
+		} else if (typeof x === 'object' && x !== null) {
 			_x = x.x;
 			_y = x.y;
-		} else {
-			_x = x;
-			_y = /** @type {number} */ (y);
 		}
 
 		/**
 		 * The `x` coordinate of the point
 		 * @type {number}
 		 */
-		this.x = (round ? Math.round(_x) : _x);
+		this.x = round ? Math.round(toNumber(_x)) : toNumber(_x);
 		/**
 		 * The `y` coordinate of the point
 		 * @type {number}
 		 */
-		this.y = (round ? Math.round(_y) : _y);
+		this.y = round ? Math.round(toNumber(_y)) : toNumber(_y);
+
+		// NaN check; isNaN() here makes Point#add ~10% slower in V8
+		// eslint-disable-next-line no-self-compare
+		if (this.x !== this.x || this.y !== this.y) {
+			throw new Error(`Invalid Point object: (${_x}, ${_y})`);
+		}
 	}
 
 	/**
@@ -99,12 +98,15 @@ export class Point {
 	 * @returns {coords is PointExpression}
 	 */
 	/**
-	 * @param {unknown} x
-	 * @param {unknown} [y]
+	 * @param {any} x
+	 * @param {any} [y]
 	 */
 	static validate(x, y) {
-		return x instanceof Point || Array.isArray(x) || (x && typeof x === 'object' && 'x' in x && 'y' in x) ||
-			!!((x || x === 0) && (y || y === 0));
+		try {
+			return !!new Point(x, y);
+		} catch {
+			return false;
+		}
 	}
 
 	/** Returns a copy of the current point. */
@@ -280,4 +282,12 @@ export class Point {
 	toString() {
 		return `Point(${formatNum(this.x)}, ${formatNum(this.y)})`;
 	}
+}
+
+/**
+ * Converts numbers and numeric strings to numbers (including Infinity), and anything else to NaN.
+ * @param {unknown} v
+ */
+export function toNumber(v) {
+	return typeof v === 'number' ? v : typeof v === 'string' && v.trim() !== '' ? +v : NaN;
 }

@@ -13,6 +13,41 @@ describe('Point', () => {
 			expect(p.x).to.eql(1);
 			expect(p.y).to.eql(3);
 		});
+
+		it('converts numeric strings to numbers', () => {
+			expect(new Point('5', '3')).to.eql(new Point(5, 3));
+			expect(new Point(['5', '3'])).to.eql(new Point(5, 3));
+			expect(new Point({x: '5', y: '3'})).to.eql(new Point(5, 3));
+			expect(new Point('5', '3').add([1, 1])).to.eql(new Point(6, 4));
+		});
+
+		it('throws on coordinates that are not numbers', () => {
+			expect(() => new Point('foo', 3)).to.throw();
+			expect(() => new Point(5, '')).to.throw();
+			expect(() => new Point(null, 3)).to.throw();
+			expect(() => new Point([])).to.throw();
+			expect(() => new Point([5, NaN])).to.throw();
+			expect(() => new Point([5, null])).to.throw();
+			expect(() => new Point({x: 5})).to.throw();
+			expect(() => new Point({x: 5, y: 'auto'})).to.throw();
+		});
+
+		it('accepts infinite coordinates', () => {
+			expect(new Point(Infinity, -Infinity).x).to.eql(Infinity);
+		});
+	});
+
+	describe('validate', () => {
+		it('matches what the constructor accepts', () => {
+			expect(Point.validate(5, 3)).to.eql(true);
+			expect(Point.validate(['5', '3'])).to.eql(true);
+			expect(Point.validate({x: 5, y: 3})).to.eql(true);
+			expect(Point.validate(new Point(5, 3))).to.eql(true);
+			expect(Point.validate(undefined)).to.eql(false);
+			expect(Point.validate([])).to.eql(false);
+			expect(Point.validate([5, 'auto'])).to.eql(false);
+			expect(Point.validate('foo', 3)).to.eql(false);
+		});
 	});
 
 	describe('#subtract', () => {

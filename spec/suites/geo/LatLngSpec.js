@@ -30,6 +30,42 @@ describe('LatLng', () => {
 			const b = new LatLng(-25, -74, -50);
 			expect(b.alt).to.eql(-50);
 		});
+
+		it('converts numeric strings to numbers', () => {
+			expect(new LatLng('50.5', '30')).to.eql(new LatLng(50.5, 30));
+			expect(new LatLng(['50.5', '30', '100'])).to.eql(new LatLng(50.5, 30, 100));
+			expect(new LatLng({lat: '50.5', lng: '30'})).to.eql(new LatLng(50.5, 30));
+		});
+
+		it('throws on coordinates that are not numbers', () => {
+			expect(() => new LatLng('foo', 30)).to.throw();
+			expect(() => new LatLng(50, '')).to.throw();
+			expect(() => new LatLng(null, 30)).to.throw();
+			expect(() => new LatLng(true, 30)).to.throw();
+			expect(() => new LatLng(['foo', 'bar'])).to.throw();
+			expect(() => new LatLng([undefined, 30])).to.throw();
+			expect(() => new LatLng([50, NaN])).to.throw();
+			expect(() => new LatLng([50, null])).to.throw();
+			expect(() => new LatLng([[50], 30])).to.throw();
+			expect(() => new LatLng([50, 30, 0, 0])).to.throw();
+			expect(() => new LatLng({lat: 50})).to.throw();
+			expect(() => new LatLng({lat: undefined, lng: 30})).to.throw();
+			expect(() => new LatLng({lat: 50, lng: NaN})).to.throw();
+		});
+
+		it('accepts infinite coordinates', () => {
+			expect(new LatLng(10, -Infinity).lng).to.eql(-Infinity);
+		});
+
+		it('throws on an altitude that is not a number', () => {
+			expect(() => new LatLng(50, 30, 'foo')).to.throw('Invalid LatLng altitude');
+			expect(() => new LatLng([50, 30, NaN])).to.throw('Invalid LatLng altitude');
+			expect(() => new LatLng({lat: 50, lng: 30, alt: ''})).to.throw('Invalid LatLng altitude');
+		});
+
+		it('ignores a null altitude', () => {
+			expect(new LatLng(50, 30, null)).to.eql(new LatLng(50, 30));
+		});
 	});
 
 	describe('validate', () => {
@@ -38,6 +74,8 @@ describe('LatLng', () => {
 			expect(LatLng.validate([50, 30])).to.eql(true);
 			expect(LatLng.validate({lat: 50, lng: 30})).to.eql(true);
 			expect(LatLng.validate(new LatLng(50, 30))).to.eql(true);
+			expect(LatLng.validate(['50', '30'])).to.eql(true);
+			expect(LatLng.validate(10, Infinity)).to.eql(true);
 		});
 
 		it('returns false for invalid inputs without throwing', () => {
@@ -45,6 +83,10 @@ describe('LatLng', () => {
 			expect(LatLng.validate(null)).to.eql(false);
 			expect(LatLng.validate('foo')).to.eql(false);
 			expect(LatLng.validate([50])).to.eql(false);
+			expect(LatLng.validate('foo', 30)).to.eql(false);
+			expect(LatLng.validate([50, NaN])).to.eql(false);
+			expect(LatLng.validate({lat: 50})).to.eql(false);
+			expect(LatLng.validate(50, 30, 'foo')).to.eql(false);
 		});
 	});
 
@@ -159,7 +201,8 @@ describe('LatLng', () => {
 		});
 
 		it('clones a LatLng that would not pass validation', () => {
-			const a = new LatLng('foo', 'bar');
+			const a = new LatLng(0, 0);
+			a.lat = a.lng = NaN;
 			const b = a.clone();
 
 			expect(b).to.not.equal(a);
