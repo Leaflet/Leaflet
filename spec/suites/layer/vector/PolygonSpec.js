@@ -387,5 +387,11 @@ describe('Polygon', () => {
 			poly.setLatLngs([b.getSouthWest(), b.getNorthWest(), b.getNorthEast()]);
 			expect(poly._parts).to.have.length(1);
 		});
+
+		it('handles a missing weight', () => {
+			const b = map.getBounds();
+			const poly = new Polygon([b.getSouthWest(), b.getNorthWest(), b.getNorthEast()], {weight: undefined}).addTo(map);
+			expect(poly._parts).to.have.length(1);
+		});
 	});
 });

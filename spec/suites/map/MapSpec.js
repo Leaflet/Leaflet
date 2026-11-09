@@ -206,8 +206,16 @@ describe('Map', () => {
 		it('returns correct center after invalidateSize (#1919)', () => {
 			const center = new LatLng(10, 10);
 			map.setView(center, 1);
+			container.style.width = '300px';
+			map.invalidateSize({pan: false});
+			expect(map.getCenter().equals(center)).to.be.false;
+		});
+
+		it('keeps a precise center after invalidateSize without a size change', () => {
+			const center = new LatLng(10.0001, 10.0001);
+			map.setView(center, 1);
 			map.invalidateSize();
-			expect(map.getCenter()).not.to.eql(center);
+			expect(map.getCenter()).to.eql(center);
 		});
 
 		it('returns a new object that can be mutated without affecting the map', () => {

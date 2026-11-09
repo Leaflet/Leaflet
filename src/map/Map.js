@@ -1240,10 +1240,14 @@ export class LeafletMap extends Evented {
 
 		const oldSize = this.getSize();
 		this._sizeChanged = true;
-		this._lastCenter = null;
 
-		const newSize = this.getSize(),
-		oldCenter = oldSize.divideBy(2).round(),
+		const newSize = this.getSize();
+
+		// keep the exact center for a no-op call (e.g. the initial resize observer callback), since recomputing
+		// it from the pane snaps it to whole pixels
+		if (!newSize.equals(oldSize)) { this._lastCenter = null; }
+
+		const oldCenter = oldSize.divideBy(2).round(),
 		newCenter = newSize.divideBy(2).round(),
 		offset = oldCenter.subtract(newCenter);
 
