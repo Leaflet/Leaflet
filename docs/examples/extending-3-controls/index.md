@@ -95,6 +95,8 @@ new WatermarkControl({ position: 'bottomleft' }).addTo(map);
 
 If your custom control has interactive elements such as clickable buttons, remember to use `DomEvent.on()` inside `onAdd()` and `DomEvent.off()` inside `onRemove()`.
 
+Events on a control bubble up to the map, so by default clicking or dragging inside it can pan or zoom the map, and scrolling over it zooms. To prevent that, call `DomEvent.disableClickPropagation(container)` (and `DomEvent.disableScrollPropagation(container)` if the control scrolls) in `onAdd()`, like the built-in controls do.
+
 If your custom control consists of more than one HTML element (like `ZoomControl`, which has two buttons), you'll have to create the whole hierarchy of elements and return the topmost container.
 
 ## Publishing Your Plugin
