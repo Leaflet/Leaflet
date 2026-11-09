@@ -124,10 +124,9 @@ const defaultOptions = {
  * 	.openOn(map);
  * ```
  *
- * **Security note.** Popup string content is rendered as HTML. If your content
- * may include untrusted input (e.g. data from users or external APIs), sanitize
- * it with a library like [DOMPurify](https://github.com/cure53/DOMPurify), or
- * build a DOM element using `textContent` to render it as plain text:
+ * **Security note.** Popup string content is rendered as HTML. If your content may include untrusted input (e.g. data
+ * from users or external APIs), sanitize it first, or build a DOM element using `textContent` to render it as plain
+ * text:
  *
  * ```js
  * const el = document.createElement('div');

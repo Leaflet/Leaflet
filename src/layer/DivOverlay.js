@@ -211,11 +211,10 @@ export class DivOverlay extends LayerBase {
 	}
 
 	/**
-	 * Sets the HTML content of the overlay. A `String` argument is rendered as HTML; if it may contain
-	 * untrusted input, sanitize it (e.g. with DOMPurify) or pass an `HTMLElement` with safe `textContent`
-	 * instead. A `DocumentFragment` can be passed as well. If a function is passed the source layer will be
-	 * passed to the function. The function should return a `String`, `HTMLElement` or `DocumentFragment` to be
-	 * used in the overlay.
+	 * Sets the HTML content of the overlay. A `String` argument is rendered as HTML; if it may contain untrusted
+	 * input, sanitize it or pass an `HTMLElement` with safe `textContent` instead. A `DocumentFragment` can be
+	 * passed as well. If a function is passed the source layer will be passed to the function. The function should
+	 * return a `String`, `HTMLElement` or `DocumentFragment` to be used in the overlay.
 	 * @param {OverlayContent} content
 	 */
 	setContent(content) {

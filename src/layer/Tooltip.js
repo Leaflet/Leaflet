@@ -71,10 +71,9 @@ const directions = {top: [0.5, 1], bottom: [0.5, 0], center: [0.5, 0.5], right: 
  * 	.addTo(map);
  * ```
  *
- * **Security note.** Tooltip string content is rendered as HTML. If your content
- * may include untrusted input (e.g. data from users or external APIs), sanitize
- * it with a library like [DOMPurify](https://github.com/cure53/DOMPurify), or
- * build a DOM element using `textContent` to render it as plain text:
+ * **Security note.** Tooltip string content is rendered as HTML. If your content may include untrusted input (e.g.
+ * data from users or external APIs), sanitize it first, or build a DOM element using `textContent` to render it as
+ * plain text:
  *
  * ```js
  * const el = document.createElement('div');
