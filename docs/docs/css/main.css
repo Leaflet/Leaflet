@@ -497,7 +497,6 @@ table.plugins td:first-child a {
 	break-inside: avoid;
 }
 
-/* reference.css only loads on some of the pages that share this, so the heading margin is set here */
 .api-page h2:has(+ .reference-versions) {
 	margin-bottom: .5em;
 }
@@ -1300,3 +1299,114 @@ blockquote {
 }
 
 /** End site dialog **/
+
+/* API reference pages; :where adds no specificity, so the more specific rules above (h2:first-child) still win */
+
+html:has(.reference-page) {
+	scroll-padding-top: 5rem;
+	overflow: auto;
+}
+
+:where(.reference-page) h2 {
+	margin-top: 2em;
+	margin-bottom: .83em;
+}
+
+:where(.reference-page) #toc ~ article > h2 {
+	margin-top: 2em;
+}
+
+/* class headings are sticky within their article, so a linked one scrolls to the very top to cover the one stuck
+   there; the id is on the article since browsers scroll a sticky element to where it's stuck, e.g. its article's end */
+:where(.reference-page) #toc ~ article {
+	scroll-margin-top: -5rem;
+}
+
+:where(.reference-page) h3 {
+	margin-top: 1.75em;
+	margin-bottom: .25em;
+	padding-top: 0;
+}
+
+/* open and closed summaries share the box model, so toggling one doesn't shift it */
+:where(.reference-page) details.inherited > summary,
+:where(.reference-page) section > h4 {
+	display: block;
+	font-weight: 500;
+	margin: 1.5em 0 0;
+	padding: 0.25em 0;
+	border-bottom: 1px solid transparent;
+}
+:where(.reference-page) details.inherited:not([open]) + details.inherited > summary,
+:where(.reference-page) h3 + section > h4,
+:where(.reference-page) h3 + details.inherited > summary {
+	margin-top: 0;
+}
+:where(.reference-page) details.inherited[open] > summary,
+:where(.reference-page) section > h4 {
+	position: sticky;
+	top: 2.8em;
+	background-color: white;
+	border-bottom-color: #eee;
+}
+
+/* the id is on the section since its heading is sticky; a linked section lands with its heading where it sticks,
+   hiding the previous one behind the class heading, and the first one of a supersection shows the supersection
+   heading above it */
+:where(.reference-page) section[id] {
+	scroll-margin-top: -2rem;
+}
+:where(.reference-page) h3 + section[id] {
+	scroll-margin-top: 3rem;
+}
+
+:where(.reference-page) details.inherited > summary {
+	cursor: pointer;
+	list-style: none;
+}
+:where(.reference-page) details.inherited > summary::-webkit-details-marker {
+	display: none;
+}
+:where(.reference-page) details.inherited > summary::before {
+	content: '▶';
+	display: inline-block;
+	margin-right: 0.3em;
+	font-size: 12px;
+	transition: transform 0.4s ease-out;
+}
+:where(.reference-page) details.inherited[open] > summary::before {
+	transform: rotate(90deg);
+}
+
+:where(.reference-page) table {
+	margin-bottom: 0;
+}
+
+/* 	Markdown renders some spurious <p>s inside the table cells */
+:where(.reference-page) td > p {
+	margin:0;
+}
+
+/* 	This just looks bad (with the current grey headers for sections which Vlad doesn't really like, so might have to change this) */
+:where(.reference-page) section.collapsable > div.section-comments > p {
+	margin:0;
+}
+
+:where(.reference-page) div.section-comments {
+	margin-bottom: 0.5em;
+}
+
+:where(.reference-page) section.collapsable pre {
+	margin:0;
+}
+
+:where(.reference-page) .translatable-badge {
+	display: inline-block;
+	padding: 0.15em 0.5em;
+	background-color: #b5d99c;
+	border-radius: 100px;
+	font-size: 0.75em;
+	margin: 0 0.5em;
+	font-weight: 700;
+	text-decoration: none;
+}

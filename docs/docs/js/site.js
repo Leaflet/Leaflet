@@ -1,3 +1,37 @@
+// the Ukraine appeal dialog
+const SESSION_KEY = 'dialog-session';
+const WEEK = 7 * 24 * 60 * 60 * 1000;
+
+function openDialog() {
+	// re-show a week after it was last closed
+	try {
+		if (Date.now() - localStorage.getItem(SESSION_KEY) < WEEK) { return; }
+	} catch {
+		// storage is blocked, so show it every time
+	}
+
+	// kept in a template so that pages don't carry the appeal text unless it's shown
+	document.body.append(document.getElementById('dialog-template').content);
+	const dialog = document.getElementById('dialog');
+
+	dialog.addEventListener('close', () => {
+		dialog.remove();
+		try { localStorage.setItem(SESSION_KEY, Date.now()); } catch { /* blocked storage */ }
+	});
+
+	// the content fills the dialog box, so only clicks on the backdrop hit the dialog itself
+	dialog.addEventListener('click', (e) => {
+		if (e.target === dialog) { dialog.close(); }
+	});
+
+	dialog.showModal();
+	// focus the dialog rather than the close button, which would show a focus ring right away
+	dialog.focus();
+}
+
+openDialog();
+
+// the floating TOC, on pages with a #toc (the references and the plugins page)
 const tocCopy = document.createElement('div');
 tocCopy.id = 'toc-copy';
 
@@ -103,6 +137,7 @@ if (toc) {
 	});
 }
 
+// the back-to-top button, shown while scrolling up
 const backToTop = document.querySelector('#back-to-top');
 backToTop.addEventListener('click', () => {
 	document.documentElement.scrollIntoView({behavior: 'smooth'});
@@ -124,3 +159,15 @@ const scrollEventHandler = function scrollEventHandler() {
 window.addEventListener('scroll', () => {
 	scrollEventHandler();
 });
+
+// Opens the inherited group a link points into, for browsers that don't expand <details> on navigation
+function openTarget() {
+	const el = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+	const details = el?.closest('details:not([open])');
+	if (details) {
+		details.open = true;
+		el.scrollIntoView();
+	}
+}
+openTarget();
+window.addEventListener('hashchange', openTarget);

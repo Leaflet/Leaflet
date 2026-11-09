@@ -29,9 +29,6 @@
 	<link href="https://leafletjs.com/atom.xml" type="application/atom+xml" rel="alternate" title="Leaflet Dev Blog Atom Feed" />
 
 	<link rel="stylesheet" href="{{ root }}docs/css/main.css" />
-	{% if page.title == 'Documentation' %}
-	<link rel="stylesheet" href="{{ root }}docs/css/reference.css" />
-	{% endif %}
 
 	<!-- Leaflet -->
 	{% include leaflet.html %}
@@ -69,7 +66,7 @@
 			{% if page.url == '/reference.html' %}
 				<span>Docs</span>
 			{% else %}
-				<a href="{{ root }}reference.html"{% if page.bodyclass == 'api-page' %} class="active"{% endif %}>Docs</a>
+				<a href="{{ root }}reference.html"{% if page.bodyclass contains 'api-page' %} class="active"{% endif %}>Docs</a>
 			{% endif %}
 		</li>
 		<li>
@@ -117,10 +114,6 @@
 </footer>
 
 <template id="dialog-template">{% include ukraine.html %}</template>
-<script src="{{ root }}dialog/dialog.js"></script>
-<script src="{{ root }}docs/js/docs.js"></script>
-{% if page.title == 'Documentation' %}
-<script src="{{ root }}docs/js/reference.js"></script>
-{% endif %}
+<script src="{{ root }}docs/js/site.js"></script>
 </body>
 </html>
