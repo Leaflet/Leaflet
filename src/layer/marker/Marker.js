@@ -536,6 +536,13 @@ export class Marker extends Layer {
 		if (e.target === this._icon && !e.repeat && (e.key === 'Enter' || e.key === ' ')) {
 			e.preventDefault(); // stop Space from scrolling the page
 			this._icon?.click();
+
+			// the popup comes after all markers in the tab order, so move focus into the popup this opened
+			const popup = this._map?._popup;
+			if (popup?.isOpen() && popup._ariaSource === this._icon) {
+				/** @type {HTMLElement | null} */ (popup.getElement()?.querySelector(
+					'a[href], button, input, select, textarea, [tabindex="0"]'))?.focus({preventScroll: true});
+			}
 		}
 	}
 

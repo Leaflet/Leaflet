@@ -439,6 +439,48 @@ describe('Popup', () => {
 		});
 	});
 
+	describe('focus on open', () => {
+		it('moves focus into the popup when its marker is activated with the keyboard', () => {
+			const marker = new Marker(center).bindPopup('Null <a href="#">Island</a>').addTo(map);
+
+			marker._icon.focus();
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'Enter'});
+
+			expect(marker.isPopupOpen()).to.be.true;
+			expect(document.activeElement).to.equal(marker.getPopup().getElement().querySelector('a[href="#"]'));
+		});
+
+		it('moves focus into a popup bound to a group of markers', () => {
+			const marker = new Marker(center);
+			new FeatureGroup([marker]).bindPopup('Null Island').addTo(map);
+
+			marker._icon.focus();
+			UIEventSimulator.fire('keydown', marker._icon, {key: ' '});
+
+			expect(document.activeElement).to.equal(map._popup._closeButton);
+		});
+
+		it('leaves focus on the marker when the popup is opened with a click', () => {
+			const marker = new Marker(center).bindPopup('Null Island').addTo(map);
+
+			marker._icon.focus();
+			UIEventSimulator.fire('click', marker._icon);
+
+			expect(marker.isPopupOpen()).to.be.true;
+			expect(document.activeElement).to.equal(marker._icon);
+		});
+
+		it('leaves focus on the marker when a keypress closes the popup', () => {
+			const marker = new Marker(center).bindPopup('Null Island').addTo(map).openPopup();
+
+			marker._icon.focus();
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'Enter'});
+
+			expect(marker.isPopupOpen()).to.be.false;
+			expect(document.activeElement).to.equal(marker._icon);
+		});
+	});
+
 	describe('focus on close', () => {
 		it('moves focus to the marker when the close button is clicked', () => {
 			const marker = new Marker(center).bindPopup('Null Island').addTo(map);

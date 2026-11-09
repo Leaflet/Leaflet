@@ -62,7 +62,8 @@ export class KeyboardHandler extends Handler {
 
 	//  acquire/lose focus #594, #1228, #1540
 	_onPointerDown() {
-		if (this._focused) { return; }
+		// a screen reader's simulated click on a marker has no mousedown to refocus the marker after this
+		if (this._focused || this._map._container.contains(document.activeElement)) { return; }
 
 		// script focus matches :focus-visible by default, which would show a focus ring on every click
 		this._map._container.focus({preventScroll: true, focusVisible: false});
