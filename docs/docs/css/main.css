@@ -1403,6 +1403,7 @@ html:has(.reference-page) {
 :where(.reference-page) .translatable-badge {
 	display: inline-block;
 	padding: 0.15em 0.5em;
+	color: #105c00;
 	background-color: #b5d99c;
 	border-radius: 100px;
 	font-size: 0.75em;
