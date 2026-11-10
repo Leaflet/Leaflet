@@ -279,7 +279,7 @@ function treeDir(sha) {
 		} catch (err) {
 			throw new Error(`Can't read pinned commit ${sha}; fetch the branch it's on (e.g. \`git fetch origin v1\`).\n${err.stderr}`, {cause: err});
 		}
-		execFileSync('tar', ['-x', '-C', tmp], {input: archive});
+		execFileSync('tar', ['-x'], {input: archive, cwd: tmp});
 		renameSync(tmp, dir);
 	}
 	return dir;

@@ -33,7 +33,7 @@ const kB = bytes => `${+(bytes / 1000).toFixed(2)} kB`;
 const sign = d => (d > 0 ? '+' : '-');
 
 async function bundleSize(dir, imports) {
-	const code = `import {${imports}} from '${resolve(dir, 'src/Leaflet.js')}'; console.log(${imports});`;
+	const code = `import {${imports}} from ${JSON.stringify(resolve(dir, 'src/Leaflet.js'))}; console.log(${imports});`;
 	const build = await rolldown({
 		input: 'entry',
 		onLog() {},
