@@ -40,7 +40,7 @@ If you have any questions, take a look at the [FAQ](https://github.com/Leaflet/L
 
 ## Features
 
-Leaflet doesn't try to do everything for everyone. Instead it focuses on making *the basic things work perfectly*.
+Leaflet doesn't try to do everything for everyone. Instead it focuses on making *the core things work really well*.
 
 <div class="features clearfix">
 <div class="no-break">
@@ -49,7 +49,7 @@ Leaflet doesn't try to do everything for everyone. Instead it focuses on making 
 
 - Tile layers and WMS
 - Markers, popups and tooltips
-- Polylines, polygons, circles <span class="quiet">and rectangles</span>
+- Polylines, polygons, circles
 - GeoJSON
 - Image, video and SVG overlays
 
@@ -58,51 +58,42 @@ Leaflet doesn't try to do everything for everyone. Instead it focuses on making 
 
 ### Interaction
 
-- Panning with inertia
-- Zoom with the wheel, pinch, double tap <span class="quiet">or shift-drag</span>
-- Same behavior for mouse, touch and pen
+- Smooth panning with inertia
+- Zoom with the wheel, pinch, double tap or shift-drag
+- Mouse, touch and pen support
 - Draggable markers
-- Events <span class="quiet">on the map and every layer</span>
+- Zoom, layers, scale, fullscreen and attribution controls
 
 </div>
 <div class="no-break">
 
 ### Rendering
 
-- GPU-accelerated zoom and pan animations
-- SVG or Canvas vectors, <span class="quiet">clipped and simplified on the fly</span>
+- GPU-accelerated zoom and pan
+- SVG or Canvas vectors, clipped and simplified on the fly
 - Sharp on high-DPI screens
 - Fractional zoom levels
-- Follows the size of its container
+- Resizes with its container
 
 </div>
 <div class="no-break">
 
 ### Customization
 
-- Plain CSS <span class="quiet">for easy restyling</span>
-- Image- and HTML-based markers
-- Custom layers and controls <span class="quiet">by extending standard JS classes</span>
-- Custom projections <span class="quiet">(with `EPSG:3857/4326/3395` built in)</span>
-- Non-geographical maps <span class="quiet">for floor plans, game maps and images</span>
+- Styled with plain CSS
+- Image and HTML markers
+- Custom projections beyond built-in EPSG:3857/4326/3395
+- Non-geographical maps for floor plans, games or images
 
 </div>
 <div class="no-break">
 
 ### Accessibility
 
-- Keyboard navigation <span class="quiet">of the map, markers and controls</span>
-- Labeled controls and alt text <span class="quiet">for screen readers</span>
-
-</div>
-<div class="no-break">
-
-### Controls
-
-- Zoom buttons
-- Attribution
-- Layer switcher
-- Scale
+- Keyboard navigation of the map, markers and controls
+- Labeled controls and alt text
+- Screen reader-friendly popups and tooltips
+- Translatable built-in text
 
 </div>
 <div class="no-break">
@@ -112,7 +103,9 @@ Leaflet doesn't try to do everything for everyone. Instead it focuses on making 
 - Tree-shakable ES modules
 - TypeScript types included
 - No dependencies
-- All modern browsers <span class="quiet">and devices</span>
+- Extensible with plain JS classes
+- Events on every map and layer
+- Works in all modern browsers
 
 </div>
 </div>
