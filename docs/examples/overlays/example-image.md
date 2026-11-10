@@ -1,7 +1,26 @@
 ---
 layout: tutorial_frame
 title: Image Overlay Tutorial
+customMapContainer: true
+css: |
+  body {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .opacity-control {
+    padding: 0.5rem;
+    font: 1rem system-ui, sans-serif;
+  }
+  .opacity-control input {
+    vertical-align: middle;
+  }
 ---
+<div class="opacity-control">
+	<label for="overlay-opacity">Image overlay opacity</label>
+	<input id="overlay-opacity" type="range" min="0" max="1" step="0.01" value="0.8">
+</div>
+<div id="map"></div>
+
 <script type="module">
 	import {LeafletMap, TileLayer, LatLngBounds, ImageOverlay} from 'leaflet';
 
@@ -25,4 +44,9 @@ title: Image Overlay Tutorial
 	}).addTo(map);
 
 	map.fitBounds(latLngBounds);
+
+	const opacity = document.getElementById('overlay-opacity');
+	opacity.addEventListener('input', () => {
+		imageOverlay.setOpacity(opacity.valueAsNumber);
+	});
 </script>
