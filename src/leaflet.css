@@ -312,7 +312,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 }
 
 .leaflet-bar a,
-.leaflet-bar [role="button"] {
+.leaflet-bar :where([role="button"]) {
 	background-color: #fff;
 	border: 0;
 	border-bottom: 1px solid #ccc;
@@ -331,26 +331,26 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 
 .leaflet-bar a:hover,
 .leaflet-bar a:focus,
-.leaflet-bar [role="button"]:hover,
-.leaflet-bar [role="button"]:focus {
+.leaflet-bar :where([role="button"]):hover,
+.leaflet-bar :where([role="button"]):focus {
 	background-color: #f4f4f4;
 }
 
 .leaflet-bar a:first-child,
-.leaflet-bar [role="button"]:first-child {
+.leaflet-bar :where([role="button"]):first-child {
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
 }
 
 .leaflet-bar a:last-child,
-.leaflet-bar [role="button"]:last-child {
+.leaflet-bar :where([role="button"]):last-child {
 	border-bottom-left-radius: 2px;
 	border-bottom-right-radius: 2px;
 	border-bottom: none;
 }
 
 .leaflet-bar a.leaflet-disabled,
-.leaflet-bar [role="button"].leaflet-disabled {
+.leaflet-bar :where([role="button"]).leaflet-disabled {
 	cursor: default;
 	background-color: #f4f4f4;
 	color: #bbb;
