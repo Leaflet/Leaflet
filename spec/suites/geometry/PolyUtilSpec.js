@@ -1,4 +1,4 @@
-import {Bounds, LatLng, LeafletMap, LineUtil, Point, PolyUtil, Polygon} from 'leaflet';
+import {Bounds, LeafletMap, Point, PolyUtil, Polygon} from 'leaflet';
 import sinon from 'sinon';
 
 describe('PolyUtil', () => {
@@ -73,17 +73,10 @@ describe('PolyUtil', () => {
 		});
 
 		it('keeps the center of a zero-area polygon on the ring when the ring goes back over its edges', () => {
-			// a V traced out and back: the middle of its extent is in the empty middle of the V
-			const latlngs = [[0, 0], [10, 10], [0, 20], [10, 10]];
+			// an L traced out and back: the middle of its extent is off the shape, closest to the bottom edge
+			const latlngs = [[0, 0], [0, 20], [10, 20], [0, 20]];
 			const center = PolyUtil.polygonCenter(latlngs, crs);
-
-			const p = crs.project(center),
-			ring = latlngs.map(latlng => crs.project(new LatLng(latlng)));
-			let minDist = Infinity;
-			for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-				minDist = Math.min(minDist, LineUtil.pointToSegmentDistance(p, ring[j], ring[i]));
-			}
-			expect(minDist).to.be.below(1e-6);
+			expect(center).to.be.nearLatLng([0, 10]);
 		});
 
 		it('throws error if latlngs not passed', () => {
