@@ -66,6 +66,12 @@ describe('PolyUtil', () => {
 			expect(layer.getCenter()).to.be.nearLatLng([0, 0]);
 		});
 
+		it('computes the middle of a polygon with zero area', () => {
+			const latlngs = [[0, 0], [0, 10], [0, 4]];
+			const center = PolyUtil.polygonCenter(latlngs, crs);
+			expect(center).to.be.nearLatLng([0, 5]);
+		});
+
 		it('throws error if latlngs not passed', () => {
 			expect(() => {
 				PolyUtil.polygonCenter(null,  crs);

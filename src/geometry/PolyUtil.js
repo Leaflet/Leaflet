@@ -1,9 +1,9 @@
 import * as LineUtil from './LineUtil.js';
 import {LatLng} from '../geo/LatLng.js';
 import {Point} from './Point.js';
+import {Bounds} from './Bounds.js';
 
 /**
- * @import {Bounds} from './Bounds.js'
  * @import {CRS} from '../geo/crs/CRS.js'
  * @import {LatLngExpression} from '../types.js'
  */
@@ -89,8 +89,11 @@ export function polygonCenter(latlngs, crs) {
 		area += f;
 	}
 
-	// area is 0 when the polygon is so small that all points are on the same pixel
-	return crs.unproject(area === 0 ? origin : new Point(x / (3 * area), y / (3 * area))._add(origin));
+	// area is 0 when all points lie on one line (or on the same spot), so the middle of their extent is the center
+	if (area === 0) {
+		return crs.unproject(new Bounds(points).getCenter()._add(origin));
+	}
+	return crs.unproject(new Point(x / (3 * area), y / (3 * area))._add(origin));
 }
 
 /**
