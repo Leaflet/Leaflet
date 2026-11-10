@@ -3,6 +3,71 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 2.0.0-beta.3 (2026-11-10)
+
+The third beta of Leaflet 2.0 makes **chained view changes** like `setView(c).setZoom(z)` or `panTo(c).panBy(o)` end where you'd expect, makes adding and removing **event listeners up to hundreds of times faster** on busy maps, and **validates coordinates** so bad data fails where it's created instead of somewhere deep in rendering. It also brings a round of **keyboard and screen reader** fixes for markers, popups and controls, along with over 15 bug fixes.
+
+### ⚡️ Performance
+
+* Make adding and removing event listeners constant-time: adding 50,000 markers with popups to a map takes 0.5 s instead of 15.6 s, and `on`, `off`, `once` and `fire` are faster in the common small cases too ([#10537](https://github.com/Leaflet/Leaflet/pull/10537), [#6914](https://github.com/Leaflet/Leaflet/issues/6914), [#6923](https://github.com/Leaflet/Leaflet/issues/6923))
+* Position tooltips without measuring them, so maps with many permanent tooltips zoom without a forced layout per tooltip ([#6948](https://github.com/Leaflet/Leaflet/issues/6948))
+* Construct `Point` objects ~40% faster, and the array and object forms of `Point` and `LatLng` 5–15% faster ([#10550](https://github.com/Leaflet/Leaflet/pull/10550))
+
+### ✨ Improvements
+
+* Make view changes compose regardless of call order and timing: `setView(c)` then `setZoom(z)` (or the reverse) keeps both, `panTo(c).panBy(o)` ends at `c + o`, and `zoomIn()` calls during a zoom animation add up ([#10549](https://github.com/Leaflet/Leaflet/pull/10549), [#2609](https://github.com/Leaflet/Leaflet/issues/2609), [#2915](https://github.com/Leaflet/Leaflet/issues/2915), [#7766](https://github.com/Leaflet/Leaflet/pull/7766) by [@Falke-Design](https://github.com/Falke-Design))
+* Validate `Point` and `LatLng` coordinates, accepting numbers and numeric strings, and make `Point.validate()` and `LatLng.validate()` match exactly what the constructors accept, so they can filter data ([#10550](https://github.com/Leaflet/Leaflet/pull/10550), [#7765](https://github.com/Leaflet/Leaflet/pull/7765) and [#7767](https://github.com/Leaflet/Leaflet/pull/7767) by [@johnd0e](https://github.com/johnd0e), [#8214](https://github.com/Leaflet/Leaflet/pull/8214) by [@Falke-Design](https://github.com/Falke-Design))
+* Allow dragging the map during a zoom animation instead of treating the drag as a click ([#8201](https://github.com/Leaflet/Leaflet/issues/8201))
+* Let shift-drag pan the map and drag markers when box zoom is disabled ([#2772](https://github.com/Leaflet/Leaflet/issues/2772), [#6233](https://github.com/Leaflet/Leaflet/issues/6233), [#7088](https://github.com/Leaflet/Leaflet/issues/7088))
+* Honor `coords.z` in `TileLayer#getTileUrl`, so it can build URLs for zoom levels other than the current one ([#8849](https://github.com/Leaflet/Leaflet/issues/8849), [#9201](https://github.com/Leaflet/Leaflet/pull/9201) by [@yohanboniface](https://github.com/yohanboniface))
+* Style `<button>` and other `role="button"` elements in `leaflet-bar` controls like links ([#9462](https://github.com/Leaflet/Leaflet/issues/9462), [@someonewithpc](https://github.com/someonewithpc))
+* Support numeric strings and a partly automatic size like `[100, 'auto']` in `iconSize` ([#9253](https://github.com/Leaflet/Leaflet/issues/9253))
+* Add a `getEvents()` hook to controls, like the one on layers: the map listeners it returns are added and removed with the control ([#10229](https://github.com/Leaflet/Leaflet/issues/10229))
+
+### ♿️ Accessibility
+
+* Bring a focused marker to the front whatever `riseOnHover` is set to, so it's never hidden under its neighbors ([#10536](https://github.com/Leaflet/Leaflet/pull/10536), [#8078](https://github.com/Leaflet/Leaflet/issues/8078))
+* Return focus to the marker whenever its popup closes with focus inside it, not only on Escape ([#10536](https://github.com/Leaflet/Leaflet/pull/10536), [#8115](https://github.com/Leaflet/Leaflet/issues/8115))
+* Set `aria-expanded` and `aria-controls` on keyboard-accessible markers with a popup ([#10536](https://github.com/Leaflet/Leaflet/pull/10536), [#7527](https://github.com/Leaflet/Leaflet/issues/7527))
+* Move focus into a popup opened from a marker with the keyboard, and keep focus on a marker activated by a screen reader ([#8113](https://github.com/Leaflet/Leaflet/issues/8113), [#8114](https://github.com/Leaflet/Leaflet/issues/8114))
+* Keep focus on a control after clicking it instead of moving it to the map ([#7947](https://github.com/Leaflet/Leaflet/issues/7947))
+* Make Space activate the zoom, layers and fullscreen buttons and the popup close button ([#7369](https://github.com/Leaflet/Leaflet/issues/7369))
+* Open tooltips only on keyboard focus, so a tooltip no longer appears when the window regains focus or a popup closes ([#9150](https://github.com/Leaflet/Leaflet/issues/9150))
+* Translate the default marker `alt` text with the `translate` map option ([#10542](https://github.com/Leaflet/Leaflet/pull/10542) by [@nfreear](https://github.com/nfreear), [#10541](https://github.com/Leaflet/Leaflet/issues/10541))
+* Raise the attribution and scale contrast to pass WCAG AA, with solid backgrounds and underlined links under `prefers-contrast: more` ([#6742](https://github.com/Leaflet/Leaflet/issues/6742), [#7538](https://github.com/Leaflet/Leaflet/issues/7538), [#10536](https://github.com/Leaflet/Leaflet/pull/10536))
+
+### 🐞 Bug fixes
+
+* Fix tiles flickering during fractional zoom animations past a layer's `maxZoom` ([#8300](https://github.com/Leaflet/Leaflet/issues/8300), [#8311](https://github.com/Leaflet/Leaflet/pull/8311) by [@sbquinlan](https://github.com/sbquinlan))
+* Fix polygons disappearing when `weight` is a string ([#6072](https://github.com/Leaflet/Leaflet/issues/6072), [#7432](https://github.com/Leaflet/Leaflet/issues/7432))
+* Fix tooltip positions in right-to-left containers ([#7201](https://github.com/Leaflet/Leaflet/issues/7201), [#7782](https://github.com/Leaflet/Leaflet/issues/7782))
+* Fix the expanded layers list sometimes being covered by other controls ([#7944](https://github.com/Leaflet/Leaflet/issues/7944))
+* Fix a dragged marker's `autoPan` panning past `maxBounds` ([#10539](https://github.com/Leaflet/Leaflet/pull/10539) by [@A350xt](https://github.com/A350xt), [#6219](https://github.com/Leaflet/Leaflet/issues/6219))
+* Fix `DocumentFragment` popup and tooltip content being empty after the first open ([#10540](https://github.com/Leaflet/Leaflet/pull/10540) by [@A350xt](https://github.com/A350xt), [#3922](https://github.com/Leaflet/Leaflet/issues/3922))
+* Fix `setIcon` keeping the size, anchor, `bgPos` and `crossOrigin` of the previous icon when the new one doesn't set them ([#10538](https://github.com/Leaflet/Leaflet/pull/10538) by [@b84330808](https://github.com/b84330808))
+* Fix `fitBounds` and `getBoundsZoom` zooming all the way in when the padding is larger than the map ([#10544](https://github.com/Leaflet/Leaflet/pull/10544) by [@jayhemnani9910](https://github.com/jayhemnani9910))
+* Fix `overlaps()` on `Bounds` and `LatLngBounds` returning `true` for a point or line inside the other bounds ([#10547](https://github.com/Leaflet/Leaflet/pull/10547) by [@xunguangzlj-cloud](https://github.com/xunguangzlj-cloud))
+* Fix a layer with a `NaN` `minZoom` or `maxZoom` breaking the map's zoom limits ([#10548](https://github.com/Leaflet/Leaflet/pull/10548) by [@xunguangzlj-cloud](https://github.com/xunguangzlj-cloud), [#8354](https://github.com/Leaflet/Leaflet/issues/8354))
+* Fix `togglePopup()` and `toggleTooltip()` throwing on a layer that isn't on the map ([#10551](https://github.com/Leaflet/Leaflet/pull/10551) by [@Enesuygurs](https://github.com/Enesuygurs))
+* Fix listeners added during `fire` being called by that same `fire`, a regression from 1.x ([#10537](https://github.com/Leaflet/Leaflet/pull/10537))
+* Fix `setView` with `worldCopyJump` leaving the map outside the main world copy when it doesn't animate ([#10549](https://github.com/Leaflet/Leaflet/pull/10549))
+* Fix `getCenter()` returning a center snapped to whole pixels right after the map is created
+
+### 📝 Docs
+
+* Mark the text that the `translate` option translates with a "Translatable" badge in the reference ([#10546](https://github.com/Leaflet/Leaflet/pull/10546) by [@Falke-Design](https://github.com/Falke-Design))
+* Document the `flyTo` and `pinch` flags of `move` and `zoom` events ([#9775](https://github.com/Leaflet/Leaflet/issues/9775)), and how to stop control events from reaching the map ([#10299](https://github.com/Leaflet/Leaflet/issues/10299))
+
+### ⚠️ Breaking changes
+
+* `LatLng` and `Point` throw `Invalid LatLng object` / `Invalid Point object` for coordinates that aren't numbers or numeric strings. `null`, `''` and booleans used to become `0` or `1`, and missing coordinates (`{lat: 50}`) gave `NaN`. A non-numeric altitude throws too, and `null` altitude means no altitude instead of `0`. `Point` converts numeric strings to numbers instead of keeping them ([#10550](https://github.com/Leaflet/Leaflet/pull/10550))
+* A non-numeric `radius` on a circle or circle marker throws, and a numeric string is converted to a number
+* `zoomIn()`, `zoomOut()`, `setZoom()`, `panTo()` and `panBy()` build on the view a running animation is heading to: two quick `zoomIn()` calls (or clicks on the zoom button) zoom in two levels. `panBy` during a zoom animation waits for it to end ([#10549](https://github.com/Leaflet/Leaflet/pull/10549))
+* `riseOnHover` only controls hover: focused markers always come to the front ([#10536](https://github.com/Leaflet/Leaflet/pull/10536))
+* The attribution and scale controls have black text on a 90% white background, and attribution links are a darker blue ([#6742](https://github.com/Leaflet/Leaflet/issues/6742), [#7538](https://github.com/Leaflet/Leaflet/issues/7538))
+* `Control#_refocusOnMap` is gone. `ZoomControl`, `ScaleControl` and `AttributionControl` add their map listeners through `getEvents()`, and `ZoomControl` and `ScaleControl` no longer have an `onRemove` method
+* `TileLayer#_getZoomForUrl` takes the tile zoom as an argument
+
 ## 2.0.0-beta.2 (2026-11-06)
 
 The second beta of Leaflet 2.0 adds a built-in **fullscreen control**, a way to **translate** the built-in text, and **canvas layers that no longer block clicks** on the layers below them, along with over a dozen bug fixes.

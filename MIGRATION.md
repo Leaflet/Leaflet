@@ -283,6 +283,9 @@ Map and layer options:
 - `preferCanvas: true` is removed and logs an error. Use `renderer: new Canvas()` instead.
 - A circle no longer takes the radius as the second argument, and passing it there throws. `L.circle(latlng, 200)`
   becomes `new Circle(latlng, {radius: 200})`.
+- `LatLng` and `Point` throw for coordinates that aren't numbers or numeric strings, and so does a non-numeric
+  altitude or `radius`. 1.x turned `null`, `''` and booleans into `0` or `1`, so data with empty coordinates put
+  markers at 0. Filter it with `LatLng.validate()`, which returns exactly what the constructor accepts.
 - **Silent:** `aria-keyshortcuts` is no longer set on the map container, because it only matched US keyboards. Set
   `ariaKeyShortcuts: true` to bring it back, or pass a string for other layouts.
 - **Silent:** with `detectRetina` on a retina screen, `minNativeZoom` and `maxNativeZoom` now request the right
@@ -303,6 +306,9 @@ Return values and methods, all **Silent**:
   as `layer.feature`), and features with a `null` geometry are skipped.
 - `latLngToLayerPoint` and `latLngToContainerPoint` return fractional pixel values. Round them if you need integers.
 - `setView(center, zoom, true)` no longer forces a view reset. Use `setView(center, zoom, {reset: true})`.
+- `zoomIn()`, `zoomOut()`, `setZoom()`, `panTo()` and `panBy()` build on the view a running animation is heading to,
+  not the one it's passing through. Two quick `zoomIn()` calls zoom in two levels, and `panTo(c).panBy(o)` ends at
+  `c + o`. `getCenter()` and `getZoom()` still return the current view.
 - `closeTooltip()` returns the layer instead of the tooltip, and `isTooltipOpen()` returns `false` instead of
   `undefined` when no tooltip is bound.
 - Popups and tooltips are no longer `instanceof Layer`. They still work with `addTo()`, `openOn()` and
@@ -445,6 +451,11 @@ plugin loaded; see [the plugin guide](PLUGIN-GUIDE.md#adding-to-leaflet-classes)
   `DomEvent.disableClickPropagation` and `DomEvent.stopPropagation`.
 - `KeyboardHandler.keyCodes` → `KeyboardHandler.keys`, which holds `KeyboardEvent.key` values instead of key codes.
 - `LayersControl.onRemove` takes `map`, like `onAdd`, and `collapse()` takes no event.
+- `ZoomControl` and `ScaleControl` add their map listeners with the `getEvents()` control hook and have no
+  `onRemove`, so a subclass should call `super.onRemove?.(map)`, which works on 1.x too.
+- `Control#_refocusOnMap` is gone: controls keep focus after a click. Drop the call.
+- `TileLayer#_getZoomForUrl(zoom)` takes the tile zoom instead of reading `_tileZoom`. Pass `coords.z`, which 1.x
+  ignores.
 - `Canvas` no longer handles pointer events itself, so `_onClick`, `_onPointerMove`, `_handlePointerHover`,
   `_handlePointerOut` and `_fireEvent` are gone. The map calls `_layerAt(e, click)` on each canvas renderer to find
   the path under the pointer, so override that to customize hit-testing.
@@ -463,8 +474,8 @@ declare module 'leaflet' {
 }
 ```
 
-Augment `Map`, not `LeafletMap`. Augmenting both loses one of them. A layer whose `getEvents()` adds its own map
-events should add them to `MapEventMap`.
+Augment `Map`, not `LeafletMap`. Augmenting both loses one of them. A layer or control whose `getEvents()` adds its
+own map events should add them to `MapEventMap`.
 
 Subclasses pass their options and events as generic parameters:
 `class MyGroup extends FeatureGroup<Layer, MyOptions>`.
