@@ -695,4 +695,9 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 		-webkit-print-color-adjust: exact;
 		print-color-adjust: exact;
 	}
+
+	/* A print snapshot taken mid-fade (e.g. right after fitBounds) would catch tiles partly transparent. */
+	.leaflet-tile-fading {
+		opacity: 1 !important;
+	}
 }
