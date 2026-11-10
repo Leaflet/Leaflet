@@ -57,7 +57,15 @@
 			const group = new FeatureGroup([marker1, marker2]).addTo(map);
 			group.bindTooltip(layer => `Group tooltip: ${layer.options.description}`, {opacity: 0.7});
 			new Marker([41.18, 9.35]).addTo(map).bindTooltip('Top tooltip is top', {permanent: true, direction: 'top'});
-			new Marker([41.173, 9.37]).addTo(map).bindTooltip('Bottom tooltip is weird but ok', {permanent: true, direction: 'bottom'});
+			new Marker([41.173, 9.37]).addTo(map).bindTooltip('Bottom tooltip is bottom', {permanent: true, direction: 'bottom'});
+
+			// every direction on the default icon and on a div icon, which should all clear the icon
+			const boxIcon = new DivIcon({className: 'my-div-icon', iconSize: [30, 30], tooltipAnchor: [15, 0]});
+			for (const [i, direction] of ['left', 'right', 'top', 'bottom', 'center'].entries()) {
+				const lng = 9.36 + i * 0.025;
+				new Marker([41.245, lng]).addTo(map).bindTooltip(direction, {permanent: true, direction});
+				new Marker([41.235, lng], {icon: boxIcon}).addTo(map).bindTooltip(direction, {permanent: true, direction});
+			}
 			new Polyline([[41.20, 9.36], [41.205, 9.35], [41.19, 9.34]]).bindTooltip('Polyline tooltip', {permanent: true, direction: 'top'}).addTo(map);
 			new Polygon([[41.21, 9.36], [41.24, 9.35], [41.23, 9.34]]).addTo(map).bindTooltip('Top tooltip following mouse', {sticky: true, direction: 'top'});
 		</script>

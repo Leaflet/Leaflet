@@ -39,7 +39,9 @@ const defaultOptions = {
 	popupAnchor: [0, 0],
 
 	/**
-	 * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
+	 * Where tooltips opening to the side attach, relative to the icon anchor: `x` is how far to the right (mirrored
+	 * for tooltips opening to the left) and `y` how far down. Tooltips opening to the top or bottom attach to the
+	 * middle of the icon's top or bottom edge, and `center` ones to the middle of the icon at the `y` height.
 	 * @type {PointExpression}
 	 */
 	tooltipAnchor: [0, 0],
@@ -181,19 +183,42 @@ export class Icon extends Class {
 	}
 
 	/**
-	 * @param {HTMLElement} img
+	 * The size and anchor of the icon or shadow in pixels; a side that isn't a number, like 'auto' in [100, 'auto'],
+	 * is left to CSS and comes out as NaN.
 	 * @param {'icon' | 'shadow'} name
 	 */
-	_setIconStyles(img, name) {
+	_getBox(name) {
 		const options = this.options;
 		const sizeOption = options[`${name}Size`];
-
-		// a side that isn't a number, like 'auto' in [100, 'auto'], is left to CSS
 		const [width, height] = (typeof sizeOption === 'number' ? [sizeOption, sizeOption] :
 			Array.isArray(sizeOption) ? sizeOption : [sizeOption?.x, sizeOption?.y]).map(toNumber);
 
 		const anchorOption = name === 'shadow' && options.shadowAnchor || options.iconAnchor;
 		const anchor = Point.validate(anchorOption) ? new Point(anchorOption) : {x: width / 2, y: height / 2};
+		return {width, height, anchor};
+	}
+
+	/**
+	 * Where a tooltip opening in the given direction attaches, relative to the icon anchor.
+	 * @param {string} [direction]
+	 */
+	_getTooltipAnchor(direction) {
+		const {x, y} = new Point(this.options.tooltipAnchor);
+		if (direction === 'left') { return new Point(-x, y); }
+		if (direction === 'center') { return new Point(0, y); }
+		if (direction !== 'top' && direction !== 'bottom') { return new Point(x, y); }
+
+		const {height, anchor} = this._getBox('icon');
+		return new Point(0, (direction === 'top' ? -anchor.y : height - anchor.y) || 0);
+	}
+
+	/**
+	 * @param {HTMLElement} img
+	 * @param {'icon' | 'shadow'} name
+	 */
+	_setIconStyles(img, name) {
+		const options = this.options;
+		const {width, height, anchor} = this._getBox(name);
 
 		img.className = `leaflet-marker-${name} ${options.className || ''}`;
 

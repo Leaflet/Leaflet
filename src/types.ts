@@ -403,7 +403,7 @@ declare module './Leaflet.js' {
 	interface Layer {
 		// implemented by subclasses, checked by bound popups and tooltips
 		_getPopupAnchor?(): PointExpression;
-		_getTooltipAnchor?(): PointExpression;
+		_getTooltipAnchor?(direction?: string): PointExpression;
 
 		/**
 		 * Optional method. Should return the layer's main element. A layer that has one gets keyboard access to its

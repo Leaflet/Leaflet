@@ -12,7 +12,8 @@ const defaultOptions = {
 	pane: 'tooltipPane',
 
 	/**
-	 * Optional offset of the tooltip position.
+	 * Optional offset of the tooltip position, in pixels. Mirrored horizontally when an `auto` tooltip opens to the
+	 * left.
 	 * @type {PointExpression}
 	 */
 	offset: [0, 0],
@@ -153,14 +154,15 @@ export class Tooltip extends DivOverlay {
 	/** @param {Point} pos */
 	_setPosition(pos) {
 		const container = this._container,
-		shift = this._getAnchor().add(this.options.offset);
+		offset = new Point(this.options.offset);
 		let direction = this.options.direction;
 
-		if (!(direction in directions)) { // auto: open away from the map center, mirroring the offset and anchor
+		if (!(direction in directions)) { // auto: open away from the map center, mirroring the offset
 			direction = pos.x <= this._map._getCenterLayerPoint().x ? 'right' : 'left';
-			if (direction === 'left') { shift.x = -shift.x; }
+			if (direction === 'left') { offset.x = -offset.x; }
 		}
 		const [fx, fy] = directions[direction];
+		const shift = this._getAnchor(direction).add(offset);
 
 		for (const d in directions) {
 			container.classList.toggle(`leaflet-tooltip-${d}`, d === direction);
@@ -195,9 +197,10 @@ export class Tooltip extends DivOverlay {
 		this._setPosition(pos);
 	}
 
-	_getAnchor() {
+	/** @param {string} [direction] */
+	_getAnchor(direction) {
 		// Where should we anchor the tooltip on the source layer?
-		return new Point(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
+		return new Point(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor(direction) : [0, 0]);
 	}
 
 }

@@ -566,8 +566,9 @@ export class Marker extends Layer {
 		return this._rotateAnchor(this.options.icon.options.popupAnchor);
 	}
 
-	_getTooltipAnchor() {
-		return this._rotateAnchor(this.options.icon.options.tooltipAnchor);
+	/** @param {string} [direction] */
+	_getTooltipAnchor(direction) {
+		return this._rotateAnchor(this.options.icon._getTooltipAnchor(direction));
 	}
 
 	/**
