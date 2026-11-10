@@ -155,7 +155,7 @@ describe('Path', () => {
 
 			it('stay aligned with other paths during zoom animation', () => {
 				map._moveStart(true);
-				map._animateZoom(map.getCenter(), 6, true);
+				map._animateZoom(map.getCenter(), 6);
 				moveAndCheck();
 
 				map._onZoomTransitionEnd();

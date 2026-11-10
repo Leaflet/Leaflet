@@ -408,30 +408,47 @@ export class GridLayer extends Layer {
 			}
 		}
 
-		let level = this._levels[zoom];
+		/** @type {GridLevel} */
+		this._level = this._levels[zoom] ?? this._createLevel(zoom);
+
+		return this._level;
+	}
+
+	/** @param {number} zoom */
+	_createLevel(zoom) {
 		const map = this._map;
+		const level = this._levels[zoom] = /** @type {GridLevel} */ ({});
 
-		if (!level) {
-			level = this._levels[zoom] = /** @type {GridLevel} */ ({});
+		level.el = DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
+		level.el.style.zIndex = `${this.options.maxZoom}`;
 
-			level.el = DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-			level.el.style.zIndex = `${maxZoom}`;
+		level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
+		level.zoom = zoom;
 
-			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
-			level.zoom = zoom;
+		this._setZoomTransform(level, map.getCenter(), map.getZoom());
 
-			this._setZoomTransform(level, map.getCenter(), map.getZoom());
-
-			// force reading offsetWidth so the browser considers the newly added element for transition
+		// the browser needs a style for the new level before a zoom animation transforms it, or it won't
+		// transition; reading layout recalcs every pending style change on the page, so only do it then
+		if (map._animatingZoom) {
 			/** @type {(...args: unknown[]) => false} */ (Util.falseFn)(level.el.offsetWidth);
-
-			this._onCreateLevel(level);
 		}
 
-		/** @type {GridLevel} */
-		this._level = level;
+		this._onCreateLevel(level);
 
 		return level;
+	}
+
+	// called before the map starts a zoom animation, when nothing on the page has changed yet, so the forced
+	// style recalc for the new level (see _createLevel) only covers this level and not every marker
+	/**
+	 * @param {number} zoom
+	 * @param {boolean} [noUpdate]
+	 */
+	_prepareZoomAnim(zoom, noUpdate) {
+		const tileZoom = this._getTileZoom(zoom);
+		if (tileZoom !== undefined && !this._levels[tileZoom] && (!noUpdate || this.options.updateWhenZooming)) {
+			this._createLevel(tileZoom);
+		}
 	}
 
 	/** @param {number} z */

@@ -128,7 +128,7 @@ export class PinchZoomHandler extends Handler {
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (map._zoomAnimated) {
-			map._animateZoom(this._center, zoom, true, !!map.options.zoomSnap);
+			map._animateZoom(this._center, zoom, !!map.options.zoomSnap);
 		} else {
 			map._resetView(this._center, zoom, false, map._moveEvent);
 		}
