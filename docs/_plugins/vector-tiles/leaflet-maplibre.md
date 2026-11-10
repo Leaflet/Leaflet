@@ -7,4 +7,4 @@ demo:
 compatible-v2: false
 ---
 
-Loads a [maplibre-gl-js](https://maplibre.org/projects/maplibre-gl-js/) map as a Leaflet layer
+Loads a [maplibre-gl-js](https://maplibre.org/projects/gl-js/) map as a Leaflet layer
