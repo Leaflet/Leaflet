@@ -7,4 +7,4 @@ demo: https://mapbox.github.io/leaflet-pip/
 compatible-v2: false
 ---
 
-Simple point in polygon calculation using <a href="https://github.com/substack/point-in-polygon">point-in-polygon</a>.
+Simple point in polygon calculation using <a href="https://www.npmjs.com/package/point-in-polygon">point-in-polygon</a>.

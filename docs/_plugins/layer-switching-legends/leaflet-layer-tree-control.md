@@ -2,7 +2,7 @@
 name: Leaflet.LayerTreeControl
 repo: https://github.com/ignaciofagian/L.LayerTreeControl
 author: Ignacio Fagian
-author-url: https://ignaciofagian.github.io
+author-url: https://github.com/ignaciofagian
 demo: https://ignaciofagian.github.io/L.LayerTreeControl/example
 compatible-v2: false
 ---

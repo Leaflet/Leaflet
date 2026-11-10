@@ -2,7 +2,7 @@
 name: Proj4Leaflet
 repo: https://github.com/kartena/Proj4Leaflet
 author: Kartena
-author-url: http://www.kartena.se/index.html
+author-url: https://github.com/kartena
 demo: https://kartena.github.io/Proj4Leaflet/#examples
 compatible-v2: false
 ---
