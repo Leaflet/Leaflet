@@ -53,6 +53,8 @@
 .leaflet-marker-icon,
 .leaflet-marker-shadow {
 	display: block;
+	/* animated zooms place markers between pixels, and Chrome would otherwise re-raster each one on every frame */
+	will-change: transform;
 }
 
 /* !important to survive host-page resets like `img, svg { max-width: 100% }`, which break the map */
