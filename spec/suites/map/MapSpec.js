@@ -1,9 +1,18 @@
-import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, DomUtil, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, TileLayer, Util, LayersControl, LatLng, FullscreenControl} from 'leaflet';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, DomUtil, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, SimpleCRS, TileLayer, Util, LayersControl, LatLng, FullscreenControl} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 const translateRe = /translate3d\(([-\d.e]+)px, *([-\d.e]+)px/;
+
+// SimpleCRS with the axes rotated by 30°
+const cos = Math.cos(Math.PI / 6), sin = Math.sin(Math.PI / 6);
+class RotatedCRS extends SimpleCRS {
+	static projection = {
+		project: ll => new Point(cos * ll.lng - sin * ll.lat, sin * ll.lng + cos * ll.lat),
+		unproject: p => new LatLng(cos * p.y - sin * p.x, cos * p.x + sin * p.y)
+	};
+}
 
 describe('Map', () => {
 	let container,
@@ -649,6 +658,13 @@ describe('Map', () => {
 			crsMock.expects('latLngToPoint')
 				.withExactArgs(bounds.getSouthEast(), 16)
 				.returns(new Point(7801987.203481699, 6425186.447901004));
+			// the other two corners stay inside the box of these two
+			crsMock.expects('latLngToPoint')
+				.withExactArgs(bounds.getNorthEast(), 16)
+				.returns(new Point(7801987.203481699, 6440062.353052008));
+			crsMock.expects('latLngToPoint')
+				.withExactArgs(bounds.getSouthWest(), 16)
+				.returns(new Point(7800503.059925064, 6425186.447901004));
 			boundsZoom = map.getBoundsZoom(bounds, false, padding);
 			crsMock.restore();
 
@@ -668,6 +684,14 @@ describe('Map', () => {
 			container.style.width = '1024px'; // Make sure the width is defined
 			expect(map.getBoundsZoom(wideBounds, false, padding)).to.be.equal(17);
 			expect(map.getBoundsZoom(wideBounds, true, padding)).to.be.equal(20);
+		});
+
+		it('fits all four corners when the projection rotates the axes (#5246)', () => {
+			map.remove();
+			container.style.width = container.style.height = '400px';
+			map = new LeafletMap(container, {crs: RotatedCRS, zoomSnap: 0});
+			// the height of a rotated 10x2 rectangle spans from its sw to its ne corner
+			expect(map.getBoundsZoom([[0, 0], [10, 2]])).to.be.closeTo(Math.log2(400 / (10 * cos + 2 * sin)), 1e-9);
 		});
 	});
 

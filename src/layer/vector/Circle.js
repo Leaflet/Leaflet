@@ -73,8 +73,9 @@ export class Circle extends CircleMarker {
 			}
 
 			this._point = p.subtract(renderer._pathOrigin);
-			this._pxRadius = isNaN(lngR) ? 0 : p.x - map.project([lat2, lng - lngR], zoom).x;
-			this._pxRadiusY = p.y - top.y;
+			// distances rather than x/y deltas, for projections that rotate the axes (#5246)
+			this._pxRadius = isNaN(lngR) ? 0 : p.distanceTo(map.project([lat2, lng - lngR], zoom));
+			this._pxRadiusY = p.distanceTo(top);
 
 		} else {
 			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._radius, 0]));
