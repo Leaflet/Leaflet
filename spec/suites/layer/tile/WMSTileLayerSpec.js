@@ -1,4 +1,5 @@
 import {EPSG4326, LeafletMap, Point, WMSTileLayer} from 'leaflet';
+import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('WMSTileLayer', () => {
@@ -10,6 +11,14 @@ describe('WMSTileLayer', () => {
 				width: 256,
 				height: 256
 			});
+		});
+
+		it('keeps the image size in sync with the detectRetina tile size', () => {
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1.25);
+			expect(new WMSTileLayer('/wms', {detectRetina: true}).wmsParams.width).to.equal(256);
+			dpr.value(2);
+			expect(new WMSTileLayer('/wms', {detectRetina: true}).wmsParams.width).to.equal(256);
+			dpr.restore();
 		});
 	});
 

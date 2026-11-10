@@ -616,6 +616,14 @@ describe('TileLayer', () => {
 			dpr.restore();
 		});
 
+		it('ignores detectRetina below a pixel ratio of 1.5', () => {
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1.25);
+			expect(new TileLayer('', {detectRetina: true}).options.tileSize).to.equal(256);
+			dpr.value(1.5);
+			expect(new TileLayer('', {detectRetina: true}).options.tileSize).to.equal(128);
+			dpr.restore();
+		});
+
 		it('is not loading before it has tiles to load', () => {
 			expect(new TileLayer('').isLoading()).to.equal(false);
 		});

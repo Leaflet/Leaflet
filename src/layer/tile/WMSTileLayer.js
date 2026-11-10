@@ -94,7 +94,7 @@ export class WMSTileLayer extends TileLayer {
 			}
 		}
 
-		const realRetina = this.options.detectRetina && window.devicePixelRatio > 1 ? 2 : 1;
+		const realRetina = this.options.detectRetina && window.devicePixelRatio >= 1.5 ? 2 : 1;
 		const tileSize = this.getTileSize();
 
 		wmsParams.width = tileSize.x * realRetina;

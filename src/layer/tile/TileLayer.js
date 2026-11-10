@@ -37,8 +37,8 @@ const defaultOptions = {
 	zoomReverse: false,
 
 	/**
-	 * If `true` and user is on a retina display, it will request four tiles of half the specified
-	 * size and a bigger zoom level in place of one to utilize the high resolution.
+	 * If `true` and the device pixel ratio is 1.5 or higher, it will request four tiles of half the
+	 * specified size and a bigger zoom level in place of one to utilize the high resolution.
 	 */
 	detectRetina: false,
 
@@ -134,8 +134,9 @@ export class TileLayer extends GridLayer {
 		}
 		this._url = upgradeOSMUrl(url);
 
-		// detecting retina displays, adjusting tileSize and zoom levels
-		if (opts.detectRetina && window.devicePixelRatio > 1 && opts.maxZoom > 0) {
+		// detecting retina displays, adjusting tileSize and zoom levels; below 1.5 (e.g. 125% scaling), half-size
+		// tiles from the next zoom make labels too small to read (#6721)
+		if (opts.detectRetina && window.devicePixelRatio >= 1.5 && opts.maxZoom > 0) {
 
 			const tileSize = opts.tileSize;
 			opts.tileSize = tileSize instanceof Point ? tileSize.divideBy(2).floor() : Math.floor(tileSize / 2);
