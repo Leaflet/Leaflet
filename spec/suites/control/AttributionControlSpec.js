@@ -1,4 +1,4 @@
-import {LeafletMap, AttributionControl, Layer} from 'leaflet';
+import {LeafletMap, AttributionControl, GridLayer, Layer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('AttributionControl', () => {
@@ -182,6 +182,30 @@ describe('AttributionControl', () => {
 			text = 'bar';
 			map.removeLayer(fooLayer);
 			expect(controlContainer.innerHTML).to.eql('prefix');
+		});
+
+		it('shows the attribution of a layer only within its minZoom/maxZoom range', () => {
+			const text = () => controlContainer.innerHTML;
+			new GridLayer({minZoom: 0, maxZoom: 10}).addTo(map);
+			const fooLayer = new GridLayer({attribution: 'foo', minZoom: 2, maxZoom: 3}).addTo(map);
+			const barLayer = new GridLayer({attribution: 'foo'});
+
+			expect(text()).to.eql('prefix');
+			map.setZoom(2, {animate: false});
+			expect(text()).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			map.setZoom(4, {animate: false});
+			expect(text()).to.eql('prefix');
+
+			// another layer with the same text keeps it shown while the first is out of range
+			barLayer.addTo(map);
+			map.setZoom(3, {animate: false});
+			barLayer.remove();
+			expect(text()).to.eql('prefix <span aria-hidden="true">|</span> foo');
+
+			fooLayer.remove();
+			expect(text()).to.eql('prefix');
+			map.setZoom(2, {animate: false});
+			expect(text()).to.eql('prefix');
 		});
 
 		it('handles layers added and removed before the map is loaded', () => {

@@ -52,6 +52,8 @@ export class AttributionControl extends Control {
 		this._attributions = {};
 		/** @type {Map<LayerBase, string>} */
 		this._layerAttributions = new Map();
+		/** @type {Set<LayerBase>} */
+		this._shownLayers = new Set();
 		this.callInitHooks();
 	}
 
@@ -73,7 +75,7 @@ export class AttributionControl extends Control {
 
 	/** @returns {MapListeners} */
 	getEvents() {
-		return {layeradd: this._addLayer, layerremove: this._removeLayer};
+		return {layeradd: this._addLayer, layerremove: this._removeLayer, zoomend: this._onZoomEnd};
 	}
 
 	onRemove() {
@@ -88,14 +90,41 @@ export class AttributionControl extends Control {
 		if (!text || this._layerAttributions.has(layer)) { return; }
 
 		this._layerAttributions.set(layer, text);
-		this.addAttribution(text);
+		this._updateLayer(layer);
 	}
 
 	/** @param {{layer: LayerBase}} e */
 	_removeLayer({layer}) {
-		// a layer without an attribution has no entry here, and `removeAttribution` skips the `undefined`
-		this.removeAttribution(/** @type {string} */ (this._layerAttributions.get(layer)));
+		if (this._shownLayers.delete(layer)) {
+			this.removeAttribution(/** @type {string} */ (this._layerAttributions.get(layer)));
+		}
 		this._layerAttributions.delete(layer);
+	}
+
+	_onZoomEnd() {
+		for (const layer of this._layerAttributions.keys()) {
+			this._updateLayer(layer);
+		}
+	}
+
+	/**
+	 * Layers with `minZoom`/`maxZoom` options (e.g. tile layers) aren't displayed outside that range.
+	 * @param {LayerBase} layer
+	 */
+	_updateLayer(layer) {
+		const {minZoom = -Infinity, maxZoom = Infinity} = /** @type {{minZoom?: number, maxZoom?: number}} */ (layer.options);
+		const zoom = /** @type {LeafletMap} */ (this._map).getZoom();
+		const show = zoom >= minZoom && zoom <= maxZoom;
+		if (show === this._shownLayers.has(layer)) { return; }
+
+		const text = /** @type {string} */ (this._layerAttributions.get(layer));
+		if (show) {
+			this._shownLayers.add(layer);
+			this.addAttribution(text);
+		} else {
+			this._shownLayers.delete(layer);
+			this.removeAttribution(text);
+		}
 	}
 
 	/**
