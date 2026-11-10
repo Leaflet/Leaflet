@@ -1,9 +1,9 @@
 import * as LineUtil from './LineUtil.js';
 import {LatLng} from '../geo/LatLng.js';
 import {Point} from './Point.js';
+import {Bounds} from './Bounds.js';
 
 /**
- * @import {Bounds} from './Bounds.js'
  * @import {CRS} from '../geo/crs/CRS.js'
  * @import {LatLngExpression} from '../types.js'
  */
@@ -89,8 +89,23 @@ export function polygonCenter(latlngs, crs) {
 		area += f;
 	}
 
-	// area is 0 when the polygon is so small that all points are on the same pixel
-	return crs.unproject(area === 0 ? origin : new Point(x / (3 * area), y / (3 * area))._add(origin));
+	// area is 0 when all points lie on one line (or on the same spot), or when the ring goes back over its own edges;
+	// take the middle of the points' extent and snap it to the closest point of the ring so it stays on the shape
+	if (area === 0) {
+		const center = new Bounds(points).getCenter();
+		let closest = points[0],
+		minDist = Infinity;
+		for (let i = 0, j = len - 1; i < len; j = i++) {
+			const p = LineUtil._sqClosestPointOnSegment(center, points[j], points[i]),
+			dist = center.distanceTo(p);
+			if (dist < minDist) {
+				minDist = dist;
+				closest = p;
+			}
+		}
+		return crs.unproject(closest._add(origin));
+	}
+	return crs.unproject(new Point(x / (3 * area), y / (3 * area))._add(origin));
 }
 
 /**
