@@ -105,8 +105,11 @@ export class BlanketOverlay extends Layer {
 		viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
 		currentCenterPoint = this._map.project(this._center, zoom),
 		topLeftOffset = viewHalf.multiplyBy(-scale)._add(currentCenterPoint)
-			._subtract(this._map._getNewPixelOrigin(center, zoom))
-			._round();
+			._subtract(this._map._getNewPixelOrigin(center, zoom));
+
+		// a scaled container is resampled anyway, and rounding where its corner lands would make its content away
+		// from the corner jitter against the zoom motion (#3194)
+		if (scale === 1) { this._map._snapLayerPoint(topLeftOffset); }
 
 		DomUtil.setTransform(this._container, topLeftOffset, scale);
 	}

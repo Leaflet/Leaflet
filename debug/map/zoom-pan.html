@@ -30,8 +30,9 @@
 			<div><button id="dc">DC</button>(flyTo)</div>
 			<div><button id="sf">SF</button>(setView, 5 sec)</div>
 			<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
+			<div><button id="near">near</button>(flyTo nearby +1 zoom, 10 sec)</div>
 			<div><button id="lnd">LND</button>(fract. zoom)</div>
-			<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+			<div><button id="kyiv">KYIV</button>(setView, fract. zoom)</div>
 			<div><button id="mad">MAD</button>(fitBounds)</div>
 			<div><button id="nul">NUL</button>(image overlay)</div>
 			<div><button id="stop">stop</button></div>
@@ -55,8 +56,10 @@
 			const mad = [40.40, -3.7];
 
 			const map = new LeafletMap('map', {zoomSnap: 0.25}).setView(dc, 14);
-			const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(map);
-			
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(map);
+
 			new Polyline([kyiv, trd, lnd, mad, dc, sf]).addTo(map);
 
 			new Marker(kyiv).addTo(map);
@@ -71,6 +74,9 @@
 			document.getElementById('dc').onclick   = () => map.flyTo(dc,  4);
 			document.getElementById('sf').onclick   = () => map.setView(sf, 10, {duration: 5, animate: true});
 			document.getElementById('trd').onclick  = () => map.flyTo(trd, 10, {duration: 20});
+			// a short slow flight shows subpixel jitter of tiles and markers best (#3194)
+			document.getElementById('near').onclick = () => map.flyTo(
+				map.containerPointToLatLng(map.getSize().divideBy(2).add([60, 40])), map.getZoom() + 1, {duration: 10});
 			document.getElementById('lnd').onclick  = () => map.flyTo(lnd, 9.25);
 			document.getElementById('kyiv').onclick = () => map.setView(kyiv, 9.25);
 			document.getElementById('nul').onclick  = () => map.flyTo([0, 0], 10);
@@ -89,7 +95,7 @@
 			attachMoveEvent('moveend');
 			attachMoveEvent('zoomend');
 
-			positron.on('load', () => {
+			osm.on('load', () => {
 				document.getElementById('load').textContent = `${map.getCenter()} z${map.getZoom()}`;
 			});
 		</script>

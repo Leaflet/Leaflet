@@ -262,9 +262,10 @@ export class ImageOverlay extends Layer {
 
 	_reset() {
 		const image = this._image,
+		map = this._map,
 		bounds = new Bounds(
-			this._map.latLngToLayerPoint(this._bounds.getNorthWest())._round(),
-			this._map.latLngToLayerPoint(this._bounds.getSouthEast())._round()),
+			map._snapLayerPoint(map.latLngToLayerPoint(this._bounds.getNorthWest())),
+			map._snapLayerPoint(map.latLngToLayerPoint(this._bounds.getSouthEast()))),
 		size = bounds.getSize();
 
 		DomUtil.setPosition(image, bounds.min);

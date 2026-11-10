@@ -1,7 +1,9 @@
-import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, TileLayer, Util, LayersControl, LatLng, FullscreenControl} from 'leaflet';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, DomUtil, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, TileLayer, Util, LayersControl, LatLng, FullscreenControl} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
+
+const translateRe = /translate3d\(([-\d.e]+)px, *([-\d.e]+)px/;
 
 describe('Map', () => {
 	let container,
@@ -1698,6 +1700,71 @@ describe('Map', () => {
 
 			expect(map.project(actual)).to.be.near(map.project(expected));
 			expect(movestart.calledOnce).to.be.true;
+		});
+
+		describe('subpixel positioning (#3194)', () => {
+			const latlng = new LatLng(50.452, 30.525);
+			let marker, grid;
+
+			beforeEach(() => {
+				map.setView([50.45, 30.52], 14, {animate: false});
+				marker = new Marker(latlng).addTo(map);
+				grid = new GridLayer().addTo(map);
+			});
+
+			// how far the marker and the current tile level are from their exact screen positions
+			function maxError() {
+				const zoom = map.getZoom(),
+				topLeft = map.project(map.getCenter(), zoom).subtract(map.getSize().divideBy(2)),
+				panePos = DomUtil.getPosition(map.getPane('mapPane')),
+				level = grid._levels[grid._tileZoom],
+				[, x, y] = level.el.style.transform.match(translateRe),
+				markerError = DomUtil.getPosition(marker._icon).add(panePos).subtract(map.project(latlng, zoom).subtract(topLeft)),
+				levelError = new Point(+x, +y).add(panePos)
+					.subtract(level.origin.multiplyBy(map.getZoomScale(zoom, level.zoom)).subtract(topLeft));
+
+				return Math.max(Math.abs(markerError.x), Math.abs(markerError.y), Math.abs(levelError.x), Math.abs(levelError.y));
+			}
+
+			function isSnapped() {
+				const pos = DomUtil.getPosition(marker._icon);
+				return pos.equals(pos.round()) && map.getPixelOrigin().equals(map.getPixelOrigin().round());
+			}
+
+			it('keeps layers at their exact screen position on every flyTo frame, snapping them at the end', async () => {
+				let error = 0, frames = 0;
+				map.on('move', (e) => {
+					if (e.flyTo) {
+						error = Math.max(error, maxError());
+						frames++;
+					}
+				});
+
+				await new Promise((resolve) => {
+					map.once('moveend', resolve);
+					map.flyTo([50.4502, 30.521], 14, {duration: 0.3});
+				});
+
+				expect(frames).to.be.above(5);
+				expect(error).to.be.below(1e-3);
+				expect(isSnapped()).to.be.true;
+			});
+
+			it('snaps layers when a flight is interrupted', async () => {
+				await new Promise((resolve) => {
+					let frames = 0;
+					map.on('move', (e) => {
+						if (e.flyTo && ++frames === 5) {
+							map._stop(); // what dragging does
+							resolve();
+						}
+					});
+					map.flyTo([50.4502, 30.521], 15, {duration: 0.3});
+				});
+
+				expect(map.getZoom() % 1).to.not.equal(0);
+				expect(isSnapped()).to.be.true;
+			});
 		});
 
 		it('should handle parameters leading to Math.log(sq) issue', (done) => {

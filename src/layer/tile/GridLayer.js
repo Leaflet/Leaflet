@@ -635,8 +635,11 @@ export class GridLayer extends Layer {
 	 */
 	_setZoomTransform(level, center, zoom) {
 		const scale = this._map.getZoomScale(zoom, level.zoom),
-		translate = level.origin.multiplyBy(scale)
-			.subtract(this._map._getNewPixelOrigin(center, zoom)).round();
+		translate = level.origin.multiplyBy(scale).subtract(this._map._getNewPixelOrigin(center, zoom));
+
+		// a scaled level is resampled anyway, and rounding where its origin lands would make its tiles away from the
+		// origin jitter against the zoom motion (#3194)
+		if (scale === 1) { this._map._snapLayerPoint(translate); }
 
 		DomUtil.setTransform(level.el, translate, scale);
 	}

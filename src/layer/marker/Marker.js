@@ -273,7 +273,7 @@ export class Marker extends Layer {
 	update() {
 
 		if (this._icon && this._map) {
-			const pos = this._map.latLngToLayerPoint(this._latlng)._round();
+			const pos = this._map._snapLayerPoint(this._map.latLngToLayerPoint(this._latlng));
 			this._setPos(pos);
 		}
 
@@ -382,7 +382,7 @@ export class Marker extends Layer {
 		this._positionElements(pos);
 
 		/** @type {number} */
-		this._zIndex = pos.y + this.options.zIndexOffset;
+		this._zIndex = Math.round(pos.y) + this.options.zIndexOffset;
 
 		this._updateRise();
 	}

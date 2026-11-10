@@ -326,7 +326,7 @@ export class DivOverlay extends LayerBase {
 	_updatePosition() {
 		if (!this._map) { return; }
 
-		const pos = this._map.latLngToLayerPoint(/** @type {LatLng} */ (this._latlng))._round(),
+		const pos = this._map._snapLayerPoint(this._map.latLngToLayerPoint(/** @type {LatLng} */ (this._latlng))),
 		offset = new Point(this.options.offset);
 
 		DomUtil.setPosition(this._container, pos.add(this._getAnchor()));
