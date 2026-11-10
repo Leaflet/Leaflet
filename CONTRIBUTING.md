@@ -184,9 +184,9 @@ For maintainers:
 1. Make sure CI passes on `main` and no [blocker](https://github.com/Leaflet/Leaflet/labels/blocker) issues are open.
 2. Describe the release in [`CHANGELOG.md`](CHANGELOG.md) under a `## <version> (<date>)` heading and commit it.
    This section becomes the GitHub release notes.
-3. Run `npm version <patch | minor | major>`, or `npm version 2.0.0-beta.2` for a prerelease, then `git push --follow-tags`.
+3. Run `npm version <patch | minor | major>`, or `npm version prerelease` for the next beta (`-beta.3` → `-beta.4`), then `git push --follow-tags`.
 4. Once the tests pass on the tag, CI stages the package on npm and creates the GitHub release with `leaflet.zip`.
-   A version with a suffix (`-beta.2`) goes to the `beta` dist-tag and a prerelease, others to `latest`.
+   A version with a suffix (`-beta.N`) goes to the `beta` dist-tag and a prerelease, others to `latest`.
 5. Run `npm stage list leaflet` and `npm stage approve <id>` (asks for 2FA) to publish the package.
 6. Check the [npm page](https://www.npmjs.com/package/leaflet) and the files on [jsDelivr](https://cdn.jsdelivr.net/npm/leaflet/).
 

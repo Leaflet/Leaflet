@@ -25,6 +25,10 @@ console.log(`dist/leaflet.css:       ${integrityCss}`);
 const configPath = 'build/site.json';
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 
+if (!config.mounts.some(mount => mount.version === config.version)) {
+	delete config.versions[config.version];
+}
+
 config.refs.v2 = execSync(`git rev-parse v${pkg.version}^{commit}`, {encoding: 'utf8'}).trim();
 config.version = pkg.version;
 config.versions[pkg.version] = {

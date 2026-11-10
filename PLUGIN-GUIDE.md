@@ -177,7 +177,7 @@ module through an import map:
 <script type="importmap">
 	{
 		"imports": {
-			"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.2/dist/leaflet.js",
+			"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.3/dist/leaflet.js",
 			"leaflet-my-plugin": "https://cdn.jsdelivr.net/npm/leaflet-my-plugin@1.0.0/dist/leaflet-my-plugin.js"
 		}
 	}
