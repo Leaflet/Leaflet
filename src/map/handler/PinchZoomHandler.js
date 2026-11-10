@@ -3,8 +3,10 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import {getPointers} from '../../dom/DomEventUtil.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
+import {recordPinchZoom, snapPinchZoom} from './pinchSnap.js';
 
 /** @import {LatLng} from '../../geo/LatLng.js' */
+/** @import {ZoomSample} from './pinchSnap.js' */
 
 /** Zooms with a two-finger pinch on touch devices (`map.pinchZoom`), enabled by default. */
 export class PinchZoomHandler extends Handler {
@@ -50,6 +52,8 @@ export class PinchZoomHandler extends Handler {
 		this._startDist = p1.distanceTo(p2);
 		/** @type {number} */
 		this._startZoom = map.getZoom();
+		/** @type {ZoomSample[]} */
+		this._zoomSamples = [];
 
 		this._moved = false;
 		this._zooming = true;
@@ -80,6 +84,7 @@ export class PinchZoomHandler extends Handler {
 			(this._zoom > map.getMaxZoom() && scale > 1))) {
 			this._zoom = map._limitZoom(this._zoom);
 		}
+		recordPinchZoom(this._zoomSamples, this._zoom);
 
 		if (map.options.pinchZoom === 'center') {
 			/** @type {LatLng} */
@@ -89,12 +94,16 @@ export class PinchZoomHandler extends Handler {
 			// Get delta from pinch to center, so centerLatLng is delta applied to initial pinchLatLng
 			const delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
 			if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
-			this._center = map.unproject(map.project(this._pinchStartLatLng, this._zoom).subtract(delta), this._zoom);
+			/** @type {Point} */
+			this._pinchOffset = delta;
+			this._center = map._centerAround(this._pinchStartLatLng, delta, this._zoom);
 		}
 
 		if (!this._moved) {
 			map._moveStart(true, false, e);
 			this._moved = true;
+			// keep layers from jittering against the zoom, like during flyTo; the end of the pinch snaps them again
+			map._subpixelOrigin = true;
 		}
 
 		cancelAnimationFrame(this._animRequest);
@@ -124,7 +133,13 @@ export class PinchZoomHandler extends Handler {
 		cancelAnimationFrame(this._animRequest);
 
 		const map = this._map,
-		zoom = map._limitZoom(this._zoom);
+		zoom = snapPinchZoom(map, this._zoomSamples, Date.now());
+		map._subpixelOrigin = false;
+
+		// keep the location between the fingers in place while snapping to a different zoom
+		if (map.options.pinchZoom !== 'center') {
+			this._center = map._centerAround(this._pinchStartLatLng, this._pinchOffset, zoom);
+		}
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (map._zoomAnimated) {

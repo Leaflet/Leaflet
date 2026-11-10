@@ -1,4 +1,4 @@
-import {LeafletMap} from 'leaflet';
+import {DomUtil, LeafletMap, Marker} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -172,5 +172,132 @@ describe('ScrollWheelZoomHandler', () => {
 			done();
 		});
 		UIEventSimulator.fire(wheel, container, scrollIn);
+	});
+
+	describe('trackpad pinch', () => {
+		const pinchFakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'cancelAnimationFrame'];
+
+		// splits a pinch by `scale` into events the way browsers report it: deltaY is -100 * ln(scale step)
+		function pinch(scale, options = {}, steps = 10) {
+			const deltaY = -100 * Math.log(scale) / steps;
+			for (let i = 0; i < steps; i++) {
+				UIEventSimulator.fire(wheel, container, {deltaY, deltaMode: 0, ctrlKey: true, ...options});
+				clock.tick(16);
+			}
+		}
+
+		it('zooms continuously by the pinch scale and snaps when the pinch ends', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			const zoom = map.getZoom();
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+
+			pinch(2 ** 1.2);
+			expect(map.getZoom()).to.be.closeTo(zoom + 1.2, 1e-9);
+			expect(zoomend.notCalled).to.be.true;
+
+			clock.tick(300);
+			expect(map.getZoom()).to.equal(zoom + 1);
+			expect(zoomend.calledOnce).to.be.true;
+		});
+
+		it('positions layers between pixels while pinching and on whole pixels after', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			const marker = new Marker(map.containerPointToLatLng([123, 45])).addTo(map);
+
+			pinch(1.3);
+			const pos = DomUtil.getPosition(marker.getElement());
+			expect(Number.isInteger(pos.x) && Number.isInteger(pos.y)).to.be.false;
+
+			clock.tick(300);
+			const end = DomUtil.getPosition(marker.getElement());
+			expect(Number.isInteger(end.x) && Number.isInteger(end.y)).to.be.true;
+		});
+
+		it('updates tile levels when snapping only if they did not follow the pinch', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+			const zoomanim = sinon.spy();
+			map.on('zoomanim', zoomanim);
+
+			pinch(2 ** 1.2);
+			clock.tick(300);
+			expect(zoomanim.lastCall.args[0].noUpdate).to.be.true;
+			clock.tick(1000);
+
+			map.options.zoomSnap = 0;
+			pinch(2 ** 0.5);
+			clock.tick(300);
+			expect(zoomanim.lastCall.args[0].noUpdate).to.be.false;
+		});
+
+		it('snaps a slight pinch back instead of zooming by a whole level', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			const zoom = map.getZoom();
+
+			pinch(1.1);
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(zoom);
+
+			pinch(0.9);
+			clock.tick(300);
+			expect(map.getZoom()).to.equal(zoom);
+		});
+
+		it('keeps the location under the pointer in place', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.options.zoomSnap = 0;
+			const {left, top} = container.getBoundingClientRect();
+			const point = map.containerPointToLatLng([50, 60]);
+
+			pinch(3, {clientX: left + 50, clientY: top + 60});
+			clock.tick(300);
+
+			expect(map.getZoom()).to.be.closeTo(3 + Math.log2(3), 1e-9);
+			expect(map.containerPointToLatLng([50, 60])).to.be.nearLatLng(point);
+		});
+
+		it('keeps the location under the pointer in place when snapping', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			const {left, top} = container.getBoundingClientRect();
+			const point = map.containerPointToLatLng([50, 60]);
+
+			pinch(2 ** 1.3, {clientX: left + 50, clientY: top + 60});
+			clock.tick(300);
+
+			expect(map.getZoom()).to.equal(5);
+			expect(map.containerPointToLatLng([50, 60])).to.be.nearLatLng(point);
+		});
+
+		it('snaps to the next level in the direction the pinch was heading', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+
+			// 3 -> 3.3 goes on to 4
+			pinch(2 ** 0.3);
+			clock.tick(500); // past the snap and the zoom input block after it
+			expect(map.getZoom()).to.equal(4);
+
+			// 4 -> 3.7 goes on to 3
+			pinch(2 ** -0.3);
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(3);
+
+			// 3 -> 3.7 -> 3.6 was last heading out, so it doesn't go on to 4
+			pinch(2 ** 0.7);
+			clock.tick(100);
+			pinch(2 ** -0.1, {}, 5);
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(3);
+		});
+
+		it('zooms by whole levels on ctrl+wheel from a mouse', () => {
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
+			const zoom = map.getZoom();
+
+			UIEventSimulator.fire(wheel, container, {deltaY: -100, deltaMode: 0, ctrlKey: true});
+			clock.tick(100);
+			expect(map.getZoom()).to.equal(zoom + 1);
+		});
 	});
 });

@@ -2753,6 +2753,16 @@ export class LeafletMap extends Evented {
 			Math.max(0, Math.ceil(left)) - Math.max(0, Math.floor(right));
 	}
 
+	/**
+	 * Returns the view center at `zoom` that keeps `latlng` at `offset` pixels from the center, like zooming around it.
+	 * @param {LatLng} latlng
+	 * @param {Point} offset
+	 * @param {number} zoom
+	 */
+	_centerAround(latlng, offset, zoom) {
+		return this.unproject(this.project(latlng, zoom).subtract(offset), zoom);
+	}
+
 	/** @param {number} zoom */
 	_limitZoom(zoom) {
 		const min = this.getMinZoom(),

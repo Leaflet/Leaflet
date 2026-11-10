@@ -1,0 +1,40 @@
+/** @import {LeafletMap} from '../Map.js' */
+
+/** @typedef {{time: number, zoom: number}} ZoomSample */
+
+// how far back from the end of a pinch to look for the direction it was heading
+const directionWindow = 100;
+
+/**
+ * Records the zoom of a pinch for `snapPinchZoom`, dropping samples too old to matter.
+ * @param {ZoomSample[]} samples
+ * @param {number} zoom
+ */
+export function recordPinchZoom(samples, zoom) {
+	const time = Date.now();
+	while (samples.length && time - samples[0].time > directionWindow) { samples.shift(); }
+	samples.push({time, zoom});
+}
+
+/**
+ * Snaps the zoom a pinch ended at, leaning to where it was heading: a quarter of a `zoomSnap` step past a level in
+ * that direction goes on to the next one, so a deliberate pinch isn't undone and a slight one doesn't jump a level.
+ * @param {LeafletMap} map
+ * @param {ZoomSample[]} samples
+ * @param {number} endTime when the pinch ended, so that a pause before letting go leaves no direction
+ */
+export function snapPinchZoom(map, samples, endTime) {
+	const snap = map.options.zoomSnap,
+	zoom = samples[samples.length - 1].zoom,
+	first = samples.find(s => endTime - s.time <= directionWindow),
+	change = first ? zoom - first.zoom : 0;
+
+	if (snap && Math.abs(change) > 0.01) {
+		const steps = zoom / snap,
+		from = change > 0 ? Math.floor(steps) : Math.ceil(steps);
+		if (Math.abs(steps - from) >= 0.25) {
+			return map._limitZoom((from + Math.sign(change)) * snap);
+		}
+	}
+	return map._limitZoom(zoom);
+}

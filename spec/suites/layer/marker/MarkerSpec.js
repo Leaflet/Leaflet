@@ -522,6 +522,24 @@ describe('Marker', () => {
 		});
 	});
 
+	it('keeps its zIndex while the zoom changes continuously and updates it once the zoom settles', () => {
+		const marker = new Marker([40, 0]).addTo(map);
+		const zIndex = () => Number(marker._icon.style.zIndex);
+		const start = zIndex();
+
+		map._subpixelOrigin = true;
+		map._move(map.getCenter(), 0.7, {pinch: true});
+		expect(zIndex()).to.equal(start);
+
+		marker.setZIndexOffset(100);
+		expect(zIndex()).to.equal(start + 100);
+
+		map._subpixelOrigin = false;
+		map._move(map.getCenter(), 1, {pinch: true});
+		expect(zIndex()).to.equal(Math.round(map.latLngToLayerPoint([40, 0]).y) + 100);
+		expect(zIndex()).to.not.equal(start + 100);
+	});
+
 	describe('rise on hover and focus', () => {
 		it('rises while hovered or focused', () => {
 			const marker = new Marker([0, 0], {riseOnHover: true}).addTo(map);

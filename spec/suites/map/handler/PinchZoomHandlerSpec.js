@@ -47,6 +47,21 @@ describe('PinchZoomHandler', () => {
 		new Finger('touch').moveTo(525, 300).down().moveBy(-200, 0).up();
 	});
 
+	it('keeps the location between the fingers in place when snapping', (done) => {
+		map.setView([0, 0], 1);
+		const latlng = map.containerPointToLatLng([125, 200]);
+		map.once('zoomend', () => {
+			// initial distance 50px, final distance 50 * 2^1.3px, so zoom 2.3 snaps on to 3
+			expect(map.getZoom()).to.equal(3);
+			expect(map.containerPointToLatLng([125, 200])).to.be.nearLatLng(latlng);
+			done();
+		});
+
+		const d = 25 * 2 ** 1.3 - 25;
+		new Finger('touch').moveTo(100, 200).down().moveBy(-d, 0).up();
+		new Finger('touch').moveTo(150, 200).down().moveBy(d, 0).up();
+	});
+
 	it('fires zoom event while pinch zoom', (done) => {
 		map.setView([0, 0], 4);
 

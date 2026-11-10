@@ -370,6 +370,7 @@ export class Marker extends Layer {
 		this.removeInteractiveTarget(icon);
 
 		this._icon = null;
+		this._iconZIndex = undefined;
 	}
 
 	_removeShadow() {
@@ -381,8 +382,14 @@ export class Marker extends Layer {
 	_setPos(pos) {
 		this._positionElements(pos);
 
+		// while the zoom changes continuously (pinch, flyTo), rounding flips markers less than a pixel apart between
+		// a tie, which falls back to DOM order, and their latitude order, so keep the order until the zoom settles
+		if (!this._map._subpixelOrigin || this._zIndexY === undefined) {
+			/** @type {number | undefined} */
+			this._zIndexY = Math.round(pos.y);
+		}
 		/** @type {number} */
-		this._zIndex = Math.round(pos.y) + this.options.zIndexOffset;
+		this._zIndex = this._zIndexY + this.options.zIndexOffset;
 
 		this._updateRise();
 	}
@@ -406,8 +413,12 @@ export class Marker extends Layer {
 
 	/** @param {number} offset */
 	_updateZIndex(offset) {
-		if (this._icon) {
-			this._icon.style.zIndex = `${this._zIndex + offset}`;
+		const zIndex = this._zIndex + offset;
+		// this runs for every marker on every frame of a zoom, so skip the style write when nothing changed
+		if (this._icon && zIndex !== this._iconZIndex) {
+			/** @type {number | undefined} */
+			this._iconZIndex = zIndex;
+			this._icon.style.zIndex = `${zIndex}`;
 		}
 	}
 
