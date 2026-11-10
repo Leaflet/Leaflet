@@ -1755,7 +1755,7 @@ describe('Map', () => {
 				return pos.equals(pos.round()) && map.getPixelOrigin().equals(map.getPixelOrigin().round());
 			}
 
-			it('keeps layers at their exact screen position on every flyTo frame, snapping them at the end', async () => {
+			it('keeps layers at their exact screen position on every flyTo frame, snapping them at the end', () => {
 				let error = 0, frames = 0;
 				map.on('move', (e) => {
 					if (e.flyTo) {
@@ -1764,11 +1764,14 @@ describe('Map', () => {
 					}
 				});
 
-				await new Promise((resolve) => {
-					map.once('moveend', resolve);
-					map.flyTo([50.4502, 30.521], 14, {duration: 0.3});
-				});
+				const clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'cancelAnimationFrame']});
+				const moveend = sinon.spy();
+				map.once('moveend', moveend);
+				map.flyTo([50.4502, 30.521], 14, {duration: 0.3});
+				clock.tick(400);
+				clock.restore();
 
+				expect(moveend.calledOnce).to.be.true;
 				expect(frames).to.be.above(5);
 				expect(error).to.be.below(1e-3);
 				expect(isSnapped()).to.be.true;
