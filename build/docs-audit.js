@@ -4,7 +4,7 @@
 // in sentence case. Exits with 1 on any problem, so that CI catches them.
 
 import {readFileSync} from 'node:fs';
-import {join, relative, resolve} from 'node:path';
+import {join, relative, resolve, sep} from 'node:path';
 import {API} from 'typescript/sync';
 import {SyntaxKind as SK, getTextOfJSDocComment} from 'typescript/ast';
 
@@ -24,6 +24,8 @@ const ALL_CAPS = /^[A-Z]+$/;
 const DOCUMENTED_ELSEWHERE = new Set(['src/layer/LayerBase.js bubblingPointerEvents']);
 
 const dir = resolve(process.argv[2] ?? '.');
+// a path relative to the checkout, with forward slashes as in `DOCUMENTED_ELSEWHERE` also on Windows
+const relPath = file => relative(dir, file).replaceAll(sep, '/');
 const config = JSON.parse(readFileSync(join(dir, 'build/reference.json'), 'utf8'));
 const api = new API({cwd: dir});
 let checker;
@@ -36,7 +38,7 @@ try {
 	const program = snapshot.operation.createdPrograms[0];
 	checker = program.getProject().checker;
 	const exports = audit([join(dir, 'src/Leaflet.js'), join(dir, 'src/types.ts')].map(f => program.getSourceFile(f)));
-	checkConfig(exports, new Map(parsed.fileNames.map(f => [relative(dir, f), readFileSync(f, 'utf8')])));
+	checkConfig(exports, new Map(parsed.fileNames.map(f => [relPath(f), readFileSync(f, 'utf8')])));
 } finally {
 	api.close();
 }
@@ -159,8 +161,8 @@ function members(prefix, type, skip = () => false) {
 
 function member(prefix, sym) {
 	if (sym.name.startsWith('_')) { return; }
-	const decls = declsOf(sym).filter(d => d.getSourceFile().fileName.startsWith(join(dir, 'src/')) &&
-		!DOCUMENTED_ELSEWHERE.has(`${relative(dir, d.getSourceFile().fileName)} ${sym.name}`));
+	const decls = declsOf(sym).filter(d => relPath(d.getSourceFile().fileName).startsWith('src/') &&
+		!DOCUMENTED_ELSEWHERE.has(`${relPath(d.getSourceFile().fileName)} ${sym.name}`));
 	if (decls.length && !decls.some(d => hasDescription(d) || isDeprecated(d))) {
 		// named after the class that declares it rather than the first subclass that comes up
 		let cls = decls[0];
@@ -186,7 +188,7 @@ function report(decl, label) {
 	const start = decl.pos + sf.text.slice(decl.pos, decl.end).search(NON_SPACE);
 	const line = sf.text.slice(0, start).split('\n').length;
 	const key = `${sf.fileName}:${start}`;
-	if (!problems.has(key)) { problems.set(key, `${label}  ${relative(dir, sf.fileName)}:${line}`); }
+	if (!problems.has(key)) { problems.set(key, `${label}  ${relPath(sf.fileName)}:${line}`); }
 }
 
 function baseOf(cls) {

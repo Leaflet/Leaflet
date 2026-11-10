@@ -4,7 +4,7 @@
 
 import {readFileSync, writeFileSync, existsSync, readdirSync} from 'node:fs';
 import {execSync} from 'node:child_process';
-import {join} from 'node:path';
+import {join, sep} from 'node:path';
 import {parse as parseYaml} from '@mourner/yeahml';
 
 const OUT = 'build/plugin-stats.json';
@@ -19,7 +19,7 @@ const old = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
 
 const repos = new Set();
 // files in the root of the directory, like the template, aren't plugins
-for (const file of readdirSync(DIR, {recursive: true}).filter(f => f.endsWith('.md') && f.includes('/'))) {
+for (const file of readdirSync(DIR, {recursive: true}).filter(f => f.endsWith('.md') && f.includes(sep))) {
 	const data = parseYaml(readFileSync(join(DIR, file), 'utf8').match(FRONT_MATTER)?.[1] ?? '');
 	if (data?.repo) { repos.add(data.repo); }
 }
