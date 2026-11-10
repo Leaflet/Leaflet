@@ -379,7 +379,7 @@ export class GridLayer extends Layer {
 		if (this._container) { return; }
 
 		/** @type {HTMLElement} */
-		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className ?? ''}`);
+		this._container = DomUtil.create('div', `leaflet-layer leaflet-zoom-animated ${this.options.className ?? ''}`);
 		this._updateZIndex();
 
 		if (this.options.opacity < 1) {
@@ -408,47 +408,27 @@ export class GridLayer extends Layer {
 			}
 		}
 
-		/** @type {GridLevel} */
-		this._level = this._levels[zoom] ?? this._createLevel(zoom);
-
-		return this._level;
-	}
-
-	/** @param {number} zoom */
-	_createLevel(zoom) {
+		let level = this._levels[zoom];
 		const map = this._map;
-		const level = this._levels[zoom] = /** @type {GridLevel} */ ({});
 
-		level.el = DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-		level.el.style.zIndex = `${this.options.maxZoom}`;
+		if (!level) {
+			level = this._levels[zoom] = /** @type {GridLevel} */ ({});
 
-		level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
-		level.zoom = zoom;
+			level.el = DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
+			level.el.style.zIndex = `${maxZoom}`;
 
-		this._setZoomTransform(level, map.getCenter(), map.getZoom());
+			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
+			level.zoom = zoom;
 
-		// the browser needs a style for the new level before a zoom animation transforms it, or it won't
-		// transition; reading layout recalcs every pending style change on the page, so only do it then
-		if (map._animatingZoom) {
-			/** @type {(...args: unknown[]) => false} */ (Util.falseFn)(level.el.offsetWidth);
+			this._setZoomTransform(level, map.getCenter(), map.getZoom());
+
+			this._onCreateLevel(level);
 		}
 
-		this._onCreateLevel(level);
+		/** @type {GridLevel} */
+		this._level = level;
 
 		return level;
-	}
-
-	// called before the map starts a zoom animation, when nothing on the page has changed yet, so the forced
-	// style recalc for the new level (see _createLevel) only covers this level and not every marker
-	/**
-	 * @param {number} zoom
-	 * @param {boolean} [noUpdate]
-	 */
-	_prepareZoomAnim(zoom, noUpdate) {
-		const tileZoom = this._getTileZoom(zoom);
-		if (tileZoom !== undefined && !this._levels[tileZoom] && (!noUpdate || this.options.updateWhenZooming)) {
-			this._createLevel(tileZoom);
-		}
 	}
 
 	/** @param {number} z */
@@ -573,7 +553,15 @@ export class GridLayer extends Layer {
 
 	/** @param {ZoomAnimEvent} e */
 	_animateZoom(e) {
+		const map = this._map, center = map.getCenter(), zoom = map.getZoom(), scale = map.getZoomScale(e.zoom, zoom);
+
 		this._setView(e.center, e.zoom, true, e.noUpdate);
+
+		// the levels stay put and the container zooms as a whole, since a level created just now would only
+		// transition after a forced style recalc, which covers every pending style change on the page
+		this._setZoomTransforms(center, zoom);
+		DomUtil.setTransform(this._container, map._getNewPixelOrigin(center, zoom).multiplyBy(scale)
+			.subtract(map._getNewPixelOrigin(e.center, e.zoom)), scale);
 	}
 
 	/** @param {number} zoom */
@@ -640,6 +628,7 @@ export class GridLayer extends Layer {
 	 * @param {number} zoom
 	 */
 	_setZoomTransforms(center, zoom) {
+		if (this._container.style.transform) { this._container.style.transform = ''; }
 		for (const level of Object.values(this._levels)) {
 			this._setZoomTransform(level, center, zoom);
 		}
@@ -684,7 +673,11 @@ export class GridLayer extends Layer {
 	}
 
 	_onMoveEnd() {
-		if (!this._map || this._map._animatingZoom) { return; }
+		const map = this._map;
+		if (!map || map._animatingZoom) { return; }
+
+		// a zoom animation that ends at the same zoom (e.g. a pinch snapping back) fires no zoom event
+		if (this._container.style.transform) { this._setZoomTransforms(map.getCenter(), map.getZoom()); }
 
 		this._update();
 	}

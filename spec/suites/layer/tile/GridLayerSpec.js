@@ -235,6 +235,40 @@ describe('GridLayer', () => {
 		});
 	});
 
+	describe('zoom animation', () => {
+		let clock;
+		beforeEach(() => { clock = createClock(); });
+		afterEach(() => { clock.restore(); });
+
+		it('zooms the container as a whole and resets it when the animation ends', () => {
+			const grid = new GridLayer().addTo(map.setView([0, 0], 10));
+			const oldTransform = grid._levels[10].el.style.transform;
+
+			map._moveStart(true, false);
+			map._animateZoom(map.getCenter(), 11);
+			expect(grid._container.style.transform).to.contain('scale(2)');
+			expect(grid._levels[10].el.style.transform).to.equal(oldTransform);
+			expect(grid._levels[11].el.style.transform).to.contain('scale(0.5)');
+
+			clock.tick(1000);
+			expect(grid._container.style.transform).to.equal('');
+			expect(grid._levels[10].el.style.transform).to.contain('scale(2)');
+			expect(grid._levels[11].el.style.transform).to.contain('scale(1)');
+		});
+
+		it('resets the container when the animation ends at the same zoom', () => {
+			const grid = new GridLayer().addTo(map.setView([0, 0], 10));
+
+			map._moveStart(true, false);
+			map._animateZoom(map.containerPointToLatLng([500, 400]), 10, true);
+			expect(grid._container.style.transform).to.contain('translate3d(-100px, -100px, 0px)');
+
+			clock.tick(1000);
+			expect(grid._container.style.transform).to.equal('');
+			expect(grid._levels[10].el.style.transform).to.contain('translate3d(-100px, -100px, 0px)');
+		});
+	});
+
 	describe('#getMaxZoom, #getMinZoom', () => {
 		beforeEach(() => {
 			map.setView([0, 0], 1);

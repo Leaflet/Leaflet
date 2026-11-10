@@ -2904,12 +2904,6 @@ export class LeafletMap extends Evented {
 		/** @type {number} */
 		this._animateToZoom = zoom;
 
-		// before anything changes on the page, so layers can create elements that need a forced style recalc
-		for (const layer of Object.values(this._layers)) {
-			/** @type {{_prepareZoomAnim?: (zoom: number, noUpdate?: boolean) => void}} */ (layer)
-				._prepareZoomAnim?.(zoom, noUpdate);
-		}
-
 		this._mapPane.classList.add('leaflet-zoom-anim');
 
 		this.fire('zoomanim', {
