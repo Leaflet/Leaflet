@@ -22,10 +22,11 @@ export function recordPinchZoom(samples, zoom) {
  * @param {LeafletMap} map
  * @param {ZoomSample[]} samples
  * @param {number} endTime when the pinch ended, so that a pause before letting go leaves no direction
+ * @param {number} [ahead] how much further the zoom is expected to go on its own, e.g. with scroll momentum
  */
-export function snapPinchZoom(map, samples, endTime) {
+export function snapPinchZoom(map, samples, endTime, ahead = 0) {
 	const snap = map.options.zoomSnap,
-	zoom = samples[samples.length - 1].zoom,
+	zoom = samples[samples.length - 1].zoom + ahead,
 	first = samples.find(s => endTime - s.time <= directionWindow),
 	change = first ? zoom - first.zoom : 0;
 
@@ -48,4 +49,12 @@ export function pinchVelocity(samples, endTime) {
 	const first = samples.find(s => endTime - s.time <= directionWindow),
 	last = samples[samples.length - 1];
 	return first && endTime > first.time ? (last.zoom - first.zoom) / (endTime - first.time) : 0;
+}
+
+/**
+ * Returns how long a snap by `distance` zoom levels takes: small ones end before they read as a separate step.
+ * @param {number} distance
+ */
+export function snapDuration(distance) {
+	return Math.min(Math.max(250 * Math.sqrt(distance / 0.5), 120), 250);
 }

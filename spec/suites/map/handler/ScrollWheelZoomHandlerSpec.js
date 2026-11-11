@@ -264,6 +264,54 @@ describe('ScrollWheelZoomHandler', () => {
 			expect(map._targetZoom()).to.be.greaterThan(target);
 		});
 
+		describe('momentum', () => {
+			// a scroll event a frame long, with its time stamp on the fake clock
+			function fire(deltaY, onEvent = () => {}) {
+				const e = new WheelEvent(wheel, {deltaY, deltaMode: 0, bubbles: true, cancelable: true});
+				Object.defineProperty(e, 'timeStamp', {value: Date.now()});
+				container.dispatchEvent(e);
+				onEvent();
+				clock.tick(16);
+			}
+
+			// a flick zooming out: a few ramp-up events, `fast` frames at 8 levels/s, then momentum decaying with a
+			// time constant of 150 ms, like macOS sends it; `onEvent` runs after each event
+			function flick(fast, onEvent) {
+				const peak = 8 * 0.016 * 200 * Math.LN2;
+				for (const deltaY of [1, 2, 3]) { fire(deltaY, onEvent); }
+				for (let i = 0; i < fast; i++) { fire(peak, onEvent); }
+				for (let deltaY = peak; deltaY >= 0.5; deltaY *= Math.exp(-16 / 150)) { fire(deltaY, onEvent); }
+			}
+
+			beforeEach(() => {
+				clock = sinon.useFakeTimers({toFake: fakes});
+				map.remove();
+				map = new LeafletMap(container, {center: [0, 0], zoom: 6});
+			});
+
+			it('snaps into the end of a flick\'s momentum without waiting for its tail', () => {
+				const zoomend = sinon.spy();
+				map.on('zoomend', zoomend);
+				const animating = [];
+				flick(10, () => animating.push(map._animatingZoom));
+
+				const start = animating.indexOf(true);
+				expect(start).to.be.within(1, animating.length - 10);
+				expect(animating.slice(start).every(Boolean)).to.be.true;
+
+				clock.tick(1000);
+				expect(map.getZoom()).to.equal(3);
+				expect(zoomend.calledOnce).to.be.true;
+			});
+
+			it('follows the fingers again when they push during the snap', () => {
+				flick(10);
+				expect(map._animatingZoom).to.be.true;
+				for (let i = 0; i < 3; i++) { fire(20); }
+				expect(map._animatingZoom).to.be.false;
+			});
+		});
+
 		it('zooms by notches when a mouse wheel spins fast', () => {
 			clock = sinon.useFakeTimers({toFake: fakes});
 			const zoom = map.getZoom();
@@ -326,7 +374,7 @@ describe('ScrollWheelZoomHandler', () => {
 			map.on('zoomend', zoomend);
 
 			pinch(2 ** 0.6);
-			clock.tick(250);
+			clock.tick(150);
 			expect(map._animatingZoom).to.be.true;
 			const zoom = map.getZoom();
 			expect(zoom).to.be.within(3.6, 3.99);
@@ -339,6 +387,69 @@ describe('ScrollWheelZoomHandler', () => {
 			expect(map.getZoom()).to.equal(5);
 			expect(zoomstart.callCount).to.equal(1);
 			expect(zoomend.callCount).to.equal(1);
+		});
+
+		it('ends a pinch after a pause of a few times the gap between its events', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			// events every frame: a 100 ms pause ends it
+			pinch(2 ** 0.6);
+			clock.tick(100);
+			expect(map._animatingZoom).to.be.true;
+			clock.tick(500);
+
+			// events every 60 ms: still going after 100 ms
+			const deltaY = -100 * Math.log(2 ** 0.6) / 5;
+			for (let i = 0; i < 5; i++) {
+				UIEventSimulator.fire(wheel, container, {deltaY, deltaMode: 0, ctrlKey: true});
+				clock.tick(i < 4 ? 60 : 100);
+			}
+			expect(map._animatingZoom).to.be.false;
+			expect(map.getZoom()).to.be.closeTo(4.6, 1e-9);
+		});
+
+		it('snaps a short way quickly', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+
+			pinch(2 ** 0.1);
+			clock.tick(250);
+			expect(zoomend.calledOnce).to.be.true;
+			expect(map.getZoom()).to.equal(3);
+		});
+
+		it('snaps at once at the fingers\' speed when Safari tells the pinch ended', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			pinch(2 ** 0.6);
+			const zoom = map.getZoom();
+			container.dispatchEvent(new Event('gestureend', {bubbles: true}));
+			expect(map._animatingZoom).to.be.true;
+
+			clock.tick(32);
+			expect(map.getZoom() - zoom).to.be.greaterThan(0.03);
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(4);
+		});
+
+		it('ignores the wheel event Safari sends right after gestureend', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			pinch(2 ** 0.6);
+			container.dispatchEvent(new Event('gestureend', {bubbles: true}));
+			UIEventSimulator.fire(wheel, container, {deltaY: -0.07, deltaMode: 0, ctrlKey: true});
+			expect(map._animatingZoom).to.be.true;
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(4);
 		});
 
 		it('snaps a slight pinch back instead of zooming by a whole level', () => {
@@ -394,7 +505,7 @@ describe('ScrollWheelZoomHandler', () => {
 
 			// 3 -> 3.7 -> 3.6 was last heading out, so it doesn't go on to 4
 			pinch(2 ** 0.7);
-			clock.tick(100);
+			clock.tick(40);
 			pinch(2 ** -0.1, {}, 5);
 			clock.tick(500);
 			expect(map.getZoom()).to.equal(3);

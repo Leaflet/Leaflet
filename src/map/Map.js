@@ -2829,7 +2829,7 @@ export class LeafletMap extends Evented {
 	 * @param {LatLng} latlng
 	 * @param {Point} offset
 	 * @param {number} zoom
-	 * @param {{center?: LatLng, velocity?: number, continued?: boolean, noMoveStart?: boolean,
+	 * @param {{center?: LatLng, velocity?: number, continued?: boolean, noMoveStart?: boolean, duration?: number,
 	 *   originalEvent?: Event}} [options]
 	 */
 	_animateZoom(latlng, offset, zoom, options = {}) {
@@ -2843,11 +2843,11 @@ export class LeafletMap extends Evented {
 			this._moveStart(true, options.noMoveStart, options.originalEvent);
 		}
 
-		// the curve's slope at the start, in zoom levels per duration: in the zoom's direction, an ease-out from
-		// rest, arriving sooner if already faster so as not to overshoot; against it, the current speed, so that a
-		// reversal stays continuous
-		let duration = zoomAnimDuration, slope = 3 * dz;
-		if (velocity * dz < 0) {
+		// the curve's slope at the start, in zoom levels per duration: the current speed for a gesture that goes on,
+		// and against the zoom's direction, so that the motion stays continuous; otherwise an ease-out, arriving
+		// sooner if already faster so as not to overshoot
+		let duration = options.duration ?? zoomAnimDuration, slope = 3 * dz;
+		if (velocity * dz < 0 || options.continued && Math.abs(velocity) * duration < Math.abs(slope)) {
 			slope = velocity * duration;
 		} else if (Math.abs(velocity) * duration > Math.abs(slope)) {
 			duration = slope / velocity;
