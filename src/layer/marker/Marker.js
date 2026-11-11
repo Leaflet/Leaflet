@@ -10,7 +10,7 @@ import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 /** @import {Feature, Point as GeoJSONPoint} from 'geojson' */
 /** @import {Defaults, DragEndEvent, LatLngExpression, LeafletEvent, MapListeners, MarkerDefaults, MarkerEventMap,
- *    MarkerMoveEvent, MarkerOptions, PointExpression, ZoomAnimEvent} from '../../types.js' */
+ *    MarkerMoveEvent, MarkerOptions, PointExpression} from '../../types.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Icon} from './Icon.js' */
 
@@ -178,10 +178,6 @@ export class Marker extends Layer {
 	onAdd(map) {
 		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
-		if (this._zoomAnimated) {
-			map.on('zoomanim', this._animateZoom, this);
-		}
-
 		this._initIcon();
 		this.update();
 	}
@@ -194,10 +190,6 @@ export class Marker extends Layer {
 			if (this.options.draggable) { this.dragging.removeHooks(); }
 		}
 		delete this.dragging;
-
-		if (this._zoomAnimated) {
-			map.off('zoomanim', this._animateZoom, this);
-		}
 
 		this._removeIcon();
 		this._removeShadow();
@@ -422,13 +414,6 @@ export class Marker extends Layer {
 		}
 	}
 
-	/** @param {ZoomAnimEvent} opt */
-	_animateZoom(opt) {
-		const pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
-
-		this._setPos(pos);
-	}
-
 	_initInteraction() {
 
 		if (!this.options.interactive) { return; }
@@ -476,8 +461,7 @@ export class Marker extends Layer {
 	 */
 	setRotation(rotation) {
 		this.options.rotation = rotation;
-		// mid-zoom, the icon is transitioning to a position that update() can't compute yet; the zoom end applies it
-		if (this._icon && !this._map._animatingZoom) {
+		if (this._icon) {
 			this._positionElements(DomUtil.getPosition(this._icon));
 			this._popup?._updatePosition();
 			this._tooltip?._updatePosition();

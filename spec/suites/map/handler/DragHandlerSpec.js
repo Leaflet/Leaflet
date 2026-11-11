@@ -393,18 +393,18 @@ describe('DragHandler', () => {
 
 			const zoomEnded = new Promise((resolve) => { map.once('zoomend', resolve); });
 			await new Promise((resolve) => {
-				map.once('zoomanim', resolve);
+				map.once('zoom', resolve);
 				map.setZoom(2);
 			});
 			expect(map._animatingZoom).to.be.true;
 
-			const rect = container.getBoundingClientRect(),
-			latLng = map.containerPointToLatLng([200 - rect.left, 200 - rect.top]);
+			const rect = container.getBoundingClientRect();
 
 			const finger = new Finger();
 			await finger.moveTo(200, 200).down().moveBy(5, 0);
 			expect(map._animatingZoom).to.be.true;
 			await zoomEnded;
+			const latLng = map.containerPointToLatLng([205 - rect.left, 200 - rect.top]);
 			await finger.moveTo(300, 240).up();
 			UIEventSimulator.fire('click', container, {detail: 1});
 

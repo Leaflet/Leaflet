@@ -154,11 +154,14 @@ describe('Path', () => {
 			}
 
 			it('stay aligned with other paths during zoom animation', () => {
-				map._moveStart(true);
-				map._animateZoom(map.getCenter(), 6);
+				const clock = sinon.useFakeTimers({toFake: ['requestAnimationFrame']});
+				map.setZoom(6);
+				clock.tick(100);
 				moveAndCheck();
 
-				map._onZoomTransitionEnd();
+				clock.tick(1000);
+				clock.restore();
+				expect(map.getZoom()).to.equal(6);
 				expect(moving[0]._point).to.eql(map.latLngToLayerPoint(a).round());
 				expect(moving[1]._rings).to.eql(still[1]._rings);
 			});

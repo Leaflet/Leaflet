@@ -15,7 +15,7 @@ export class DoubleClickZoomHandler extends Handler {
 	/** @param {LeafletPointerEvent} e */
 	_onDoubleClick(e) {
 		const map = this._map,
-		oldZoom = map.getZoom(),
+		oldZoom = map._targetZoom(),
 		delta = map.options.zoomDelta,
 		zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;
 

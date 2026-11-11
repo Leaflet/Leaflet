@@ -38,3 +38,14 @@ export function snapPinchZoom(map, samples, endTime) {
 	}
 	return map._limitZoom(zoom);
 }
+
+/**
+ * Returns how fast a pinch was zooming, in levels per ms, over its last moments before `endTime`.
+ * @param {ZoomSample[]} samples
+ * @param {number} endTime
+ */
+export function pinchVelocity(samples, endTime) {
+	const first = samples.find(s => endTime - s.time <= directionWindow),
+	last = samples[samples.length - 1];
+	return first && endTime > first.time ? (last.zoom - first.zoom) / (endTime - first.time) : 0;
+}

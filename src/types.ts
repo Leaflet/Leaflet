@@ -440,7 +440,6 @@ declare module './Leaflet.js' {
 		_initLayout(): void;
 		_updateLayout(): void;
 		_adjustPan(): void;
-		_animateZoom(e: ZoomAnimEvent): void;
 	}
 }
 

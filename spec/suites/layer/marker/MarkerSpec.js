@@ -418,18 +418,17 @@ describe('Marker', () => {
 			expect(container.style.transform).not.to.equal(before);
 		});
 
-		it('doesn\'t move the icon during a zoom animation', async () => {
+		it('applies a rotation set during a zoom animation', async () => {
 			const marker = new Marker([10, 10], {rotation: 0}).addTo(map);
-			let before, during;
+			let during;
 
-			map.once('zoomanim', () => {
-				before = marker._icon.style.transform;
+			map.once('zoom', () => {
 				marker.setRotation(90);
 				during = marker._icon.style.transform;
 			});
 			await new Promise((resolve) => { map.once('zoomend', resolve).setZoom(2); });
 
-			expect(during).to.equal(before);
+			expect(during).to.contain('rotate(90deg)');
 			expect(marker._icon.style.transform).to.contain('rotate(90deg)');
 		});
 

@@ -3,7 +3,7 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import {getPointers} from '../../dom/DomEventUtil.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
-import {recordPinchZoom, snapPinchZoom} from './pinchSnap.js';
+import {pinchVelocity, recordPinchZoom, snapPinchZoom} from './pinchSnap.js';
 
 /** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {ZoomSample} from './pinchSnap.js' */
@@ -27,7 +27,7 @@ export class PinchZoomHandler extends Handler {
 		const map = this._map;
 
 		const pointers = getPointers();
-		if (pointers.length !== 2 || map._animatingZoom || this._zooming) { return; }
+		if (pointers.length !== 2 || this._zooming) { return; }
 
 		const p1 = map.pointerEventToContainerPoint(pointers[0]);
 		const p2 = map.pointerEventToContainerPoint(pointers[1]);
@@ -41,24 +41,27 @@ export class PinchZoomHandler extends Handler {
 
 		/** @type {Point} */
 		this._centerPoint = map.getSize()._divideBy(2);
+		const pinchPoint = map.options.pinchZoom === 'center' ? this._centerPoint : p1.add(p2)._divideBy(2);
 		/** @type {LatLng} */
-		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
-		if (map.options.pinchZoom !== 'center') {
-			/** @type {LatLng} */
-			this._pinchStartLatLng = map.containerPointToLatLng(p1.add(p2)._divideBy(2));
-		}
+		this._pinchStartLatLng = map.containerPointToLatLng(pinchPoint);
+		/** @type {Point} */
+		this._pinchOffset = pinchPoint.subtract(this._centerPoint);
 
 		/** @type {number} */
 		this._startDist = p1.distanceTo(p2);
 		/** @type {number} */
 		this._startZoom = map.getZoom();
+		/** @type {number} */
+		this._zoom = this._startZoom;
 		/** @type {ZoomSample[]} */
 		this._zoomSamples = [];
+		recordPinchZoom(this._zoomSamples, this._zoom);
 
-		this._moved = false;
 		this._zooming = true;
 
 		map._stop();
+		// a pinch takes over a running zoom animation from the view it's at, and the move goes on
+		this._moved = map._stopZoomAnim(true);
 
 		DomEvent.on(map._container, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(map._container, 'pointerup pointercancel', this._onPointerEnd, this);
@@ -86,29 +89,23 @@ export class PinchZoomHandler extends Handler {
 		}
 		recordPinchZoom(this._zoomSamples, this._zoom);
 
-		if (map.options.pinchZoom === 'center') {
-			/** @type {LatLng} */
-			this._center = this._startLatLng;
-			if (scale === 1) { return; }
-		} else {
+		if (map.options.pinchZoom !== 'center') {
 			// Get delta from pinch to center, so centerLatLng is delta applied to initial pinchLatLng
 			const delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
-			if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
-			/** @type {Point} */
+			if (scale === 1 && delta.equals(this._pinchOffset)) { return; }
 			this._pinchOffset = delta;
-			this._center = map._centerAround(this._pinchStartLatLng, delta, this._zoom);
-		}
+		} else if (scale === 1) { return; }
 
 		if (!this._moved) {
 			map._moveStart(true, false, e);
 			this._moved = true;
-			// keep layers from jittering against the zoom, like during flyTo; the end of the pinch snaps them again
-			map._subpixelOrigin = true;
 		}
+		// keep layers from jittering against the zoom, like during flyTo; the end of the pinch snaps them again
+		map._subpixelOrigin = true;
 
 		cancelAnimationFrame(this._animRequest);
 
-		const center = this._center, zoom = this._zoom;
+		const zoom = this._zoom, center = map._centerAround(this._pinchStartLatLng, this._pinchOffset, zoom);
 		/** @type {number} */
 		this._animRequest = requestAnimationFrame(() => map._move(center, zoom, {pinch: true}));
 
@@ -133,19 +130,17 @@ export class PinchZoomHandler extends Handler {
 		cancelAnimationFrame(this._animRequest);
 
 		const map = this._map,
-		zoom = snapPinchZoom(map, this._zoomSamples, Date.now());
-		map._subpixelOrigin = false;
+		now = Date.now(),
+		zoom = snapPinchZoom(map, this._zoomSamples, now);
 
-		// keep the location between the fingers in place while snapping to a different zoom
-		if (map.options.pinchZoom !== 'center') {
-			this._center = map._centerAround(this._pinchStartLatLng, this._pinchOffset, zoom);
-		}
-
-		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
+		// keep the location between the fingers in place while snapping, carrying on at the pinch's speed
 		if (map._zoomAnimated) {
-			map._animateZoom(this._center, zoom, !!map.options.zoomSnap);
+			map._animateZoom(this._pinchStartLatLng, this._pinchOffset, zoom,
+				{continued: true, velocity: pinchVelocity(this._zoomSamples, now)});
 		} else {
-			map._resetView(this._center, zoom, false, map._moveEvent);
+			map._subpixelOrigin = false;
+			map._resetView(map._centerAround(this._pinchStartLatLng, this._pinchOffset, zoom), zoom, false,
+				map._moveEvent);
 		}
 	}
 }

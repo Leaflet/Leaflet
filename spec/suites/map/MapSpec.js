@@ -155,36 +155,27 @@ describe('Map', () => {
 			expect(spy.called).to.be.false;
 		});
 
-		it('does not throw if removed during animation', () => {
-			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
-
-			// Force creation of animation proxy,
-			// otherwise browser checks disable it
-			map._createAnimProxy();
+		it('does not throw if removed during animation', async () => {
+			const removed = map;
+			map = null;
+			removed.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
 
 			// #6775 Remove the map in the middle of the animation
-			map.on('zoom', map.remove.bind(map));
-			map.setZoom(2);
+			removed.on('zoom', removed.remove.bind(removed));
+			removed.setZoom(2);
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
 		});
 
 		// For #9575
-		it('does not throw if removed before transition end complete', async () => {
-			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout']});
-
+		it('does not throw if removed before the zoom animation ends', async () => {
 			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
-			map._createAnimProxy();
 			map.setZoom(2);
 
-			// let the zoom animation start, then remove the map before its transition end timer fires
 			await new Promise((resolve) => { requestAnimationFrame(resolve); });
 			map.remove();
 			map = null;
-
-			try {
-				clock.tick(300);
-			} finally {
-				clock.restore();
-			}
+			await new Promise((resolve) => { setTimeout(resolve, 300); });
 		});
 
 		it('throws error if container is reused by other instance', () => {
@@ -334,35 +325,64 @@ describe('Map', () => {
 
 			beforeEach(() => {
 				map.setView([0, 0], 13);
-				clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout']});
-				map._animateZoom(new LatLng(0.0005, 0.0005), 14);
+				clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame',
+					'cancelAnimationFrame']});
+				map.setView([0.0005, 0.0005], 14);
+				clock.tick(100);
 			});
 
 			afterEach(() => {
 				clock.restore();
 			});
 
-			it('applies the latest view after the animation', () => {
-				map.setView([0.001, 0.001], 15, {animate: false});
-				map.setView([0.002, 0.002], 16, {animate: false});
-				clock.tick(1000);
-				expect(map.getZoom()).to.equal(16);
-				expect(map.getCenter()).to.be.nearLatLng([0.002, 0.002]);
+			it('zooms between frames', () => {
+				expect(map.getZoom()).to.be.within(13.1, 13.99);
 			});
 
-			it('applies a new center after the animation', () => {
-				map.setView([0.001, 0.001], undefined, {animate: false});
+			it('applies a view without animation at once', () => {
+				const zoomend = sinon.spy();
+				map.on('zoomend', zoomend);
+				map.setView([0.002, 0.002], 16, {animate: false});
+				expect(map.getZoom()).to.equal(16);
+				expect(map.getCenter()).to.be.nearLatLng([0.002, 0.002]);
 				clock.tick(1000);
+				expect(map.getZoom()).to.equal(16);
+				expect(zoomend.callCount).to.equal(2);
+			});
+
+			it('keeps the target zoom for a new center', () => {
+				map.setView([0.001, 0.001], undefined, {animate: false});
 				expect(map.getZoom()).to.equal(14);
 				expect(map.getCenter()).to.be.nearLatLng([0.001, 0.001]);
 			});
 
-			it('drops the waiting view when stopped', () => {
-				map.setView([0.001, 0.001], 15, {animate: false});
+			it('retargets a new zoom in one continuous motion', () => {
+				const zoomstart = sinon.spy(), zoomend = sinon.spy(), zooms = [];
+				map.on('zoomstart', zoomstart);
+				map.on('zoomend', zoomend);
+				map.on('zoom', () => zooms.push(map.getZoom()));
+
+				map.setView([0.001, 0.001], 15);
+				clock.tick(1000);
+
+				expect(map.getZoom()).to.equal(15);
+				expect(map.getCenter()).to.be.nearLatLng([0.001, 0.001]);
+				expect(zoomstart.called).to.be.false;
+				expect(zoomend.callCount).to.equal(1);
+				for (let i = 1; i < zooms.length; i++) { expect(zooms[i]).to.be.at.least(zooms[i - 1]); }
+			});
+
+			it('counts zoomIn from the target', () => {
+				map.zoomIn();
+				clock.tick(1000);
+				expect(map.getZoom()).to.equal(15);
+			});
+
+			it('ends at a whole zoom when stopped', () => {
 				map.stop();
-				clock.tick(250);
-				expect(map.getZoom()).to.equal(14);
-				expect(map.getCenter()).to.be.nearLatLng([0.0005, 0.0005]);
+				clock.tick(1000);
+				expect(map.getZoom()).to.be.oneOf([13, 14]);
+				expect(map._animatingZoom).to.be.false;
 			});
 		});
 	});
@@ -410,7 +430,7 @@ describe('Map', () => {
 
 			describe('combined with setView', () => {
 				const settle = () => new Promise((resolve) => {
-					const check = () => (map._animatingZoom || map._zoomAnimFrame || map._panAnim?._inProgress ?
+					const check = () => (map._animatingZoom || map._panAnim?._inProgress ?
 						setTimeout(check, 20) : resolve());
 					setTimeout(check, 20);
 				});

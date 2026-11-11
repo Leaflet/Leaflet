@@ -174,6 +174,73 @@ describe('ScrollWheelZoomHandler', () => {
 		UIEventSimulator.fire(wheel, container, scrollIn);
 	});
 
+	it('adds up notches that come during the zoom animation into one motion', () => {
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+			'cancelAnimationFrame']});
+		map.remove();
+		map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+		const zoomend = sinon.spy(), zooms = [];
+		map.on('zoomend', zoomend);
+		map.on('zoom', () => zooms.push(map.getZoom()));
+
+		UIEventSimulator.fire(wheel, container, scrollIn);
+		clock.tick(150);
+		expect(map._animatingZoom).to.be.true;
+		UIEventSimulator.fire(wheel, container, scrollIn);
+		clock.tick(1000);
+
+		expect(map.getZoom()).to.equal(5);
+		expect(zoomend.calledOnce).to.be.true;
+		for (let i = 1; i < zooms.length; i++) { expect(zooms[i]).to.be.at.least(zooms[i - 1]); }
+	});
+
+	describe('trackpad scroll', () => {
+		const fakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'cancelAnimationFrame'];
+
+		// a scroll that zooms out by `levels` at half the pinch rate, every 16 ms like a trackpad
+		function scroll(levels, steps = 10) {
+			const deltaY = 200 * Math.LN2 * levels / steps;
+			for (let i = 0; i < steps; i++) {
+				UIEventSimulator.fire(wheel, container, {deltaY, deltaMode: 0});
+				clock.tick(16);
+			}
+		}
+
+		it('follows the fingers and snaps when the scroll ends', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			const zoom = map.getZoom();
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+
+			scroll(-0.6, 30);
+			expect(map.getZoom()).to.be.closeTo(zoom + 0.6, 1e-9);
+			expect(zoomend.notCalled).to.be.true;
+
+			clock.tick(300);
+			expect(map.getZoom()).to.equal(zoom + 1);
+			expect(zoomend.calledOnce).to.be.true;
+		});
+
+		it('counts the first event once it knows the scroll comes from a trackpad', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			const zoom = map.getZoom();
+			scroll(0.5, 8);
+			expect(map.getZoom()).to.be.closeTo(zoom - 0.5, 1e-9);
+		});
+
+		it('zooms by notches when a mouse wheel spins fast', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			const zoom = map.getZoom();
+			for (let i = 0; i < 3; i++) {
+				UIEventSimulator.fire(wheel, container, scrollIn);
+				clock.tick(30);
+			}
+			clock.tick(300);
+			expect(Number.isInteger(map.getZoom())).to.be.true;
+			expect(map.getZoom()).to.be.greaterThan(zoom);
+		});
+	});
+
 	describe('trackpad pinch', () => {
 		const pinchFakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'cancelAnimationFrame'];
 
@@ -214,22 +281,28 @@ describe('ScrollWheelZoomHandler', () => {
 			expect(Number.isInteger(end.x) && Number.isInteger(end.y)).to.be.true;
 		});
 
-		it('updates tile levels when snapping only if they did not follow the pinch', () => {
+		it('snaps with an animation that a resumed pinch takes over', () => {
 			clock = sinon.useFakeTimers({toFake: pinchFakes});
 			map.remove();
 			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
-			const zoomanim = sinon.spy();
-			map.on('zoomanim', zoomanim);
+			const zoomstart = sinon.spy(), zoomend = sinon.spy();
+			map.on('zoomstart', zoomstart);
+			map.on('zoomend', zoomend);
 
-			pinch(2 ** 1.2);
-			clock.tick(300);
-			expect(zoomanim.lastCall.args[0].noUpdate).to.be.true;
+			pinch(2 ** 0.6);
+			clock.tick(250);
+			expect(map._animatingZoom).to.be.true;
+			const zoom = map.getZoom();
+			expect(zoom).to.be.within(3.6, 3.99);
+
+			pinch(2 ** 0.9);
+			expect(map._animatingZoom).to.be.false;
+			expect(map.getZoom()).to.be.closeTo(zoom + 0.9, 1e-9);
+
 			clock.tick(1000);
-
-			map.options.zoomSnap = 0;
-			pinch(2 ** 0.5);
-			clock.tick(300);
-			expect(zoomanim.lastCall.args[0].noUpdate).to.be.false;
+			expect(map.getZoom()).to.equal(5);
+			expect(zoomstart.callCount).to.equal(1);
+			expect(zoomend.callCount).to.equal(1);
 		});
 
 		it('snaps a slight pinch back instead of zooming by a whole level', () => {

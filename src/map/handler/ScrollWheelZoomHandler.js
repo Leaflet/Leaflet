@@ -36,7 +36,14 @@ export class ScrollWheelZoomHandler extends Handler {
 
 		// a pinch comes as small fractional pixel deltas, while ctrl+wheel on a mouse gives whole notches of 100+ px
 		if (e.ctrlKey && !e.deltaMode && (this._pinching || e.deltaY % 1 && Math.abs(e.deltaY) < 50)) {
-			this._onPinch(e);
+			this._onPinch(e, e.deltaY / 100);
+			return;
+		}
+
+		// a trackpad scroll follows the fingers like a pinch, at half its rate (as in MapLibre)
+		const deltaY = this._classify(e);
+		if (this._kind === 'trackpad') {
+			this._onPinch(e, deltaY / 200);
 			return;
 		}
 
@@ -59,9 +66,39 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._timer = setTimeout(this._performZoom.bind(this), left);
 	}
 
+	// Tells a mouse wheel from a trackpad the way MapLibre does, once per gesture (a 400 ms pause starts a new one):
+	// mouse wheels on macOS send multiples of 4.000244140625, trackpads send tiny deltas, and otherwise the time to
+	// the next event decides (if none comes before the wheel debounce ends, it's a wheel). Returns the pixel delta,
+	// including that of the first event of the gesture if it was held back undecided.
+	/** @param {WheelEvent} e */
+	_classify(e) {
+		const now = Date.now(),
+		gap = now - (this._lastWheelTime ?? -Infinity);
+		let deltaY = e.deltaMode === 1 ? e.deltaY * 40 : e.deltaY;
+		this._lastWheelTime = now;
+
+		if (deltaY && deltaY % 4.000244140625 === 0) {
+			this._kind = 'wheel';
+		} else if (deltaY && Math.abs(deltaY) < 4) {
+			this._kind = 'trackpad';
+		} else if (gap > 400) {
+			this._kind = null;
+		} else if (!this._kind) {
+			this._kind = Math.abs(gap * deltaY) < 200 ? 'trackpad' : 'wheel';
+		}
+
+		if (this._kind === 'trackpad' && this._held) { deltaY += this._held; }
+		this._held = this._kind ? 0 : deltaY;
+		return deltaY;
+	}
+
 	_performZoom() {
+		this._kind ??= 'wheel';
+		this._held = 0;
+
 		const map = this._map,
-		zoom = map.getZoom(),
+		// count from where a running zoom animation is heading, so that notches add up
+		zoom = map._targetZoom(),
 		snap = map.options.zoomSnap ?? 0;
 
 		map._stop(); // stop panning and fly animations if any
@@ -87,14 +124,19 @@ export class ScrollWheelZoomHandler extends Handler {
 		}
 	}
 
-	/** @param {WheelEvent} e */
-	_onPinch(e) {
+	/**
+	 * @param {WheelEvent} e
+	 * @param {number} logScale the natural log of the zoom out scale since the last event
+	 */
+	_onPinch(e, logScale) {
 		const map = this._map;
 
 		if (!this._pinching) {
 			if (map._zoomInputBlocked()) { return; }
 
 			map._stop();
+			// a pinch takes over a running zoom animation, e.g. the snap of a pinch that paused for too long
+			const takeOver = map._stopZoomAnim(true);
 			clearTimeout(this._timer);
 			this._delta = 0;
 			this._startTime = null;
@@ -114,13 +156,13 @@ export class ScrollWheelZoomHandler extends Handler {
 			this._pinchLatLng = map.containerPointToLatLng(pinchPoint);
 
 			this._pinching = true;
-			map._moveStart(true, false, e);
+			if (!takeOver) { map._moveStart(true, false, e); }
 			// keep layers from jittering against the zoom, like during flyTo; the end of the pinch snaps them again
 			map._subpixelOrigin = true;
 		}
 
-		// browsers set deltaY to -100 times the natural log of the pinch scale change since the last event
-		this._pinchScale *= Math.exp(-e.deltaY / 100);
+		// browsers set a pinch's deltaY to -100 times the natural log of the scale change since the last event
+		this._pinchScale *= Math.exp(-logScale);
 
 		let zoom = map.getScaleZoom(this._pinchScale, this._startZoom);
 		if (!map.options.bounceAtZoomLimits) {
@@ -148,15 +190,14 @@ export class ScrollWheelZoomHandler extends Handler {
 
 		const map = this._map,
 		// there's no end event, so measure the direction from the last wheel event rather than from the timeout
-		zoom = snapPinchZoom(map, this._zoomSamples, this._zoomSamples[this._zoomSamples.length - 1].time),
-		center = map._centerAround(this._pinchLatLng, this._pinchOffset, zoom);
-		map._subpixelOrigin = false;
+		zoom = snapPinchZoom(map, this._zoomSamples, this._zoomSamples[this._zoomSamples.length - 1].time);
 
-		// same as the end of a touch pinch: GridLayers only follow it without zoomSnap, so zoomSnap becomes noUpdate
+		// the map has been still for pinchEndDelay, so the snap starts at rest
 		if (map._zoomAnimated) {
-			map._animateZoom(center, zoom, !!map.options.zoomSnap);
+			map._animateZoom(this._pinchLatLng, this._pinchOffset, zoom, {continued: true});
 		} else {
-			map._resetView(center, zoom, false, map._moveEvent);
+			map._subpixelOrigin = false;
+			map._resetView(map._centerAround(this._pinchLatLng, this._pinchOffset, zoom), zoom, false, map._moveEvent);
 		}
 	}
 }

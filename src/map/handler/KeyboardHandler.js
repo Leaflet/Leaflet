@@ -119,7 +119,7 @@ export class KeyboardHandler extends Handler {
 			}
 		} else if (dz) {
 			if (!map._zoomInputBlocked()) {
-				map.setZoom(map.getZoom() + k * dz * map.options.zoomDelta, {originalEvent: e});
+				map.zoomIn(k * dz * map.options.zoomDelta, {originalEvent: e});
 			}
 
 		} else {
