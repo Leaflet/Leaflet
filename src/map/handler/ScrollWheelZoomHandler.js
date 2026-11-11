@@ -1,10 +1,7 @@
-import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
-import {pinchVelocity, recordPinchZoom, snapDuration, snapPinchZoom} from './pinchSnap.js';
+import {PinchGestureHandler, pinchVelocity, recordPinchZoom} from './PinchGestureHandler.js';
 
-/** @import {LatLng} from '../../geo/LatLng.js' */
-/** @import {Point} from '../../geometry/Point.js' */
-/** @import {ZoomSample} from './pinchSnap.js' */
+/** @import {ZoomSample} from './PinchGestureHandler.js' */
 
 // a trackpad gesture has no end event (but for a pinch in Safari), so it ends after a pause of a few times the usual
 // gap between its events (a frame or so), within these bounds in ms
@@ -13,13 +10,13 @@ const endGaps = 4, minEndDelay = 50, maxEndDelay = 200;
 // after a flick, macOS keeps sending scroll momentum that slows down at a steady rate (a time constant of ~150 ms in
 // Chrome and Safari), its tiny last deltas going on for ~300 ms after the zoom looks still; so once a fast scroll
 // (over 4 levels/s) has slowed down to 2.5 levels/s, the snap takes over from there, aiming where the momentum ends
-const coastPeak = 4e-3, coastSpeed = 2.5e-3, coastDecay = 150, maxCoastDuration = 500;
+const coastPeak = 4e-3, coastSpeed = 2.5e-3, coastDecay = 150;
 
 /**
  * Zooms with the mouse scroll wheel (`map.scrollWheelZoom`), enabled by default. Also handles trackpad pinch, which
  * browsers report as `ctrlKey` wheel events.
  */
-export class ScrollWheelZoomHandler extends Handler {
+export class ScrollWheelZoomHandler extends PinchGestureHandler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 		DomEvent.on(this._map._container, 'gestureend', this._onGestureEnd, this);
@@ -198,28 +195,18 @@ export class ScrollWheelZoomHandler extends Handler {
 		} else {
 			if (map._zoomInputBlocked()) { return; }
 
-			map._stop();
-			// a pinch takes over a running zoom animation, e.g. the snap of a pinch that paused for too long
-			const takeOver = map._stopZoomAnim(true);
 			clearTimeout(this._timer);
 			this._delta = 0;
 			this._startTime = null;
 
-			/** @type {number} */
-			this._startZoom = map.getZoom();
+			// the pointer stays put during a trackpad pinch, so resolve it (reading layout) only once; a pinch takes over
+			// a running zoom animation, e.g. the snap of a pinch that paused for too long
+			const takeOver = this._startPinch(
+				map.options.scrollWheelZoom === 'center' ? undefined : map.pointerEventToContainerPoint(e));
 			/** @type {number} */
 			this._pinchScale = 1;
-			/** @type {ZoomSample[]} */
-			this._zoomSamples = [];
 			/** @type {number[]} */
 			this._gaps = [];
-			const centerPoint = map.getSize()._divideBy(2),
-			// the pointer stays put during a trackpad pinch, so resolve it (reading layout) only once
-			pinchPoint = map.options.scrollWheelZoom === 'center' ? centerPoint : map.pointerEventToContainerPoint(e);
-			/** @type {Point} */
-			this._pinchOffset = pinchPoint.subtract(centerPoint);
-			/** @type {LatLng} */
-			this._pinchLatLng = map.containerPointToLatLng(pinchPoint);
 
 			this._pinching = true;
 			if (!takeOver) { map._moveStart(true, false, e); }
@@ -282,17 +269,8 @@ export class ScrollWheelZoomHandler extends Handler {
 		clearTimeout(this._pinchTimer);
 		cancelAnimationFrame(this._endRequest);
 
-		const map = this._map,
-		samples = this._zoomSamples,
 		// measure the direction up to the last wheel event rather than to the end of a pause after it
-		zoom = snapPinchZoom(map, samples, samples[samples.length - 1].time, ahead),
-		dz = zoom - map._zoom;
-
-		map._animateZoom(this._pinchLatLng, this._pinchOffset, zoom, {
-			continued: true,
-			velocity,
-			// going on in the same direction, an ease-out at the current speed
-			duration: velocity * dz > 0 ? Math.min(3 * dz / velocity, maxCoastDuration) : snapDuration(Math.abs(dz))
-		});
+		const samples = this._zoomSamples;
+		this._snapPinch(samples[samples.length - 1].time, velocity, ahead);
 	}
 }

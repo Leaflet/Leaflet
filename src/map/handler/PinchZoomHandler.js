@@ -1,15 +1,11 @@
-import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {getPointers} from '../../dom/DomEventUtil.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
-import {pinchVelocity, recordPinchZoom, snapPinchZoom} from './pinchSnap.js';
-
-/** @import {LatLng} from '../../geo/LatLng.js' */
-/** @import {ZoomSample} from './pinchSnap.js' */
+import {PinchGestureHandler, pinchVelocity, recordPinchZoom} from './PinchGestureHandler.js';
 
 /** Zooms with a two-finger pinch on touch devices (`map.pinchZoom`), enabled by default. */
-export class PinchZoomHandler extends Handler {
+export class PinchZoomHandler extends PinchGestureHandler {
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerStart, this);
@@ -39,29 +35,14 @@ export class PinchZoomHandler extends Handler {
 		/** @type {Point} */
 		this._containerOrigin = new Point(pointers[0].clientX, pointers[0].clientY)._subtract(p1.scaleBy(this._containerScale));
 
-		/** @type {Point} */
-		this._centerPoint = map.getSize()._divideBy(2);
-		const pinchPoint = map.options.pinchZoom === 'center' ? this._centerPoint : p1.add(p2)._divideBy(2);
-		/** @type {LatLng} */
-		this._pinchStartLatLng = map.containerPointToLatLng(pinchPoint);
-		/** @type {Point} */
-		this._pinchOffset = pinchPoint.subtract(this._centerPoint);
-
 		/** @type {number} */
 		this._startDist = p1.distanceTo(p2);
-		/** @type {number} */
-		this._startZoom = map.getZoom();
-		/** @type {number} */
-		this._zoom = this._startZoom;
-		/** @type {ZoomSample[]} */
-		this._zoomSamples = [];
-		recordPinchZoom(this._zoomSamples, this._zoom, e.timeStamp);
+		// a pinch takes over a running zoom animation from the view it's at, and the move goes on
+		/** @type {boolean} */
+		this._moved = this._startPinch(map.options.pinchZoom === 'center' ? undefined : p1.add(p2)._divideBy(2));
+		recordPinchZoom(this._zoomSamples, this._startZoom, e.timeStamp);
 
 		this._zooming = true;
-
-		map._stop();
-		// a pinch takes over a running zoom animation from the view it's at, and the move goes on
-		this._moved = map._stopZoomAnim(true);
 
 		DomEvent.on(map._container, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(map._container, 'pointerup pointercancel', this._onPointerEnd, this);
@@ -79,15 +60,14 @@ export class PinchZoomHandler extends Handler {
 		p2 = this._toContainerPoint(pointers[1]),
 		scale = p1.distanceTo(p2) / this._startDist;
 
-		/** @type {number} */
-		this._zoom = map.getScaleZoom(scale, this._startZoom);
+		let zoom = map.getScaleZoom(scale, this._startZoom);
 
 		if (!map.options.bounceAtZoomLimits && (
-			(this._zoom < map.getMinZoom() && scale < 1) ||
-			(this._zoom > map.getMaxZoom() && scale > 1))) {
-			this._zoom = map._limitZoom(this._zoom);
+			(zoom < map.getMinZoom() && scale < 1) ||
+			(zoom > map.getMaxZoom() && scale > 1))) {
+			zoom = map._limitZoom(zoom);
 		}
-		recordPinchZoom(this._zoomSamples, this._zoom, e.timeStamp);
+		recordPinchZoom(this._zoomSamples, zoom, e.timeStamp);
 
 		if (map.options.pinchZoom !== 'center') {
 			// Get delta from pinch to center, so centerLatLng is delta applied to initial pinchLatLng
@@ -100,7 +80,7 @@ export class PinchZoomHandler extends Handler {
 			map._moveStart(true, false, e);
 			this._moved = true;
 		}
-		map._pinchTo(this._pinchStartLatLng, this._pinchOffset, this._zoom);
+		map._pinchTo(this._pinchLatLng, this._pinchOffset, zoom);
 
 		e.preventDefault();
 	}
@@ -122,12 +102,8 @@ export class PinchZoomHandler extends Handler {
 
 		this._zooming = false;
 
-		const map = this._map,
-		now = e.timeStamp,
-		zoom = snapPinchZoom(map, this._zoomSamples, now);
-
 		// keep the location between the fingers in place while snapping, carrying on at the pinch's speed
-		map._animateZoom(this._pinchStartLatLng, this._pinchOffset, zoom,
-			{continued: true, velocity: pinchVelocity(this._zoomSamples, now)});
+		const now = e.timeStamp;
+		this._snapPinch(now, pinchVelocity(this._zoomSamples, now));
 	}
 }
