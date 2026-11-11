@@ -228,6 +228,42 @@ describe('ScrollWheelZoomHandler', () => {
 			expect(map.getZoom()).to.be.closeTo(zoom - 0.5, 1e-9);
 		});
 
+		it('stops at the zoom limits and turns back at once', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			map.setMinZoom(2).setMaxZoom(4);
+
+			scroll(-2, 40);
+			expect(map.getZoom()).to.equal(4);
+			scroll(0.3, 10);
+			expect(map.getZoom()).to.be.closeTo(3.7, 1e-9);
+
+			clock.tick(500);
+			scroll(2, 40);
+			expect(map.getZoom()).to.equal(2);
+			scroll(-0.3, 10);
+			expect(map.getZoom()).to.be.closeTo(2.3, 1e-9);
+		});
+
+		it('lets a mouse wheel spin wait for a running zoom to end, but adds up separate notches', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			UIEventSimulator.fire(wheel, container, scrollIn);
+			clock.tick(50);
+			const target = map._targetZoom();
+			expect(target).to.be.greaterThan(3);
+
+			UIEventSimulator.fire(wheel, container, scrollIn);
+			clock.tick(50);
+			expect(map._targetZoom()).to.equal(target);
+
+			clock.tick(100);
+			UIEventSimulator.fire(wheel, container, scrollIn);
+			clock.tick(50);
+			expect(map._targetZoom()).to.be.greaterThan(target);
+		});
+
 		it('zooms by notches when a mouse wheel spins fast', () => {
 			clock = sinon.useFakeTimers({toFake: fakes});
 			const zoom = map.getZoom();

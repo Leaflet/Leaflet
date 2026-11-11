@@ -112,6 +112,28 @@ describe('KeyboardHandler', () => {
 			expect(map.getZoom()).to.equal(6);
 		});
 
+		it('adds up presses during a zoom animation, but not the repeats of a held key', () => {
+			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+				'cancelAnimationFrame']});
+			try {
+				map.remove();
+				map = new LeafletMap(container, {center: [0, 0], zoom: 5});
+				map.keyboard._onFocus();
+
+				UIEventSimulator.fire('keydown', document, KEY_PLUS);
+				UIEventSimulator.fire('keydown', document, KEY_PLUS);
+				document.dispatchEvent(new KeyboardEvent('keydown', {...KEY_PLUS, repeat: true, bubbles: true}));
+				clock.tick(500);
+				expect(map.getZoom()).to.equal(7);
+
+				document.dispatchEvent(new KeyboardEvent('keydown', {...KEY_PLUS, repeat: true, bubbles: true}));
+				clock.tick(500);
+				expect(map.getZoom()).to.equal(8);
+			} finally {
+				clock.restore();
+			}
+		});
+
 		it('ignore keys that only type + or - on other layouts', () => {
 			for (const [key, code] of [[']', 'BracketRight'], ['6', 'Digit6'], ['/', 'Slash']]) {
 				UIEventSimulator.fire('keydown', document, {key, code});

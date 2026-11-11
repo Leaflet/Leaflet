@@ -58,6 +58,8 @@ export class ScrollWheelZoomHandler extends Handler {
 
 		if (!this._startTime) {
 			this._startTime = Date.now();
+			/** @type {boolean} */
+			this._continued = this._gap < 100;
 		}
 
 		const left = Math.max(debounce - (Date.now() - this._startTime), 0);
@@ -76,6 +78,8 @@ export class ScrollWheelZoomHandler extends Handler {
 		gap = now - (this._lastWheelTime ?? -Infinity);
 		let deltaY = e.deltaMode === 1 ? e.deltaY * 40 : e.deltaY;
 		this._lastWheelTime = now;
+		/** @type {number} */
+		this._gap = gap;
 
 		if (deltaY && deltaY % 4.000244140625 === 0) {
 			this._kind = 'wheel';
@@ -93,26 +97,30 @@ export class ScrollWheelZoomHandler extends Handler {
 	}
 
 	_performZoom() {
+		const map = this._map,
+		pixels = this._delta;
+
 		this._kind ??= 'wheel';
 		this._held = 0;
+		this._delta = 0;
+		this._startTime = null;
 
-		const map = this._map,
+		// notches add up from where a running zoom is heading, but a spin going on without a pause waits for it to end
+		if (this._continued && map._animatingZoom) { return; }
+
 		// count from where a running zoom animation is heading, so that notches add up
-		zoom = map._targetZoom(),
+		const zoom = map._targetZoom(),
 		snap = map.options.zoomSnap ?? 0;
 
 		map._stop(); // stop panning and fly animations if any
 
 		// map the delta with a sigmoid function to -4..4 range leaning on -1..1
-		const d2 = this._delta / (map.options.wheelPxPerZoomLevel * 4),
+		const d2 = pixels / (map.options.wheelPxPerZoomLevel * 4),
 		d3 = 4 * Math.log(2 / (1 + Math.exp(-Math.abs(d2)))) / Math.LN2,
 		d4 = snap ? Math.ceil(d3 / snap) * snap : d3,
 		// with reduced motion, only zooms by up to one level are animated, so a hard scroll is capped to that
 		d5 = map._prefersReducedMotion() ? Math.min(d4, 1) : d4,
-		delta = map._limitZoom(zoom + (this._delta > 0 ? d5 : -d5)) - zoom;
-
-		this._delta = 0;
-		this._startTime = null;
+		delta = map._limitZoom(zoom + (pixels > 0 ? d5 : -d5)) - zoom;
 
 		if (!delta || map._zoomInputBlocked()) { return; }
 
@@ -165,8 +173,13 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._pinchScale *= Math.exp(-logScale);
 
 		let zoom = map.getScaleZoom(this._pinchScale, this._startZoom);
-		if (!map.options.bounceAtZoomLimits) {
-			zoom = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), zoom));
+		// a scroll stops at the zoom limits like a wheel, as does a pinch without bounce, and turning back zooms at once
+		if (!e.ctrlKey || !map.options.bounceAtZoomLimits) {
+			const limited = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), zoom));
+			if (limited !== zoom) {
+				this._startZoom = zoom = limited;
+				this._pinchScale = 1;
+			}
 		}
 		/** @type {number} */
 		this._zoom = zoom;
