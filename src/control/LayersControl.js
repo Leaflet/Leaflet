@@ -255,6 +255,21 @@ export class LayersControl extends Control {
 		/** @type {HTMLFieldSetElement} */
 		this._section = section;
 
+		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
+		link.href = '#';
+		link.title = this._map.translate(this.options.title);
+		link.setAttribute('role', 'button');
+		clickOnSpace(link);
+		section.setAttribute('aria-label', link.title);
+		section.tabIndex = -1;
+
+		DomEvent.on(link, 'click', (e) => {
+			e.preventDefault();
+			const focused = document.activeElement === link;
+			this._expandSafely();
+			if (focused) { section.focus(); }
+		});
+
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
 
@@ -264,46 +279,19 @@ export class LayersControl extends Control {
 				pointerleave(e) {
 					// touch fires `pointerleave` on tapping a checkbox, which would collapse instead of toggling a layer
 					if (e.pointerType !== 'touch') { this.collapse(); }
-				},
-				/** @this {LayersControl} */
-				keydown(e) {
-					if (e.key === 'Escape' && container.classList.contains(`${className}-expanded`)) {
-						// without the delay, as the hidden toggle can't take focus
-						clearTimeout(this._collapseDelayTimeout);
-						container.classList.remove(`${className}-expanded`);
-						/** @type {HTMLAnchorElement} */ (this._layersLink).focus();
-						e.preventDefault();
-					}
-				},
-				/** @this {LayersControl} */
-				focusin() {
-					// focus coming back during `collapseDelay`, so that the collapse doesn't hide the focused input
-					clearTimeout(this._collapseDelayTimeout);
-				},
-				/** @this {LayersControl} */
-				focusout(e) {
-					// not when the window loses focus, or when collapsing hides the focused input
-					const related = /** @type {Node | null} */ (e.relatedTarget);
-					if (related && !container.contains(related)) { this.collapse(); }
 				}
 			}, this);
-		}
 
-		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
-		link.href = '#';
-		link.title = this._map.translate(this.options.title);
-		link.setAttribute('role', 'button');
-		clickOnSpace(link);
-		section.setAttribute('aria-label', link.title);
-
-		DomEvent.on(link, 'click', (e) => {
-			e.preventDefault();
-			const focused = document.activeElement === link;
-			this._expandSafely();
-			if (focused) { this._focusList(); }
-		});
-
-		if (!collapsed) {
+			// the list only takes focus while expanded; skip `collapseDelay`, as the toggle is hidden until then
+			DomEvent.on(section, 'keydown', (e) => {
+				if (e.key === 'Escape') {
+					clearTimeout(this._collapseDelayTimeout);
+					container.classList.remove(`${className}-expanded`);
+					link.focus();
+					e.preventDefault();
+				}
+			});
+		} else {
 			this.expand();
 		}
 
@@ -494,19 +482,4 @@ export class LayersControl extends Control {
 			this._preventClick = false;
 		});
 	}
-
-	// expanding hides the focused toggle, which would send focus back to the start of the page
-	_focusList() {
-		const section = this._section;
-		// where Tab would go: the selected base layer, else the first input that can take focus
-		const checked = /** @type {HTMLInputElement | null} */ (section.querySelector('input[type=radio]:checked'));
-		for (const input of [checked, ...section.querySelectorAll('input')]) {
-			input?.focus();
-			if (section.contains(document.activeElement)) { return; }
-		}
-		// no input to operate, but the list can still be read
-		section.tabIndex = -1;
-		section.focus();
-	}
-
 }
