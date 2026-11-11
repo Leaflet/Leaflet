@@ -232,6 +232,7 @@ export class LayersControl extends Control {
 
 	/** Collapse the control container if expanded. */
 	collapse() {
+		clearTimeout(this._collapseDelayTimeout);
 		if (this.options.collapseDelay > 0) {
 			this._collapseDelayTimeout = setTimeout(() => {
 				this._container.classList.remove('leaflet-control-layers-expanded');
@@ -254,6 +255,21 @@ export class LayersControl extends Control {
 		/** @type {HTMLFieldSetElement} */
 		this._section = section;
 
+		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
+		link.href = '#';
+		link.title = this._map.translate(this.options.title);
+		link.setAttribute('role', 'button');
+		clickOnSpace(link);
+		section.setAttribute('aria-label', link.title);
+		section.tabIndex = -1;
+
+		DomEvent.on(link, 'click', (e) => {
+			e.preventDefault();
+			const focused = document.activeElement === link;
+			this._expandSafely();
+			if (focused) { section.focus(); }
+		});
+
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
 
@@ -265,21 +281,17 @@ export class LayersControl extends Control {
 					if (e.pointerType !== 'touch') { this.collapse(); }
 				}
 			}, this);
-		}
 
-		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
-		link.href = '#';
-		link.title = this._map.translate(this.options.title);
-		link.setAttribute('role', 'button');
-		clickOnSpace(link);
-		section.setAttribute('aria-label', link.title);
-
-		DomEvent.on(link, 'click', (e) => {
-			e.preventDefault();
-			this._expandSafely();
-		});
-
-		if (!collapsed) {
+			// the list only takes focus while expanded; skip `collapseDelay`, as the toggle is hidden until then
+			DomEvent.on(section, 'keydown', (e) => {
+				if (e.key === 'Escape') {
+					clearTimeout(this._collapseDelayTimeout);
+					container.classList.remove(`${className}-expanded`);
+					link.focus();
+					e.preventDefault();
+				}
+			});
+		} else {
 			this.expand();
 		}
 
@@ -470,5 +482,4 @@ export class LayersControl extends Control {
 			this._preventClick = false;
 		});
 	}
-
 }
