@@ -389,6 +389,21 @@ describe('ScrollWheelZoomHandler', () => {
 			expect(zoomend.callCount).to.equal(1);
 		});
 
+		it('counts a zoom during the snap from where the snap is heading', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			pinch(2 ** 0.3);
+			clock.tick(100);
+			expect(map._animatingZoom).to.be.true;
+			expect(map.getZoom()).to.be.below(3.5);
+
+			map.zoomIn();
+			clock.tick(1000);
+			expect(map.getZoom()).to.equal(5);
+		});
+
 		it('ends a pinch after a pause of a few times the gap between its events', () => {
 			clock = sinon.useFakeTimers({toFake: pinchFakes});
 			map.remove();

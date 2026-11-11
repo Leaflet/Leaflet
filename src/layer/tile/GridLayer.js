@@ -691,7 +691,7 @@ export class GridLayer extends Layer {
 	/** @param {LatLng} center */
 	_getTiledPixelBounds(center) {
 		const map = this._map,
-		mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
+		mapZoom = Math.max(map._zoomAnim?.to ?? -Infinity, map.getZoom()),
 		scale = map.getZoomScale(mapZoom, this._tileZoom),
 		pixelCenter = map.project(center, this._tileZoom).floor(),
 		halfSize = map.getSize().divideBy(scale * 2);

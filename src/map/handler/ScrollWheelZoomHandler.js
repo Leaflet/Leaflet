@@ -37,9 +37,11 @@ export class ScrollWheelZoomHandler extends Handler {
 		DomEvent.off(this._map._container, 'gestureend', this._onGestureEnd, this);
 		clearTimeout(this._timer);
 		clearTimeout(this._pinchTimer);
-		cancelAnimationFrame(this._animRequest);
 		cancelAnimationFrame(this._endRequest);
-		if (this._pinching) { this._map._subpixelOrigin = false; }
+		if (this._pinching) {
+			cancelAnimationFrame(this._map._pinchFrame);
+			this._map._subpixelOrigin = false;
+		}
 		this._pinching = false;
 	}
 
@@ -234,8 +236,6 @@ export class ScrollWheelZoomHandler extends Handler {
 
 			this._pinching = true;
 			if (!takeOver) { map._moveStart(true, false, e); }
-			// keep layers from jittering against the zoom, like during flyTo; the end of the pinch snaps them again
-			map._subpixelOrigin = true;
 		}
 
 		// browsers set a pinch's deltaY to -100 times the natural log of the scale change since the last event
@@ -254,11 +254,7 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._zoom = zoom;
 		recordPinchZoom(this._zoomSamples, zoom);
 
-		const center = map._centerAround(this._pinchLatLng, this._pinchOffset, zoom);
-
-		cancelAnimationFrame(this._animRequest);
-		/** @type {number} */
-		this._animRequest = requestAnimationFrame(() => map._move(center, zoom, {pinch: true}));
+		map._pinchTo(this._pinchLatLng, this._pinchOffset, zoom);
 
 		/** @type {number} */
 		this._pinchTime = now;
@@ -298,7 +294,6 @@ export class ScrollWheelZoomHandler extends Handler {
 	_endPinch(velocity = 0, ahead = 0) {
 		this._pinching = false;
 		clearTimeout(this._pinchTimer);
-		cancelAnimationFrame(this._animRequest);
 		cancelAnimationFrame(this._endRequest);
 
 		const map = this._map,
@@ -307,16 +302,11 @@ export class ScrollWheelZoomHandler extends Handler {
 		zoom = snapPinchZoom(map, samples, samples[samples.length - 1].time, ahead),
 		dz = zoom - map._zoom;
 
-		if (map._zoomAnimated) {
-			map._animateZoom(this._pinchLatLng, this._pinchOffset, zoom, {
-				continued: true,
-				velocity,
-				// going on in the same direction, an ease-out at the current speed
-				duration: velocity * dz > 0 ? Math.min(3 * dz / velocity, maxCoastDuration) : snapDuration(Math.abs(dz))
-			});
-		} else {
-			map._subpixelOrigin = false;
-			map._resetView(map._centerAround(this._pinchLatLng, this._pinchOffset, zoom), zoom, false, map._moveEvent);
-		}
+		map._animateZoom(this._pinchLatLng, this._pinchOffset, zoom, {
+			continued: true,
+			velocity,
+			// going on in the same direction, an ease-out at the current speed
+			duration: velocity * dz > 0 ? Math.min(3 * dz / velocity, maxCoastDuration) : snapDuration(Math.abs(dz))
+		});
 	}
 }

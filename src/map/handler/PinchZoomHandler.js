@@ -100,14 +100,7 @@ export class PinchZoomHandler extends Handler {
 			map._moveStart(true, false, e);
 			this._moved = true;
 		}
-		// keep layers from jittering against the zoom, like during flyTo; the end of the pinch snaps them again
-		map._subpixelOrigin = true;
-
-		cancelAnimationFrame(this._animRequest);
-
-		const zoom = this._zoom, center = map._centerAround(this._pinchStartLatLng, this._pinchOffset, zoom);
-		/** @type {number} */
-		this._animRequest = requestAnimationFrame(() => map._move(center, zoom, {pinch: true}));
+		map._pinchTo(this._pinchStartLatLng, this._pinchOffset, this._zoom);
 
 		e.preventDefault();
 	}
@@ -127,20 +120,13 @@ export class PinchZoomHandler extends Handler {
 		}
 
 		this._zooming = false;
-		cancelAnimationFrame(this._animRequest);
 
 		const map = this._map,
 		now = Date.now(),
 		zoom = snapPinchZoom(map, this._zoomSamples, now);
 
 		// keep the location between the fingers in place while snapping, carrying on at the pinch's speed
-		if (map._zoomAnimated) {
-			map._animateZoom(this._pinchStartLatLng, this._pinchOffset, zoom,
-				{continued: true, velocity: pinchVelocity(this._zoomSamples, now)});
-		} else {
-			map._subpixelOrigin = false;
-			map._resetView(map._centerAround(this._pinchStartLatLng, this._pinchOffset, zoom), zoom, false,
-				map._moveEvent);
-		}
+		map._animateZoom(this._pinchStartLatLng, this._pinchOffset, zoom,
+			{continued: true, velocity: pinchVelocity(this._zoomSamples, now)});
 	}
 }
