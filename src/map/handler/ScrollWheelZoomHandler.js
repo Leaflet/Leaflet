@@ -45,10 +45,17 @@ export class ScrollWheelZoomHandler extends Handler {
 	_onWheelScroll(e) {
 		DomEvent.stop(e);
 
+		// time the gaps between events by when their input happened, which is steadier than when they come
+		const time = e.timeStamp;
+		/** @type {number} */
+		this._gap = time - (this._lastTime ?? -Infinity);
+		/** @type {number} */
+		this._lastTime = time;
+
 		// a pinch comes as small fractional pixel deltas, while ctrl+wheel on a mouse gives whole notches of 100+ px
 		if (e.ctrlKey && !e.deltaMode && (this._pinching || e.deltaY % 1 && Math.abs(e.deltaY) < 50)) {
 			// Safari sends one more tiny wheel event right after gestureend, which would start a new pinch
-			if (!this._pinching && Date.now() - this._gestureEndTime < 50) { return; }
+			if (!this._pinching && time - this._gestureEndTime < 50) { return; }
 			this._onPinch(e, e.deltaY / 100);
 			return;
 		}
@@ -69,12 +76,12 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._lastEvent = e;
 
 		if (!this._startTime) {
-			this._startTime = Date.now();
+			this._startTime = time;
 			/** @type {boolean} */
 			this._continued = this._gap < 100;
 		}
 
-		const left = Math.max(debounce - (Date.now() - this._startTime), 0);
+		const left = Math.max(debounce - (time - this._startTime), 0);
 
 		clearTimeout(this._timer);
 		this._timer = setTimeout(this._performZoom.bind(this), left);
@@ -86,12 +93,8 @@ export class ScrollWheelZoomHandler extends Handler {
 	// including that of the first event of the gesture if it was held back undecided.
 	/** @param {WheelEvent} e */
 	_classify(e) {
-		const now = Date.now(),
-		gap = now - (this._lastWheelTime ?? -Infinity);
+		const gap = this._gap;
 		let deltaY = e.deltaMode === 1 ? e.deltaY * 40 : e.deltaY;
-		this._lastWheelTime = now;
-		/** @type {number} */
-		this._gap = gap;
 
 		if (deltaY && deltaY % 4.000244140625 === 0) {
 			this._kind = 'wheel';
@@ -155,7 +158,7 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._delta = 0;
 		this._startTime = null;
 
-		// notches add up from where a running zoom is heading, but a spin going on without a pause waits for it to end
+		// a spin going on without a pause waits for a running zoom to end
 		if (this._continued && map._animatingZoom) { return; }
 
 		// count from where a running zoom animation is heading, so that notches add up
@@ -187,11 +190,10 @@ export class ScrollWheelZoomHandler extends Handler {
 	 * @param {number} logScale the natural log of the zoom out scale since the last event
 	 */
 	_onPinch(e, logScale) {
-		const map = this._map,
-		now = Date.now();
+		const map = this._map;
 
 		if (this._pinching) {
-			this._gaps.push(now - this._pinchTime);
+			this._gaps.push(this._gap);
 			if (this._gaps.length > 8) { this._gaps.shift(); }
 		} else {
 			if (map._zoomInputBlocked()) { return; }
@@ -235,14 +237,10 @@ export class ScrollWheelZoomHandler extends Handler {
 				this._pinchScale = 1;
 			}
 		}
-		/** @type {number} */
-		this._zoom = zoom;
 		recordPinchZoom(this._zoomSamples, zoom, e.timeStamp);
 
 		map._pinchTo(this._pinchLatLng, this._pinchOffset, zoom);
 
-		/** @type {number} */
-		this._pinchTime = now;
 		/** @type {boolean} */
 		this._ctrlPinch = e.ctrlKey;
 
@@ -271,7 +269,7 @@ export class ScrollWheelZoomHandler extends Handler {
 	 */
 	_onGestureEnd(e) {
 		/** @type {number} */
-		this._gestureEndTime = Date.now();
+		this._gestureEndTime = e.timeStamp;
 		if (this._pinching && this._ctrlPinch) { this._endPinch(pinchVelocity(this._zoomSamples, e.timeStamp)); }
 	}
 

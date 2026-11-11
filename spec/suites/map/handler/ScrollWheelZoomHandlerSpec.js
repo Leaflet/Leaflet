@@ -1,6 +1,5 @@
 import {DomUtil, LeafletMap, Marker} from 'leaflet';
 import sinon from 'sinon';
-import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('ScrollWheelZoomHandler', () => {
@@ -43,7 +42,7 @@ describe('ScrollWheelZoomHandler', () => {
 	it('zooms out while firing \'wheel\' event', (done) => {
 		const zoom = map.getZoom();
 
-		UIEventSimulator.fire(wheel, container, scrollOut);
+		fireWheel(scrollOut);
 
 		map.on('zoomend', () => {
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
@@ -55,7 +54,7 @@ describe('ScrollWheelZoomHandler', () => {
 
 	it('zooms in while firing \'wheel\' event', (done) => {
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 
 		map.on('zoomend', () => {
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
@@ -69,7 +68,7 @@ describe('ScrollWheelZoomHandler', () => {
 		const scrollWheelZoomBefore = map.options.scrollWheelZoom;
 		map.options.scrollWheelZoom = 'center';
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 
 		map.on('zoomend', () => {
 			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
@@ -87,9 +86,9 @@ describe('ScrollWheelZoomHandler', () => {
 		const spy = sinon.spy();
 		map.on('zoomend', spy);
 
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		setTimeout(() => {
-			UIEventSimulator.fire(wheel, container, scrollIn);
+			fireWheel(scrollIn);
 
 			expect(spy.notCalled).to.be.true;
 		}, 50);
@@ -111,7 +110,7 @@ describe('ScrollWheelZoomHandler', () => {
 		clock.tick(300);
 
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
 
 		expect(map.getZoom()).to.be.greaterThan(zoom);
@@ -122,7 +121,7 @@ describe('ScrollWheelZoomHandler', () => {
 
 		map.options.wheelPxPerZoomLevel = 15 / window.devicePixelRatio;
 		clock.tick(300);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
 
 		expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
@@ -134,7 +133,7 @@ describe('ScrollWheelZoomHandler', () => {
 		const zoom = map.getZoom();
 		const hardScrollIn = {deltaY: -3000, deltaMode: 0};
 
-		UIEventSimulator.fire(wheel, container, hardScrollIn);
+		fireWheel(hardScrollIn);
 		clock.tick(100);
 		expect(map.getZoom() - zoom).to.be.greaterThan(1);
 
@@ -145,7 +144,7 @@ describe('ScrollWheelZoomHandler', () => {
 		const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
 		sinon.stub(window, 'matchMedia').callsFake(reduced);
 
-		UIEventSimulator.fire(wheel, container, hardScrollIn);
+		fireWheel(hardScrollIn);
 		clock.tick(100);
 		expect(map.getZoom() - zoom).to.equal(1);
 
@@ -158,9 +157,9 @@ describe('ScrollWheelZoomHandler', () => {
 		const zoomend = sinon.spy();
 		map.on('zoomend', zoomend);
 
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
 
 		expect(zoomend.calledOnce).to.be.true;
@@ -168,7 +167,7 @@ describe('ScrollWheelZoomHandler', () => {
 		expect(zoom2).to.be.greaterThan(zoom);
 
 		clock.tick(200);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
 		expect(map.getZoom()).to.be.greaterThan(zoom2);
 	});
@@ -181,7 +180,7 @@ describe('ScrollWheelZoomHandler', () => {
 			expect(log.every(ev => ev?.type === wheel)).to.be.true;
 			done();
 		});
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 	});
 
 	it('adds up notches that come during the zoom animation into one motion', () => {
@@ -193,10 +192,10 @@ describe('ScrollWheelZoomHandler', () => {
 		map.on('zoomend', zoomend);
 		map.on('zoom', () => zooms.push(map.getZoom()));
 
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(150);
 		expect(map._animatingZoom).to.be.true;
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(1000);
 
 		expect(map.getZoom()).to.equal(5);
@@ -259,17 +258,17 @@ describe('ScrollWheelZoomHandler', () => {
 			map.remove();
 			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
 
-			UIEventSimulator.fire(wheel, container, scrollIn);
+			fireWheel(scrollIn);
 			clock.tick(50);
 			const target = map._targetZoom();
 			expect(target).to.be.greaterThan(3);
 
-			UIEventSimulator.fire(wheel, container, scrollIn);
+			fireWheel(scrollIn);
 			clock.tick(50);
 			expect(map._targetZoom()).to.equal(target);
 
 			clock.tick(100);
-			UIEventSimulator.fire(wheel, container, scrollIn);
+			fireWheel(scrollIn);
 			clock.tick(50);
 			expect(map._targetZoom()).to.be.greaterThan(target);
 		});
@@ -324,7 +323,7 @@ describe('ScrollWheelZoomHandler', () => {
 			clock = sinon.useFakeTimers({toFake: fakes});
 			const zoom = map.getZoom();
 			for (let i = 0; i < 3; i++) {
-				UIEventSimulator.fire(wheel, container, scrollIn);
+				fireWheel(scrollIn);
 				clock.tick(30);
 			}
 			clock.tick(300);
@@ -426,7 +425,7 @@ describe('ScrollWheelZoomHandler', () => {
 			// events every 60 ms: still going after 100 ms
 			const deltaY = -100 * Math.log(2 ** 0.6) / 5;
 			for (let i = 0; i < 5; i++) {
-				UIEventSimulator.fire(wheel, container, {deltaY, deltaMode: 0, ctrlKey: true});
+				fireWheel({deltaY, deltaMode: 0, ctrlKey: true});
 				clock.tick(i < 4 ? 60 : 100);
 			}
 			expect(map._animatingZoom).to.be.false;
@@ -469,7 +468,7 @@ describe('ScrollWheelZoomHandler', () => {
 
 			pinch(2 ** 0.6);
 			fireStamped(new Event('gestureend', {bubbles: true}));
-			UIEventSimulator.fire(wheel, container, {deltaY: -0.07, deltaMode: 0, ctrlKey: true});
+			fireWheel({deltaY: -0.07, deltaMode: 0, ctrlKey: true});
 			expect(map._animatingZoom).to.be.true;
 			clock.tick(500);
 			expect(map.getZoom()).to.equal(4);
@@ -538,7 +537,7 @@ describe('ScrollWheelZoomHandler', () => {
 			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
 			const zoom = map.getZoom();
 
-			UIEventSimulator.fire(wheel, container, {deltaY: -100, deltaMode: 0, ctrlKey: true});
+			fireWheel({deltaY: -100, deltaMode: 0, ctrlKey: true});
 			clock.tick(100);
 			expect(map.getZoom()).to.equal(zoom + 1);
 		});

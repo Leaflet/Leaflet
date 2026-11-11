@@ -27,7 +27,7 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
  *    LatLngBoundsExpression, LatLngExpression, LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent,
  *    LeafletPointerEvent, LocateOptions, LocationEvent, MapDefaults, MapEventMap, MapOptions, MapPanes,
  *    PanInsideOptions, PanOptions, PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent,
- *    TooltipOptions, ViewChangeEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions}
+ *    TooltipOptions, ViewChangeEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomOptions, ZoomPanOptions}
  *    from '../types.js' */
 /** @import {CRS} from '../geo/crs/CRS.js' */
 /** @import {Control} from '../control/Control.js' */
@@ -431,7 +431,6 @@ const defaultOptions = {
 /**
  * @category Other events
  * @typedef {Object} MapOtherEvents
- * @property {ZoomAnimEvent} zoomanim No longer fired: zoom animations move the map frame by frame like pinch zooming, so layers follow `zoom` events instead.
  * @property {LeafletEvent} enterfullscreen Fired when the map enters fullscreen mode through the [fullscreen control](#fullscreencontrol).
  * @property {LeafletEvent} exitfullscreen Fired when the map exits fullscreen mode through the [fullscreen control](#fullscreencontrol).
  */
@@ -565,13 +564,6 @@ const defaultOptions = {
  * @typedef {Object} ResizeEventProps
  * @property {Point} oldSize The old size before resize event.
  * @property {Point} newSize The new size after the resize event.
- */
-
-/**
- * @typedef {Object} ZoomAnimEventProps
- * @property {LatLng} center The current center of the map.
- * @property {number} zoom The current zoom level of the map.
- * @property {boolean} noUpdate Whether layers should update their contents due to this event.
  */
 
 /**
