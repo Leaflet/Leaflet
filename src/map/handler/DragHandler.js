@@ -154,7 +154,7 @@ export class DragHandler extends Handler {
 		map.fire('dragend', e);
 
 		if (noInertia) {
-			if (!map._zoomAnim) { map._moveEnd(false); }
+			map._moveEnd(false);
 
 		} else {
 			this._prunePositions(Date.now());
@@ -186,7 +186,7 @@ export class DragHandler extends Handler {
 			const originalEvent = map._moveEvent;
 
 			if (!offset.x && !offset.y) {
-				if (!map._zoomAnim) { map._moveEnd(false); }
+				map._moveEnd(false);
 
 			} else if (map._zoomAnim) {
 				// glide the map pane on while the zoom follows the point it carries, as during the drag

@@ -1,4 +1,4 @@
-import {DivIcon, DefaultIcon, Icon, LatLng, LayerGroup, LeafletMap, Marker, Point} from 'leaflet';
+import {DivIcon, DefaultIcon, DomUtil, Icon, LatLng, LayerGroup, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -435,6 +435,37 @@ describe('Marker', () => {
 		it('can be set before the marker is added', () => {
 			const marker = new Marker([0, 0]).setRotation(30).addTo(map);
 			expect(marker._icon.style.transform).to.contain('rotate(30deg)');
+		});
+	});
+
+	describe('markerZoomAnimation: false', () => {
+		let clock;
+
+		beforeEach(() => {
+			removeMapContainer(map, container);
+			container = createContainer();
+			map = new LeafletMap(container, {markerZoomAnimation: false}).setView([0, 0], 13);
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+				'cancelAnimationFrame']});
+		});
+
+		afterEach(() => {
+			clock.restore();
+		});
+
+		it('hides and freezes markers for a whole zoom, and places them at its end', () => {
+			const marker = new Marker([0.001, 0.001]).addTo(map);
+			const update = sinon.spy(marker, '_setPos');
+
+			map.flyTo([0.002, 0.002], 15, {duration: 0.5});
+			clock.tick(100);
+			expect(map._mapPane.classList.contains('leaflet-zoom-anim')).to.be.true;
+			expect(update.called).to.be.false;
+
+			clock.tick(1000);
+			expect(map._mapPane.classList.contains('leaflet-zoom-anim')).to.be.false;
+			expect(update.called).to.be.true;
+			expect(DomUtil.getPosition(marker._icon)).to.eql(map.latLngToLayerPoint([0.001, 0.001]).round());
 		});
 	});
 

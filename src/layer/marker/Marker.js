@@ -174,10 +174,7 @@ export class Marker extends Layer {
 		this.callInitHooks();
 	}
 
-	/** @param {LeafletMap} map */
-	onAdd(map) {
-		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
-
+	onAdd() {
 		this._initIcon();
 		this.update();
 	}
@@ -263,9 +260,10 @@ export class Marker extends Layer {
 
 	/** Updates the marker position on the map, e.g. after changing its `zIndexOffset` option directly. */
 	update() {
-
-		if (this._icon && this._map) {
-			const pos = this._map._snapLayerPoint(this._map.latLngToLayerPoint(this._latlng));
+		const map = this._map;
+		// a marker hidden for the zoom catches up at its end
+		if (this._icon && map && !(map._subpixelOrigin && !map.options.markerZoomAnimation)) {
+			const pos = map._snapLayerPoint(map.latLngToLayerPoint(this._latlng));
 			this._setPos(pos);
 		}
 
@@ -274,7 +272,7 @@ export class Marker extends Layer {
 
 	_initIcon() {
 		const options = this.options,
-		classToAdd = `leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
+		classToAdd = `leaflet-zoom-${this._map.options.markerZoomAnimation ? 'animated' : 'hide'}`;
 
 		const icon = options.icon.createIcon(this._icon);
 		let addIcon = false;

@@ -372,6 +372,16 @@ describe('Map', () => {
 				for (let i = 1; i < zooms.length; i++) { expect(zooms[i]).to.be.at.least(zooms[i - 1]); }
 			});
 
+			it('measures the animation threshold from the target', () => {
+				const zoomstart = sinon.spy();
+				map.on('zoomstart', zoomstart);
+				map.setZoom(18);
+				expect(map.getZoom()).to.be.below(14);
+				clock.tick(1000);
+				expect(map.getZoom()).to.equal(18);
+				expect(zoomstart.called).to.be.false;
+			});
+
 			it('counts zoomIn from the target', () => {
 				map.zoomIn();
 				clock.tick(1000);

@@ -2,16 +2,17 @@
 
 /** @typedef {{time: number, zoom: number}} ZoomSample */
 
-// how far back from the end of a pinch to look for the direction it was heading
+// how far back from the end of a pinch to look for the direction it was heading and its speed
 const directionWindow = 100;
 
 /**
  * Records the zoom of a pinch for `snapPinchZoom`, dropping samples too old to matter.
  * @param {ZoomSample[]} samples
  * @param {number} zoom
+ * @param {number} time the input event's `timeStamp`, which is when the input happened rather than when the event
+ *   came (Chrome hands out events in uneven batches)
  */
-export function recordPinchZoom(samples, zoom) {
-	const time = Date.now();
+export function recordPinchZoom(samples, zoom, time) {
 	while (samples.length && time - samples[0].time > directionWindow) { samples.shift(); }
 	samples.push({time, zoom});
 }
@@ -48,7 +49,7 @@ export function snapPinchZoom(map, samples, endTime, ahead = 0) {
 export function pinchVelocity(samples, endTime) {
 	const first = samples.find(s => endTime - s.time <= directionWindow),
 	last = samples[samples.length - 1];
-	return first && endTime > first.time ? (last.zoom - first.zoom) / (endTime - first.time) : 0;
+	return first ? (last.zoom - first.zoom) / Math.max(endTime - first.time, 8) : 0;
 }
 
 /**

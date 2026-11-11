@@ -15,6 +15,16 @@ describe('ScrollWheelZoomHandler', () => {
 		deltaMode: 0
 	};
 
+	// an event with its time stamp on the fake clock, since gestures are timed by when their input happened
+	function fireStamped(e) {
+		Object.defineProperty(e, 'timeStamp', {value: Date.now()});
+		container.dispatchEvent(e);
+	}
+
+	function fireWheel(init) {
+		fireStamped(new WheelEvent(wheel, {deltaMode: 0, bubbles: true, cancelable: true, ...init}));
+	}
+
 	beforeEach(() => {
 		container = createContainer();
 		map = new LeafletMap(container, {
@@ -201,7 +211,7 @@ describe('ScrollWheelZoomHandler', () => {
 		function scroll(levels, steps = 10) {
 			const deltaY = 200 * Math.LN2 * levels / steps;
 			for (let i = 0; i < steps; i++) {
-				UIEventSimulator.fire(wheel, container, {deltaY, deltaMode: 0});
+				fireWheel({deltaY});
 				clock.tick(16);
 			}
 		}
@@ -265,11 +275,9 @@ describe('ScrollWheelZoomHandler', () => {
 		});
 
 		describe('momentum', () => {
-			// a scroll event a frame long, with its time stamp on the fake clock
+			// a scroll event a frame long
 			function fire(deltaY, onEvent = () => {}) {
-				const e = new WheelEvent(wheel, {deltaY, deltaMode: 0, bubbles: true, cancelable: true});
-				Object.defineProperty(e, 'timeStamp', {value: Date.now()});
-				container.dispatchEvent(e);
+				fireWheel({deltaY});
 				onEvent();
 				clock.tick(16);
 			}
@@ -332,7 +340,7 @@ describe('ScrollWheelZoomHandler', () => {
 		function pinch(scale, options = {}, steps = 10) {
 			const deltaY = -100 * Math.log(scale) / steps;
 			for (let i = 0; i < steps; i++) {
-				UIEventSimulator.fire(wheel, container, {deltaY, deltaMode: 0, ctrlKey: true, ...options});
+				fireWheel({deltaY, ctrlKey: true, ...options});
 				clock.tick(16);
 			}
 		}
@@ -445,7 +453,7 @@ describe('ScrollWheelZoomHandler', () => {
 
 			pinch(2 ** 0.6);
 			const zoom = map.getZoom();
-			container.dispatchEvent(new Event('gestureend', {bubbles: true}));
+			fireStamped(new Event('gestureend', {bubbles: true}));
 			expect(map._animatingZoom).to.be.true;
 
 			clock.tick(32);
@@ -460,7 +468,7 @@ describe('ScrollWheelZoomHandler', () => {
 			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
 
 			pinch(2 ** 0.6);
-			container.dispatchEvent(new Event('gestureend', {bubbles: true}));
+			fireStamped(new Event('gestureend', {bubbles: true}));
 			UIEventSimulator.fire(wheel, container, {deltaY: -0.07, deltaMode: 0, ctrlKey: true});
 			expect(map._animatingZoom).to.be.true;
 			clock.tick(500);

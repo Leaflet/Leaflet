@@ -55,7 +55,7 @@ export class PinchZoomHandler extends Handler {
 		this._zoom = this._startZoom;
 		/** @type {ZoomSample[]} */
 		this._zoomSamples = [];
-		recordPinchZoom(this._zoomSamples, this._zoom);
+		recordPinchZoom(this._zoomSamples, this._zoom, e.timeStamp);
 
 		this._zooming = true;
 
@@ -87,7 +87,7 @@ export class PinchZoomHandler extends Handler {
 			(this._zoom > map.getMaxZoom() && scale > 1))) {
 			this._zoom = map._limitZoom(this._zoom);
 		}
-		recordPinchZoom(this._zoomSamples, this._zoom);
+		recordPinchZoom(this._zoomSamples, this._zoom, e.timeStamp);
 
 		if (map.options.pinchZoom !== 'center') {
 			// Get delta from pinch to center, so centerLatLng is delta applied to initial pinchLatLng
@@ -110,7 +110,8 @@ export class PinchZoomHandler extends Handler {
 		return new Point(e.clientX, e.clientY)._subtract(this._containerOrigin).unscaleBy(this._containerScale);
 	}
 
-	_onPointerEnd() {
+	/** @param {PointerEvent} e */
+	_onPointerEnd(e) {
 		DomEvent.off(this._map._container, 'pointermove', this._onPointerMove, this);
 		DomEvent.off(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
 
@@ -122,7 +123,7 @@ export class PinchZoomHandler extends Handler {
 		this._zooming = false;
 
 		const map = this._map,
-		now = Date.now(),
+		now = e.timeStamp,
 		zoom = snapPinchZoom(map, this._zoomSamples, now);
 
 		// keep the location between the fingers in place while snapping, carrying on at the pinch's speed

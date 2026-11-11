@@ -26,10 +26,6 @@ export class ScrollWheelZoomHandler extends Handler {
 
 		/** @type {number} */
 		this._delta = 0;
-		/** @type {{time: number, dz: number}[]} */
-		this._flow = [];
-		/** @type {number} */
-		this._peakSpeed = 0;
 	}
 
 	removeHooks() {
@@ -40,7 +36,7 @@ export class ScrollWheelZoomHandler extends Handler {
 		cancelAnimationFrame(this._endRequest);
 		if (this._pinching) {
 			cancelAnimationFrame(this._map._pinchFrame);
-			this._map._subpixelOrigin = false;
+			this._map._setZooming(false);
 		}
 		this._pinching = false;
 	}
@@ -120,10 +116,15 @@ export class ScrollWheelZoomHandler extends Handler {
 	_onScroll(e, deltaY) {
 		if (this._gap > 100) { this._coast = null; }
 		if (!this._pinching && !this._coast) {
+			/** @type {ZoomSample[]} */
 			this._flow = [];
+			/** @type {number} */
 			this._peakSpeed = 0;
 		}
-		const speed = this._scrollSpeed(e, -deltaY / (200 * Math.LN2)),
+		// the scroll's own zoom, which goes on adding up while the snap replaces the momentum
+		const flow = this._flow, time = e.timeStamp;
+		recordPinchZoom(flow, (flow.at(-1)?.zoom ?? 0) - deltaY / (200 * Math.LN2), time);
+		const speed = pinchVelocity(flow, time),
 		coast = this._coast;
 
 		// the snap replaces the rest of the momentum, unless the fingers push again or turn back
@@ -143,22 +144,6 @@ export class ScrollWheelZoomHandler extends Handler {
 			this._coast = {time: e.timeStamp, speed};
 			this._endPinch(speed, speed * coastDecay);
 		}
-	}
-
-	// Returns the zoom speed of a scroll over its last 80 ms, in levels per ms, timed by when the input happened rather
-	// than when the event came, as Chrome hands out events in uneven batches.
-	/**
-	 * @param {WheelEvent} e
-	 * @param {number} dz
-	 */
-	_scrollSpeed(e, dz) {
-		const flow = this._flow, time = e.timeStamp;
-		flow.push({time, dz});
-		while (flow.length > 2 && time - flow[1].time >= 80) { flow.shift(); }
-
-		let sum = 0;
-		for (let i = 1; i < flow.length; i++) { sum += flow[i].dz; }
-		return flow.length > 1 ? sum / Math.max(time - flow[0].time, 8) : 0;
 	}
 
 	_performZoom() {
@@ -252,7 +237,7 @@ export class ScrollWheelZoomHandler extends Handler {
 		}
 		/** @type {number} */
 		this._zoom = zoom;
-		recordPinchZoom(this._zoomSamples, zoom);
+		recordPinchZoom(this._zoomSamples, zoom, e.timeStamp);
 
 		map._pinchTo(this._pinchLatLng, this._pinchOffset, zoom);
 
@@ -280,11 +265,14 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._endRequest = requestAnimationFrame(() => this._endPinch());
 	}
 
-	// Safari tells when the fingers lift off a pinch, so it can snap at once, carrying on at the fingers' speed
-	_onGestureEnd() {
+	/**
+	 * Safari tells when the fingers lift off a pinch, so it can snap at once, carrying on at the fingers' speed.
+	 * @param {Event} e
+	 */
+	_onGestureEnd(e) {
 		/** @type {number} */
 		this._gestureEndTime = Date.now();
-		if (this._pinching && this._ctrlPinch) { this._endPinch(pinchVelocity(this._zoomSamples, Date.now())); }
+		if (this._pinching && this._ctrlPinch) { this._endPinch(pinchVelocity(this._zoomSamples, e.timeStamp)); }
 	}
 
 	/**
