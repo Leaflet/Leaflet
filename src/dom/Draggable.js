@@ -170,7 +170,7 @@ export class Draggable extends Evented {
 		this._lastEvent = e;
 
 		if (!this._moved) {
-			this.fire('dragstart');
+			this.fire('dragstart', {originalEvent: e});
 
 			this._moved = true;
 

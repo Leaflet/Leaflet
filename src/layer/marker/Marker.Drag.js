@@ -98,16 +98,18 @@ export class MarkerDrag extends Handler {
 		}
 	}
 
-	_onDragStart() {
+	/** @param {LeafletEvent & {originalEvent?: Event}} e */
+	_onDragStart(e) {
 		/** @type {LatLng} */
 		this._oldLatLng = this._marker.getLatLng();
 
 		// When using ES6 imports it could not be set when `Popup` was not imported as well
 		this._marker.closePopup?.();
 
+		const {originalEvent} = e;
 		this._marker
-			.fire('movestart')
-			.fire('dragstart');
+			.fire('movestart', {originalEvent})
+			.fire('dragstart', {originalEvent});
 	}
 
 	/** @param {LeafletEvent} e */
@@ -171,7 +173,7 @@ export class MarkerDrag extends Handler {
 				Draggable._dragging = draggable;
 				draggable._startPos = draggable._newPos = DomUtil.getPosition(draggable._element);
 				draggable._moved = draggable._moving = this._keyDrag = true;
-				draggable.fire('dragstart');
+				draggable.fire('dragstart', {originalEvent: k});
 			}
 
 			// not through _updatePosition, whose predrag would start the pointer autoPan loop
