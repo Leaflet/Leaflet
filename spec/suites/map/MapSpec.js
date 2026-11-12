@@ -435,6 +435,20 @@ describe('Map', () => {
 					expect(map.getCenter()).to.be.nearLatLng([0.1, 0.1]);
 				});
 
+				it('keeps the zoom within a minZoom set after setZoom', async () => {
+					map.setZoom(8);
+					map.setMinZoom(9);
+					await settle();
+					expect(map.getZoom()).to.equal(9);
+				});
+
+				it('keeps the zoom within a maxZoom set after setZoom', async () => {
+					map.setZoom(12);
+					map.setMaxZoom(11);
+					await settle();
+					expect(map.getZoom()).to.equal(11);
+				});
+
 				it('adds up zoomIn calls made before the animation starts', async () => {
 					map.zoomIn();
 					map.zoomIn();

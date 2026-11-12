@@ -1148,7 +1148,7 @@ export class LeafletMap extends Evented {
 		if (this._loaded && oldZoom !== zoom) {
 			this.fire('zoomlevelschange');
 
-			if (this.getZoom() < this.options.minZoom) {
+			if (this._targetZoom() < this.options.minZoom) {
 				return this.setZoom(zoom);
 			}
 		}
@@ -1168,7 +1168,7 @@ export class LeafletMap extends Evented {
 		if (this._loaded && oldZoom !== zoom) {
 			this.fire('zoomlevelschange');
 
-			if (this.getZoom() > this.options.maxZoom) {
+			if (this._targetZoom() > this.options.maxZoom) {
 				return this.setZoom(zoom);
 			}
 		}
