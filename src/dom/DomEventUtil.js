@@ -42,12 +42,15 @@ export function disablePointerDetection(el) {
 	el.removeEventListener('pointercancel', _onDelete, true);
 }
 
-// capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones
 /** @param {PointerEvent} e */
 function _onSet(e) {
+	lastPointerType = e.pointerType;
+	const target = /** @type {Element} */ (e.composedPath()[0]);
+	// leave pointers on form fields and editable content to the browser, so their native behavior keeps working
+	if (target.matches?.('input, textarea, select') || /** @type {HTMLElement} */ (target).isContentEditable) { return; }
+	// capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones
 	if (e.isTrusted) { /** @type {Element} */ (e.target).setPointerCapture(e.pointerId); }
 	activePointers.set(e.pointerId, e);
-	lastPointerType = e.pointerType;
 }
 
 /** @param {PointerEvent} e */
