@@ -6,7 +6,7 @@ import {Bounds} from '../geometry/Bounds.js';
 import {LatLng} from '../geo/LatLng.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 import * as DomEvent from '../dom/DomEvent.js';
-import {stoppedEvents, clickDisabledElements, mapHandlingDisabled, enablePointerDetection, disablePointerDetection,
+import {stoppedEvents, isClickDisabled, mapHandlingDisabled, enablePointerDetection, disablePointerDetection,
 	simulateDblclick}
 	from '../dom/DomEventUtil.js';
 import * as DomUtil from '../dom/DomUtil.js';
@@ -2488,19 +2488,11 @@ export class LeafletMap extends Evented {
 		return targets;
 	}
 
-	/** @param {Node | null} el */
-	_isClickDisabled(el) {
-		while (el && el !== this._container) {
-			if (clickDisabledElements.has(el) || !el.parentNode) { return true; }
-			el = el.parentNode;
-		}
-	}
-
 	/** @param {Event} e */
 	_handleDOMEvent(e) {
 		const el = /** @type {Element} */ (e.target);
 		if (e.type === 'click') { simulateDblclick(/** @type {MouseEvent} */ (e)); }
-		if (!this._loaded || mapHandlingDisabled.has(el) || e.type === 'click' && this._isClickDisabled(el)) {
+		if (!this._loaded || mapHandlingDisabled.has(el) || e.type === 'click' && isClickDisabled(el, this._container)) {
 			return;
 		}
 
