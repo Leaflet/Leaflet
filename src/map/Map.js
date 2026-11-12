@@ -2374,7 +2374,7 @@ export class LeafletMap extends Evented {
 			this.fire('zoomlevelschange');
 		}
 
-		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
+		if (this.options.maxZoom === undefined && this._layersMaxZoom !== undefined && this.getZoom() > this._layersMaxZoom) {
 			this.setZoom(this._layersMaxZoom);
 		}
 		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {

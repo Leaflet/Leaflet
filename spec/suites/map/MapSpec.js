@@ -2540,6 +2540,13 @@ describe('Map', () => {
 			expect(map.getMaxZoom()).to.equal(10);
 		});
 
+		it('zooms out to a layer maximum zoom of 0', () => {
+			map.setView([0, 0], 5);
+			map.addLayer(new GridLayer({maxZoom: 0}));
+			expect(map.getMaxZoom()).to.equal(0);
+			expect(map.getZoom()).to.equal(0);
+		});
+
 		it('doesn\'t update zoom levels when min and max zoom are both NaN in a layer that is added to map', () => {
 			map._addZoomLimit(new TileLayer('', {minZoom: NaN, maxZoom: NaN}));
 			expect(map._layersMinZoom === undefined && map._layersMaxZoom === undefined).to.be.true;
