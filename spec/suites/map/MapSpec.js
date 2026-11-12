@@ -449,6 +449,14 @@ describe('Map', () => {
 					expect(map.getZoom()).to.equal(11);
 				});
 
+				it('keeps a zoom that is within a minZoom set after setZoom', async () => {
+					map.setView([0, 0], 8, {animate: false});
+					map.setZoom(12);
+					map.setMinZoom(10);
+					await settle();
+					expect(map.getZoom()).to.equal(12);
+				});
+
 				it('adds up zoomIn calls made before the animation starts', async () => {
 					map.zoomIn();
 					map.zoomIn();
