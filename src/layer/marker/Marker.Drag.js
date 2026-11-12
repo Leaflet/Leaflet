@@ -4,7 +4,7 @@ import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {Point} from '../../geometry/Point.js';
 
-/** @import {DragEndEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
+/** @import {DragEndEvent, DragStartEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
 /** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {Marker} from './Marker.js' */
 
@@ -98,7 +98,7 @@ export class MarkerDrag extends Handler {
 		}
 	}
 
-	/** @param {LeafletEvent & {originalEvent?: Event}} e */
+	/** @param {DragStartEvent} e */
 	_onDragStart(e) {
 		/** @type {LatLng} */
 		this._oldLatLng = this._marker.getLatLng();

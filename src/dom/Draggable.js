@@ -5,7 +5,8 @@ import * as DomUtil from './DomUtil.js';
 import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 
-/** @import {Defaults, DragEndEvent, DraggableDefaults, DraggableEventMap, DraggableOptions, LeafletEvent} from '../types.js' */
+/** @import {Defaults, DragEndEvent, DraggableDefaults, DraggableEventMap, DraggableOptions, DragStartEvent,
+ *    LeafletEvent} from '../types.js' */
 
 const defaultOptions = {
 	/**
@@ -20,11 +21,18 @@ const defaultOptions = {
 /**
  * @typedef {Object} DraggableEvents
  * @property {LeafletEvent} down Fired when a drag is about to start.
- * @property {LeafletEvent} dragstart Fired when a drag starts
+ * @property {DragStartEvent} dragstart Fired when a drag starts.
  * @property {LeafletEvent} predrag Fired continuously during dragging *before* each corresponding update of the
  *   element's position.
  * @property {LeafletEvent} drag Fired continuously during dragging.
  * @property {DragEndEvent} dragend Fired when the drag ends.
+ */
+
+/**
+ * @typedef {Object} DragStartEventProps
+ * @property {PointerEvent | KeyboardEvent} originalEvent The DOM event that started the drag: the `pointermove` that
+ *   moved the pointer past `clickTolerance` (not the `pointerdown`), or the `keydown` of an arrow key that moves a
+ *   focused draggable marker.
  */
 
 /**
