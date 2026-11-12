@@ -27,9 +27,11 @@ Consider the effects on your users before changing defaults such as these.
 | `Tab`, `Shift`+`Tab` | Move between the map, its markers and its controls |
 | Arrow keys | Pan the map |
 | `+` or `=`, `-` or `_` | Zoom in, zoom out |
-| `Shift` with a pan or zoom key | Pan or zoom three times as far |
+| Arrow keys on a [draggable](/reference.html#marker-draggable) marker | Move the marker |
+| `Shift` with an arrow or zoom key | Pan, zoom or move the marker three times as far |
 | `Enter` or `Space` on a marker | Open the marker's popup |
-| `Escape` | Close the open popup |
+| `Enter` or `Space` on the layers control | Open its list of layers |
+| `Escape` | Close the open popup or list of layers, or exit fullscreen |
 
 The pan and zoom keys work while the map itself has focus,
 and their steps are set by the [`keyboardPanDelta`](/reference.html#map-keyboardpandelta)
