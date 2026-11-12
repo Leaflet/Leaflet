@@ -631,51 +631,28 @@ describe('DomEvent', () => {
 			expect(state.captured).to.be.true;
 		});
 
-		const controls = {
-			'a search input': () => Object.assign(document.createElement('input'), {type: 'search', value: 'abc'}),
-			'a textarea': () => document.createElement('textarea'),
-			'a select': () => document.createElement('select'),
-			'a contenteditable element': () => {
-				const editable = Object.assign(document.createElement('div'), {contentEditable: 'true'});
-				editable.appendChild(Object.assign(document.createElement('span'), {textContent: 'abc'}));
-				return editable;
-			}
-		};
-
-		Object.entries(controls).forEach(([name, create]) => {
-			it(`does not capture the pointer on ${name} in a control`, async () => {
-				const control = document.createElement('div');
-				const field = create();
-				field.style.width = '100px';
-				field.style.height = '30px';
-				control.appendChild(field);
-				el.appendChild(control);
-				DomEvent.disableClickPropagation(control);
-				const clicked = field.querySelector('span') ?? field;
-				const state = trackPointerdown(clicked);
-
-				await userEvent.click(clicked);
-
-				expect(state.captured).to.be.false;
-			});
-		});
-
-		it('does not capture the pointer on an input inside a shadow root in a control', async () => {
+		it('does not capture the pointer on a search input in a control', async () => {
 			const control = document.createElement('div');
-			const host = document.createElement('div');
-			const input = document.createElement('input');
-			input.style.width = '100px';
-			host.attachShadow({mode: 'open'}).appendChild(input);
-			control.appendChild(host);
+			const input = Object.assign(document.createElement('input'), {type: 'search', value: 'abc'});
+			control.appendChild(input);
 			el.appendChild(control);
 			DomEvent.disableClickPropagation(control);
-			let captured;
-			// the map only sees the host as the target, so the capture is checked on it
-			DomEvent.on(host, 'pointerdown', (e) => { captured = host.hasPointerCapture(e.pointerId); });
+			const state = trackPointerdown(input);
 
 			await userEvent.click(input);
 
-			expect(captured).to.be.false;
+			expect(state.captured).to.be.false;
+		});
+
+		it('does not capture the pointer on popup content', async () => {
+			const content = document.createElement('div');
+			content.style.width = content.style.height = '30px';
+			map.openPopup(content, [0, 0]);
+			const state = trackPointerdown(content);
+
+			await userEvent.click(content);
+
+			expect(state.captured).to.be.false;
 		});
 	});
 

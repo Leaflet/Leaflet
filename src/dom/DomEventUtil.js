@@ -13,6 +13,19 @@ export const clickDisabledElements = new WeakSet();
 /** @type {WeakSet<EventTarget>} */
 export const mapHandlingDisabled = new WeakSet();
 
+// whether `el` is inside an element that `DomEvent.disableClickPropagation` was called on, or detached from the DOM
+/**
+ * @param {Node | null} el
+ * @param {Node} container
+ */
+export function isClickDisabled(el, container) {
+	while (el && el !== container) {
+		if (clickDisabledElements.has(el) || !el.parentNode) { return true; }
+		el = el.parentNode;
+	}
+	return false;
+}
+
 /** @type {Map<number, PointerEvent>} */
 const activePointers = new Map();
 
@@ -45,9 +58,9 @@ export function disablePointerDetection(el) {
 /** @param {PointerEvent} e */
 function _onSet(e) {
 	lastPointerType = e.pointerType;
-	const target = /** @type {Element} */ (e.composedPath()[0]);
-	// leave pointers on form fields and editable content to the browser, so their native behavior keeps working
-	if (target.matches?.('input, textarea, select') || /** @type {HTMLElement} */ (target).isContentEditable) { return; }
+	// pointers in controls and popups can't start map interactions, and capturing them breaks native widgets there
+	// (like the clear button of a search input), so leave them to the browser
+	if (isClickDisabled(/** @type {Node} */ (e.target), /** @type {Node} */ (e.currentTarget))) { return; }
 	// capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones
 	if (e.isTrusted) { /** @type {Element} */ (e.target).setPointerCapture(e.pointerId); }
 	activePointers.set(e.pointerId, e);
