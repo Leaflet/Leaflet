@@ -76,6 +76,24 @@ describe('Point', () => {
 		});
 	});
 
+	describe('#scaleBy', () => {
+		it('multiplies each coordinate by the matching coordinate of the given point', () => {
+			const p = new Point(2, 3);
+			expect(p.scaleBy(new Point(4, 5))).to.eql(new Point(8, 15));
+			expect(p.scaleBy([4, 5])).to.eql(new Point(8, 15));
+			expect(p.scaleBy({x: 4, y: 5})).to.eql(new Point(8, 15));
+		});
+	});
+
+	describe('#unscaleBy', () => {
+		it('divides each coordinate by the matching coordinate of the given point', () => {
+			const p = new Point(8, 15);
+			expect(p.unscaleBy(new Point(4, 5))).to.eql(new Point(2, 3));
+			expect(p.unscaleBy([4, 5])).to.eql(new Point(2, 3));
+			expect(p.unscaleBy({x: 4, y: 5})).to.eql(new Point(2, 3));
+		});
+	});
+
 	describe('#floor', () => {
 		it('returns a new point with floored coordinates', () => {
 			expect(new Point(50.56, 30.123).floor()).to.eql(new Point(50, 30));
