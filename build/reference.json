@@ -51,7 +51,7 @@
 	},
 	"miniclasses": {
 		"LeafletMap": ["ZoomOptions", "PanOptions", "ZoomPanOptions", "InvalidateSizeOptions", "PaddingOptions", "PanInsideOptions", "FitBoundsOptions", "LocateOptions"],
-		"Event objects": ["LeafletEvent", "LeafletKeyboardEvent", "LeafletPointerEvent", "LocationEvent", "ErrorEvent", "LayerEvent", "LayersControlEvent", "TileEvent", "TileErrorEvent", "ResizeEvent", "GeoJSONEvent", "PopupEvent", "TooltipEvent", "DragEndEvent", "BoxZoomEvent", "MarkerMoveEvent", "ZoomAnimEvent", "ViewChangeEvent", "ViewPreResetEvent", "WorldCopyJumpEvent"]
+		"Event objects": ["LeafletEvent", "LeafletKeyboardEvent", "LeafletPointerEvent", "LocationEvent", "ErrorEvent", "LayerEvent", "LayersControlEvent", "TileEvent", "TileErrorEvent", "ResizeEvent", "GeoJSONEvent", "PopupEvent", "TooltipEvent", "DragStartEvent", "DragEndEvent", "BoxZoomEvent", "MarkerMoveEvent", "ZoomAnimEvent", "ViewChangeEvent", "ViewPreResetEvent", "WorldCopyJumpEvent"]
 	},
 	"tables": {
 		"Projection": {"projection": ["LonLatProjection", "MercatorProjection", "SphericalMercatorProjection"]},

@@ -9,8 +9,8 @@ import {MarkerDrag} from './Marker.Drag.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 /** @import {Feature, Point as GeoJSONPoint} from 'geojson' */
-/** @import {Defaults, DragEndEvent, LatLngExpression, LeafletEvent, MapListeners, MarkerDefaults, MarkerEventMap,
- *    MarkerMoveEvent, MarkerOptions, PointExpression, ZoomAnimEvent} from '../../types.js' */
+/** @import {Defaults, DragEndEvent, DragStartEvent, LatLngExpression, LeafletEvent, MapListeners, MarkerDefaults,
+ *    MarkerEventMap, MarkerMoveEvent, MarkerOptions, PointExpression, ZoomAnimEvent} from '../../types.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Icon} from './Icon.js' */
 
@@ -120,8 +120,8 @@ const defaultOptions = {
 /**
  * @category Dragging events
  * @typedef {Object} MarkerDragEvents
- * @property {LeafletEvent} dragstart Fired when the user starts dragging the marker.
- * @property {LeafletEvent} movestart Fired when the marker starts moving (because of dragging).
+ * @property {DragStartEvent} dragstart Fired when the user starts dragging the marker.
+ * @property {DragStartEvent} movestart Fired when the marker starts moving (because of dragging).
  * @property {MarkerMoveEvent} drag Fired repeatedly while the user drags the marker.
  * @property {DragEndEvent} dragend Fired when the user stops dragging the marker.
  * @property {LeafletEvent} moveend Fired when the marker stops moving (because of dragging).
