@@ -65,6 +65,12 @@ describe('Bounds', () => {
 		it('extend the bounds by an empty bounds object', () => {
 			expect(a.extend(new Bounds())).to.eql(a);
 		});
+
+		it('ignores empty arrays', () => {
+			expect(a.extend([])).to.eql(new Bounds([14, 12], [30, 40]));
+			expect(new Bounds().extend([]).isValid()).to.be.false;
+			expect(new Bounds([[[10, 20], [30, 40]], []]).max).to.eql(new Point(30, 40));
+		});
 	});
 
 	describe('#getCenter', () => {
