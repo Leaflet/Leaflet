@@ -16,7 +16,7 @@ export const mapHandlingDisabled = new WeakSet();
 // whether `el` is inside an element that `DomEvent.disableClickPropagation` was called on, or detached from the DOM
 /**
  * @param {Node | null} el
- * @param {Node} container
+ * @param {EventTarget | null} container
  */
 export function isClickDisabled(el, container) {
 	while (el && el !== container) {
@@ -60,7 +60,7 @@ function _onSet(e) {
 	lastPointerType = e.pointerType;
 	// pointers in controls and popups can't start map interactions, and capturing them breaks native widgets there
 	// (like the clear button of a search input), so leave them to the browser
-	if (isClickDisabled(/** @type {Node} */ (e.target), /** @type {Node} */ (e.currentTarget))) { return; }
+	if (isClickDisabled(/** @type {Node} */ (e.target), e.currentTarget)) { return; }
 	// capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones
 	if (e.isTrusted) { /** @type {Element} */ (e.target).setPointerCapture(e.pointerId); }
 	activePointers.set(e.pointerId, e);
