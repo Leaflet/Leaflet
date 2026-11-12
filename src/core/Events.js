@@ -328,6 +328,7 @@ export class Evented extends Class {
 	/**
 	 * Fires an event of the specified type. You can optionally provide a data object — the first argument of the
 	 * listener function will contain its properties. The event can optionally be propagated to event parents.
+	 * Errors thrown by listeners are reported as uncaught errors without interrupting the event dispatch.
 	 * @param {string} type
 	 * @param {object} [data]
 	 * @param {boolean} [propagate]
@@ -354,7 +355,11 @@ export class Evented extends Class {
 				if (l.once) {
 					this.off(type, /** @type {any} */ (fn), ctx);
 				}
-				fn.call(ctx || this, event);
+				try {
+					fn.call(ctx || this, event);
+				} catch (err) {
+					reportError(err);
+				}
 			}
 		}
 
