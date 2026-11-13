@@ -123,6 +123,10 @@ export class Tooltip extends DivOverlay {
 		if (this._source) {
 			this.removeEventParent(this._source);
 
+			// the closed tooltip is gone from the DOM, so drop the reference to it, unless something else replaced it
+			const el = this._source.getElement?.();
+			if (el?.getAttribute('aria-describedby') === this._container.id) { el.removeAttribute('aria-describedby'); }
+
 			this._source.fire('tooltipclose', {tooltip: this}, true);
 		}
 	}

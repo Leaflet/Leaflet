@@ -140,6 +140,38 @@ describe('Tooltip', () => {
 		expect(layer.getElement().getAttribute('aria-describedby')).to.equal(layer.getTooltip()._container.id);
 	});
 
+	it('is removed from aria-describedby when it closes or is unbound', () => {
+		const layer = new Marker(center).addTo(map);
+		const element = layer.getElement();
+
+		layer.bindTooltip('Tooltip').openTooltip();
+		layer.closeTooltip();
+		expect(element.hasAttribute('aria-describedby')).to.be.false;
+
+		layer.openTooltip();
+		layer.unbindTooltip();
+		expect(element.hasAttribute('aria-describedby')).to.be.false;
+	});
+
+	it('is removed from aria-describedby of a group member when it closes', () => {
+		const marker = new Marker(center);
+		const group = new FeatureGroup([marker]).addTo(map);
+		group.bindTooltip('Tooltip');
+
+		marker.getElement().focus({focusVisible: true});
+		expect(marker.getElement().getAttribute('aria-describedby')).to.equal(group.getTooltip()._container.id);
+		group.closeTooltip();
+		expect(marker.getElement().hasAttribute('aria-describedby')).to.be.false;
+	});
+
+	it('leaves an aria-describedby set by someone else since it opened', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		layer.openTooltip();
+		layer.getElement().setAttribute('aria-describedby', 'my-help');
+		layer.closeTooltip();
+		expect(layer.getElement().getAttribute('aria-describedby')).to.equal('my-help');
+	});
+
 	it('stays open on marker when permanent', () => {
 		const layer = new Marker(center).addTo(map);
 
