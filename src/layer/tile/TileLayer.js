@@ -130,7 +130,7 @@ export class TileLayer extends GridLayer {
 
 		// Set required OpenStreetMap attribution if it hasn't been specified
 		if (isOSMUrl(url) && opts.attribution === null) {
-			opts.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			opts.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright" lang="en">OpenStreetMap contributors</a>';
 		}
 		this._url = upgradeOSMUrl(url);
 
