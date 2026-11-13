@@ -148,5 +148,10 @@ describe('Util', () => {
 			expect(Util.template('{-y}', {'-y': 1})).to.eql('1');
 			expect(Util.template('{Day Of Month}', {'Day Of Month': 30})).to.eql('30');
 		});
+
+		it('ignores spaces around a placeholder name', () => {
+			expect(Util.template('{ x}/{y }/{ z }', {x: 1, y: 2, z: 3})).to.eql('1/2/3');
+			expect(Util.template('{ Day Of Month }', {'Day Of Month': 30})).to.eql('30');
+		});
 	});
 });

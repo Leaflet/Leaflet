@@ -20,6 +20,26 @@ The map container and markers are keyboard operable by default,
 this enables users who are unable to use a pointing device.
 Consider the effects on your users before changing defaults such as these.
 
+### Keyboard shortcuts
+
+| Key | Action |
+| --- | --- |
+| `Tab`, `Shift`+`Tab` | Move between the map, its markers and its controls |
+| Arrow keys | Pan the map |
+| `+` or `=`, `-` or `_` | Zoom in, zoom out |
+| Arrow keys on a [draggable](/reference.html#marker-draggable) marker | Move the marker |
+| `Shift` with an arrow or zoom key | Pan, zoom or move the marker three times as far |
+| `Enter` or `Space` on a marker | Open the marker's popup |
+| `Enter` or `Space` on the layers control | Open its list of layers |
+| `Escape` | Close the open popup or list of layers, or exit fullscreen |
+
+The pan and zoom keys work while the map itself has focus,
+and their steps are set by the [`keyboardPanDelta`](/reference.html#map-keyboardpandelta)
+and [`zoomDelta`](/reference.html#map-zoomdelta) map options
+(on a US keyboard, typing `+` involves `Shift`, so it zooms three levels while `=` zooms one).
+Nothing on the map tells users that these keys exist, so it is worth listing them near your map,
+and the [`ariaKeyShortcuts`](/reference.html#map-ariakeyshortcuts) option exposes them to assistive technologies.
+
 ### Markers must be labelled
 
 When using markers,
@@ -106,6 +126,20 @@ A simple way to achieve this is to use the HTML
 <div id='decorative-map' inert></div>
 ```
 
+### Offer a fullscreen mode
+
+By allowing users to enter into fullscreen mode,
+they can explore the map in isolation,
+focusing their attention,
+this is especially helpful to keyboard and screen reader users
+(as they are less likely to unintentionally navigate outside the map),
+but also mobile users in general.
+Leaflet comes with a [`FullscreenControl`](/reference.html#fullscreencontrol) for this:
+
+```js
+new FullscreenControl().addTo(map);
+```
+
 ### Utilizing plugins
 
 [Plugins](/plugins.html)
@@ -117,16 +151,6 @@ whenever a new plugin is added.
 
 If you find an accessibility issue in a plugin,
 please report it to the plugin's author.
-
-An example of a plugin that can enhance the experience for your users is the
-[Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen)
-plugin.
-By allowing users to enter into fullscreen mode,
-they can explore the map in isolation,
-focusing their attention,
-this is especially helpful to keyboard and screen reader users
-(as they are less likely to unintentionally navigate outside the map),
-but also mobile users in general.
 
 ### Use an up-to-date version of Leaflet
 

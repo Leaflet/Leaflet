@@ -4,7 +4,8 @@
 
 import type {Feature, Geometry, Point as GeoJSONPoint, Position} from 'geojson';
 import type {Evented, LeafletEventProps, Listener} from './core/Events.js';
-import type {DragEndEventProps, DraggableDefaultsValues, DraggableEvents} from './dom/Draggable.js';
+import type {DragEndEventProps, DraggableDefaultsValues, DraggableEvents, DragStartEventProps}
+	from './dom/Draggable.js';
 import type {LatLng} from './geo/LatLng.js';
 import type {LatLngBounds} from './geo/LatLngBounds.js';
 import type {Bounds} from './geometry/Bounds.js';
@@ -344,6 +345,8 @@ export interface GeoJSONEvent extends LeafletEvent, GeoJSONEventProps {}
 export interface PopupEvent extends LeafletEvent, PopupEventProps {}
 /** The event object of `tooltipopen` and `tooltipclose`. */
 export interface TooltipEvent extends LeafletEvent, TooltipEventProps {}
+/** The event object of `dragstart` and `movestart` on draggable markers, and of `dragstart` on `Draggable`. */
+export interface DragStartEvent extends LeafletEvent, DragStartEventProps {}
 /** The event object of `dragend`, fired by the map, draggable markers and `Draggable`. */
 export interface DragEndEvent extends LeafletEvent, DragEndEventProps {}
 /** The event object of the map's `boxzoomend` event. */

@@ -6,12 +6,13 @@
 
 import {readdirSync} from 'node:fs';
 import {registerHooks} from 'node:module';
+import {sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {rolldown} from 'rolldown';
 
 const srcURL = new URL('../src/', import.meta.url);
 const srcDir = fileURLToPath(srcURL);
-const modules = readdirSync(srcDir, {recursive: true}).filter(file => file.endsWith('.js'));
+const modules = readdirSync(srcDir, {recursive: true}).filter(file => file.endsWith('.js')).map(file => file.replaceAll(sep, '/'));
 let failed = false;
 
 // modules (or directories) that must not end up in a bundle of the given imports
@@ -53,7 +54,7 @@ async function bundle(code) {
 	return {code: output.replaceAll(/^\/\/ .*$/gm, '').trim(), included};
 }
 
-const empty = await bundle(modules.map(file => `import '${srcDir}${file}';`).join('\n'));
+const empty = await bundle(modules.map(file => `import ${JSON.stringify(srcDir + file)};`).join('\n'));
 
 if (empty.code) {
 	failed = true;
@@ -64,7 +65,7 @@ if (empty.code) {
 
 for (const [imports, absent] of Object.entries(bundles)) {
 	// eslint-disable-next-line no-await-in-loop
-	const {included} = await bundle(`import {${imports}} from '${srcDir}Leaflet.js'; console.log(${imports});`);
+	const {included} = await bundle(`import {${imports}} from ${JSON.stringify(`${srcDir}Leaflet.js`)}; console.log(${imports});`);
 	if (!included.length) { throw new Error('No module comments in the bundle; did the Rolldown output format change?'); }
 	const unexpected = included.filter(file => [...alwaysAbsent, ...absent].some(prefix => file.startsWith(prefix)));
 

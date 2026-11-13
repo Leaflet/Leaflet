@@ -62,6 +62,12 @@ describe('LatLngBounds', () => {
 		it('extend the bounds by an empty bounds object', () => {
 			expect(a.extend(new LatLngBounds())).to.eql(a);
 		});
+
+		it('ignores empty arrays', () => {
+			expect(a.extend([])).to.eql(new LatLngBounds([14, 12], [30, 40]));
+			expect(new LatLngBounds().extend([]).isValid()).to.be.false;
+			expect(new LatLngBounds([[[10, 20], [30, 40]], []]).getNorthEast()).to.eql(new LatLng(30, 40));
+		});
 	});
 
 	describe('#getCenter', () => {

@@ -185,17 +185,19 @@ export class Point {
 	 * Multiply each coordinate of the current point by each coordinate of `scale`. In linear
 	 * algebra terms, multiply the point by the [scaling
 	 * matrix](https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation) defined by `scale`.
-	 * @param {Point} scale
+	 * @param {PointExpression} scale
 	 */
 	scaleBy(scale) {
+		scale = new Point(scale);
 		return new Point(this.x * scale.x, this.y * scale.y);
 	}
 
 	/**
 	 * Inverse of `scaleBy`. Divide each coordinate of the current point by each coordinate of `scale`.
-	 * @param {Point} scale
+	 * @param {PointExpression} scale
 	 */
 	unscaleBy(scale) {
+		scale = new Point(scale);
 		return new Point(this.x / scale.x, this.y / scale.y);
 	}
 

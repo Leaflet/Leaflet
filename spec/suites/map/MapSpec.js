@@ -484,6 +484,28 @@ describe('Map', () => {
 					expect(map.getCenter()).to.be.nearLatLng([0.1, 0.1]);
 				});
 
+				it('keeps the zoom within a minZoom set after setZoom', async () => {
+					map.setZoom(8);
+					map.setMinZoom(9);
+					await settle();
+					expect(map.getZoom()).to.equal(9);
+				});
+
+				it('keeps the zoom within a maxZoom set after setZoom', async () => {
+					map.setZoom(12);
+					map.setMaxZoom(11);
+					await settle();
+					expect(map.getZoom()).to.equal(11);
+				});
+
+				it('keeps a zoom that is within a minZoom set after setZoom', async () => {
+					map.setView([0, 0], 8, {animate: false});
+					map.setZoom(12);
+					map.setMinZoom(10);
+					await settle();
+					expect(map.getZoom()).to.equal(12);
+				});
+
 				it('adds up zoomIn calls made before the animation starts', async () => {
 					map.zoomIn();
 					map.zoomIn();
@@ -1817,7 +1839,7 @@ describe('Map', () => {
 				return pos.equals(pos.round()) && map.getPixelOrigin().equals(map.getPixelOrigin().round());
 			}
 
-			it('keeps layers at their exact screen position on every flyTo frame, snapping them at the end', async () => {
+			it('keeps layers at their exact screen position on every flyTo frame, snapping them at the end', () => {
 				let error = 0, frames = 0;
 				map.on('move', (e) => {
 					if (e.flyTo) {
@@ -1826,11 +1848,14 @@ describe('Map', () => {
 					}
 				});
 
-				await new Promise((resolve) => {
-					map.once('moveend', resolve);
-					map.flyTo([50.4502, 30.521], 14, {duration: 0.3});
-				});
+				const clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'cancelAnimationFrame']});
+				const moveend = sinon.spy();
+				map.once('moveend', moveend);
+				map.flyTo([50.4502, 30.521], 14, {duration: 0.3});
+				clock.tick(400);
+				clock.restore();
 
+				expect(moveend.calledOnce).to.be.true;
 				expect(frames).to.be.above(5);
 				expect(error).to.be.below(1e-3);
 				expect(isSnapped()).to.be.true;
@@ -2597,6 +2622,13 @@ describe('Map', () => {
 			map.removeLayer(layer);
 			expect(map.getMinZoom()).to.equal(7);
 			expect(map.getMaxZoom()).to.equal(10);
+		});
+
+		it('zooms out to a layer maximum zoom of 0', () => {
+			map.setView([0, 0], 5);
+			map.addLayer(new GridLayer({maxZoom: 0}));
+			expect(map.getMaxZoom()).to.equal(0);
+			expect(map.getZoom()).to.equal(0);
 		});
 
 		it('doesn\'t update zoom levels when min and max zoom are both NaN in a layer that is added to map', () => {

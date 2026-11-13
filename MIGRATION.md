@@ -25,10 +25,10 @@ The guide has two parts:
 module script:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.3/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.4/dist/leaflet.css">
 
 <script type="importmap">
-	{"imports": {"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.3/dist/leaflet.js"}}
+	{"imports": {"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@2.0.0-beta.4/dist/leaflet.js"}}
 </script>
 
 <script type="module">
@@ -290,6 +290,12 @@ Map and layer options:
   `ariaKeyShortcuts: true` to bring it back, or pass a string for other layouts.
 - **Silent:** with `detectRetina` on a retina screen, `minNativeZoom` and `maxNativeZoom` now request the right
   zoom level from the server. If you added 1 to them to work around this, remove it.
+- **Silent:** `detectRetina` applies only at a device pixel ratio of 1.5 or higher. 1.x used it on any screen above 1,
+  so screens scaled to 125% now get regular tiles, with readable labels.
+- **Silent:** `tooltipAnchor` is mirrored for tooltips with `direction: 'left'`, not only for `auto` ones that open to
+  the left. It's ignored for `top` and `bottom` tooltips, which now attach to the middle of the icon's top or bottom
+  edge, and only its `y` applies to `center` ones. If you tuned `tooltipAnchor` or `offset` to make these directions
+  line up, remove the workaround.
 
 Events and input, all **Silent**:
 

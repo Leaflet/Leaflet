@@ -765,7 +765,7 @@ describe('GeoJSON functions', () => {
 			expect(latLng).to.be.instanceOf(LatLng);
 			expect(latLngWithAlt).to.be.instanceOf(LatLng);
 			expect(latLng.equals(new LatLng(2, 1))).to.be.true;
-			expect(latLngWithAlt.equals(new LatLng(4, 3, 5)));
+			expect(latLngWithAlt.equals(new LatLng(4, 3, 5))).to.be.true;
 		});
 	});
 
@@ -778,9 +778,9 @@ describe('GeoJSON functions', () => {
 		it('creates a multidimensional array of LatLngs', () => {
 			const latLngs = GeoJSON.coordsToLatLngs([[1, 2], [3, 4], [5, 6]]);
 
-			expect(latLngs[0].equals(new LatLng(1, 2)));
-			expect(latLngs[1].equals(new LatLng(3, 4)));
-			expect(latLngs[2].equals(new LatLng(5, 6)));
+			expect(latLngs[0].equals(new LatLng(2, 1))).to.be.true;
+			expect(latLngs[1].equals(new LatLng(4, 3))).to.be.true;
+			expect(latLngs[2].equals(new LatLng(6, 5))).to.be.true;
 
 			latLngs.forEach((latLng) => {
 				expect(latLng).to.be.instanceOf(LatLng);
@@ -793,13 +793,13 @@ describe('GeoJSON functions', () => {
 				[[5, 6], [7, 8], [9, 10]]
 			], 1);
 
-			expect(latLngs[0][0].equals(new LatLng(1, 2)));
-			expect(latLngs[0][1].equals(new LatLng(3, 4)));
-			expect(latLngs[0][2].equals(new LatLng(5, 6)));
+			expect(latLngs[0][0].equals(new LatLng(2, 1))).to.be.true;
+			expect(latLngs[0][1].equals(new LatLng(4, 3))).to.be.true;
+			expect(latLngs[0][2].equals(new LatLng(6, 5))).to.be.true;
 
-			expect(latLngs[1][0].equals(new LatLng(5, 6)));
-			expect(latLngs[1][1].equals(new LatLng(7, 8)));
-			expect(latLngs[1][2].equals(new LatLng(9, 10)));
+			expect(latLngs[1][0].equals(new LatLng(6, 5))).to.be.true;
+			expect(latLngs[1][1].equals(new LatLng(8, 7))).to.be.true;
+			expect(latLngs[1][2].equals(new LatLng(10, 9))).to.be.true;
 
 			latLngs.forEach((arr) => {
 				arr.forEach((latlng) => {
@@ -812,9 +812,9 @@ describe('GeoJSON functions', () => {
 			const coords = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 			const latLngs = GeoJSON.coordsToLatLngs(coords, 0, customCoordsToLatLng);
 
-			expect(latLngs[0].equals(new LatLng(3, 2, 4)));
-			expect(latLngs[1].equals(new LatLng(6, 5, 7)));
-			expect(latLngs[2].equals(new LatLng(9, 8, 10)));
+			expect(latLngs[0].equals(new LatLng(3, 2, 4))).to.be.true;
+			expect(latLngs[1].equals(new LatLng(6, 5, 7))).to.be.true;
+			expect(latLngs[2].equals(new LatLng(9, 8, 10))).to.be.true;
 		});
 
 		it('creates a multidimensional array of LatLngs with custom coordsToLatLng (levelDeep=1)', () => {
@@ -824,11 +824,11 @@ describe('GeoJSON functions', () => {
 			];
 			const latLngs = GeoJSON.coordsToLatLngs(coords, 1, customCoordsToLatLng);
 
-			expect(latLngs[0][0].equals(new LatLng(3, 2, 4)));
-			expect(latLngs[0][1].equals(new LatLng(6, 5, 7)));
+			expect(latLngs[0][0].equals(new LatLng(3, 2, 4))).to.be.true;
+			expect(latLngs[0][1].equals(new LatLng(6, 5, 7))).to.be.true;
 
-			expect(latLngs[1][0].equals(new LatLng(14, 13, 15)));
-			expect(latLngs[1][1].equals(new LatLng(17, 16, 18)));
+			expect(latLngs[1][0].equals(new LatLng(14, 13, 15))).to.be.true;
+			expect(latLngs[1][1].equals(new LatLng(17, 16, 18))).to.be.true;
 		});
 	});
 

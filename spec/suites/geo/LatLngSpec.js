@@ -130,6 +130,17 @@ describe('LatLng', () => {
 
 			expect(a.distanceTo(b)).to.eql(0);
 		});
+		it('does not return NaN for antipodal points', () => {
+			// Rounding can push the haversine term slightly above 1 for some of these pairs.
+			const halfCircumference = Math.PI * 6371000;
+
+			for (let lat = -89; lat <= 89; lat++) {
+				for (let lng = -180; lng < 0; lng += 15) {
+					const distance = new LatLng(lat, lng).distanceTo(new LatLng(-lat, lng + 180));
+					expect(distance, `${lat}, ${lng}`).to.be.closeTo(halfCircumference, 1);
+				}
+			}
+		});
 	});
 
 	describe('LatLng creation', () => {

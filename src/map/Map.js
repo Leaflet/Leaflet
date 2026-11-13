@@ -6,7 +6,7 @@ import {Bounds} from '../geometry/Bounds.js';
 import {LatLng} from '../geo/LatLng.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 import * as DomEvent from '../dom/DomEvent.js';
-import {stoppedEvents, clickDisabledElements, mapHandlingDisabled, enablePointerDetection, disablePointerDetection,
+import {stoppedEvents, isClickDisabled, mapHandlingDisabled, enablePointerDetection, disablePointerDetection,
 	simulateDblclick}
 	from '../dom/DomEventUtil.js';
 import * as DomUtil from '../dom/DomUtil.js';
@@ -1126,7 +1126,7 @@ export class LeafletMap extends Evented {
 		if (this._loaded && oldZoom !== zoom) {
 			this.fire('zoomlevelschange');
 
-			if (this.getZoom() < this.options.minZoom) {
+			if (this._targetZoom() < this.options.minZoom) {
 				return this.setZoom(zoom);
 			}
 		}
@@ -1146,7 +1146,7 @@ export class LeafletMap extends Evented {
 		if (this._loaded && oldZoom !== zoom) {
 			this.fire('zoomlevelschange');
 
-			if (this.getZoom() > this.options.maxZoom) {
+			if (this._targetZoom() > this.options.maxZoom) {
 				return this.setZoom(zoom);
 			}
 		}
@@ -2358,7 +2358,7 @@ export class LeafletMap extends Evented {
 			this.fire('zoomlevelschange');
 		}
 
-		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
+		if (this.options.maxZoom === undefined && this._layersMaxZoom !== undefined && this.getZoom() > this._layersMaxZoom) {
 			this.setZoom(this._layersMaxZoom);
 		}
 		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
@@ -2472,19 +2472,11 @@ export class LeafletMap extends Evented {
 		return targets;
 	}
 
-	/** @param {Node | null} el */
-	_isClickDisabled(el) {
-		while (el && el !== this._container) {
-			if (clickDisabledElements.has(el) || !el.parentNode) { return true; }
-			el = el.parentNode;
-		}
-	}
-
 	/** @param {Event} e */
 	_handleDOMEvent(e) {
 		const el = /** @type {Element} */ (e.target);
 		if (e.type === 'click') { simulateDblclick(/** @type {MouseEvent} */ (e)); }
-		if (!this._loaded || mapHandlingDisabled.has(el) || e.type === 'click' && this._isClickDisabled(el)) {
+		if (!this._loaded || mapHandlingDisabled.has(el) || e.type === 'click' && isClickDisabled(el, this._container)) {
 			return;
 		}
 

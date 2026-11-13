@@ -152,7 +152,7 @@ function getDefaultOptions(cls) {
 	return defaults;
 }
 
-const templateRe = /\{ *([\w_ -]+) *\}/g;
+const templateRe = /\{ *([\w_ -]+?) *\}/g;
 
 /**
  * Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'` and a data object
