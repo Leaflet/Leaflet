@@ -108,7 +108,9 @@ export class Tooltip extends DivOverlay {
 
 		if (this._source) {
 			this.addEventParent(this._source);
-			this._source.getElement?.()?.setAttribute('aria-describedby', this._container.id);
+			/** @type {Element | null | undefined} */
+			this._ariaSource = this._source.getElement?.();
+			this._ariaSource?.setAttribute('aria-describedby', this._container.id);
 
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}
@@ -122,6 +124,11 @@ export class Tooltip extends DivOverlay {
 
 		if (this._source) {
 			this.removeEventParent(this._source);
+
+			// drop the reference to the removed tooltip unless something else replaced it since
+			const el = this._ariaSource;
+			if (el?.getAttribute('aria-describedby') === this._container.id) { el.removeAttribute('aria-describedby'); }
+			this._ariaSource = null;
 
 			this._source.fire('tooltipclose', {tooltip: this}, true);
 		}
