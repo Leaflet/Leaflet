@@ -46,6 +46,7 @@ export {EarthCRS} from './geo/crs/EarthCRS.js';
 export {EPSG3395} from './geo/crs/EPSG3395.js';
 export {EPSG3857, EPSG900913} from './geo/crs/EPSG3857.js';
 export {EPSG4326} from './geo/crs/EPSG4326.js';
+export {ProjectedCRS} from './geo/crs/ProjectedCRS.js';
 export {SimpleCRS} from './geo/crs/SimpleCRS.js';
 
 // layer
