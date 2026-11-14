@@ -56,11 +56,11 @@
 			}).addTo(map);
 
 			map.on('drag', (event) => {
-				console.log('map:', DomEvent.getMousePosition(event.originalEvent, mapContainer));
+				console.log('map:', DomEvent.getPointerPosition(event.originalEvent, mapContainer));
 			});
 
 			marker.on('drag', (event) => {
-				console.log('marker:', DomEvent.getMousePosition(event.originalEvent, mapContainer));
+				console.log('marker:', DomEvent.getPointerPosition(event.originalEvent, mapContainer));
 			});
 		</script>
 	</body>

@@ -41,7 +41,7 @@
 				'OSM': regularTiles,
 				'OSM BW': blackAndWhiteTiles
 			}, {
-				'Circle': new Circle([53, 4], 111111).addTo(map),
+				'Circle': new Circle([53, 4], {radius: 111111}).addTo(map),
 				'Polygon': new Polygon([[48, -3], [50, -4], [52, 4]]),
 				'GeoJSON': new GeoJSON({
 					type: 'Polygon',
