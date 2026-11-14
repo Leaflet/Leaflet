@@ -131,6 +131,7 @@ export class LayersControl extends Control {
 		this._lastZIndex = 0;
 		this._handlingClick = false;
 		this._preventClick = false;
+		this._needsUpdate = false;
 
 		for (const [name, layer] of Object.entries(baseLayers ?? {})) {
 			this._addLayer(layer, name);
@@ -218,6 +219,7 @@ export class LayersControl extends Control {
 		clearTimeout(this._collapseDelayTimeout);
 
 		this._container.classList.add('leaflet-control-layers-expanded');
+		if (this._needsUpdate) { this._update(); }
 		this._section.style.height = '';
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
 		if (acceptableHeight < this._section.clientHeight) {
@@ -336,6 +338,14 @@ export class LayersControl extends Control {
 	_update() {
 		if (!this._container) { return this; }
 
+		// Rebuilding on every layer change makes adding n layers O(n²) (#10266).
+		// The list is hidden while collapsed, so leave it until `expand()` shows it.
+		if (!this._container.classList.contains('leaflet-control-layers-expanded')) {
+			this._needsUpdate = true;
+			return this;
+		}
+		this._needsUpdate = false;
+
 		this._baseLayersList.replaceChildren();
 		this._overlaysList.replaceChildren();
 
@@ -356,6 +366,9 @@ export class LayersControl extends Control {
 		}
 
 		this._separator.style.display = overlaysPresent && baseLayersPresent ? '' : 'none';
+
+		// once for the whole list, as it loops over every input
+		this._checkDisabledLayers();
 
 		return this;
 	}
@@ -406,7 +419,6 @@ export class LayersControl extends Control {
 
 		(obj.overlay ? this._overlaysList : this._baseLayersList).append(label);
 
-		this._checkDisabledLayers();
 		return label;
 	}
 
