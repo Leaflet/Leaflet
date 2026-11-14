@@ -331,7 +331,7 @@ export class Canvas extends Renderer {
 			ctx.fill(options.fillRule || 'evenodd');
 		}
 
-		if (options.stroke && options.weight !== 0) {
+		if (options.stroke && +options.weight !== 0) {
 			ctx.lineDashOffset = Number(options.dashOffset ?? 0);
 			ctx.setLineDash(layer._dashArray ?? []);
 			ctx.globalAlpha = options.opacity;
