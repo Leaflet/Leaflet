@@ -121,7 +121,7 @@ export class LayerGroup extends Layer {
 	 * ```js
 	 * group.eachLayer(layer => layer.bindPopup('Hello'));
 	 * ```
-	 * @param {(layer: L) => void} method
+	 * @param {(layer: MemberLayer<L>) => void} method
 	 * @param {unknown} [context]
 	 */
 	eachLayer(method, context) {
@@ -209,7 +209,7 @@ export class LayerGroup extends Layer {
 		/** @type {any[]} */
 		jsons = [];
 
-		for (const layer of Object.values(this._layers)) {
+		this.eachLayer((layer) => {
 			if (layer.toGeoJSON) {
 				const json = layer.toGeoJSON(precision);
 				if (isGeometryCollection) {
@@ -224,7 +224,7 @@ export class LayerGroup extends Layer {
 					}
 				}
 			}
-		}
+		});
 
 		if (isGeometryCollection) {
 			return getFeature(this, {

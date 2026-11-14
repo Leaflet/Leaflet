@@ -2722,10 +2722,9 @@ export class LeafletMap extends Evented {
 	_getBoundsOffset(pxBounds, maxBounds, zoom) {
 		// `setMaxBounds` makes the option a `LatLngBounds`
 		const bounds = /** @type {LatLngBounds} */ (maxBounds),
-		projectedMaxBounds = new Bounds(
-			this.project(bounds.getNorthEast(), zoom),
-			this.project(bounds.getSouthWest(), zoom)
-		),
+		// any corner can be an extreme when the projection rotates the axes (#5246)
+		corners = [bounds.getNorthWest(), bounds.getNorthEast(), bounds.getSouthEast(), bounds.getSouthWest()],
+		projectedMaxBounds = new Bounds(corners.map(c => this.project(c, zoom))),
 		minOffset = projectedMaxBounds.min.subtract(pxBounds.min),
 		maxOffset = projectedMaxBounds.max.subtract(pxBounds.max),
 

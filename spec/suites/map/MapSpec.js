@@ -763,6 +763,21 @@ describe('Map', () => {
 			expect(bounds.contains(map.getBounds())).to.be.true;
 		});
 
+		it('lets the view reach every corner when the projection rotates the axes (#7650)', () => {
+			map.remove();
+			container.style.width = container.style.height = '400px';
+			map = new LeafletMap(container, {crs: RotatedCRS, maxBounds: [[0, 0], [10, 2]]});
+			// inside the bounds, but outside the box of the projected north-east and south-west corners
+			map.setView([6, 1], 7, {animate: false});
+			expect(map.getCenter()).to.be.nearLatLng([6, 1]);
+			// a view outside is still moved inside the box of all four projected corners
+			map.setView([6, 10], 7, {animate: false});
+			const b = map.options.maxBounds,
+			box = new Bounds([b.getNorthWest(), b.getNorthEast(), b.getSouthEast(), b.getSouthWest()].map(c => map.project(c)));
+			// give or take the pixel rounding of the map position
+			expect(new Bounds(box.min.subtract([2, 2]), box.max.add([2, 2])).contains(map.getPixelBounds())).to.be.true;
+		});
+
 		it('remove listeners when called without arguments', (done) => {
 			new TileLayer('', {minZoom: 0, maxZoom: 20}).addTo(map);
 			container.style.width = container.style.height = '500px';
@@ -1812,17 +1827,18 @@ describe('Map', () => {
 				expect(isSnapped()).to.be.true;
 			});
 
-			it('snaps layers when a flight is interrupted', async () => {
-				await new Promise((resolve) => {
-					let frames = 0;
-					map.on('move', (e) => {
-						if (e.flyTo && ++frames === 5) {
-							map._stop(); // what dragging does
-							resolve();
-						}
-					});
-					map.flyTo([50.4502, 30.521], 15, {duration: 0.3});
+			it('snaps layers when a flight is interrupted', () => {
+				let frames = 0;
+				map.on('move', (e) => {
+					if (e.flyTo && ++frames === 5) {
+						map._stop(); // what dragging does
+					}
 				});
+
+				const clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'cancelAnimationFrame']});
+				map.flyTo([50.4502, 30.521], 15, {duration: 0.3});
+				clock.tick(200);
+				clock.restore();
 
 				expect(map.getZoom() % 1).to.not.equal(0);
 				expect(isSnapped()).to.be.true;
