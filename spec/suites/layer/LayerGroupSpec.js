@@ -109,5 +109,18 @@ describe('LayerGroup', () => {
 
 			new GeoJSON(lg.toGeoJSON());
 		});
+
+		it('includes the layers of a subclass that keeps them outside _layers', () => {
+			class CustomGroup extends LayerGroup {
+				eachLayer(method, context) {
+					method.call(context, new Marker([51.5, 0]));
+					return this;
+				}
+			}
+
+			const json = new CustomGroup().toGeoJSON();
+			expect(json.features).to.have.length(1);
+			expect(json.features[0].geometry.coordinates).to.eql([0, 51.5]);
+		});
 	});
 });
