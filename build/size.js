@@ -1,19 +1,14 @@
 // Compares gzipped sizes of dist files and of minified bundles of typical imports from src between two checkouts,
 // printing a one-line summary as a GitHub Actions output (shown as a job name in PR checks) and a table for the job
-// summary, and failing if any of them exceeds its limit.
+// summary. The summary starts with a warning sign if any size grows by more than `warnAt` bytes; it never fails, since
+// tree-shaking regressions are caught by spec/tree_shaking.js and growth from features and fixes is a review call.
 // Usage: node build/size.js <base-dir> <head-dir>, each with `dist` and `src`
 import {appendFileSync, existsSync, readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {gzipSync} from 'node:zlib';
 import {rolldown} from 'rolldown';
 
-const limits = {
-	'leaflet.js': 42 * 1024,
-	'leaflet.css': 3.2 * 1024,
-	'map+tiles': 27000,
-	'map+tiles+marker': 30500,
-	'map+tiles+polygon': 31000,
-};
+const warnAt = 1000;
 
 const distFiles = ['leaflet.js', 'leaflet.css'];
 const bundles = {
@@ -46,7 +41,6 @@ async function bundleSize(dir, imports) {
 	return gzipSync(chunk.code).length;
 }
 
-let failed = false;
 const rows = [];
 
 for (const file of distFiles) {
@@ -61,13 +55,6 @@ for (const [name, imports] of Object.entries(bundles)) {
 	rows.push({name, size, base});
 }
 
-for (const {name, size} of rows) {
-	if (size > limits[name]) {
-		console.error(`${name} is ${size} B gzipped, over the ${limits[name]} B limit`);
-		failed = true;
-	}
-}
-
 // the job name rounds changes of 1 kB or more and leaves out unchanged ones; the table shows exact bytes
 const shortDiff = d => (Math.abs(d) < 1000 ? `${sign(d)}${Math.abs(d)} B` : `${sign(d)}${kB(Math.abs(d))}`);
 const summary = Object.entries(summaryLabels).map(([name, label]) => {
@@ -76,12 +63,11 @@ const summary = Object.entries(summaryLabels).map(([name, label]) => {
 	return `${label} ${kB(size)}${d ? ` (${shortDiff(d)})` : ''}`;
 });
 
-console.log(`summary=${summary.join(', ')}`);
+const warn = rows.some(({size, base}) => base !== null && size - base > warnAt);
+console.log(`summary=${warn ? '⚠️ ' : ''}${summary.join(', ')}`);
 
 if (process.env.GITHUB_STEP_SUMMARY) {
 	const diff = ({size, base}) => (base === null ? '' : size === base ? 'no change' : `${sign(size - base)}${Math.abs(size - base)} B`);
 	const table = rows.map(row => `| ${row.name} | ${row.size} B | ${diff(row)} |`);
 	appendFileSync(process.env.GITHUB_STEP_SUMMARY, `| | gzipped | change |\n|---|--:|--:|\n${table.join('\n')}\n`);
 }
-
-process.exitCode = failed ? 1 : 0;
