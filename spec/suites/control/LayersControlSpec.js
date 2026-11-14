@@ -163,6 +163,129 @@ describe('LayersControl', () => {
 				.to.be.equal(0);
 		});
 
+		describe('when layers are added while collapsed (#10266)', () => {
+			const names = list => Array.from(list.querySelectorAll('label span span'), el => el.innerHTML.trim());
+
+			it('defers rebuilding the list until expanded', () => {
+				const overlay = new Marker([0, 0]).addTo(map),
+				layers = new LayersControl().addTo(map),
+				spy = sinon.spy(layers, '_update');
+
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				layers.addOverlay(overlay, 'Two');
+				expect(spy.called).to.be.false;
+
+				layers.expand();
+				expect(spy.calledOnce).to.be.true;
+				expect(names(layers._overlaysList)).to.eql(['One', 'Two']);
+				const inputs = layers._overlaysList.getElementsByTagName('input');
+				expect(inputs[0].checked).to.be.false;
+				expect(inputs[1].checked).to.be.true;
+			});
+
+			it('rebuilds the list on expand only once', () => {
+				const layers = new LayersControl().addTo(map);
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				layers.expand();
+
+				const spy = sinon.spy(layers, '_update');
+				layers.collapse();
+				layers.expand();
+				expect(spy.called).to.be.false;
+			});
+
+			it('updates the list right away when expanded', () => {
+				const layers = new LayersControl().addTo(map).expand();
+
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				expect(names(layers._overlaysList)).to.eql(['One']);
+			});
+
+			it('updates the list right away when collapsed: false', () => {
+				const layers = new LayersControl(null, null, {collapsed: false}).addTo(map);
+
+				layers.addBaseLayer(new TileLayer(''), 'Base');
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				expect(names(layers._baseLayersList)).to.eql(['Base']);
+				expect(names(layers._overlaysList)).to.eql(['One']);
+				expect(layers._separator.style.display).to.equal('');
+			});
+
+			it('keeps sorting, the separator and hideSingleBase', () => {
+				const layers = new LayersControl(null, null, {sortLayers: true, hideSingleBase: true}).addTo(map);
+
+				layers.addBaseLayer(new TileLayer(''), 'Base');
+				layers.addOverlay(new Marker([0, 0]), 'C');
+				layers.addOverlay(new Marker([0, 0]), 'A');
+				layers.addOverlay(new Marker([0, 0]), 'B');
+				layers.expand();
+
+				expect(names(layers._overlaysList)).to.eql(['A', 'B', 'C']);
+				expect(layers._baseLayersList.style.display).to.equal('none');
+				expect(layers._separator.style.display).to.equal('none');
+			});
+
+			it('disables layers out of the zoom range once expanded', () => {
+				const layers = new LayersControl().addTo(map);
+
+				layers.addOverlay(new Marker([0, 0], {minZoom: 18}), 'Hidden');
+				layers.addOverlay(new Marker([0, 0]), 'Shown');
+				layers.expand();
+
+				const inputs = layers._overlaysList.getElementsByTagName('input');
+				expect(inputs[0].disabled).to.be.true;
+				expect(inputs[1].disabled).to.be.false;
+			});
+
+			it('removes a layer from the list right away, along with pending ones', () => {
+				const overlay = new Marker([0, 0]),
+				layers = new LayersControl(null, {'Overlay': overlay}).addTo(map);
+
+				layers.addOverlay(new Marker([0, 0]), 'Pending');
+				layers.removeLayer(overlay);
+				expect(names(layers._overlaysList)).to.eql(['Pending']);
+			});
+
+			it('checks a pending layer when it is added to the map', () => {
+				const overlay = new Marker([0, 0]),
+				layers = new LayersControl().addTo(map);
+
+				layers.addOverlay(overlay, 'Overlay');
+				map.addLayer(overlay);
+				layers.expand();
+				expect(layers._overlaysList.getElementsByTagName('input')[0].checked).to.be.true;
+			});
+
+			it('lists pending layers after removing and re-adding the control', () => {
+				const layers = new LayersControl().addTo(map);
+
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				map.removeControl(layers);
+				map.addControl(layers);
+				expect(names(layers._overlaysList)).to.eql(['One']);
+			});
+
+			it('lets the keyboard reach and toggle a pending layer', async () => {
+				const overlay = new Marker([0, 0]),
+				layers = new LayersControl().addTo(map);
+				layers.addOverlay(overlay, 'Overlay');
+
+				layers._layersLink.focus();
+				await userEvent.keyboard('{Enter}');
+				expect(document.activeElement).to.equal(layers._section);
+
+				// clicks are ignored for a tick after expanding, see `_expandSafely`
+				await new Promise((resolve) => { setTimeout(resolve); });
+				await userEvent.keyboard('{Tab}');
+				const input = layers._overlaysList.getElementsByTagName('input')[0];
+				expect(document.activeElement).to.equal(input);
+
+				await userEvent.keyboard(' ');
+				expect(map.hasLayer(overlay)).to.be.true;
+				expect(layers._overlaysList.getElementsByTagName('input')[0].checked).to.be.true;
+			});
+		});
+
 		it('silently returns when trying to remove a non-existing layer from the control', () => {
 			const layers = new LayersControl({'base': new TileLayer()}).addTo(map);
 
