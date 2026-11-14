@@ -276,8 +276,9 @@ describe('LayersControl', () => {
 
 				// clicks are ignored for a tick after expanding, see `_expandSafely`
 				await new Promise((resolve) => { setTimeout(resolve); });
-				await userEvent.keyboard('{Tab}');
+				// focus directly: WebKit doesn't Tab to checkboxes by default
 				const input = layers._overlaysList.getElementsByTagName('input')[0];
+				input.focus();
 				expect(document.activeElement).to.equal(input);
 
 				await userEvent.keyboard(' ');
