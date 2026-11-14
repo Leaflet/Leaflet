@@ -131,6 +131,7 @@ export class LayersControl extends Control {
 		this._lastZIndex = 0;
 		this._handlingClick = false;
 		this._preventClick = false;
+		this._needsUpdate = false;
 
 		for (const [name, layer] of Object.entries(baseLayers ?? {})) {
 			this._addLayer(layer, name);
@@ -180,6 +181,7 @@ export class LayersControl extends Control {
 
 		map.off('resize', this._expandIfNotCollapsed, this);
 		map.off('click', this.collapse, this);
+		this._needsUpdate = false;
 	}
 
 	/**
@@ -189,7 +191,7 @@ export class LayersControl extends Control {
 	 */
 	addBaseLayer(layer, name) {
 		this._addLayer(layer, name);
-		return (this._map) ? this._update() : this;
+		return (this._map) ? this._updateIfExpanded() : this;
 	}
 
 	/**
@@ -199,7 +201,7 @@ export class LayersControl extends Control {
 	 */
 	addOverlay(layer, name) {
 		this._addLayer(layer, name, true);
-		return (this._map) ? this._update() : this;
+		return (this._map) ? this._updateIfExpanded() : this;
 	}
 
 	/**
@@ -217,6 +219,7 @@ export class LayersControl extends Control {
 	expand() {
 		clearTimeout(this._collapseDelayTimeout);
 
+		if (this._needsUpdate) { this._update(); }
 		this._container.classList.add('leaflet-control-layers-expanded');
 		this._section.style.height = '';
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
@@ -333,8 +336,19 @@ export class LayersControl extends Control {
 		this._expandIfNotCollapsed();
 	}
 
+	// Rebuilding the list on every added layer makes adding n layers O(n²) (#10266).
+	// The list is hidden while collapsed, so leave it until `expand()` shows it.
+	_updateIfExpanded() {
+		if (this._container.classList.contains('leaflet-control-layers-expanded')) {
+			return this._update();
+		}
+		this._needsUpdate = true;
+		return this;
+	}
+
 	_update() {
 		if (!this._container) { return this; }
+		this._needsUpdate = false;
 
 		this._baseLayersList.replaceChildren();
 		this._overlaysList.replaceChildren();
