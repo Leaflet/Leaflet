@@ -357,6 +357,9 @@ export class LayersControl extends Control {
 
 		this._separator.style.display = overlaysPresent && baseLayersPresent ? '' : 'none';
 
+		// once for the whole list, as it loops over every input
+		this._checkDisabledLayers();
+
 		return this;
 	}
 
@@ -406,7 +409,6 @@ export class LayersControl extends Control {
 
 		(obj.overlay ? this._overlaysList : this._baseLayersList).append(label);
 
-		this._checkDisabledLayers();
 		return label;
 	}
 
