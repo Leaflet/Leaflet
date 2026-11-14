@@ -1,6 +1,5 @@
 ---
 name: leaflet-google
-category: basemap-providers
 repo: https://github.com/Raruto/leaflet-google
 author: Raruto
 author-url: https://raruto.github.io

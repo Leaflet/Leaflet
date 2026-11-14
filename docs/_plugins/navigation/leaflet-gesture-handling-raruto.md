@@ -1,6 +1,5 @@
 ---
 name: "@raruto/leaflet-gesture-handling"
-category: navigation
 repo: https://github.com/Raruto/leaflet-gesture-handling
 author: Raruto
 author-url: https://raruto.github.io

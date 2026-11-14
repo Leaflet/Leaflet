@@ -1,6 +1,5 @@
 ---
 name: leaflet-transparency
-category: tile-image-display
 repo: https://github.com/Raruto/leaflet-transparency
 author: Raruto
 author-url: https://raruto.github.io

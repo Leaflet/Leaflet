@@ -1,6 +1,5 @@
 ---
 name: leaflet-city-mapper
-category: dataviz
 repo: https://github.com/Raruto/leaflet-city-mapper
 author: Raruto
 author-url: https://raruto.github.io

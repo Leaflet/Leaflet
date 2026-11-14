@@ -1,6 +1,5 @@
 ---
 name: leaflet-trails
-category: data-providers
 repo: https://github.com/Raruto/leaflet-trails
 author: Raruto
 author-url: https://raruto.github.io
