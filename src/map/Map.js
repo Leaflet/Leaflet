@@ -27,7 +27,7 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
  *    LatLngBoundsExpression, LatLngExpression, LayerEvent, LayersControlEvent, LeafletEvent, LeafletKeyboardEvent,
  *    LeafletPointerEvent, LocateOptions, LocationEvent, MapDefaults, MapEventMap, MapOptions, MapPanes,
  *    PanInsideOptions, PanOptions, PointExpression, PopupEvent, PopupOptions, ResizeEvent, TooltipEvent,
- *    TooltipOptions, ViewChangeEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent, ZoomOptions, ZoomPanOptions}
+ *    TooltipOptions, ViewChangeEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomOptions, ZoomPanOptions}
  *    from '../types.js' */
 /** @import {CRS} from '../geo/crs/CRS.js' */
 /** @import {Control} from '../control/Control.js' */
@@ -127,8 +127,8 @@ const defaultOptions = {
 	fadeAnimation: true,
 
 	/**
-	 * Whether markers animate their zoom with the zoom animation, if
-	 * disabled they will disappear for the length of the animation.
+	 * Whether markers follow a zoom while it changes (a zoom animation, a pinch or `flyTo`). If disabled, they
+	 * hide until the zoom ends and are placed only then, which is cheaper with many markers.
 	 * @category Animation options
 	 */
 	markerZoomAnimation: true,
@@ -431,7 +431,6 @@ const defaultOptions = {
 /**
  * @category Other events
  * @typedef {Object} MapOtherEvents
- * @property {ZoomAnimEvent} zoomanim Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
  * @property {LeafletEvent} enterfullscreen Fired when the map enters fullscreen mode through the [fullscreen control](#fullscreencontrol).
  * @property {LeafletEvent} exitfullscreen Fired when the map exits fullscreen mode through the [fullscreen control](#fullscreencontrol).
  */
@@ -565,13 +564,6 @@ const defaultOptions = {
  * @typedef {Object} ResizeEventProps
  * @property {Point} oldSize The old size before resize event.
  * @property {Point} newSize The new size after the resize event.
- */
-
-/**
- * @typedef {Object} ZoomAnimEventProps
- * @property {LatLng} center The current center of the map.
- * @property {number} zoom The current zoom level of the map.
- * @property {boolean} noUpdate Whether layers should update their contents due to this event.
  */
 
 /**
@@ -745,12 +737,6 @@ export class LeafletMap extends Evented {
 
 		this._zoomAnimated = this.options.zoomAnimation;
 
-		// zoom transitions run with the same duration for all layers, so if one of transitionend events
-		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
-		if (this._zoomAnimated) {
-			this._createAnimProxy();
-		}
-
 		this._addLayers(this.options.layers);
 	}
 
@@ -774,12 +760,6 @@ export class LeafletMap extends Evented {
 		/** @type {{center: LatLngExpression, zoom: number} | null} */
 		this._targetView = {center, zoom};
 
-		// the end of a running zoom animation would override the new view, so apply it afterwards
-		if (this._animatingZoom) {
-			this._pendingView = {center, zoom, options};
-			return this;
-		}
-
 		if (this._loaded && !options.reset) {
 
 			if (options.animate !== undefined) {
@@ -800,6 +780,7 @@ export class LeafletMap extends Evented {
 		}
 
 		// animation didn't start, just reset the map view
+		this._stopZoomAnim();
 		this._resetView(this.options.worldCopyJump ? this.wrapLatLng(latlng) : latlng, zoom, options.pan?.noMoveStart,
 			originalEvent);
 
@@ -818,7 +799,7 @@ export class LeafletMap extends Evented {
 			return this;
 		}
 		// zoom around where a running animation is heading, so that setView(c) then setZoom(z) ends at c
-		return this.setView(this._targetView?.center ?? this.getCenter(), zoom, {zoom: options});
+		return this.setView(this._targetCenter(), zoom, {zoom: options});
 	}
 
 	/**
@@ -959,7 +940,8 @@ export class LeafletMap extends Evented {
 	 */
 	panBy(offset, options) {
 		// pan from where a running animation is heading, so that panTo(c) then panBy(o) ends at c + o
-		const {center = this.getCenter(), zoom = this._zoom} = this._targetView ?? {},
+		const center = this._targetCenter(),
+		zoom = this._targetZoom(),
 		newCenter = this.unproject(this.project(center, zoom).add(new Point(offset).round()), zoom);
 
 		return this.setView(newCenter, zoom, {pan: options});
@@ -1025,12 +1007,14 @@ export class LeafletMap extends Evented {
 		const center = this._limitCenter(new LatLng(targetCenter), targetZoom, this.options.maxBounds);
 
 		this._stop();
+		// a flight takes over a running zoom animation from the view it's at, and the move goes on
+		const tookOver = this._stopZoomAnim(true);
 		this._targetView = {center: targetCenter, zoom: targetZoom};
 
 		// layers round their positions against the pixel origin, and while zoom changes, projected coordinates move
 		// fast in absolute terms even when the view barely moves on screen, so rounding the origin too would make
 		// everything jitter by up to a pixel against the motion (#3194); the last frame rounds it again
-		this._subpixelOrigin = true;
+		this._setZooming(true);
 
 		const from = this.project(this.getCenter()),
 		to = this.project(center),
@@ -1079,17 +1063,11 @@ export class LeafletMap extends Evented {
 					{flyTo: true});
 
 			} else {
-				// the last step shifts the pixel origin even at the same zoom, and layers like GridLayer only
-				// re-anchor on 'zoom' (#9438)
-				const zoomChanged = this._zoom !== targetZoom;
-				this._subpixelOrigin = false;
-				this._move(center, targetZoom);
-				if (!zoomChanged) { this._fireMove('zoom'); }
-				this._moveEnd(true);
+				this._settle(center, targetZoom);
 			}
 		};
 
-		this._moveStart(true, options.noMoveStart, options.originalEvent);
+		if (!tookOver) { this._moveStart(true, options.noMoveStart, options.originalEvent); }
 
 		frame();
 		return this;
@@ -1288,11 +1266,13 @@ export class LeafletMap extends Evented {
 	 * @category Methods for modifying map state
 	 */
 	stop() {
-		this.setZoom(this._limitZoom(this._zoom));
+		// end at a whole zoom around where the map is now, not where the stopped animation was heading
+		this._stop();
+		this.setView(this.getCenter(), this._limitZoom(this._zoom));
 		if (!this.options.zoomSnap) {
 			this.fire('viewreset');
 		}
-		return this._stop();
+		return this;
 	}
 
 	/**
@@ -1682,6 +1662,8 @@ export class LeafletMap extends Evented {
 		}
 
 		this._stop();
+		this._stopZoomAnim(true);
+		cancelAnimationFrame(this._pinchFrame);
 
 		disablePointerDetection(this._container);
 		this._mapPane.remove();
@@ -1696,7 +1678,6 @@ export class LeafletMap extends Evented {
 			handler.disable();
 		}
 
-		clearTimeout(this._transitionEndTimer);
 		clearTimeout(this._sizeTimer);
 
 		if (this._loaded) {
@@ -2270,30 +2251,33 @@ export class LeafletMap extends Evented {
 		return this;
 	}
 
-	/** @param {boolean} zoomChanged */
+	/**
+	 * Fires `zoomend` if `zoomChanged`, and `moveend` unless a zoom animation, a drag or a pan goes on, which then
+	 * fires it when it ends, so that moves overlapping in time make one move.
+	 * @param {boolean} zoomChanged
+	 */
 	_moveEnd(zoomChanged) {
-		// cleared before firing, so that a move started by a listener keeps its own event
 		const originalEvent = this._moveEvent,
-		data = originalEvent && {originalEvent};
-		this._moveEvent = undefined;
+		data = originalEvent && {originalEvent},
+		moving = this._zoomAnim || this.dragging?.moving() || this._panAnim?._inProgress;
 
-		// a zoom animation ending with a queued view isn't where the map is heading yet
-		if (!this._pendingView) { this._targetView = null; }
+		// cleared before firing, so that a move started by a listener keeps its own event
+		if (!moving) { this._moveEvent = undefined; }
+		this._targetView = null;
 
 		if (zoomChanged) {
 			this.fire('zoomend', data);
 		}
-		return this.fire('moveend', data);
+		return moving ? this : this.fire('moveend', data);
 	}
 
+	// a zoom animation keeps running, so that a drag can move the map while it zooms
 	_stop() {
-		this._pendingView = null;
 		this._targetView = null;
 		cancelAnimationFrame(this._flyToFrame);
-		cancelAnimationFrame(this._zoomAnimFrame);
-		if (this._subpixelOrigin) {
+		if (this._subpixelOrigin && !this._zoomAnim) {
 			// an interrupted flight would leave layers between pixels, so snap them where it stopped
-			this._subpixelOrigin = false;
+			this._setZooming(false);
 			this._move(/** @type {LatLng} */ (this._lastCenter), this._zoom, {flyTo: true});
 		}
 		this._panAnim?.stop();
@@ -2648,16 +2632,6 @@ export class LeafletMap extends Evented {
 		return this._subpixelOrigin ? point : point._round();
 	}
 
-	/**
-	 * @param {LatLngExpression} latlng
-	 * @param {number} zoom
-	 * @param {LatLngExpression} center
-	 */
-	_latLngToNewLayerPoint(latlng, zoom, center) {
-		const topLeft = this._getNewPixelOrigin(center, zoom);
-		return this.project(latlng, zoom)._subtract(topLeft);
-	}
-
 	// layer point of the current center
 	_getCenterLayerPoint() {
 		return this.containerPointToLayerPoint(this.getSize()._divideBy(2));
@@ -2745,6 +2719,16 @@ export class LeafletMap extends Evented {
 			Math.max(0, Math.ceil(left)) - Math.max(0, Math.floor(right));
 	}
 
+	/**
+	 * Returns the view center at `zoom` that keeps `latlng` at `offset` pixels from the center, like zooming around it.
+	 * @param {LatLng} latlng
+	 * @param {Point} offset
+	 * @param {number} zoom
+	 */
+	_centerAround(latlng, offset, zoom) {
+		return this.unproject(this.project(latlng, zoom).subtract(offset), zoom);
+	}
+
 	/** @param {number} zoom */
 	_limitZoom(zoom) {
 		const min = this.getMinZoom(),
@@ -2771,6 +2755,8 @@ export class LeafletMap extends Evented {
 	 * @param {PanOptions} [options]
 	 */
 	_tryAnimatedPan(center, options) {
+		this._stopZoomAnim();
+
 		// difference between the new and current centers in pixels
 		const offset = this._getCenterOffset(center)._round();
 
@@ -2782,168 +2768,223 @@ export class LeafletMap extends Evented {
 		return true;
 	}
 
-	_createAnimProxy() {
-		/** @type {HTMLElement} */
-		this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
-		this._panes.mapPane.append(this._proxy);
-
-		this.on('zoomanim', this._animateProxyZoom, this);
-		this.on('load moveend', this._animMoveEnd, this);
-
-		DomEvent.on(this._proxy, 'transitionend', this._catchTransitionEnd, this);
-	}
-
-	/** @param {ZoomAnimEvent} e */
-	_animateProxyZoom(e) {
-		const transform = this._proxy.style.transform;
-
-		DomUtil.setTransform(
-			this._proxy,
-			this.project(e.center, e.zoom),
-			this.getZoomScale(e.zoom, 1),
-		);
-
-		// workaround for case when transform is the same and so transitionend event is not fired
-		if (transform === this._proxy.style.transform && this._animatingZoom) {
-			this._onZoomTransitionEnd();
-		}
-	}
-
-	_animMoveEnd() {
-		const c = this.getCenter();
-		const z = this.getZoom();
-
-
-
-		DomUtil.setTransform(
-			this._proxy,
-			this.project(c, z),
-			this.getZoomScale(z, 1),
-		);
-	}
-
-	/** @param {TransitionEvent} e */
-	_catchTransitionEnd(e) {
-		if (this._animatingZoom && e.propertyName.includes('transform')) {
-			this._onZoomTransitionEnd();
-		}
-	}
-
-	_nothingToAnimate() {
-		return !this._container.getElementsByClassName('leaflet-zoom-animated').length;
-	}
-
+	// where a running animation is heading, so that zoom and pan input adds up from there
 	_targetZoom() {
-		return this._targetView?.zoom ?? this._zoom;
+		return this._targetView?.zoom ?? this._zoomAnim?.to ?? this._zoom;
 	}
 
-	// an animated zoom drops zooms from input until it ends, so hold them as long after an instant zoom too,
-	// or a trackpad swipe or a held key zooms several times as far
+	_targetCenter() {
+		const a = this._zoomAnim;
+		if (this._targetView) { return this._targetView.center; }
+		if (!a) { return this.getCenter(); }
+		this._followPane(a);
+		return a.center ?? this._centerAround(a.latlng, a.offset, a.to);
+	}
+
+	// an instant zoom is over at once, so drop zoom input for as long as an animation would take after one, or a
+	// trackpad swipe or a held key zooms several times as far
 	_zoomInputBlocked() {
-		return this._animatingZoom || Date.now() < this._instantZoomEnd;
+		return Date.now() < this._instantZoomEnd;
 	}
 
 	/**
 	 * @param {LatLng} center
 	 * @param {number} zoom
-	 * @param {ZoomPanOptions} [options]
+	 * @param {ZoomOptions} [options]
 	 */
 	_tryAnimatedZoom(center, zoom, options) {
-
-		if (this._animatingZoom) { return true; }
-
 		options ??= {};
 
-		// don't animate if disabled, not supported or zoom difference is too large (over 1 with reduced motion,
-		// unless animate: true is specified)
+		// don't animate if disabled, not supported or the zoom step is too large (over 1 with reduced motion, unless
+		// animate: true is specified); a running zoom counts from its target, so fast input adding up doesn't jump
 		const threshold = this.options.zoomAnimationThreshold,
-		maxZoomDiff = this._prefersReducedMotion() && options.animate !== true ? Math.min(threshold, 1) : threshold;
-		if (!this._zoomAnimated || options.animate === false || this._nothingToAnimate() ||
-		        Math.abs(zoom - this._zoom) > maxZoomDiff) { return false; }
+		maxZoomDiff = this._prefersReducedMotion() && options.animate !== true ? Math.min(threshold, 1) : threshold,
+		fromZoom = this._zoomAnim?.to ?? this._zoom;
+		if (!this._zoomAnimated || options.animate === false || Math.abs(zoom - fromZoom) > maxZoomDiff) {
+			return false;
+		}
 
-		// offset is the pixel coords of the zoom origin relative to the current center
-		const scale = this.getZoomScale(zoom),
-		offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
+		// the point that stays in place while zooming, in pixels from the current center
+		const from = this.project(this.getCenter()),
+		offset = this.project(center)._subtract(from)._divideBy(1 - this.getZoomScale(this._zoom, zoom));
 
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
-		/** @type {number} */
-		this._zoomAnimFrame = requestAnimationFrame(() => {
-			this._zoomAnimFrame = 0;
-			this
-				._moveStart(true, options.noMoveStart, options.originalEvent)
-				._animateZoom(center, zoom);
-		});
+		this._animateZoom(this.unproject(from._add(offset)), offset, zoom, {...options, center});
 
 		return true;
 	}
 
 	/**
-	 * @param {LatLng} center
+	 * Moves the map on the next frame to `zoom` of a pinch, keeping `latlng` at `offset` pixels from the view center.
+	 * @param {LatLng} latlng
+	 * @param {Point} offset
 	 * @param {number} zoom
-	 * @param {boolean} [noUpdate]
 	 */
-	_animateZoom(center, zoom, noUpdate) {
-		// the map was removed (not just detached from the document)
-		if (!this._mapPane.parentNode) { return; }
-
-		this._animatingZoom = true;
-
-		// remember what center/zoom to set after animation
-		/** @type {LatLng} */
-		this._animateToCenter = center;
+	_pinchTo(latlng, offset, zoom) {
+		// keep layers from jittering against the zoom, like during flyTo; the end of the pinch snaps them again
+		this._setZooming(true);
+		const center = this._centerAround(latlng, offset, zoom);
+		cancelAnimationFrame(this._pinchFrame);
 		/** @type {number} */
-		this._animateToZoom = zoom;
-
-		this._mapPane.classList.add('leaflet-zoom-anim');
-
-		this.fire('zoomanim', {
-			center,
-			zoom,
-			noUpdate
-		});
-
-		if (!this._tempFireZoomEvent) {
-			this._tempFireZoomEvent = this._zoom !== this._animateToZoom;
-		}
-
-		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
-
-		// in case 'transitionend' never comes (#3689, #2693); the transition only starts once the browser renders
-		// the next frame, which takes ~200 ms with 5k markers, so a timer of the transition's length cuts it short
-		clearTimeout(this._transitionEndTimer);
-		this._transitionEndTimer = setTimeout(this._onZoomTransitionEnd.bind(this), 1000);
+		this._pinchFrame = requestAnimationFrame(() => this._move(center, zoom, {pinch: true}));
 	}
 
-	_onZoomTransitionEnd() {
-		if (!this._animatingZoom) { return; }
+	/**
+	 * Animates the zoom to `zoom`, keeping `latlng` at `offset` pixels from the view center, and ends at `center` if
+	 * given. A running animation is retargeted from where it is at its current speed, so zooms in quick succession
+	 * make one motion. `continued` is for a gesture that has already started the move, zooming at `velocity`; without
+	 * zoom animation, it ends there at once.
+	 * @param {LatLng} latlng
+	 * @param {Point} offset
+	 * @param {number} zoom
+	 * @param {{center?: LatLng, velocity?: number, continued?: boolean, duration?: number, originalEvent?: Event}}
+	 *   [options]
+	 */
+	_animateZoom(latlng, offset, zoom, options = {}) {
+		cancelAnimationFrame(this._pinchFrame);
+		if (!this._zoomAnimated) {
+			this._setZooming(false);
+			this._resetView(this._centerAround(latlng, offset, zoom), zoom, false, this._moveEvent);
+			return;
+		}
 
-		clearTimeout(this._transitionEndTimer);
+		const running = this._zoomAnim,
+		dz = zoom - this._zoom;
+
+		let velocity = options.velocity ?? 0;
+		if (running) {
+			velocity = this._zoomAnimVelocity(running);
+		} else if (!options.continued) {
+			// a zoom during a drag is part of the drag's move
+			this._moveStart(true, this.dragging?.moving(), options.originalEvent);
+		}
+
+		// the curve's slope at the start, in zoom levels per duration: the current speed for a gesture that goes on,
+		// and against the zoom's direction, so that the motion stays continuous; otherwise an ease-out, arriving
+		// sooner if already faster so as not to overshoot
+		let duration = options.duration ?? zoomAnimDuration, slope = 3 * dz;
+		if (velocity * dz < 0 || options.continued && Math.abs(velocity) * duration < Math.abs(slope)) {
+			slope = velocity * duration;
+		} else if (Math.abs(velocity) * duration > Math.abs(slope)) {
+			duration = slope / velocity;
+		}
+
+		// timed by frames, starting from the last one drawn, which the current zoom is at
+		/** @type {{latlng: LatLng, offset: Point, center?: LatLng, from: number, to: number, slope: number,
+		 *   start?: number, time?: number, duration: number, panePos: Point} | null} */
+		this._zoomAnim = {
+			latlng, offset, center: options.center, from: this._zoom, to: zoom, slope, duration,
+			start: running?.time, time: running?.time, panePos: this._getMapPanePos()
+		};
+		this._animatingZoom = true;
+		// layers round their positions against the pixel origin, and would jitter against the zoom (#3194)
+		this._setZooming(true);
+
+		if (!dz) {
+			this._endZoomAnim();
+		} else if (!running) {
+			/** @type {number} */
+			this._zoomAnimFrame = requestAnimationFrame(time => this._zoomAnimStep(time));
+		}
+	}
+
+	/** @param {NonNullable<LeafletMap['_zoomAnim']>} a */
+	_zoomAnimVelocity(a) {
+		const t = a.start === undefined ? 0 : Math.min((/** @type {number} */ (a.time) - a.start) / a.duration, 1);
+		return ((a.to - a.from) * 6 * t * (1 - t) + a.slope * (1 - t) * (1 - 3 * t)) / a.duration;
+	}
+
+	/** @param {number} time */
+	_zoomAnimStep(time) {
+		const a = /** @type {NonNullable<LeafletMap['_zoomAnim']>} */ (this._zoomAnim);
+
+		a.start ??= time;
+		a.time = time;
+		const t = (time - a.start) / a.duration;
+		this._followPane(a);
+
+		if (t >= 1) {
+			this._endZoomAnim();
+			return;
+		}
+		this._zoomAnimFrame = requestAnimationFrame(next => this._zoomAnimStep(next));
+
+		// a cubic from the start zoom at the start slope to the target zoom at rest
+		if (!t) { return; }
+		const zoom = a.from + (a.to - a.from) * t * t * (3 - 2 * t) + a.slope * t * (1 - t) * (1 - t);
+		this._move(this._centerAround(a.latlng, a.offset, zoom), zoom, {flyTo: true});
+	}
+
+	/**
+	 * A drag moves the map pane, and the zoom follows the point it carries along.
+	 * @param {NonNullable<LeafletMap['_zoomAnim']>} a
+	 */
+	_followPane(a) {
+		const panePos = this._getMapPanePos();
+		if (panePos.equals(a.panePos)) { return; }
+		a.offset = a.offset.add(panePos.subtract(a.panePos));
+		a.panePos = panePos;
+		a.center = undefined;
+	}
+
+	_endZoomAnim() {
+		const a = /** @type {NonNullable<LeafletMap['_zoomAnim']>} */ (this._zoomAnim);
+		this._stopZoomAnim(true);
+		this._settle(a.center ?? this._centerAround(a.latlng, a.offset, a.to), a.to);
+	}
+
+	/**
+	 * Stops a running zoom animation and ends the move at the nearest whole zoom, or with `handOver`, leaves the move
+	 * going for a gesture or a flight to take over. Returns whether an animation was running.
+	 * @param {boolean} [handOver]
+	 */
+	_stopZoomAnim(handOver) {
+		const a = this._zoomAnim;
+		if (!a) { return false; }
+
+		cancelAnimationFrame(this._zoomAnimFrame);
+		this._zoomAnim = null;
+		this._animatingZoom = false;
 		/** @type {{x: number, y: number, left: number, top: number} | null} */
 		this._containerRect = null;
-		this._mapPane.classList.remove('leaflet-zoom-anim');
 
-		this._animatingZoom = false;
-
-		// a drag during the animation moves the map pane, so the center is read from the pane rather than restored
-		this._move(this.getCenter(), this._animateToZoom, undefined, true);
-
-		if (this._tempFireZoomEvent) {
-			this._fireMove('zoom');
+		if (!handOver) {
+			// keep where a new view that stops the animation is heading
+			const target = this._targetView,
+			zoom = this._limitZoom(this._zoom);
+			this._followPane(a);
+			this._settle(this._centerAround(a.latlng, a.offset, zoom), zoom);
+			this._targetView = target;
 		}
-		delete this._tempFireZoomEvent;
+		return true;
+	}
 
-		this._fireMove('move');
+	/**
+	 * Marks a zoom in progress (a gesture, an animation or a flight): layers keep subpixel positions so they don't
+	 * jitter against the zoom, and `leaflet-zoom-hide` ones (markers with `markerZoomAnimation: false`) hide.
+	 * @param {boolean} on
+	 */
+	_setZooming(on) {
+		/** @type {boolean} */
+		this._subpixelOrigin = on;
+		this._mapPane.classList.toggle('leaflet-zoom-anim', on);
+	}
 
-		this._moveEnd(true);
-
-		// read after moveend, since its listeners may have queued a newer view or stopped the map
-		const view = this._pendingView;
-		if (view) {
-			this._pendingView = null;
-			this.setView(view.center, view.zoom, view.options);
-		}
+	/**
+	 * Ends an animated move at whole pixels.
+	 * @param {LatLng} center
+	 * @param {number} zoom
+	 */
+	_settle(center, zoom) {
+		// the last step shifts the pixel origin even at the same zoom, and layers like GridLayer only re-anchor on
+		// 'zoom' (#9438)
+		const zoomChanged = this._zoom !== zoom;
+		this._setZooming(false);
+		this._move(center, zoom);
+		if (!zoomChanged) { this._fireMove('zoom'); }
+		return this._moveEnd(true);
 	}
 }
 

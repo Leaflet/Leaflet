@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Wheel event log</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../src/leaflet.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../src/Leaflet.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<style>
+			body { margin: 0; font: 13px sans-serif; }
+			#bar { padding: 6px 8px; display: flex; gap: 8px; align-items: center; }
+			#map { position: absolute; top: 36px; bottom: 0; left: 0; width: 55%; }
+			#log { position: absolute; top: 36px; bottom: 0; right: 0; width: 45%; overflow: auto; margin: 0;
+				padding: 6px 8px; box-sizing: border-box; font: 11px/1.4 monospace; white-space: pre-wrap; }
+		</style>
+		<div id="bar">
+			<button id="copy">Copy JSON</button> <button id="clear">Clear</button>
+			<span id="status">Zoom on the map with a trackpad or wheel; a 400 ms pause starts a new gesture.</span>
+		</div>
+		<div id="map"></div>
+		<pre id="log"></pre>
+		<script type="module">
+			import {LeafletMap, TileLayer} from 'leaflet';
+
+			const $ = id => document.getElementById(id);
+			const map = new LeafletMap('map', {center: [51.505, -0.09], zoom: 13});
+			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+			}).addTo(map);
+
+			let gestures = [], current = null, last = -Infinity;
+			const r = x => Math.round(x * 100) / 100;
+
+			function record(type, data) {
+				const t = performance.now();
+				if (t - last > 400 && type === 'wheel') {
+					current = {start: t, events: []};
+					gestures.push(current);
+				}
+				if (type === 'wheel') { last = t; }
+				current?.events.push({t: r(t - current.start), type, ...data});
+				render();
+			}
+
+			// capture on window, before the map stops the events
+			const opts = {capture: true, passive: true};
+			window.addEventListener('wheel', e => {
+				if (!$('map').contains(e.target)) { return; }
+				record('wheel', {dy: r(e.deltaY), dx: r(e.deltaX), mode: e.deltaMode, ctrl: e.ctrlKey, ts: r(e.timeStamp)});
+			}, opts);
+			for (const type of ['gesturestart', 'gesturechange', 'gestureend']) {
+				window.addEventListener(type, e => record(type, {scale: r(e.scale ?? 0)}), opts);
+			}
+			map.on('zoomstart zoomend', e => record(e.type, {zoom: r(map.getZoom())}));
+
+			function summary(g, i) {
+				const wheels = g.events.filter(e => e.type === 'wheel'),
+				gaps = wheels.slice(1).map((e, j) => r(e.t - wheels[j].t)),
+				median = gaps.toSorted((a, b) => a - b)[gaps.length >> 1] ?? 0,
+				dys = wheels.map(e => e.dy),
+				ratios = dys.slice(1).map((d, j) => (dys[j] ? r(d / dys[j]) : '-')),
+				other = g.events.filter(e => e.type !== 'wheel').map(e => `${e.type}@${e.t}${e.zoom !== undefined ? `(z${e.zoom})` : ''}`);
+				return `#${i + 1} ${wheels.some(e => e.ctrl) ? 'pinch' : 'scroll'}: ${wheels.length} events, ` +
+					`${r(wheels.at(-1)?.t ?? 0)} ms, median gap ${median} ms, total dy ${r(dys.reduce((a, b) => a + b, 0))}\n` +
+					`  last dy:     ${dys.slice(-14).join(' ')}\n` +
+					`  last ratios: ${ratios.slice(-13).join(' ')}\n` +
+					`  last gaps:   ${gaps.slice(-13).join(' ')}\n` +
+					`  ${other.join(' ')}\n`;
+			}
+
+			let pending = false;
+			function render() {
+				if (pending) { return; }
+				pending = true;
+				requestAnimationFrame(() => {
+					pending = false;
+					$('log').textContent = gestures.map(summary).reverse().join('\n');
+				});
+			}
+
+			$('clear').onclick = () => { gestures = []; current = null; render(); };
+			$('copy').onclick = async () => {
+				await navigator.clipboard.writeText(JSON.stringify({ua: navigator.userAgent, gestures}));
+				$('status').textContent = `Copied ${gestures.length} gestures.`;
+			};
+		</script>
+	</body>
+</html>

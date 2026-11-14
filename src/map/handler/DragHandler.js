@@ -77,9 +77,9 @@ export class DragHandler extends Handler {
 			this._offsetLimit = null;
 		}
 
-		map
-			._moveStart(false, false, this._draggable._lastEvent)
-			.fire('dragstart');
+		// a drag during a zoom is part of the zoom's move
+		if (!map._zoomAnim) { map._moveStart(false, false, this._draggable._lastEvent); }
+		map.fire('dragstart');
 
 		if (map.options.inertia) {
 			this._positions = [];
@@ -182,13 +182,23 @@ export class DragHandler extends Handler {
 				decelerationDuration *= Math.sqrt(k);
 			}
 
+			offset = map._limitOffset(offset, map.options.maxBounds);
+			const originalEvent = map._moveEvent;
+
 			if (!offset.x && !offset.y) {
 				map._moveEnd(false);
 
-			} else {
-				offset = map._limitOffset(offset, map.options.maxBounds);
-				const originalEvent = map._moveEvent;
+			} else if (map._zoomAnim) {
+				// glide the map pane on while the zoom follows the point it carries, as during the drag
+				map._panBy(offset, {
+					duration: decelerationDuration,
+					easeLinearity: ease,
+					noMoveStart: true,
+					animate: true,
+					originalEvent
+				});
 
+			} else {
 				requestAnimationFrame(() => {
 					map.panBy(offset, {
 						duration: decelerationDuration,

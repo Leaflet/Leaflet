@@ -3,7 +3,7 @@ import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
 
-/** @import {Defaults, DivOverlayEventMap, PointExpression, TooltipDefaults, TooltipOptions, ZoomAnimEvent} from '../types.js' */
+/** @import {Defaults, DivOverlayEventMap, PointExpression, TooltipDefaults, TooltipOptions} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
@@ -196,12 +196,6 @@ export class Tooltip extends DivOverlay {
 		if (this._container) {
 			this._container.style.opacity = `${opacity}`;
 		}
-	}
-
-	/** @param {ZoomAnimEvent} e */
-	_animateZoom(e) {
-		const pos = this._map._latLngToNewLayerPoint(/** @type {LatLng} */ (this._latlng), e.zoom, e.center);
-		this._setPosition(pos);
 	}
 
 	/** @param {string} [direction] */

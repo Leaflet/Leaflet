@@ -1,6 +1,5 @@
-import {LeafletMap} from 'leaflet';
+import {DomUtil, LeafletMap, Marker} from 'leaflet';
 import sinon from 'sinon';
-import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('ScrollWheelZoomHandler', () => {
@@ -14,6 +13,16 @@ describe('ScrollWheelZoomHandler', () => {
 		deltaY: 120,
 		deltaMode: 0
 	};
+
+	// an event with its time stamp on the fake clock, since gestures are timed by when their input happened
+	function fireStamped(e) {
+		Object.defineProperty(e, 'timeStamp', {value: Date.now()});
+		container.dispatchEvent(e);
+	}
+
+	function fireWheel(init) {
+		fireStamped(new WheelEvent(wheel, {deltaMode: 0, bubbles: true, cancelable: true, ...init}));
+	}
 
 	beforeEach(() => {
 		container = createContainer();
@@ -33,7 +42,7 @@ describe('ScrollWheelZoomHandler', () => {
 	it('zooms out while firing \'wheel\' event', (done) => {
 		const zoom = map.getZoom();
 
-		UIEventSimulator.fire(wheel, container, scrollOut);
+		fireWheel(scrollOut);
 
 		map.on('zoomend', () => {
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
@@ -45,7 +54,7 @@ describe('ScrollWheelZoomHandler', () => {
 
 	it('zooms in while firing \'wheel\' event', (done) => {
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 
 		map.on('zoomend', () => {
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
@@ -59,7 +68,7 @@ describe('ScrollWheelZoomHandler', () => {
 		const scrollWheelZoomBefore = map.options.scrollWheelZoom;
 		map.options.scrollWheelZoom = 'center';
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 
 		map.on('zoomend', () => {
 			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
@@ -77,9 +86,9 @@ describe('ScrollWheelZoomHandler', () => {
 		const spy = sinon.spy();
 		map.on('zoomend', spy);
 
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		setTimeout(() => {
-			UIEventSimulator.fire(wheel, container, scrollIn);
+			fireWheel(scrollIn);
 
 			expect(spy.notCalled).to.be.true;
 		}, 50);
@@ -101,7 +110,7 @@ describe('ScrollWheelZoomHandler', () => {
 		clock.tick(300);
 
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
 
 		expect(map.getZoom()).to.be.greaterThan(zoom);
@@ -112,7 +121,7 @@ describe('ScrollWheelZoomHandler', () => {
 
 		map.options.wheelPxPerZoomLevel = 15 / window.devicePixelRatio;
 		clock.tick(300);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
 
 		expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
@@ -124,7 +133,7 @@ describe('ScrollWheelZoomHandler', () => {
 		const zoom = map.getZoom();
 		const hardScrollIn = {deltaY: -3000, deltaMode: 0};
 
-		UIEventSimulator.fire(wheel, container, hardScrollIn);
+		fireWheel(hardScrollIn);
 		clock.tick(100);
 		expect(map.getZoom() - zoom).to.be.greaterThan(1);
 
@@ -135,7 +144,7 @@ describe('ScrollWheelZoomHandler', () => {
 		const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
 		sinon.stub(window, 'matchMedia').callsFake(reduced);
 
-		UIEventSimulator.fire(wheel, container, hardScrollIn);
+		fireWheel(hardScrollIn);
 		clock.tick(100);
 		expect(map.getZoom() - zoom).to.equal(1);
 
@@ -148,9 +157,9 @@ describe('ScrollWheelZoomHandler', () => {
 		const zoomend = sinon.spy();
 		map.on('zoomend', zoomend);
 
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
 
 		expect(zoomend.calledOnce).to.be.true;
@@ -158,7 +167,7 @@ describe('ScrollWheelZoomHandler', () => {
 		expect(zoom2).to.be.greaterThan(zoom);
 
 		clock.tick(200);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
 		clock.tick(100);
 		expect(map.getZoom()).to.be.greaterThan(zoom2);
 	});
@@ -171,6 +180,366 @@ describe('ScrollWheelZoomHandler', () => {
 			expect(log.every(ev => ev?.type === wheel)).to.be.true;
 			done();
 		});
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		fireWheel(scrollIn);
+	});
+
+	it('adds up notches that come during the zoom animation into one motion', () => {
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+			'cancelAnimationFrame']});
+		map.remove();
+		map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+		const zoomend = sinon.spy(), zooms = [];
+		map.on('zoomend', zoomend);
+		map.on('zoom', () => zooms.push(map.getZoom()));
+
+		fireWheel(scrollIn);
+		clock.tick(150);
+		expect(map._animatingZoom).to.be.true;
+		fireWheel(scrollIn);
+		clock.tick(1000);
+
+		expect(map.getZoom()).to.equal(5);
+		expect(zoomend.calledOnce).to.be.true;
+		for (let i = 1; i < zooms.length; i++) { expect(zooms[i]).to.be.at.least(zooms[i - 1]); }
+	});
+
+	describe('trackpad scroll', () => {
+		const fakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'cancelAnimationFrame'];
+
+		// a scroll that zooms out by `levels` at half the pinch rate, every 16 ms like a trackpad
+		function scroll(levels, steps = 10) {
+			const deltaY = 200 * Math.LN2 * levels / steps;
+			for (let i = 0; i < steps; i++) {
+				fireWheel({deltaY});
+				clock.tick(16);
+			}
+		}
+
+		it('follows the fingers and snaps when the scroll ends', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			const zoom = map.getZoom();
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+
+			scroll(-0.6, 30);
+			expect(map.getZoom()).to.be.closeTo(zoom + 0.6, 1e-9);
+			expect(zoomend.notCalled).to.be.true;
+
+			clock.tick(300);
+			expect(map.getZoom()).to.equal(zoom + 1);
+			expect(zoomend.calledOnce).to.be.true;
+		});
+
+		it('counts the first event once it knows the scroll comes from a trackpad', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			const zoom = map.getZoom();
+			scroll(0.5, 8);
+			expect(map.getZoom()).to.be.closeTo(zoom - 0.5, 1e-9);
+		});
+
+		it('stops at the zoom limits and turns back at once', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			map.setMinZoom(2).setMaxZoom(4);
+
+			scroll(-2, 40);
+			expect(map.getZoom()).to.equal(4);
+			scroll(0.3, 10);
+			expect(map.getZoom()).to.be.closeTo(3.7, 1e-9);
+
+			clock.tick(500);
+			scroll(2, 40);
+			expect(map.getZoom()).to.equal(2);
+			scroll(-0.3, 10);
+			expect(map.getZoom()).to.be.closeTo(2.3, 1e-9);
+		});
+
+		it('lets a mouse wheel spin wait for a running zoom to end, but adds up separate notches', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			fireWheel(scrollIn);
+			clock.tick(50);
+			const target = map._targetZoom();
+			expect(target).to.be.greaterThan(3);
+
+			fireWheel(scrollIn);
+			clock.tick(50);
+			expect(map._targetZoom()).to.equal(target);
+
+			clock.tick(100);
+			fireWheel(scrollIn);
+			clock.tick(50);
+			expect(map._targetZoom()).to.be.greaterThan(target);
+		});
+
+		describe('momentum', () => {
+			// a scroll event a frame long
+			function fire(deltaY, onEvent = () => {}) {
+				fireWheel({deltaY});
+				onEvent();
+				clock.tick(16);
+			}
+
+			// a flick zooming out: a few ramp-up events, `fast` frames at 8 levels/s, then momentum decaying with a
+			// time constant of 150 ms, like macOS sends it; `onEvent` runs after each event
+			function flick(fast, onEvent) {
+				const peak = 8 * 0.016 * 200 * Math.LN2;
+				for (const deltaY of [1, 2, 3]) { fire(deltaY, onEvent); }
+				for (let i = 0; i < fast; i++) { fire(peak, onEvent); }
+				for (let deltaY = peak; deltaY >= 0.5; deltaY *= Math.exp(-16 / 150)) { fire(deltaY, onEvent); }
+			}
+
+			beforeEach(() => {
+				clock = sinon.useFakeTimers({toFake: fakes});
+				map.remove();
+				map = new LeafletMap(container, {center: [0, 0], zoom: 6});
+			});
+
+			it('snaps into the end of a flick\'s momentum without waiting for its tail', () => {
+				const zoomend = sinon.spy();
+				map.on('zoomend', zoomend);
+				const animating = [];
+				flick(10, () => animating.push(map._animatingZoom));
+
+				const start = animating.indexOf(true);
+				expect(start).to.be.within(1, animating.length - 10);
+				expect(animating.slice(start).every(Boolean)).to.be.true;
+
+				clock.tick(1000);
+				expect(map.getZoom()).to.equal(3);
+				expect(zoomend.calledOnce).to.be.true;
+			});
+
+			it('follows the fingers again when they push during the snap', () => {
+				flick(10);
+				expect(map._animatingZoom).to.be.true;
+				for (let i = 0; i < 3; i++) { fire(20); }
+				expect(map._animatingZoom).to.be.false;
+			});
+		});
+
+		it('zooms by notches when a mouse wheel spins fast', () => {
+			clock = sinon.useFakeTimers({toFake: fakes});
+			const zoom = map.getZoom();
+			for (let i = 0; i < 3; i++) {
+				fireWheel(scrollIn);
+				clock.tick(30);
+			}
+			clock.tick(300);
+			expect(Number.isInteger(map.getZoom())).to.be.true;
+			expect(map.getZoom()).to.be.greaterThan(zoom);
+		});
+	});
+
+	describe('trackpad pinch', () => {
+		const pinchFakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'cancelAnimationFrame'];
+
+		// splits a pinch by `scale` into events the way browsers report it: deltaY is -100 * ln(scale step)
+		function pinch(scale, options = {}, steps = 10) {
+			const deltaY = -100 * Math.log(scale) / steps;
+			for (let i = 0; i < steps; i++) {
+				fireWheel({deltaY, ctrlKey: true, ...options});
+				clock.tick(16);
+			}
+		}
+
+		it('zooms continuously by the pinch scale and snaps when the pinch ends', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			const zoom = map.getZoom();
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+
+			pinch(2 ** 1.2);
+			expect(map.getZoom()).to.be.closeTo(zoom + 1.2, 1e-9);
+			expect(zoomend.notCalled).to.be.true;
+
+			clock.tick(300);
+			expect(map.getZoom()).to.equal(zoom + 1);
+			expect(zoomend.calledOnce).to.be.true;
+		});
+
+		it('positions layers between pixels while pinching and on whole pixels after', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			const marker = new Marker(map.containerPointToLatLng([123, 45])).addTo(map);
+
+			pinch(1.3);
+			const pos = DomUtil.getPosition(marker.getElement());
+			expect(Number.isInteger(pos.x) && Number.isInteger(pos.y)).to.be.false;
+
+			clock.tick(300);
+			const end = DomUtil.getPosition(marker.getElement());
+			expect(Number.isInteger(end.x) && Number.isInteger(end.y)).to.be.true;
+		});
+
+		it('snaps with an animation that a resumed pinch takes over', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+			const zoomstart = sinon.spy(), zoomend = sinon.spy();
+			map.on('zoomstart', zoomstart);
+			map.on('zoomend', zoomend);
+
+			pinch(2 ** 0.6);
+			clock.tick(150);
+			expect(map._animatingZoom).to.be.true;
+			const zoom = map.getZoom();
+			expect(zoom).to.be.within(3.6, 3.99);
+
+			pinch(2 ** 0.9);
+			expect(map._animatingZoom).to.be.false;
+			expect(map.getZoom()).to.be.closeTo(zoom + 0.9, 1e-9);
+
+			clock.tick(1000);
+			expect(map.getZoom()).to.equal(5);
+			expect(zoomstart.callCount).to.equal(1);
+			expect(zoomend.callCount).to.equal(1);
+		});
+
+		it('counts a zoom during the snap from where the snap is heading', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			pinch(2 ** 0.3);
+			clock.tick(100);
+			expect(map._animatingZoom).to.be.true;
+			expect(map.getZoom()).to.be.below(3.5);
+
+			map.zoomIn();
+			clock.tick(1000);
+			expect(map.getZoom()).to.equal(5);
+		});
+
+		it('ends a pinch after a pause of a few times the gap between its events', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			// events every frame: a 100 ms pause ends it
+			pinch(2 ** 0.6);
+			clock.tick(100);
+			expect(map._animatingZoom).to.be.true;
+			clock.tick(500);
+
+			// events every 60 ms: still going after 100 ms
+			const deltaY = -100 * Math.log(2 ** 0.6) / 5;
+			for (let i = 0; i < 5; i++) {
+				fireWheel({deltaY, deltaMode: 0, ctrlKey: true});
+				clock.tick(i < 4 ? 60 : 100);
+			}
+			expect(map._animatingZoom).to.be.false;
+			expect(map.getZoom()).to.be.closeTo(4.6, 1e-9);
+		});
+
+		it('snaps a short way quickly', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+
+			pinch(2 ** 0.1);
+			clock.tick(250);
+			expect(zoomend.calledOnce).to.be.true;
+			expect(map.getZoom()).to.equal(3);
+		});
+
+		it('snaps at once at the fingers\' speed when Safari tells the pinch ended', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			pinch(2 ** 0.6);
+			const zoom = map.getZoom();
+			fireStamped(new Event('gestureend', {bubbles: true}));
+			expect(map._animatingZoom).to.be.true;
+
+			clock.tick(32);
+			expect(map.getZoom() - zoom).to.be.greaterThan(0.03);
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(4);
+		});
+
+		it('ignores the wheel event Safari sends right after gestureend', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.remove();
+			map = new LeafletMap(container, {center: [0, 0], zoom: 3});
+
+			pinch(2 ** 0.6);
+			fireStamped(new Event('gestureend', {bubbles: true}));
+			fireWheel({deltaY: -0.07, deltaMode: 0, ctrlKey: true});
+			expect(map._animatingZoom).to.be.true;
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(4);
+		});
+
+		it('snaps a slight pinch back instead of zooming by a whole level', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			const zoom = map.getZoom();
+
+			pinch(1.1);
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(zoom);
+
+			pinch(0.9);
+			clock.tick(300);
+			expect(map.getZoom()).to.equal(zoom);
+		});
+
+		it('keeps the location under the pointer in place', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			map.options.zoomSnap = 0;
+			const {left, top} = container.getBoundingClientRect();
+			const point = map.containerPointToLatLng([50, 60]);
+
+			pinch(3, {clientX: left + 50, clientY: top + 60});
+			clock.tick(300);
+
+			expect(map.getZoom()).to.be.closeTo(3 + Math.log2(3), 1e-9);
+			expect(map.containerPointToLatLng([50, 60])).to.be.nearLatLng(point);
+		});
+
+		it('keeps the location under the pointer in place when snapping', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+			const {left, top} = container.getBoundingClientRect();
+			const point = map.containerPointToLatLng([50, 60]);
+
+			pinch(2 ** 1.3, {clientX: left + 50, clientY: top + 60});
+			clock.tick(300);
+
+			expect(map.getZoom()).to.equal(5);
+			expect(map.containerPointToLatLng([50, 60])).to.be.nearLatLng(point);
+		});
+
+		it('snaps to the next level in the direction the pinch was heading', () => {
+			clock = sinon.useFakeTimers({toFake: pinchFakes});
+
+			// 3 -> 3.3 goes on to 4
+			pinch(2 ** 0.3);
+			clock.tick(500); // past the snap and the zoom input block after it
+			expect(map.getZoom()).to.equal(4);
+
+			// 4 -> 3.7 goes on to 3
+			pinch(2 ** -0.3);
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(3);
+
+			// 3 -> 3.7 -> 3.6 was last heading out, so it doesn't go on to 4
+			pinch(2 ** 0.7);
+			clock.tick(40);
+			pinch(2 ** -0.1, {}, 5);
+			clock.tick(500);
+			expect(map.getZoom()).to.equal(3);
+		});
+
+		it('zooms by whole levels on ctrl+wheel from a mouse', () => {
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
+			const zoom = map.getZoom();
+
+			fireWheel({deltaY: -100, deltaMode: 0, ctrlKey: true});
+			clock.tick(100);
+			expect(map.getZoom()).to.equal(zoom + 1);
+		});
 	});
 });

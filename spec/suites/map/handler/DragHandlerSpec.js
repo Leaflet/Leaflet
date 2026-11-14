@@ -393,18 +393,18 @@ describe('DragHandler', () => {
 
 			const zoomEnded = new Promise((resolve) => { map.once('zoomend', resolve); });
 			await new Promise((resolve) => {
-				map.once('zoomanim', resolve);
+				map.once('zoom', resolve);
 				map.setZoom(2);
 			});
 			expect(map._animatingZoom).to.be.true;
 
-			const rect = container.getBoundingClientRect(),
-			latLng = map.containerPointToLatLng([200 - rect.left, 200 - rect.top]);
+			const rect = container.getBoundingClientRect();
 
 			const finger = new Finger();
 			await finger.moveTo(200, 200).down().moveBy(5, 0);
 			expect(map._animatingZoom).to.be.true;
 			await zoomEnded;
+			const latLng = map.containerPointToLatLng([205 - rect.left, 200 - rect.top]);
 			await finger.moveTo(300, 240).up();
 			UIEventSimulator.fire('click', container, {detail: 1});
 
@@ -569,6 +569,89 @@ describe('DragHandler', () => {
 				expect(offset.x).to.equal(-29);
 				expect(options.duration).to.be.closeTo(0.29, 0.01);
 			});
+		});
+	});
+
+	describe('during a zoom animation', () => {
+		let clock, log;
+
+		// zooms from 13 to 14 and grabs the map early on, at about 13.2
+		function grabDuringZoom(options) {
+			map = new LeafletMap(container, options).setView([0, 0], 13);
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+				'cancelAnimationFrame']});
+			log = [];
+			map.on('movestart moveend zoomstart zoomend', (e) => {
+				log.push(e.type);
+				if (e.type.endsWith('end')) { expect(map.getZoom()).to.equal(Math.round(map.getZoom())); }
+			});
+			map.setZoom(14);
+			clock.tick(40);
+			expect(map.getZoom()).to.be.within(13.01, 13.49);
+
+			const finger = new Finger();
+			finger.dispatch('down', 200, 200);
+			for (let x = 220; x <= 260; x += 40) {
+				clock.tick(10);
+				finger.dispatch('move', x, 200);
+			}
+			expect(map.getZoom()).to.be.below(13.5);
+			return finger;
+		}
+
+		afterEach(() => {
+			clock.restore();
+		});
+
+		it('counts zoom input from the zoom\'s target', () => {
+			const finger = grabDuringZoom({inertia: false});
+			map.zoomIn();
+			finger.dispatch('up', 260, 200);
+			clock.tick(1000);
+			expect(map.getZoom()).to.equal(15);
+		});
+
+		it('makes a drag that ends during the zoom part of its move', () => {
+			const finger = grabDuringZoom({inertia: false});
+			finger.dispatch('up', 260, 200);
+			clock.tick(1000);
+			expect(map.getZoom()).to.equal(14);
+			expect(log).to.eql(['zoomstart', 'movestart', 'zoomend', 'moveend']);
+		});
+
+		it('ends the move when a drag that outlasts the zoom ends', () => {
+			const finger = grabDuringZoom({inertia: false});
+			clock.tick(1000);
+			expect(log).to.eql(['zoomstart', 'movestart', 'zoomend']);
+			finger.dispatch('up', 260, 200);
+			expect(log).to.eql(['zoomstart', 'movestart', 'zoomend', 'moveend']);
+		});
+
+		it('makes a zoom that starts during a drag part of the drag\'s move', () => {
+			map = new LeafletMap(container, {inertia: false}).setView([0, 0], 13);
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame',
+				'cancelAnimationFrame']});
+			const types = [];
+			map.on('movestart moveend zoomstart zoomend', e => types.push(e.type));
+			const finger = new Finger();
+			finger.dispatch('down', 200, 200);
+			finger.dispatch('move', 220, 200);
+			map.zoomIn();
+			clock.tick(1000);
+			finger.dispatch('move', 240, 200);
+			finger.dispatch('up', 240, 200);
+			expect(map.getZoom()).to.equal(14);
+			expect(types).to.eql(['movestart', 'zoomstart', 'zoomend', 'moveend']);
+		});
+
+		it('coasts on after a flick without turning the zoom around', () => {
+			const finger = grabDuringZoom();
+			const center = map.getCenter();
+			finger.dispatch('up', 260, 200);
+			clock.tick(3000);
+			expect(map.getZoom()).to.equal(14);
+			expect(map.getCenter().lng).to.be.below(center.lng);
+			expect(log).to.eql(['zoomstart', 'movestart', 'zoomend', 'moveend']);
 		});
 	});
 

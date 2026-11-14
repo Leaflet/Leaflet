@@ -1,4 +1,4 @@
-import {DivIcon, DefaultIcon, Icon, LatLng, LayerGroup, LeafletMap, Marker, Point} from 'leaflet';
+import {DivIcon, DefaultIcon, DomUtil, Icon, LatLng, LayerGroup, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -418,24 +418,54 @@ describe('Marker', () => {
 			expect(container.style.transform).not.to.equal(before);
 		});
 
-		it('doesn\'t move the icon during a zoom animation', async () => {
+		it('applies a rotation set during a zoom animation', async () => {
 			const marker = new Marker([10, 10], {rotation: 0}).addTo(map);
-			let before, during;
+			let during;
 
-			map.once('zoomanim', () => {
-				before = marker._icon.style.transform;
+			map.once('zoom', () => {
 				marker.setRotation(90);
 				during = marker._icon.style.transform;
 			});
 			await new Promise((resolve) => { map.once('zoomend', resolve).setZoom(2); });
 
-			expect(during).to.equal(before);
+			expect(during).to.contain('rotate(90deg)');
 			expect(marker._icon.style.transform).to.contain('rotate(90deg)');
 		});
 
 		it('can be set before the marker is added', () => {
 			const marker = new Marker([0, 0]).setRotation(30).addTo(map);
 			expect(marker._icon.style.transform).to.contain('rotate(30deg)');
+		});
+	});
+
+	describe('markerZoomAnimation: false', () => {
+		let clock;
+
+		beforeEach(() => {
+			removeMapContainer(map, container);
+			container = createContainer();
+			map = new LeafletMap(container, {markerZoomAnimation: false}).setView([0, 0], 13);
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+				'cancelAnimationFrame']});
+		});
+
+		afterEach(() => {
+			clock.restore();
+		});
+
+		it('hides and freezes markers for a whole zoom, and places them at its end', () => {
+			const marker = new Marker([0.001, 0.001]).addTo(map);
+			const update = sinon.spy(marker, '_setPos');
+
+			map.flyTo([0.002, 0.002], 15, {duration: 0.5});
+			clock.tick(100);
+			expect(map._mapPane.classList.contains('leaflet-zoom-anim')).to.be.true;
+			expect(update.called).to.be.false;
+
+			clock.tick(1000);
+			expect(map._mapPane.classList.contains('leaflet-zoom-anim')).to.be.false;
+			expect(update.called).to.be.true;
+			expect(DomUtil.getPosition(marker._icon)).to.eql(map.latLngToLayerPoint([0.001, 0.001]).round());
 		});
 	});
 
@@ -520,6 +550,24 @@ describe('Marker', () => {
 
 			expect(spy.calledOnce).to.be.true;
 		});
+	});
+
+	it('keeps its zIndex while the zoom changes continuously and updates it once the zoom settles', () => {
+		const marker = new Marker([40, 0]).addTo(map);
+		const zIndex = () => Number(marker._icon.style.zIndex);
+		const start = zIndex();
+
+		map._subpixelOrigin = true;
+		map._move(map.getCenter(), 0.7, {pinch: true});
+		expect(zIndex()).to.equal(start);
+
+		marker.setZIndexOffset(100);
+		expect(zIndex()).to.equal(start + 100);
+
+		map._subpixelOrigin = false;
+		map._move(map.getCenter(), 1, {pinch: true});
+		expect(zIndex()).to.equal(Math.round(map.latLngToLayerPoint([40, 0]).y) + 100);
+		expect(zIndex()).to.not.equal(start + 100);
 	});
 
 	describe('rise on hover and focus', () => {

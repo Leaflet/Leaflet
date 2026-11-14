@@ -237,35 +237,22 @@ describe('GridLayer', () => {
 
 	describe('zoom animation', () => {
 		let clock;
-		beforeEach(() => { clock = createClock(); });
+		beforeEach(() => {
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame']});
+		});
 		afterEach(() => { clock.restore(); });
 
-		it('zooms the container as a whole and resets it when the animation ends', () => {
+		it('scales the levels along the zoom and settles them when it ends', () => {
 			const grid = new GridLayer().addTo(map.setView([0, 0], 10));
-			const oldTransform = grid._levels[10].el.style.transform;
 
-			map._moveStart(true, false);
-			map._animateZoom(map.getCenter(), 11);
-			expect(grid._container.style.transform).to.contain('scale(2)');
-			expect(grid._levels[10].el.style.transform).to.equal(oldTransform);
-			expect(grid._levels[11].el.style.transform).to.contain('scale(0.5)');
+			map.setZoom(11);
+			clock.tick(50);
+			const scale = new DOMMatrix(grid._levels[10].el.style.transform).a;
+			expect(scale).to.be.within(1.01, 1.99);
 
 			clock.tick(1000);
-			expect(grid._container.style.transform).to.equal('');
-			expect(grid._levels[10].el.style.transform).to.contain('scale(2)');
+			expect(map.getZoom()).to.equal(11);
 			expect(grid._levels[11].el.style.transform).to.contain('scale(1)');
-		});
-
-		it('resets the container when the animation ends at the same zoom', () => {
-			const grid = new GridLayer().addTo(map.setView([0, 0], 10));
-
-			map._moveStart(true, false);
-			map._animateZoom(map.containerPointToLatLng([500, 400]), 10, true);
-			expect(grid._container.style.transform).to.contain('translate3d(-100px, -100px, 0px)');
-
-			clock.tick(1000);
-			expect(grid._container.style.transform).to.equal('');
-			expect(grid._levels[10].el.style.transform).to.contain('translate3d(-100px, -100px, 0px)');
 		});
 	});
 
@@ -734,69 +721,24 @@ describe('GridLayer', () => {
 			for (let i = 0; i < n && callbacks.length; i++) {
 				clock.tick(40);
 				map.fire('_frame');
-				for (const cb of callbacks.splice(0)) { cb(); }
+				for (const cb of callbacks.splice(0)) { cb(Date.now()); }
 			}
 			raf.restore();
 		}
 
-		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
-			clock.tick(1);
-			// Date.now() is 1.
+		it('Loads 32, unloads 16 tiles zooming in 10-11', () => {
+			runFrames(50, () => map.addLayer(grid).setView([0, 0], 10));
+			runFrames(50, () => clock.tick(300));
+			expect(counts).to.include({tileloadstart: 16, tileload: 16, tileunload: 0});
 
-			// grid.on('tileload tileunload tileloadstart load loading', logTiles);
+			// the z11 tiles start loading once the zoom passes 10.5, for the view the animation ends at
+			runFrames(50, () => map.setZoom(11, {animate: true}));
+			expect(map.getZoom()).to.equal(11);
+			expect(counts.tileloadstart).to.equal(32);
 
-			// Use "once" to automatically detach the listener,
-			// and avoid removing the above logTiles
-			// (which would happen when calling "grid.off('load')").
-			grid.once('load', () => {
-				expect(counts.tileload).to.equal(16);
-				expect(counts.tileunload).to.equal(0);
-
-				requestAnimationFrame(() => {
-					// Wait > 250msec for the tile fade-in animation to complete,
-					// which triggers the tile pruning
-					clock.tick(300);
-					// At 251ms, the pruneTile from the end of the z10 tiles fade-in animation executes.
-					// Date.now() is 301.
-
-					grid.once('load', () => {
-						expect(counts.tileload).to.equal(32);
-
-						// We're one frame into the zoom animation,
-						// so GridLayer._setView with noPrune === undefined is not called yet
-						// No tile should be unloaded yet.
-						expect(counts.tileunload).to.equal(0);
-
-						// Wait for the zoom animation to end, which triggers the tile pruning. Without
-						// 'transitionend' under fake timers, it ends on the map's 1s fallback timer and fires "zoom"
-						// => GridLayer._resetView => GridLayer._setView => _pruneTiles
-						// However, this "load" event callback executes synchronously,
-						// i.e. _tileReady still did not have a chance to prepare the
-						// setTimeout(250) for pruning after the end of the fade-in animation.
-						clock.tick(1000);
-						// At 501ms, the fade-in of the z11 tiles finishes and flags them as "active" (without
-						// pruning during the zoom animation). At ~1300ms, the pruneTile from the end of the zoom
-						// animation executes and unloads all 16 tiles from z10, since z11 tiles now cover them.
-						expect(counts.tileunload).to.equal(16);
-						// Date.now() is 1301.
-						done();
-					});
-
-					map.setZoom(11, {animate: true});
-					// Animation (and new tiles loading) starts after 1 frame.
-					requestAnimationFrame(() => {
-						// 16 extra tiles from z11 being loaded. Total 16 + 16 = 32.
-						expect(counts.tileloadstart).to.equal(32);
-					});
-
-				});
-			});
-
-			map.addLayer(grid).setView([0, 0], 10);
-			// The first setView does not animated, therefore it starts loading tiles immediately.
-			// 16 tiles from z10 being loaded.
-			expect(counts.tileloadstart).to.equal(16);
-			// At 1ms, first pruneTile (map fires "viewreset" event => GridLayer._resetView => GridLayer._setView => _pruneTiles).
+			// the z10 tiles go once the z11 ones have faded in
+			runFrames(50, () => clock.tick(300));
+			expect(counts).to.include({tileloadstart: 32, tileload: 32, tileunload: 16});
 		});
 
 		it('Loads 32, unloads 16 tiles zooming in 10-18', (done) => {
@@ -826,65 +768,17 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 32, unloads 16 tiles zooming out 11-10', (done) => {
-			clock.tick(1);
-			// Date.now() is 1.
+		it('Loads 32, unloads 16 tiles zooming out 11-10', () => {
+			runFrames(50, () => map.addLayer(grid).setView([0, 0], 11));
+			runFrames(50, () => clock.tick(300));
+			expect(counts).to.include({tileloadstart: 16, tileload: 16, tileunload: 0});
 
-			// grid.on('tileload tileunload load', logTiles);
+			runFrames(50, () => map.setZoom(10, {animate: true}));
+			expect(map.getZoom()).to.equal(10);
+			expect(counts.tileloadstart).to.equal(32);
 
-			grid.once('load', () => {
-				expect(counts.tileload).to.equal(16);
-				expect(counts.tileunload).to.equal(0);
-
-				requestAnimationFrame(() => {
-					// Wait > 250msec for the tile fade-in animation to complete,
-					// which triggers the tile pruning
-					clock.tick(300);
-					// At 251ms, the pruneTile from the end of the z11 tiles fade-in animation executes.
-					// Date.now() is 301.
-
-					grid.once('load', () => {
-						expect(counts.tileload).to.equal(20);
-						// No tile should be unloaded yet.
-						expect(counts.tileunload).to.equal(0);
-
-						// Wait for the zoom animation to end on the map's 1s fallback timer,
-						// which triggers the tile pruning, but there are no
-						// tiles to prune yet (z11 tiles are all in bounds).
-						clock.tick(1000);
-						// Date.now() is 1301.
-
-						// At the end of the animation, all 16 tiles from z10
-						// are loading.
-						expect(counts.tileloadstart).to.equal(32);
-						expect(counts.tileload).to.equal(20);
-
-						// Now that the zoom animation is complete, the grid is ready to fire a new "load"
-						// event on next frame, so prepare its listener now. The 4 central tiles from z10
-						// finished fading in during the zoom animation, so the pruneTile at its end already
-						// unloaded all 16 tiles from z11 they cover.
-						grid.once('load', () => {
-							expect(counts.tileload).to.equal(32);
-							expect(counts.tileunload).to.equal(16);
-							done();
-						});
-					});
-				});
-
-				map.setZoom(10, {animate: true});
-				// Animation (and new tiles loading) starts after 1 frame.
-				requestAnimationFrame(() => {
-					// We're one frame into the zoom animation, there are
-					// 16 tiles for z11 plus 4 tiles for z10 covering the
-					// bounds at the *beginning* of the zoom-*out* anim
-					expect(counts.tileloadstart).to.equal(20);
-				});
-			});
-
-			map.addLayer(grid).setView([0, 0], 11);
-			// The first setView does not animated, therefore it starts loading tiles immediately.
-			// 16 tiles from z10 being loaded.
-			expect(counts.tileloadstart).to.equal(16);
+			runFrames(50, () => clock.tick(300));
+			expect(counts).to.include({tileloadstart: 32, tileload: 32, tileunload: 16});
 		});
 
 		it('Loads 32, unloads 16 tiles zooming out 18-10', (done) => {

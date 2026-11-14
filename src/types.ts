@@ -50,7 +50,7 @@ import type {ErrorEventProps, FitBoundsProps, InvalidateSizeProps, LayerEventPro
 	LeafletMap, LeafletPointerEventProps, LocateProps, LocationEventProps, MapDefaultsValues, MapHandlerEvents,
 	MapInteractionEvents, MapLayerEvents, MapLocationEvents, MapOtherEvents, MapPopupEvents, MapStateEvents,
 	MapTooltipEvents, PaddingProps, PanProps, ResizeEventProps, ViewChangeEventProps, ViewPreResetEventProps,
-	WorldCopyJumpEventProps, ZoomAnimEventProps, ZoomPanProps, ZoomProps} from './map/Map.js';
+	WorldCopyJumpEventProps, ZoomPanProps, ZoomProps} from './map/Map.js';
 
 export type {Defaults} from './core/Class.js';
 export type {LeafletEventHandlerFn, Listener, ListenerMap} from './core/Events.js';
@@ -353,8 +353,6 @@ export interface DragEndEvent extends LeafletEvent, DragEndEventProps {}
 export interface BoxZoomEvent extends LeafletEvent, BoxZoomEventProps {}
 /** The event object of `move` on markers and circle markers, and of `drag` on markers. */
 export interface MarkerMoveEvent extends LeafletEvent, MarkerMoveEventProps {}
-/** The event object of the map's `zoomanim` event. */
-export interface ZoomAnimEvent extends LeafletEvent, ZoomAnimEventProps {}
 /** The event object of the map's `movestart`, `move`, `moveend`, `zoomstart`, `zoom` and `zoomend` events. */
 export interface ViewChangeEvent extends LeafletEvent, ViewChangeEventProps {}
 /** The event object of the map's `viewprereset` event. */
@@ -443,7 +441,6 @@ declare module './Leaflet.js' {
 		_initLayout(): void;
 		_updateLayout(): void;
 		_adjustPan(): void;
-		_animateZoom(e: ZoomAnimEvent): void;
 	}
 }
 

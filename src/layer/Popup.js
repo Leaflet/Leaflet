@@ -5,7 +5,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 
-/** @import {Defaults, DivOverlayEventMap, PointExpression, PopupDefaults, PopupOptions, ZoomAnimEvent} from '../types.js' */
+/** @import {Defaults, DivOverlayEventMap, PointExpression, PopupDefaults, PopupOptions} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Layer} from './Layer.js' */
@@ -287,13 +287,6 @@ export class Popup extends DivOverlay {
 
 		this._containerWidth = this._container.offsetWidth;
 		this._containerHeight = this._container.offsetHeight;
-	}
-
-	/** @param {ZoomAnimEvent} e */
-	_animateZoom(e) {
-		const pos = this._map._latLngToNewLayerPoint(/** @type {LatLng} */ (this._latlng), e.zoom, e.center),
-		anchor = this._getAnchor();
-		DomUtil.setPosition(this._container, pos.add(anchor));
 	}
 
 	_adjustPan() {

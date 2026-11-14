@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Zoom performance</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../src/leaflet.css" />
+		<link rel="stylesheet" href="../css/mobile.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../src/Leaflet.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<style>
+			body { margin: 0; font: 13px sans-serif; }
+			#bar { padding: 6px 8px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+			#map { position: absolute; top: 64px; bottom: 0; left: 0; right: 0; }
+			#stats { font-family: monospace; }
+			.round { background: #e33; border: 1px solid #fff; border-radius: 50%; }
+			.square { background: #33e; }
+		</style>
+		<div id="bar">
+			<label>Markers <select id="n">
+				<option>0</option><option>500</option><option selected>1000</option><option>2000</option>
+				<option>3000</option><option>5000</option><option>10000</option>
+			</select></label>
+			<label>Icon <select id="icon">
+				<option value="img">default image</option><option value="round">round div</option><option value="square">square div</option>
+			</select></label>
+			<label><input type="checkbox" id="tiles" checked /> tiles</label>
+			<label>zoomSnap <select id="snap"><option>1</option><option>0.25</option><option>0</option></select></label>
+			<span>zoomIn/zoomOut:
+				<button id="css-in">zoom in</button> <button id="css-out">zoom out</button></span>
+			<span>Live, like a pinch:
+				<button id="live-in">in, 250 ms</button> <button id="live-out">out, 250 ms</button>
+				<button id="live-in-slow">in, 1 s</button> <button id="live-out-slow">out, 1 s</button></span>
+			<span id="stats">Last zoom: -</span>
+		</div>
+		<div id="map"></div>
+		<script type="module">
+			import {LeafletMap, TileLayer, Marker, DivIcon, DefaultIcon} from 'leaflet';
+
+			const $ = id => document.getElementById(id);
+			let map;
+
+			function build() {
+				const center = map ? map.getCenter() : [51.505, -0.09];
+				const zoom = map ? Math.round(map.getZoom()) : 13;
+				if (map) { map.remove(); }
+				map = new LeafletMap('map', {center, zoom, zoomSnap: +$('snap').value});
+				if ($('tiles').checked) {
+					new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+						maxZoom: 19,
+						attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+					}).addTo(map);
+				}
+				const type = $('icon').value;
+				const icon = type === 'img' ? new DefaultIcon() : new DivIcon({className: type, iconSize: [12, 12]});
+				const b = map.getBounds();
+				let seed = 1;
+				const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+				for (let i = 0, n = +$('n').value; i < n; i++) {
+					const lat = b.getSouth() + rnd() * (b.getNorth() - b.getSouth());
+					const lng = b.getWest() + rnd() * (b.getEast() - b.getWest());
+					new Marker([lat, lng], {icon}).addTo(map);
+				}
+				map.on('zoomstart', startMeasure);
+				map.on('zoomend', endMeasure);
+				window.map = map;
+			}
+
+			// frame times as the main thread sees them; frames the compositor interpolates on its own (the CSS
+			// path) don't show up here, so compare with Chrome's DevTools > Rendering > Frame rendering stats
+			let frames = null;
+			function startMeasure() {
+				if (frames) { return; }
+				frames = [performance.now()];
+				requestAnimationFrame(function tick(t) {
+					if (!frames) { return; }
+					frames.push(t);
+					requestAnimationFrame(tick);
+				});
+			}
+			function endMeasure() {
+				if (!frames) { return; }
+				const f = frames;
+				frames = null;
+				const iv = f.slice(1).map((t, i) => t - f[i]);
+				if (!iv.length) { return; }
+				const ms = f.at(-1) - f[0];
+				$('stats').textContent = `Last zoom: ${Math.round(ms)} ms, ${Math.round(iv.length / ms * 1000)} fps (main thread), ` +
+					`worst frame ${Math.round(Math.max(...iv))} ms`;
+			}
+
+			// the same calls PinchZoomHandler makes, with the zoom driven by time around the map center
+			function live(dz, duration) {
+				const z0 = map.getZoom(), c = map.getCenter();
+				let start;
+				requestAnimationFrame(function step(now) {
+					if (start === undefined) {
+						start = now;
+						map._moveStart(true, false);
+						map._subpixelOrigin = true;
+					}
+					const t = Math.min(1, (now - start) / duration);
+					map._move(c, z0 + dz * t, {pinch: true});
+					if (t < 1) { requestAnimationFrame(step); return; }
+					map._subpixelOrigin = false;
+					map._moveEnd(true);
+				});
+			}
+
+			for (const id of ['n', 'icon', 'tiles', 'snap']) { $(id).onchange = build; }
+			$('css-in').onclick = () => map.zoomIn(1);
+			$('css-out').onclick = () => map.zoomOut(1);
+			$('live-in').onclick = () => live(1, 250);
+			$('live-out').onclick = () => live(-1, 250);
+			$('live-in-slow').onclick = () => live(1, 1000);
+			$('live-out-slow').onclick = () => live(-1, 1000);
+			build();
+		</script>
+	</body>
+</html>
