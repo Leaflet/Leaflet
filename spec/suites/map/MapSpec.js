@@ -90,6 +90,19 @@ describe('Map', () => {
 			expect(q('.leaflet-marker-icon').alt).to.equal('Marqueur');
 			removeMapContainer(map1, container1);
 		});
+
+		//
+		it('Attributions with English-sounding names have lang=en attribute', () => {
+			const container1 = createContainer();
+			const map1 = new LeafletMap(container1, {translate: text => fr[text]}).setView([0, 0], 1);
+			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map1);
+			const q = selector => container1.querySelector(selector);
+
+			expect(q('.leaflet-control-attribution a[href *= leafletjs]').lang).to.equal('en');
+			expect(q('.leaflet-control-attribution a[href *= openstreetmap]').lang).to.equal('en');
+
+			removeMapContainer(map1, container1);
+		});
 	});
 
 	describe('#remove', () => {

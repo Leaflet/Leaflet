@@ -21,7 +21,7 @@ const defaultOptions = {
 	 * The HTML text shown before the attributions. Pass `false` to disable.
 	 * @type {string | false}
 	 */
-	prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
+	prefix: `<a target="_blank" href="https://leafletjs.com" lang="en" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
 };
 
 /** @typedef {typeof defaultOptions} AttributionControlDefaultsValues */
