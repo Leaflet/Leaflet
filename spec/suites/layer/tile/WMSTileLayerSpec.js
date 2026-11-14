@@ -44,6 +44,24 @@ describe('WMSTileLayer', () => {
 			expect(url.searchParams.get('layers')).to.equal('roads');
 		});
 
+		it('leaves out params set to undefined or null, so they can be cleared (#3441)', () => {
+			const layer = new WMSTileLayer('/wms', {layers: 'roads', time: undefined}).addTo(map);
+			const getParams = () => new URL(layer.getTileUrl(new Point(0, 0))).searchParams;
+			expect(getParams().has('time')).to.be.false;
+
+			layer.setParams({filter: 'a = 1'});
+			expect(getParams().get('filter')).to.equal('a = 1');
+			layer.setParams({filter: undefined});
+			expect(getParams().has('filter')).to.be.false;
+			layer.setParams({filter: null});
+			expect(getParams().has('filter')).to.be.false;
+
+			// empty strings and zeros are still sent, e.g. the default `styles`
+			layer.setParams({elevation: 0});
+			expect(getParams().get('styles')).to.equal('');
+			expect(getParams().get('elevation')).to.equal('0');
+		});
+
 		it('updates the projection param and BBOX axis order on version change', () => {
 			const layer = new WMSTileLayer('/wms', {layers: 'roads', crs: EPSG4326}).addTo(map);
 			const getParams = () => new URL(layer.getTileUrl(new Point(0, 0))).searchParams;
