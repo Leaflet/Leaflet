@@ -214,4 +214,22 @@ describe('BoxZoomHandler', () => {
 		expect(log.length).to.be.greaterThan(2);
 		expect(log.every(ev => ev?.type === 'pointerup')).to.be.true;
 	});
+
+	it('cancels a box being drawn when disabled', async () => {
+		const boxEndSpy = sinon.spy();
+		map.on('boxzoomend', boxEndSpy);
+
+		finger.moveTo(100, 100).down(shift);
+		await finger.moveBy(100, 100, shift);
+		expect(map.getContainer().querySelectorAll('.leaflet-zoom-box').length).to.equal(1);
+
+		map.boxZoom.disable();
+		expect(map.getContainer().querySelectorAll('.leaflet-zoom-box').length).to.equal(0);
+		expect(map.getContainer().classList.contains('leaflet-crosshair')).to.be.false;
+		expect(map.boxZoom.moved()).to.be.false;
+
+		await finger.up();
+		expect(boxEndSpy.called).to.be.false;
+		expect(map.getZoom()).to.equal(3);
+	});
 });
