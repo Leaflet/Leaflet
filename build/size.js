@@ -11,7 +11,7 @@ const limits = {
 	'leaflet.js': 42 * 1024,
 	'leaflet.css': 3.2 * 1024,
 	'map+tiles': 27000,
-	'map+tiles+marker': 30000,
+	'map+tiles+marker': 30500,
 	'map+tiles+polygon': 31000,
 };
 
