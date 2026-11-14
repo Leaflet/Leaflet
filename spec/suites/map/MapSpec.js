@@ -1812,17 +1812,18 @@ describe('Map', () => {
 				expect(isSnapped()).to.be.true;
 			});
 
-			it('snaps layers when a flight is interrupted', async () => {
-				await new Promise((resolve) => {
-					let frames = 0;
-					map.on('move', (e) => {
-						if (e.flyTo && ++frames === 5) {
-							map._stop(); // what dragging does
-							resolve();
-						}
-					});
-					map.flyTo([50.4502, 30.521], 15, {duration: 0.3});
+			it('snaps layers when a flight is interrupted', () => {
+				let frames = 0;
+				map.on('move', (e) => {
+					if (e.flyTo && ++frames === 5) {
+						map._stop(); // what dragging does
+					}
 				});
+
+				const clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'cancelAnimationFrame']});
+				map.flyTo([50.4502, 30.521], 15, {duration: 0.3});
+				clock.tick(200);
+				clock.restore();
 
 				expect(map.getZoom() % 1).to.not.equal(0);
 				expect(isSnapped()).to.be.true;
