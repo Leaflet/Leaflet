@@ -4,7 +4,7 @@ repo: https://github.com/Raruto/leaflet-rotate
 author: Raruto
 author-url: https://raruto.github.io
 demo: https://raruto.github.io/leaflet-rotate/examples/leaflet-rotate.html
-compatible-v2: false
+compatible-v2: true
 ---
 
 Adds rotation functionality to leaflet map panes
