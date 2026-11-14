@@ -287,7 +287,7 @@ describe('LayersControl', () => {
 				expect(names(layers._overlaysList)).to.eql(['One']);
 			});
 
-			it('lets the keyboard reach and toggle a pending layer', async () => {
+			it('lets the keyboard expand the control and toggle a pending layer', async () => {
 				const overlay = new Marker([0, 0]),
 				layers = new LayersControl().addTo(map);
 				layers.addOverlay(overlay, 'Overlay');
