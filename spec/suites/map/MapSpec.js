@@ -763,6 +763,21 @@ describe('Map', () => {
 			expect(bounds.contains(map.getBounds())).to.be.true;
 		});
 
+		it('lets the view reach every corner when the projection rotates the axes (#7650)', () => {
+			map.remove();
+			container.style.width = container.style.height = '400px';
+			map = new LeafletMap(container, {crs: RotatedCRS, maxBounds: [[0, 0], [10, 2]]});
+			// inside the bounds, but outside the box of the projected north-east and south-west corners
+			map.setView([6, 1], 7, {animate: false});
+			expect(map.getCenter()).to.be.nearLatLng([6, 1]);
+			// a view outside is still moved inside the box of all four projected corners
+			map.setView([6, 10], 7, {animate: false});
+			const b = map.options.maxBounds,
+			box = new Bounds([b.getNorthWest(), b.getNorthEast(), b.getSouthEast(), b.getSouthWest()].map(c => map.project(c)));
+			// give or take the pixel rounding of the map position
+			expect(new Bounds(box.min.subtract([2, 2]), box.max.add([2, 2])).contains(map.getPixelBounds())).to.be.true;
+		});
+
 		it('remove listeners when called without arguments', (done) => {
 			new TileLayer('', {minZoom: 0, maxZoom: 20}).addTo(map);
 			container.style.width = container.style.height = '500px';
