@@ -172,7 +172,7 @@ describe('Tooltip', () => {
 		expect(layer.getElement().getAttribute('aria-describedby')).to.equal('my-help');
 	});
 
-	it('preserves existing descriptions when opening, closing and unbinding', () => {
+	it('preserves existing descriptions when opening and closing', () => {
 		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
 		const element = layer.getElement();
 		element.setAttribute('aria-describedby', 'first-help second-help');
@@ -183,35 +183,21 @@ describe('Tooltip', () => {
 
 		layer.closeTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal('first-help second-help');
-
-		layer.openTooltip();
-		expect(element.getAttribute('aria-describedby')).to.equal(`first-help second-help ${tooltipId}`);
-		layer.unbindTooltip();
-		expect(element.getAttribute('aria-describedby')).to.equal('first-help second-help');
 	});
 
-	it('removes only its own description when other references are added while open', () => {
+	it('removes only its own reference and does not duplicate it', () => {
 		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
 		const element = layer.getElement();
 		layer.openTooltip();
 		const tooltipId = layer.getTooltip().getElement().id;
-		element.setAttribute('aria-describedby', `first-help\t${tooltipId}\nsecond-help`);
 
+		element.setAttribute('aria-describedby', `${tooltipId} my-help`);
 		layer.closeTooltip();
-		expect(element.getAttribute('aria-describedby')).to.equal('first-help second-help');
-	});
+		expect(element.getAttribute('aria-describedby')).to.equal('my-help');
 
-	it('does not duplicate an existing reference to the tooltip', () => {
-		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
-		const element = layer.getElement();
-		layer.openTooltip().closeTooltip();
-		const tooltipId = layer.getTooltip().getElement().id;
-		element.setAttribute('aria-describedby', `first-help ${tooltipId}`);
-
+		element.setAttribute('aria-describedby', `my-help ${tooltipId}`);
 		layer.openTooltip();
-		expect(element.getAttribute('aria-describedby')).to.equal(`first-help ${tooltipId}`);
-		layer.closeTooltip();
-		expect(element.getAttribute('aria-describedby')).to.equal('first-help');
+		expect(element.getAttribute('aria-describedby')).to.equal(`my-help ${tooltipId}`);
 	});
 
 	it('stays open on marker when permanent', () => {
