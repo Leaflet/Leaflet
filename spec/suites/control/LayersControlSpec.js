@@ -1,4 +1,4 @@
-import {LayersControl, LeafletMap, Marker, TileLayer, Util} from 'leaflet';
+import {LayerGroup, LayersControl, LeafletMap, Marker, TileLayer, Util} from 'leaflet';
 import sinon from 'sinon';
 import {userEvent} from 'vitest/browser';
 import UIEventSimulator from 'ui-event-simulator';
@@ -618,6 +618,40 @@ describe('LayersControl', () => {
 
 			expect(container.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
 			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be.true;
+		});
+	});
+
+	describe('autoZIndex', () => {
+		it('keeps tile layers in control order when they are switched on in another order', () => {
+			const lower = new TileLayer('');
+			const upper = new TileLayer('');
+
+			new LayersControl(null, {Lower: lower, Upper: upper}).addTo(map);
+
+			map.addLayer(upper);
+			map.addLayer(lower);
+
+			expect(+lower._container.style.zIndex).to.be.lessThan(+upper._container.style.zIndex);
+		});
+
+		it('assigns zIndexes to layers inside a layer group', () => {
+			const tileLayer = new TileLayer('');
+			const group = new LayerGroup([new TileLayer('')]);
+
+			new LayersControl(null, {Tiles: tileLayer, Group: group}).addTo(map);
+
+			expect(tileLayer.options.zIndex).to.equal(1);
+			expect(group.getLayers()[0].options.zIndex).to.equal(2);
+		});
+
+		it('does not assign zIndexes when it is false', () => {
+			const first = new TileLayer('', {zIndex: 5});
+			const second = new TileLayer('', {zIndex: 7});
+
+			new LayersControl(null, {First: first, Second: second}, {autoZIndex: false}).addTo(map);
+
+			expect(first.options.zIndex).to.equal(5);
+			expect(second.options.zIndex).to.equal(7);
 		});
 	});
 

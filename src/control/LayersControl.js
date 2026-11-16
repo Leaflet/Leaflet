@@ -31,8 +31,12 @@ const defaultOptions = {
 	title: 'Layers',
 
 	/**
-	 * If `true`, the control will assign zIndexes in increasing order to all of
-	 * its layers so that the order is preserved when switching them on/off.
+	 * If `true`, the control will assign zIndexes in increasing order to its layers that have
+	 * a `setZIndex` method (such as tile layers and image overlays, including those inside a
+	 * layer group), so that their order is preserved when switching them on/off.
+	 * Other layers, such as markers and vector layers, are not affected: they are stacked in the
+	 * order they are added to the map. Put them in [custom map panes](https://leafletjs.com/examples/map-panes/)
+	 * to control their order.
 	 */
 	autoZIndex: true,
 
@@ -40,8 +44,9 @@ const defaultOptions = {
 	hideSingleBase: false,
 
 	/**
-	 * Whether to sort the layers. When `false`, layers will keep
-	 * the order in which they were added to the control.
+	 * Whether to sort the layers in the control's list. When `false`, layers will keep
+	 * the order in which they were added to the control. This only changes the list, not the
+	 * order in which the layers are stacked on the map (see [`autoZIndex`](#layerscontrol-autozindex)).
 	 */
 	sortLayers: false,
 
