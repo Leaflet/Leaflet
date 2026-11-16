@@ -172,6 +172,48 @@ describe('Tooltip', () => {
 		expect(layer.getElement().getAttribute('aria-describedby')).to.equal('my-help');
 	});
 
+	it('preserves existing descriptions when opening, closing and unbinding', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		const element = layer.getElement();
+		element.setAttribute('aria-describedby', 'first-help second-help');
+
+		layer.openTooltip();
+		const tooltipId = layer.getTooltip().getElement().id;
+		expect(element.getAttribute('aria-describedby')).to.equal(`first-help second-help ${tooltipId}`);
+
+		layer.closeTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal('first-help second-help');
+
+		layer.openTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal(`first-help second-help ${tooltipId}`);
+		layer.unbindTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal('first-help second-help');
+	});
+
+	it('removes only its own description when other references are added while open', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		const element = layer.getElement();
+		layer.openTooltip();
+		const tooltipId = layer.getTooltip().getElement().id;
+		element.setAttribute('aria-describedby', `first-help\t${tooltipId}\nsecond-help`);
+
+		layer.closeTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal('first-help second-help');
+	});
+
+	it('does not duplicate an existing reference to the tooltip', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		const element = layer.getElement();
+		layer.openTooltip().closeTooltip();
+		const tooltipId = layer.getTooltip().getElement().id;
+		element.setAttribute('aria-describedby', `first-help ${tooltipId}`);
+
+		layer.openTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal(`first-help ${tooltipId}`);
+		layer.closeTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal('first-help');
+	});
+
 	it('stays open on marker when permanent', () => {
 		const layer = new Marker(center).addTo(map);
 

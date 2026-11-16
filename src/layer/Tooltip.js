@@ -110,7 +110,12 @@ export class Tooltip extends DivOverlay {
 			this.addEventParent(this._source);
 			/** @type {Element | null | undefined} */
 			this._ariaSource = this._source.getElement?.();
-			this._ariaSource?.setAttribute('aria-describedby', this._container.id);
+			const el = this._ariaSource;
+			if (el) {
+				const ids = Util.splitWords(el.getAttribute('aria-describedby') || '').filter(Boolean);
+				if (!ids.includes(this._container.id)) { ids.push(this._container.id); }
+				el.setAttribute('aria-describedby', ids.join(' '));
+			}
 
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}
@@ -125,9 +130,19 @@ export class Tooltip extends DivOverlay {
 		if (this._source) {
 			this.removeEventParent(this._source);
 
-			// drop the reference to the removed tooltip unless something else replaced it since
+			// Drop only this tooltip's reference, preserving descriptions added by the app.
 			const el = this._ariaSource;
-			if (el?.getAttribute('aria-describedby') === this._container.id) { el.removeAttribute('aria-describedby'); }
+			if (el) {
+				const ids = Util.splitWords(el.getAttribute('aria-describedby') || '');
+				if (ids.includes(this._container.id)) {
+					const remaining = ids.filter(id => id !== this._container.id).join(' ');
+					if (remaining) {
+						el.setAttribute('aria-describedby', remaining);
+					} else {
+						el.removeAttribute('aria-describedby');
+					}
+				}
+			}
 			this._ariaSource = null;
 
 			this._source.fire('tooltipclose', {tooltip: this}, true);
