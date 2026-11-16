@@ -19,7 +19,10 @@ import {Transformation} from '../../geometry/Transformation.js';
  * 	static transformation = new Transformation(1, 1200000, -1, 8500000); // top-left origin at [-1200000, 8500000]
  * 	static projection = {
  * 		bounds: new Bounds([-1200000, 4700000], [2600000, 8500000]),
- * 		project: ({lat, lng}) => new Point(...proj.forward([lng, lat])),
+ * 		project({lat, lng}) {
+ * 			const [x, y] = proj.forward([lng, lat]);
+ * 			return new Point(x, y);
+ * 		},
  * 		unproject({x, y}) {
  * 			const [lng, lat] = proj.inverse([x, y]);
  * 			return new LatLng(lat, lng);
