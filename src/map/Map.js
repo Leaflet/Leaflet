@@ -1692,8 +1692,9 @@ export class LeafletMap extends Evented {
 		this._controlCorners = {};
 		cancelAnimationFrame(this._resizeRequest);
 
-		for (const handler of this._handlers) {
-			handler.disable();
+		// in reverse, so a plugin handler that re-enables a built-in one on disable (e.g. scrollWheelZoom) goes first
+		for (let i = this._handlers.length - 1; i >= 0; i--) {
+			this._handlers[i].disable();
 		}
 
 		clearTimeout(this._transitionEndTimer);

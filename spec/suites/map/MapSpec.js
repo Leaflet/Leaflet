@@ -168,6 +168,21 @@ describe('Map', () => {
 			expect(spy.called).to.be.false;
 		});
 
+		it('leaves handlers disabled when a handler re-enables another on disable', () => {
+			class GestureHandler extends Handler {
+				addHooks() { this._map.scrollWheelZoom.disable(); }
+				removeHooks() { this._map.scrollWheelZoom.enable(); }
+			}
+			map.addHandler('gestureHandler', GestureHandler);
+			map.gestureHandler.enable();
+			const {scrollWheelZoom} = map;
+
+			map.remove();
+			map = null;
+
+			expect(scrollWheelZoom.enabled()).to.be.false;
+		});
+
 		it('does not throw if removed during animation', () => {
 			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
 
