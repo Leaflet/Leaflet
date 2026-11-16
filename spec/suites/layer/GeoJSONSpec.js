@@ -110,6 +110,23 @@ describe('GeoJSON', () => {
 			expect(layer2.options.weight).to.equal(7);
 			expect(layer2.options.color).to.equal('chocolate');
 		});
+
+		it('should reset a layer added with addLayer to its own options', () => {
+			const geojson = new GeoJSON(null, {style: {color: 'chocolate'}});
+			const layer = new Polyline([[51.38, -2.35], [51.38, -2.38]], {weight: 7, dashArray: '4'});
+			geojson.addLayer(layer);
+			geojson.setStyle({weight: 22, color: 'coral'});
+			geojson.resetStyle();
+			expect(layer.options.weight).to.equal(7);
+			expect(layer.options.dashArray).to.equal('4');
+			expect(layer.options.color).to.equal('chocolate');
+
+			// and again, now that the layer has been reset once
+			layer.setStyle({weight: 22});
+			geojson.resetStyle(layer);
+			expect(layer.options.weight).to.equal(7);
+			expect(layer.options.stroke).to.be.true;
+		});
 	});
 
 	describe('GeoJSON#addTo', () => {
