@@ -172,6 +172,34 @@ describe('Tooltip', () => {
 		expect(layer.getElement().getAttribute('aria-describedby')).to.equal('my-help');
 	});
 
+	it('preserves existing descriptions when opening and closing', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		const element = layer.getElement();
+		element.setAttribute('aria-describedby', 'first-help second-help');
+
+		layer.openTooltip();
+		const tooltipId = layer.getTooltip().getElement().id;
+		expect(element.getAttribute('aria-describedby')).to.equal(`first-help second-help ${tooltipId}`);
+
+		layer.closeTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal('first-help second-help');
+	});
+
+	it('removes only its own reference and does not duplicate it', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		const element = layer.getElement();
+		layer.openTooltip();
+		const tooltipId = layer.getTooltip().getElement().id;
+
+		element.setAttribute('aria-describedby', `${tooltipId} my-help`);
+		layer.closeTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal('my-help');
+
+		element.setAttribute('aria-describedby', `my-help ${tooltipId}`);
+		layer.openTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal(`my-help ${tooltipId}`);
+	});
+
 	it('stays open on marker when permanent', () => {
 		const layer = new Marker(center).addTo(map);
 
