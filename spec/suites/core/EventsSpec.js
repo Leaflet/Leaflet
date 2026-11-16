@@ -341,6 +341,18 @@ describe('Events', () => {
 			expect(spy.called).to.be.false;
 		});
 
+		it('makes sure an event is not triggered if the listeners of all types are removed during dispatch', () => {
+			const obj = new Evented(),
+			spy = sinon.spy();
+
+			obj.on('test', () => { obj.off(); });
+			obj.on('test', spy);
+			obj.fire('test');
+
+			expect(spy.called).to.be.false;
+			expect(obj.listens('test')).to.be.false;
+		});
+
 		it('handles reentrant event firing', () => {
 			const obj = new Evented(),
 			spy1 = sinon.spy(),

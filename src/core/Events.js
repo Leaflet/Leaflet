@@ -170,6 +170,9 @@ export class Evented extends Class {
 
 		if (!arguments.length) {
 			// clear all listeners if called without arguments
+			for (const type of Object.keys(this._events ?? {})) {
+				this._off(type);
+			}
 			this._events = this._eventIndexes = undefined;
 
 		} else if (typeof types === 'object') {
