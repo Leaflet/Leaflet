@@ -85,6 +85,12 @@ describe('LatLngBounds', () => {
 	});
 
 	describe('#equals', () => {
+		it('returns false when either bounds is empty', () => {
+			expect(a.equals(c)).to.eql(false);
+			expect(c.equals(a)).to.eql(false);
+			expect(c.equals(new LatLngBounds())).to.eql(false);
+		});
+
 		it('returns true if bounds equal', () => {
 			expect(a.equals([[14, 12], [30, 40]])).to.eql(true);
 			expect(a.equals([[14, 13], [30, 40]])).to.eql(false);
@@ -158,6 +164,12 @@ describe('LatLngBounds', () => {
 	});
 
 	describe('#contains', () => {
+		it('returns false when either bounds is empty', () => {
+			expect(a.contains(c)).to.eql(false);
+			expect(c.contains(a)).to.eql(false);
+			expect(c.contains([20, 20])).to.eql(false);
+		});
+
 		it('returns true if contains latlng point as array', () => {
 			expect(a.contains([16, 20])).to.eql(true);
 			expect(new LatLngBounds(a).contains([5, 20])).to.eql(false);
@@ -180,6 +192,11 @@ describe('LatLngBounds', () => {
 	});
 
 	describe('#intersects', () => {
+		it('returns false when either bounds is empty', () => {
+			expect(a.intersects(c)).to.eql(false);
+			expect(c.intersects(a)).to.eql(false);
+		});
+
 		it('returns true if intersects the given bounds', () => {
 			expect(a.intersects([[16, 20], [50, 60]])).to.eql(true);
 			expect(a.contains([[40, 50], [50, 60]])).to.eql(false);
@@ -191,6 +208,11 @@ describe('LatLngBounds', () => {
 	});
 
 	describe('#overlaps', () => {
+		it('returns false when either bounds is empty', () => {
+			expect(a.overlaps(c)).to.eql(false);
+			expect(c.overlaps(a)).to.eql(false);
+		});
+
 		it('returns true if overlaps the given bounds', () => {
 			expect(a.overlaps([[16, 20], [50, 60]])).to.eql(true);
 		});

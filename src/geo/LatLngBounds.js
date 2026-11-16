@@ -175,6 +175,7 @@ export class LatLngBounds {
 
 	/**
 	 * Returns `true` if the rectangle contains the given point or bounds.
+	 * Returns `false` if either bounds is empty.
 	 * @param {LatLngExpression | LatLngBoundsExpression} obj
 	 */
 	contains(obj) {
@@ -188,6 +189,8 @@ export class LatLngBounds {
 			({_southWest: sw2, _northEast: ne2} = new LatLngBounds(obj));
 		}
 
+		if (!sw2 || !sw) { return false; }
+
 		return (sw2.lat >= sw.lat) && (ne2.lat <= ne.lat) &&
 		       (sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	}
@@ -195,10 +198,12 @@ export class LatLngBounds {
 	/**
 	 * Returns `true` if the rectangle intersects the given bounds. Two
 	 * bounds intersect if they have at least one point in common.
+	 * Returns `false` if either bounds is empty.
 	 * @param {LatLngBoundsExpression} bounds
 	 */
 	intersects(bounds) {
 		bounds = new LatLngBounds(bounds);
+		if (!this.isValid() || !bounds.isValid()) { return false; }
 
 		const sw = this._southWest,
 		ne = this._northEast,
@@ -214,10 +219,12 @@ export class LatLngBounds {
 	/**
 	 * Returns `true` if the rectangle overlaps the given bounds.
 	 * Two bounds overlap if their intersection is an area.
+	 * Returns `false` if either bounds is empty.
 	 * @param {LatLngBoundsExpression} bounds
 	 */
 	overlaps(bounds) {
 		bounds = new LatLngBounds(bounds);
+		if (!this.isValid() || !bounds.isValid()) { return false; }
 
 		const sw = this._southWest,
 		ne = this._northEast,
@@ -241,6 +248,7 @@ export class LatLngBounds {
 	/**
 	 * Returns `true` if the rectangle is equivalent (within a small margin of error) to the given
 	 * bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
+	 * Returns `false` if either bounds is empty.
 	 * @param {LatLngBoundsExpression} [bounds]
 	 * @param {number} [maxMargin]
 	 */
@@ -248,6 +256,7 @@ export class LatLngBounds {
 		if (!bounds) { return false; }
 
 		bounds = new LatLngBounds(bounds);
+		if (!this.isValid() || !bounds.isValid()) { return false; }
 
 		return this._southWest.equals(bounds.getSouthWest(), maxMargin) &&
 		       this._northEast.equals(bounds.getNorthEast(), maxMargin);

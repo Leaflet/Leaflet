@@ -136,6 +136,7 @@ export class Bounds {
 
 	/**
 	 * Returns `true` if the rectangle contains the given point or bounds.
+	 * Returns `false` if either bounds is empty.
 	 * @param {PointExpression | BoundsExpression} obj
 	 */
 	contains(obj) {
@@ -147,6 +148,8 @@ export class Bounds {
 			({min, max} = new Bounds(obj));
 		}
 
+		if (!min || !this.isValid()) { return false; }
+
 		return (min.x >= this.min.x) &&
 		       (max.x <= this.max.x) &&
 		       (min.y >= this.min.y) &&
@@ -156,10 +159,12 @@ export class Bounds {
 	/**
 	 * Returns `true` if the rectangle intersects the given bounds. Two
 	 * bounds intersect if they have at least one point in common.
+	 * Returns `false` if either bounds is empty.
 	 * @param {BoundsExpression} bounds
 	 */
 	intersects(bounds) {
 		bounds = new Bounds(bounds);
+		if (!this.isValid() || !bounds.isValid()) { return false; }
 
 		const min = this.min,
 		max = this.max,
@@ -174,10 +179,12 @@ export class Bounds {
 	/**
 	 * Returns `true` if the rectangle overlaps the given bounds.
 	 * Two bounds overlap if their intersection is an area.
+	 * Returns `false` if either bounds is empty.
 	 * @param {BoundsExpression} bounds
 	 */
 	overlaps(bounds) {
 		bounds = new Bounds(bounds);
+		if (!this.isValid() || !bounds.isValid()) { return false; }
 
 		const min = this.min,
 		max = this.max,
@@ -215,12 +222,14 @@ export class Bounds {
 
 	/**
 	 * Returns `true` if the rectangle is equivalent to the given bounds.
+	 * Returns `false` if either bounds is empty.
 	 * @param {BoundsExpression} [bounds]
 	 */
 	equals(bounds) {
 		if (!bounds) { return false; }
 
 		bounds = new Bounds(bounds);
+		if (!this.isValid() || !bounds.isValid()) { return false; }
 
 		return this.min.equals(bounds.getTopLeft()) &&
 			this.max.equals(bounds.getBottomRight());

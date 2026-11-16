@@ -86,6 +86,12 @@ describe('Bounds', () => {
 	});
 
 	describe('#contains', () => {
+		it('returns false when either bounds is empty', () => {
+			expect(a.contains(c)).to.eql(false);
+			expect(c.contains(a)).to.eql(false);
+			expect(c.contains([20, 20])).to.eql(false);
+		});
+
 		it('contains other bounds or point', () => {
 			a.extend([50, 10]);
 			expect(a.contains(b)).to.be.true;
@@ -122,6 +128,11 @@ describe('Bounds', () => {
 	});
 
 	describe('#intersects', () => {
+		it('returns false when either bounds is empty', () => {
+			expect(a.intersects(c)).to.eql(false);
+			expect(c.intersects(a)).to.eql(false);
+		});
+
 		it('returns true if bounds intersect', () => {
 			expect(a.intersects(b)).to.be.true;
 		});
@@ -136,6 +147,11 @@ describe('Bounds', () => {
 	});
 
 	describe('#overlaps', () => {
+		it('returns false when either bounds is empty', () => {
+			expect(a.overlaps(c)).to.eql(false);
+			expect(c.overlaps(a)).to.eql(false);
+		});
+
 		it('returns true if bounds overlaps', () => {
 			expect(a.overlaps(b)).to.be.true;
 		});
@@ -195,6 +211,12 @@ describe('Bounds', () => {
 	});
 
 	describe('#equals', () => {
+		it('returns false when either bounds is empty', () => {
+			expect(a.equals(c)).to.eql(false);
+			expect(c.equals(a)).to.eql(false);
+			expect(c.equals(new Bounds())).to.eql(false);
+		});
+
 		it('returns true if bounds equal', () => {
 			expect(a.equals([[14, 12], [30, 40]])).to.eql(true);
 			expect(a.equals([[14, 13], [30, 40]])).to.eql(false);
