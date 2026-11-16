@@ -110,12 +110,7 @@ export class Tooltip extends DivOverlay {
 			this.addEventParent(this._source);
 			/** @type {Element | null | undefined} */
 			this._ariaSource = this._source.getElement?.();
-			const el = this._ariaSource;
-			if (el) {
-				const ids = Util.splitWords(el.getAttribute('aria-describedby') || '').filter(Boolean);
-				if (!ids.includes(this._container.id)) { ids.push(this._container.id); }
-				el.setAttribute('aria-describedby', ids.join(' '));
-			}
+			if (this._ariaSource) { updateDescribedBy(this._ariaSource, this._container.id, true); }
 
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}
@@ -130,19 +125,7 @@ export class Tooltip extends DivOverlay {
 		if (this._source) {
 			this.removeEventParent(this._source);
 
-			// Drop only this tooltip's reference, preserving descriptions added by the app.
-			const el = this._ariaSource;
-			if (el) {
-				const ids = Util.splitWords(el.getAttribute('aria-describedby') || '');
-				if (ids.includes(this._container.id)) {
-					const remaining = ids.filter(id => id !== this._container.id).join(' ');
-					if (remaining) {
-						el.setAttribute('aria-describedby', remaining);
-					} else {
-						el.removeAttribute('aria-describedby');
-					}
-				}
-			}
+			if (this._ariaSource) { updateDescribedBy(this._ariaSource, this._container.id, false); }
 			this._ariaSource = null;
 
 			this._source.fire('tooltipclose', {tooltip: this}, true);
@@ -225,4 +208,12 @@ export class Tooltip extends DivOverlay {
 		return new Point(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor(direction) : [0, 0]);
 	}
 
+}
+
+// aria-describedby is a whitespace-separated ID list that the app may also be using
+/** @param {Element} el @param {string} id @param {boolean} add */
+function updateDescribedBy(el, id, add) {
+	const ids = Util.splitWords(el.getAttribute('aria-describedby') ?? '').filter(s => s && s !== id);
+	if (add) { ids.push(id); }
+	if (ids.length) { el.setAttribute('aria-describedby', ids.join(' ')); } else { el.removeAttribute('aria-describedby'); }
 }
