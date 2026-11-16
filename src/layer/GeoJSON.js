@@ -100,6 +100,20 @@ export class GeoJSON extends FeatureGroup {
 	}
 
 	/**
+	 * Adds the given layer to the group.
+	 * @param {Layer} layer
+	 */
+	addLayer(layer) {
+		// a layer that wasn't created by `addData` keeps the options it has now, for `resetStyle`
+		const styled = /** @type {StyledLayer} */ (layer);
+		if (!styled.defaultOptions) {
+			styled.defaultOptions = layer.options;
+			layer.options = Object.create(layer.options);
+		}
+		return super.addLayer(layer);
+	}
+
+	/**
 	 * Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after
 	 * hover events. If `layer` is omitted, the style of all features in the current layer is reset.
 	 * @param {Layer} [layer]
