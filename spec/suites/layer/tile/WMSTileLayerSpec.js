@@ -3,6 +3,10 @@ import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('WMSTileLayer', () => {
+	afterEach(() => {
+		sinon.restore();
+	});
+
 	describe('constructor', () => {
 		it('sets wmsParams', () => {
 			const layer = new WMSTileLayer('https://example.com/map', {opacity: 0.5, attribution: 'foo'});

@@ -19,12 +19,12 @@ describe('BoxZoomHandler', () => {
 	});
 
 	afterEach(() => {
+		sinon.restore();
 		removeMapContainer(map, container);
 	});
 
 
 	it('cancel boxZoom by pressing ESC and re-enable click event on the map', async () => {
-		// let mapClick = false;
 		let clickSpy = sinon.spy();
 		map.once('click', clickSpy);
 
@@ -56,8 +56,6 @@ describe('BoxZoomHandler', () => {
 		UIEventSimulator.fire('keydown', document, {
 			code: 'Escape'
 		});
-
-		await (new Promise((res) => { setTimeout(res, 1); }));
 
 		expect(map.getContainer().classList.contains('leaflet-crosshair')).to.be.false;
 		expect(map.getContainer().querySelectorAll('.leaflet-zoom-box').length).to.equal(0);
@@ -162,7 +160,6 @@ describe('BoxZoomHandler', () => {
 		});
 
 		expect(clearSpy.calledWith(resetTimeout)).to.be.true;
-		clearSpy.restore();
 
 		// cleanup pointerdown - because it breaks other tests
 		await finger.down().up();

@@ -138,9 +138,7 @@ describe('Util', () => {
 		});
 
 		it('throws when a template token is not given', () => {
-			expect(() => {
-				Util.template(undefined, {foo: 'bar'});
-			}).to.throw();
+			expect(() => Util.template('{foo} {bar}', {foo: 'bar'})).to.throw('No value provided for variable {bar}');
 		});
 
 		it('allows underscores, dashes and spaces in placeholders', () => {

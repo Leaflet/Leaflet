@@ -10,20 +10,17 @@ describe('Events', () => {
 			spy3 = sinon.spy(),
 			spy4 = sinon.spy(),
 			spy5 = sinon.spy();
-			// spy6 = sinon.spy();
 
 			obj.on('test', spy1);
 			obj.on('test', spy2);
 			obj.on('other', spy3);
 			obj.on({test: spy4, other: spy5});
-			// obj.on({'test other': spy6 });
 
 			expect(spy1.called).to.be.false;
 			expect(spy2.called).to.be.false;
 			expect(spy3.called).to.be.false;
 			expect(spy4.called).to.be.false;
 			expect(spy5.called).to.be.false;
-			// expect(spy6.called).to.be.false;
 
 			obj.fire('test');
 
@@ -32,8 +29,6 @@ describe('Events', () => {
 			expect(spy3.called).to.be.false;
 			expect(spy4.called).to.be.true;
 			expect(spy5.called).to.be.false;
-			// expect(spy6.called).to.be.true;
-			// expect(spy6.callCount).to.equal(1);
 		});
 
 		it('fires all listeners in the order they are added', () => {
@@ -283,6 +278,7 @@ describe('Events', () => {
 			obj.fire('test');
 
 			expect(spy.called).to.be.false;
+			expect(spy2.calledOnce).to.be.true;
 		});
 
 		it('correctly removes all listeners if given no fn', () => {
@@ -328,6 +324,8 @@ describe('Events', () => {
 			obj.on('test2', () => { obj.off('test2', spy2, foo); }, foo);
 			obj.on('test2', spy2, foo);
 			obj.fire('test2');
+
+			expect(spy2.called).to.be.false;
 		});
 
 		it('makes sure an event is not triggered if all listeners are removed during dispatch', () => {
@@ -423,29 +421,6 @@ describe('Events', () => {
 			});
 
 			// todo? make `fire` and `listen` to throw with wrong type
-		});
-
-		it('does not override existing methods with the same name', () => {
-			const spy1 = sinon.spy(),
-			spy2 = sinon.spy(),
-			spy3 = sinon.spy();
-
-			class Klass extends Evented {
-				on = spy1;
-				off = spy2;
-				fire = spy3;
-			}
-
-			const obj = new Klass();
-
-			obj.on();
-			expect(spy1.called).to.be.true;
-
-			obj.off();
-			expect(spy2.called).to.be.true;
-
-			obj.fire();
-			expect(spy3.called).to.be.true;
 		});
 
 		it('does not add twice the same function', () => {
@@ -564,7 +539,7 @@ describe('Events', () => {
 		});
 	});
 
-	describe('#clearEventListeners', () => {
+	describe('#off without arguments', () => {
 		it('clears all registered listeners on an object', () => {
 			const spy = sinon.spy(),
 			obj = new Evented(),

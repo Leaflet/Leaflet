@@ -38,7 +38,7 @@ describe('GridLayer', () => {
 			expect(grid.setOpacity(0.5)).to.equal(grid);
 		});
 
-		it('works when map has fadeAnimated=false (IE8 is exempt)', (done) => {
+		it('works when map has fadeAnimated=false', (done) => {
 			map.remove();
 			map = new LeafletMap(container, {fadeAnimation: false}).setView([0, 0], 0);
 
@@ -170,7 +170,8 @@ describe('GridLayer', () => {
 				grid.createTile = function (coords, done) {
 					const tile = document.createElement('div');
 					keys.push(this._tileCoordsToKey(coords));
-					done('error', tile);
+					// async like a real tile, so that the tile is registered by the time it's reported as failed
+					queueMicrotask(() => done('error', tile));
 					return tile;
 				};
 			});
@@ -178,37 +179,32 @@ describe('GridLayer', () => {
 			it('does not raise tileload events', (done) => {
 				const tileLoadRaised = sinon.spy();
 				grid.on('tileload', tileLoadRaised);
-				grid.on('tileerror', () => {
-					if (keys.length === 4) {
-						expect(tileLoadRaised.notCalled).to.be.true;
-						done();
-					}
+				grid.on('load', () => {
+					expect(keys.length).to.equal(4);
+					expect(tileLoadRaised.notCalled).to.be.true;
+					done();
 				});
 				map.addLayer(grid);
 			});
 
 			it('raises tileerror events', (done) => {
 				const tileErrorRaised = sinon.spy();
-				grid.on('tileerror', () => {
-					tileErrorRaised();
-					if (keys.length === 4) {
-						expect(tileErrorRaised.callCount).to.equal(4);
-						done();
-					}
+				grid.on('tileerror', tileErrorRaised);
+				grid.on('load', () => {
+					expect(tileErrorRaised.callCount).to.equal(4);
+					done();
 				});
 				map.addLayer(grid);
 			});
 
 			it('does not add the .leaflet-tile-loaded class to tile elements', (done) => {
-				let count = 0;
-				grid.on('tileerror', (e) => {
-					if (!e.tile.classList.contains('leaflet-tile-loaded')) {
-						count++;
+				grid.on('load', () => {
+					const tiles = Object.values(grid._tiles);
+					expect(tiles.length).to.equal(4);
+					for (const tile of tiles) {
+						expect(tile.el.classList.contains('leaflet-tile-loaded')).to.be.false;
 					}
-					if (keys.length === 4) {
-						expect(count).to.equal(4);
-						done();
-					}
+					done();
 				});
 				map.addLayer(grid);
 			});
@@ -231,6 +227,7 @@ describe('GridLayer', () => {
 			map.on('zoomend', onReset);
 			map.setView([0, 0], 0);
 
+			expect(onAddSpy.calledOnce).to.be.true;
 			expect(onReset.calledBefore(onAddSpy)).to.be.true;
 		});
 	});
@@ -516,12 +513,8 @@ describe('GridLayer', () => {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', (ev) => {
-				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-			// grid.on('tileunload', function (ev) {
-			// 	console.log(ev.type, ev.coords, counts);
-			// });
 
 			map.remove();
 			map = new LeafletMap(container, {fadeAnimation: false, zoomAnimation: false});
@@ -717,14 +710,6 @@ describe('GridLayer', () => {
 			counts = undefined;
 		});
 
-		// Debug helper
-		/*
-		function logTiles(ev) {
-			const pending = Object.values(grid._tiles).filter(t => !t.loaded).length;
-			console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
-		}
-		*/
-
 		// calls `start`, then synchronously runs up to n frames of 40ms (~25fps) while any animation frame
 		// callbacks are queued, instead of waiting for real frames
 		function runFrames(n, start) {
@@ -743,11 +728,6 @@ describe('GridLayer', () => {
 			clock.tick(1);
 			// Date.now() is 1.
 
-			// grid.on('tileload tileunload tileloadstart load loading', logTiles);
-
-			// Use "once" to automatically detach the listener,
-			// and avoid removing the above logTiles
-			// (which would happen when calling "grid.off('load')").
 			grid.once('load', () => {
 				expect(counts.tileload).to.equal(16);
 				expect(counts.tileunload).to.equal(0);
@@ -829,8 +809,6 @@ describe('GridLayer', () => {
 		it('Loads 32, unloads 16 tiles zooming out 11-10', (done) => {
 			clock.tick(1);
 			// Date.now() is 1.
-
-			// grid.on('tileload tileunload load', logTiles);
 
 			grid.once('load', () => {
 				expect(counts.tileload).to.equal(16);
@@ -973,12 +951,8 @@ describe('GridLayer', () => {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', (ev) => {
-				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-			// grid.on('tileunload', function (ev) {
-			// 	console.log(ev.type, ev.coords, counts);
-			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -1034,7 +1008,6 @@ describe('GridLayer', () => {
 					// OOOO
 					// OOOO
 					map.panBy([512, 512], {animate: false});
-					// clock.tick(250);
 				});
 			});
 
@@ -1042,7 +1015,6 @@ describe('GridLayer', () => {
 
 			// 800px width * 600px height => 4 tiles horizontally * 4 tiles vertically = 16 tiles
 			map.addLayer(grid).setView([0, 0], 10);
-			// clock.tick(250);
 		});
 
 		it('Loads map, moves forth and back by 512 px, keepBuffer = 0', (done) => {

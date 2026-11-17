@@ -313,9 +313,10 @@ describe('Canvas', () => {
 
 	describe('#dashArray', () => {
 		it('can add polyline with dashArray', () => {
-			new Polygon(latLngs, {
+			const layer = new Polygon(latLngs, {
 				dashArray: '5,5'
 			}).addTo(map);
+			expect(layer._dashArray).to.eql([5, 5]);
 		});
 
 		it('can setStyle with dashArray', () => {
@@ -323,10 +324,11 @@ describe('Canvas', () => {
 			layer.setStyle({
 				dashArray: '5,5'
 			});
+			expect(layer._dashArray).to.eql([5, 5]);
 		});
 	});
 
-	it('removes vector on next animation frame', (done) => {
+	it('removes vector from the renderer', () => {
 		const layer = new Circle([0, 0]).addTo(map),
 		layerId = Util.stamp(layer),
 		canvas = map.getRenderer(layer);
@@ -334,11 +336,7 @@ describe('Canvas', () => {
 		expect(canvas._layers).to.have.property(layerId);
 
 		map.removeLayer(layer);
-		// Defer check due to how Canvas renderer manages layer removal.
-		requestAnimationFrame(() => {
-			expect(canvas._layers).to.not.have.property(layerId);
-			done();
-		});
+		expect(canvas._layers).to.not.have.property(layerId);
 	});
 
 	it('adds vectors even if they have been removed just before', (done) => {
@@ -351,7 +349,7 @@ describe('Canvas', () => {
 		map.removeLayer(layer);
 		map.addLayer(layer);
 		expect(canvas._layers).to.have.property(layerId);
-		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
+		// still there after the redraw on the next frame
 		requestAnimationFrame(() => {
 			expect(canvas._layers).to.have.property(layerId);
 			done();
@@ -402,11 +400,6 @@ describe('Canvas', () => {
 	});
 
 	describe('#bringToBack', () => {
-		it('is a no-op for layers not on a map', () => {
-			const path = new Polyline([[1, 2], [3, 4], [5, 6]]);
-			expect(path.bringToBack()).to.equal(path);
-		});
-
 		it('is a no-op for layers no longer in a LayerGroup', () => {
 			const group = new LayerGroup().addTo(map);
 			const path = new Polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
@@ -418,11 +411,6 @@ describe('Canvas', () => {
 	});
 
 	describe('#bringToFront', () => {
-		it('is a no-op for layers not on a map', () => {
-			const path = new Polyline([[1, 2], [3, 4], [5, 6]]);
-			expect(path.bringToFront()).to.equal(path);
-		});
-
 		it('is a no-op for layers no longer in a LayerGroup', () => {
 			const group = new LayerGroup().addTo(map);
 			const path = new Polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);

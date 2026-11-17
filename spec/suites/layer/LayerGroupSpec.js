@@ -80,15 +80,19 @@ describe('LayerGroup', () => {
 
 			lg.addLayer(marker);
 
+			const calls = [];
 			lg.eachLayer(function (layer) {
-				expect(layer).to.eql(marker);
-				expect(this).to.eql(ctx);
+				calls.push([layer, this]);
 			}, ctx);
+
+			expect(calls).to.have.length(1);
+			expect(calls[0][0]).to.equal(marker);
+			expect(calls[0][1]).to.equal(ctx);
 		});
 	});
 
 	describe('#toGeoJSON', () => {
-		it('should return valid GeoJSON for a layer with a FeatureCollection', () => {
+		it('squashes the FeatureCollection of a nested GeoJSON layer', () => {
 			const geoJSON = {
 				'type': 'FeatureCollection',
 				'features': [
@@ -107,7 +111,7 @@ describe('LayerGroup', () => {
 			const layer = new GeoJSON(geoJSON);
 			lg.addLayer(layer);
 
-			new GeoJSON(lg.toGeoJSON());
+			expect(lg.toGeoJSON(false)).to.eql(geoJSON);
 		});
 
 		it('includes the layers of a subclass that keeps them outside _layers', () => {

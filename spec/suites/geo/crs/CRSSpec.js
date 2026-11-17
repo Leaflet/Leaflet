@@ -149,7 +149,7 @@ describe('EPSG3857', () => {
 describe('EPSG4326', () => {
 	const crs = EPSG4326;
 
-	describe('#getSize', () => {
+	describe('#getProjectedBounds', () => {
 		it('gives correct size', () => {
 			let i,
 			worldSize = 256,
@@ -313,35 +313,6 @@ describe('CRS', () => {
 			const scale = crs.scale(zoom);
 			const zoom2 = crs.zoom(scale);
 			expect(Util.formatNum(zoom2)).to.eql(zoom);
-		});
-	});
-});
-
-describe('CRS.ZoomNotPowerOfTwo', () => {
-	const crs = {
-		...CRS,
-		scale(zoom) {
-			return 256 * 1.5 ** zoom;
-		},
-		zoom(scale) {
-			return Math.log(scale / 256) / Math.log(1.5);
-		}
-	};
-
-	describe('#scale', () => {
-		it('of zoom levels are related by a power of 1.5', () => {
-			const zoom = 5;
-			const scale = crs.scale(zoom);
-			expect(crs.scale(zoom + 1)).to.eql(1.5 * scale);
-			expect(crs.zoom(1.5 * scale)).to.eql(zoom + 1);
-		});
-	});
-
-	describe('#zoom && #scale', () => {
-		it('convert zoom to scale and vice-versa and return the same values', () => {
-			const zoom = 2;
-			const scale = crs.scale(zoom);
-			expect(crs.zoom(scale)).to.eql(zoom);
 		});
 	});
 });

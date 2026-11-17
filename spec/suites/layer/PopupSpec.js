@@ -1,5 +1,6 @@
 import {DivIcon, DomUtil, FeatureGroup, DefaultIcon, LeafletMap, Marker, Point, Polygon, Popup} from 'leaflet';
 import sinon from 'sinon';
+import {onTestFinished} from 'vitest';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
 
@@ -143,7 +144,7 @@ describe('Popup', () => {
 		expect(map.hasLayer(popup)).to.be.false;
 	});
 
-	it('it should use a popup with a function as content with a FeatureGroup', () => {
+	it('uses a function as popup content with a FeatureGroup', () => {
 		const marker1 = new Marker(center);
 		const marker2 = new Marker([54.6, 38.2]);
 		const group = new FeatureGroup([marker1, marker2]).addTo(map);
@@ -151,8 +152,6 @@ describe('Popup', () => {
 		marker1.description = 'I\'m marker 1.';
 		marker2.description = 'I\'m marker 2.';
 		group.bindPopup(layer => layer.description);
-
-		map.options.closePopupOnClick = true;
 
 		// toggle popup on marker1
 		group.fire('click', {
@@ -171,7 +170,7 @@ describe('Popup', () => {
 		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 2.');
 	});
 
-	it('it should function for popup content after bindPopup is called', () => {
+	it('uses a function as popup content for layers added to a FeatureGroup after bindPopup', () => {
 		const marker1 = new Marker(center);
 		const marker2 = new Marker([54.6, 38.2]);
 		const group = new FeatureGroup([marker1]).addTo(map);
@@ -181,8 +180,6 @@ describe('Popup', () => {
 		group.bindPopup(layer => layer.description);
 
 		group.addLayer(marker2);
-
-		map.options.closePopupOnClick = true;
 
 		// toggle popup on marker1
 		group.fire('click', {
@@ -203,18 +200,12 @@ describe('Popup', () => {
 
 	it('should use a function for popup content when a source is passed to Popup', () => {
 		const marker = new Marker(center).addTo(map);
-		new Popup({}, marker);
-
 		marker.description = 'I am a marker.';
 
-		marker.bindPopup(layer => layer.description);
+		const popup = new Popup({}, marker).setLatLng(center).setContent(layer => layer.description).openOn(map);
 
-		marker.fire('click', {
-			latlng: center
-		});
-
-		expect(map.hasLayer(marker._popup)).to.be.true;
-		expect(marker._popup._contentNode.innerHTML).to.equal('I am a marker.');
+		expect(map.hasLayer(popup)).to.be.true;
+		expect(popup._contentNode.innerHTML).to.equal('I am a marker.');
 	});
 
 	it('triggers popupopen on marker when popup opens', () => {
@@ -305,6 +296,10 @@ describe('Popup', () => {
 		Popup.defaultOptions.autoPan = false;
 		const popupAnchorBefore = DefaultIcon.defaultOptions.popupAnchor;
 		DefaultIcon.defaultOptions.popupAnchor = [0, 0];
+		onTestFinished(() => {
+			Popup.defaultOptions.autoPan = autoPanBefore;
+			DefaultIcon.defaultOptions.popupAnchor = popupAnchorBefore;
+		});
 
 		const icon = new DivIcon({popupAnchor: offset});
 		const marker1 = new Marker(latlng);
@@ -328,9 +323,6 @@ describe('Popup', () => {
 		offsetTop = DomUtil.getPosition(marker2._popup._container).y;
 		expect(offsetLeft - offset.x).to.eql(defaultLeft);
 		expect(offsetTop - offset.y).to.eql(defaultTop);
-
-		Popup.defaultOptions.autoPan = autoPanBefore;
-		DefaultIcon.defaultOptions.popupAnchor = popupAnchorBefore;
 	});
 
 	it('prevents an underlying map click for Layer', () => {
@@ -698,9 +690,6 @@ describe('Popup', () => {
 			container.style.top = 0;
 			container.style.zIndex = 10000;
 
-			// to prevent waiting until the animation is finished
-			map.options.inertia = false;
-
 			const spy = sinon.spy();
 			map.on('autopanstart', spy);
 
@@ -719,9 +708,6 @@ describe('Popup', () => {
 			container.style.left = 0;
 			container.style.top = 0;
 			container.style.zIndex = 10000;
-
-			// to prevent waiting until the animation is finished
-			map.options.inertia = false;
 
 			const spy = sinon.spy();
 			map.on('autopanstart', spy);
@@ -817,15 +803,15 @@ describe('Popup', () => {
 			expect(marker.isPopupOpen()).to.be.false;
 		});
 
-		it('does not throw is popup is immediately closed', (done) => {
+		it('does not throw if popup is immediately closed', () => {
 			map.on('popupopen', () => {
 				marker.closePopup();
 			});
 
 			expect(() => {
 				marker.bindPopup('new layer').openPopup();
-				done();
 			}).to.not.throw();
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('does not close popup when clicking on it\'s tip', () => {

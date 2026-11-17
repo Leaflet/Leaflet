@@ -150,15 +150,10 @@ describe('Class', () => {
 			const q = sinon.spy();
 
 			const Qlass = Klass.include({quux: q});
+			expect(Qlass).to.equal(Klass);
 
-			const a = new Klass();
-			const b = new Qlass();
-
-			a.quux();
-			expect(q.called).to.be.true;
-
-			b.quux();
-			expect(q.called).to.be.true;
+			new Klass().quux();
+			expect(q.calledOnce).to.be.true;
 		});
 
 		it('keeps parent options', () => { // #6070
@@ -386,7 +381,11 @@ describe('Class', () => {
 			for (const [name, Cls] of classes) {
 				const instance = new Cls(...(args[name]?.() ?? (Cls.prototype instanceof L.Handler ? [map] : [])));
 				if (runs.get(instance) !== 1) { failed.push(`${name}: ${runs.get(instance) ?? 0}`); }
-				if (instance instanceof LeafletMap) { instance.remove(); }
+				if (instance instanceof LeafletMap) {
+					const el = instance.getContainer();
+					instance.remove();
+					el.remove();
+				}
 			}
 			recording = false;
 

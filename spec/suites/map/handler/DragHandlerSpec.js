@@ -12,6 +12,7 @@ describe('DragHandler', () => {
 	});
 
 	afterEach(() => {
+		sinon.restore();
 		removeMapContainer(map, container);
 	});
 
@@ -24,6 +25,7 @@ describe('DragHandler', () => {
 			expect(map.dragging.enabled()).to.be.true;
 			map.setView([0, 0], 0);
 			expect(map.dragging.enabled()).to.be.true;
+			expect(map.dragging._draggable.listens('predrag', map.dragging._onPreDragWrap, map.dragging)).to.be.false;
 		});
 
 		it('calls the map with dragging and worldCopyJump enabled', () => {
@@ -35,6 +37,7 @@ describe('DragHandler', () => {
 			expect(map.dragging.enabled()).to.be.true;
 			map.setView([0, 0], 0);
 			expect(map.dragging.enabled()).to.be.true;
+			expect(map.dragging._draggable.listens('predrag', map.dragging._onPreDragWrap, map.dragging)).to.be.true;
 		});
 
 		it('calls the map with dragging disabled and worldCopyJump enabled; ' +
@@ -48,6 +51,7 @@ describe('DragHandler', () => {
 			map.setView([0, 0], 0);
 			map.dragging.enable();
 			expect(map.dragging.enabled()).to.be.true;
+			expect(map.dragging._draggable.listens('predrag', map.dragging._onPreDragWrap, map.dragging)).to.be.true;
 		});
 	});
 
@@ -151,8 +155,8 @@ describe('DragHandler', () => {
 			const scale = new Point(2, 1.5);
 
 			beforeEach(() => {
-				container.style.webkitTransformOrigin = 'top left';
-				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
+				container.style.transformOrigin = 'top left';
+				container.style.transform = `scale(${scale.x}, ${scale.y})`;
 			});
 
 			it('change the center of the map, compensating for CSS scale', async () => {
@@ -576,10 +580,6 @@ describe('DragHandler', () => {
 				sinon.stub(window, 'matchMedia').callsFake(reduced);
 			});
 
-			afterEach(() => {
-				window.matchMedia.restore();
-			});
-
 			it('shortens the coast to half the map size with the same deceleration', async () => {
 				const [offset, options] = await fling(10000);
 				expect(offset.x).to.equal(-200);
@@ -608,14 +608,13 @@ describe('DragHandler', () => {
 				// a stalled CI runner can push all but the last drag position out of the 50ms inertia window, so make
 				// time advance per call instead of per wall clock; it still moves forward for the inertia animation
 				let now = Date.now();
-				const clock = sinon.stub(Date, 'now').callsFake(() => (now += 5));
+				sinon.stub(Date, 'now').callsFake(() => (now += 5));
 
 				const finger = new Finger();
 				await finger.moveTo(200, 200).down().moveBy(20, 0).moveBy(60, 0);
 				finger.dispatch('move', 360, 200);
 				finger.dispatch('up', 360, 200);
 				await moveend;
-				clock.restore();
 
 				expect(panBy.called).to.equal(inertia);
 				expect(log.length).to.be.greaterThan(2);

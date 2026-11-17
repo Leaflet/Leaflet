@@ -133,9 +133,7 @@ describe('Marker.Drag', () => {
 			new Marker([0, 0], {draggable: true, autoPan: true, autoPanPadding: [0, 50]}).addTo(map);
 
 			const finger = new Finger(pointerType);
-			await finger.moveTo(300, 280).down().moveBy(5, 0).moveTo(300, 580);
-			await new Promise((resolve) => { setTimeout(resolve, 100); });
-			await finger.up();
+			await finger.moveTo(300, 280).down().moveBy(5, 0).moveTo(300, 580).up();
 
 			expect(map.getCenter().lat).to.be.below(0);
 		});

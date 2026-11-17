@@ -272,36 +272,28 @@ describe('KeyboardHandler', () => {
 			expect(keyPressSpy.called).to.be.false;
 		});
 
-		it('keydown', (done) => {
+		it('keydown', () => {
 			const keyDownSpy = sinon.spy();
-			const keyPressSpy = sinon.spy();
 			const keyUpSpy = sinon.spy();
 
 			map.on('keydown', keyDownSpy);
+			map.on('keyup', keyUpSpy);
 			UIEventSimulator.fire('keydown', container, KEY_LOWERCASE_A);
 
-			setTimeout(() => {
-				expect(keyDownSpy.called).to.be.true;
-				expect(keyPressSpy.called).to.be.false;
-				expect(keyUpSpy.called).to.be.false;
-				done();
-			}, 50);
+			expect(keyDownSpy.called).to.be.true;
+			expect(keyUpSpy.called).to.be.false;
 		});
 
-		it('keyup', (done) => {
+		it('keyup', () => {
 			const keyDownSpy = sinon.spy();
-			const keyPressSpy = sinon.spy();
 			const keyUpSpy = sinon.spy();
 
+			map.on('keydown', keyDownSpy);
 			map.on('keyup', keyUpSpy);
 			UIEventSimulator.fire('keyup', container, KEY_LOWERCASE_A);
 
-			setTimeout(() => {
-				expect(keyDownSpy.called).to.be.false;
-				expect(keyPressSpy.called).to.be.false;
-				expect(keyUpSpy.called).to.be.true;
-				done();
-			}, 50);
+			expect(keyDownSpy.called).to.be.false;
+			expect(keyUpSpy.called).to.be.true;
 		});
 	});
 

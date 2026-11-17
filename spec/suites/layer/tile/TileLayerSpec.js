@@ -170,6 +170,7 @@ describe('TileLayer', () => {
 	});
 
 	afterEach(() => {
+		sinon.restore();
 		removeMapContainer(map, container);
 	});
 
@@ -218,12 +219,8 @@ describe('TileLayer', () => {
 			};
 
 			kittenLayer.on('tileload tileunload tileerror tileloadstart', (ev) => {
-				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-			// grid.on('tileunload', function (ev) {
-			// 	console.log(ev.type, ev.coords, counts);
-			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -700,7 +697,8 @@ describe('TileLayer', () => {
 				}, 10);
 			});
 
-			layer.setUrl(placeKitten);
+			// redraw with the same URL while the first tiles are still loading
+			layer.setUrl(placeKitten, false);
 		});
 	});
 });

@@ -5,7 +5,6 @@ import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('ScrollWheelZoomHandler', () => {
 	let container, map, clock;
-	const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
 	const scrollIn = {
 		deltaY: -120,
 		deltaMode: 0
@@ -25,19 +24,16 @@ describe('ScrollWheelZoomHandler', () => {
 	});
 
 	afterEach(() => {
-		clock?.restore();
-		clock = null;
+		sinon.restore();
 		removeMapContainer(map, container);
 	});
 
 	it('zooms out while firing \'wheel\' event', (done) => {
 		const zoom = map.getZoom();
 
-		UIEventSimulator.fire(wheel, container, scrollOut);
+		UIEventSimulator.fire('wheel', container, scrollOut);
 
 		map.on('zoomend', () => {
-			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
-			// expect(map.getCenter()).to.be.nearLatLng([-33.137551192346145, 35.15625000000001]);
 			expect(map.getZoom()).to.be.lessThan(zoom);
 			done();
 		});
@@ -45,63 +41,53 @@ describe('ScrollWheelZoomHandler', () => {
 
 	it('zooms in while firing \'wheel\' event', (done) => {
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 
 		map.on('zoomend', () => {
-			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
-			// expect(map.getCenter()).to.be.nearLatLng([17.308687886770034, -17.578125000000004]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
 			done();
 		});
 	});
 
 	it('scrollWheelZoom: \'center\'', (done) => {
-		const scrollWheelZoomBefore = map.options.scrollWheelZoom;
 		map.options.scrollWheelZoom = 'center';
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 
 		map.on('zoomend', () => {
 			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
-			map.options.scrollWheelZoom = scrollWheelZoomBefore;
 			done();
 		});
 	});
 
 	it('changes the option \'wheelDebounceTime\'', (done) => {
-		const wheelDebounceTimeBefore = map.options.wheelDebounceTime;
 		map.options.wheelDebounceTime = 100;
 		const zoom = map.getZoom();
 
 		const spy = sinon.spy();
 		map.on('zoomend', spy);
 
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 		setTimeout(() => {
-			UIEventSimulator.fire(wheel, container, scrollIn);
+			UIEventSimulator.fire('wheel', container, scrollIn);
 
 			expect(spy.notCalled).to.be.true;
 		}, 50);
 
 		map.on('zoomend', () => {
-			expect(spy.calledOnce).to.be.true;
-			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
-			// expect(map.getCenter()).to.be.nearLatLng([25.48295117535531, -26.367187500000004]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
-			map.options.wheelDebounceTime = wheelDebounceTimeBefore;
 			done();
 		});
 	});
 
 	it('changes the option \'wheelPxPerZoomLevel\'', () => {
 		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
-		const wheelPxPerZoomLevelBefore = map.options.wheelPxPerZoomLevel;
 		map.setZoom(15, {animate: false});
 		clock.tick(300);
 
 		const zoom = map.getZoom();
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 		clock.tick(100);
 
 		expect(map.getZoom()).to.be.greaterThan(zoom);
@@ -112,11 +98,10 @@ describe('ScrollWheelZoomHandler', () => {
 
 		map.options.wheelPxPerZoomLevel = 15 / window.devicePixelRatio;
 		clock.tick(300);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 		clock.tick(100);
 
 		expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
-		map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
 	});
 
 	it('zooms by at most one level per hard scroll with reduced motion', () => {
@@ -124,7 +109,7 @@ describe('ScrollWheelZoomHandler', () => {
 		const zoom = map.getZoom();
 		const hardScrollIn = {deltaY: -3000, deltaMode: 0};
 
-		UIEventSimulator.fire(wheel, container, hardScrollIn);
+		UIEventSimulator.fire('wheel', container, hardScrollIn);
 		clock.tick(100);
 		expect(map.getZoom() - zoom).to.be.greaterThan(1);
 
@@ -135,11 +120,9 @@ describe('ScrollWheelZoomHandler', () => {
 		const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
 		sinon.stub(window, 'matchMedia').callsFake(reduced);
 
-		UIEventSimulator.fire(wheel, container, hardScrollIn);
+		UIEventSimulator.fire('wheel', container, hardScrollIn);
 		clock.tick(100);
 		expect(map.getZoom() - zoom).to.equal(1);
-
-		window.matchMedia.restore();
 	});
 
 	it('ignores wheel zooms right after a zoom without animation, like an animated zoom does', () => {
@@ -148,9 +131,9 @@ describe('ScrollWheelZoomHandler', () => {
 		const zoomend = sinon.spy();
 		map.on('zoomend', zoomend);
 
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 		clock.tick(100);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 		clock.tick(100);
 
 		expect(zoomend.calledOnce).to.be.true;
@@ -158,7 +141,7 @@ describe('ScrollWheelZoomHandler', () => {
 		expect(zoom2).to.be.greaterThan(zoom);
 
 		clock.tick(200);
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 		clock.tick(100);
 		expect(map.getZoom()).to.be.greaterThan(zoom2);
 	});
@@ -168,9 +151,9 @@ describe('ScrollWheelZoomHandler', () => {
 		map.on('movestart move moveend zoomstart zoom zoomend', e => log.push(e.originalEvent));
 		map.on('moveend', () => {
 			expect(log.length).to.be.greaterThan(2);
-			expect(log.every(ev => ev?.type === wheel)).to.be.true;
+			expect(log.every(ev => ev?.type === 'wheel')).to.be.true;
 			done();
 		});
-		UIEventSimulator.fire(wheel, container, scrollIn);
+		UIEventSimulator.fire('wheel', container, scrollIn);
 	});
 });

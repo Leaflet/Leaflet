@@ -43,14 +43,12 @@ describe('DoubleClickZoomHandler', () => {
 	});
 
 	it('doubleClickZoom: \'center\'', (done) => {
-		const doubleClickZoomBefore = map.options.doubleClickZoom;
 		map.options.doubleClickZoom = 'center';
 		const zoom = map.getZoom();
 
 		map.on('zoomend', () => {
 			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
-			map.options.doubleClickZoom = doubleClickZoomBefore;
 			done();
 		});
 

@@ -311,8 +311,8 @@ describe('Polygon#toGeoJSON', () => {
 	});
 
 	it('returns a 2D Polygon object from a simple GeoJSON like input', () => {
-		const multiPolygon = new Polygon([[[1, 2], [3, 4], [5, 6]]]);
-		expect(multiPolygon.toGeoJSON().geometry).to.eql({
+		const polygon = new Polygon([[[1, 2], [3, 4], [5, 6]]]);
+		expect(polygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
 			coordinates: [
 				[[2, 1], [4, 3], [6, 5], [2, 1]]
@@ -320,9 +320,9 @@ describe('Polygon#toGeoJSON', () => {
 		});
 	});
 
-	it('returns a 3D MultiPolygon object from a simple GeoJSON like input', () => {
-		const multiPolygon = new Polygon([[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]);
-		expect(multiPolygon.toGeoJSON().geometry).to.eql({
+	it('returns a 3D Polygon object from a simple GeoJSON like input', () => {
+		const polygon = new Polygon([[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]);
+		expect(polygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
 			coordinates: [
 				[[2, 1, 3], [5, 4, 6], [8, 7, 9], [2, 1, 3]]
@@ -715,7 +715,7 @@ describe('GeoJSON functions', () => {
 
 		it('returns nothing if feature does not have a geometry property', () => {
 			const ret = GeoJSON.geometryToLayer({type: 'Feature'});
-			expect(ret).not.to.be.true;
+			expect(ret).to.be.null;
 		});
 
 		it('creates a Layer using pointToLayer option (Point)', () => {
@@ -738,10 +738,12 @@ describe('GeoJSON functions', () => {
 			}, {
 				pointToLayer: customPointToLayer
 			});
-			layer.eachLayer((lyr) => {
+			const layers = layer.getLayers();
+			expect(layers).to.have.length(2);
+			for (const lyr of layers) {
 				expect(lyr).to.be.instanceOf(Circle);
 				expect(lyr.options.radius).to.equal(100);
-			});
+			}
 		});
 
 		it('creates a Layer using coordsToLatLng option (Point)', () => {

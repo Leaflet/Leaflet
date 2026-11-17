@@ -44,11 +44,6 @@ describe('Bounds', () => {
 		});
 
 		it('extends the bounds by given bounds', () => {
-			a.extend([20, 50]);
-			expect(a.max).to.eql(new Point(30, 50));
-		});
-
-		it('extends the bounds by given bounds', () => {
 			a.extend([[20, 50], [8, 40]]);
 			expect(a.getBottomLeft()).to.eql(new Point(8, 50));
 		});
