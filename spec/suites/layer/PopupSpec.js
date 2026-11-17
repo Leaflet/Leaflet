@@ -135,6 +135,14 @@ describe('Popup', () => {
 		expect(map.hasLayer(marker._popup)).to.be.false;
 	});
 
+	it('closes the open popup when rebinding with options', () => {
+		const marker = new Marker(center).addTo(map).bindPopup('Popup1').openPopup();
+		const popup = marker.getPopup();
+
+		marker.bindPopup('Popup2', {maxWidth: 100});
+		expect(map.hasLayer(popup)).to.be.false;
+	});
+
 	it('it should use a popup with a function as content with a FeatureGroup', () => {
 		const marker1 = new Marker(center);
 		const marker2 = new Marker([54.6, 38.2]);
