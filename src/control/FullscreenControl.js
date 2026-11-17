@@ -121,6 +121,9 @@ export class FullscreenControl extends Control {
 				this._setPseudo(false);
 			} else if (document.fullscreenElement === this._target) {
 				document.exitFullscreen();
+			} else {
+				// already exited without a fullscreenchange: WebKit fires none when a target in an iframe is detached
+				this._setFullscreen(false);
 			}
 		} else if (this.options.pseudo || !document.fullscreenEnabled) {
 			this._setPseudo(true);

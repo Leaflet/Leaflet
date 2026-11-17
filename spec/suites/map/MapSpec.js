@@ -551,14 +551,26 @@ describe('Map', () => {
 
 	describe('#stop', () => {
 		const nextFrame = () => new Promise((resolve) => { requestAnimationFrame(resolve); });
+		let clock;
+
+		// animations measure progress with Date.now, so a slow first frame could otherwise finish them before stop
+		beforeEach(() => {
+			clock = sinon.useFakeTimers({toFake: ['Date']});
+		});
+
+		afterEach(() => {
+			clock.restore();
+		});
 
 		it('stops the execution of the flyTo animation', async () => {
 			map.setView([0, 0], 2);
 			map.flyTo([51.505, -0.09], 5);
+			clock.tick(100);
 			await nextFrame();
 			map.stop();
 
 			const center = map.getCenter(), zoom = map.getZoom();
+			clock.tick(1000);
 			await nextFrame();
 			await nextFrame();
 
@@ -570,15 +582,17 @@ describe('Map', () => {
 		it('stops the execution of the panTo animation', async () => {
 			map.setView([0, 0], 2);
 			map.panTo([51.505, -0.09]);
+			clock.tick(100);
 			await nextFrame();
 			map.stop();
 
 			const center = map.getCenter();
+			clock.tick(1000);
 			await nextFrame();
 			await nextFrame();
 
 			expect(map.getCenter()).to.eqlLatLng(center);
-			expect(center.lat).to.be.below(51);
+			expect(center.lat).to.be.within(1, 51);
 		});
 	});
 
