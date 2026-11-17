@@ -159,7 +159,7 @@ export class Tooltip extends DivOverlay {
 	/** @param {Point} pos */
 	_setPosition(pos) {
 		const container = this._container,
-		offset = new Point(this.options.offset);
+		offset = new Point(this.options.offset).clone();
 		let direction = this.options.direction;
 
 		if (!(direction in directions)) { // auto: open away from the map center, mirroring the offset
