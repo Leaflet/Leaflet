@@ -59,24 +59,10 @@ describe('ImageOverlay', () => {
 				className: 'my-custom-image-class'
 			});
 			map.addLayer(overlay);
-
-			const bounds = new LatLngBounds(
-				[14, 12],
-				[30, 40]
-			);
-			overlay.setBounds(bounds);
-		});
-
-		// Clean up after each test run
-		afterEach(() => {
-			map.removeLayer(overlay);
-			overlay = null;
 		});
 
 		function raiseImageEvent(event) {
-			const domEvent = document.createEvent('Event');
-			domEvent.initEvent(event, false, false);
-			overlay._image.dispatchEvent(domEvent);
+			overlay._image.dispatchEvent(new Event(event));
 		}
 
 		describe('when loaded', () => {

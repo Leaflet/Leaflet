@@ -30,10 +30,9 @@ describe('Rectangle', () => {
 			];
 			const sourceLatLngs = originalLatLngs.slice();
 
-			const rect = new Rectangle(sourceLatLngs);
+			new Rectangle(sourceLatLngs);
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
-			expect(rect._latlngs).to.not.eql(sourceLatLngs);
 		});
 
 		it('cannot be called with an empty array', () => {

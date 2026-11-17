@@ -16,6 +16,7 @@ describe('PinchZoomHandler', () => {
 	});
 
 	afterEach(() => {
+		sinon.restore();
 		removeMapContainer(map, container);
 	});
 
@@ -209,8 +210,6 @@ describe('PinchZoomHandler', () => {
 
 		await Promise.all([f1, f2]);
 
-		map.pinchZoom._onPointerEnd();
-
 		const renderedRect = polygon._path.getBoundingClientRect();
 
 		const width = renderedRect.width;
@@ -240,7 +239,6 @@ describe('PinchZoomHandler', () => {
 		expect(warnSpy.calledOnce).to.be.true;
 		expect(warnSpy.firstCall.args[0]).to.eq('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 
-		warnSpy.restore();
 		removeMapContainer(localMap, localContainer);
 	});
 
@@ -258,7 +256,6 @@ describe('PinchZoomHandler', () => {
 		expect(warnSpy.calledOnce).to.be.true;
 		expect(warnSpy.firstCall.args[0]).to.eq('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 
-		warnSpy.restore();
 		removeMapContainer(localMap, localContainer);
 	});
 

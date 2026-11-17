@@ -1,4 +1,4 @@
-import {CircleMarker, FeatureGroup, LayerGroup, LeafletMap, Marker, Polygon, Polyline, Rectangle, Tooltip} from 'leaflet';
+import {CircleMarker, DomUtil, FeatureGroup, LayerGroup, LeafletMap, Marker, Point, Polygon, Polyline, Rectangle, Tooltip} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
@@ -172,6 +172,34 @@ describe('Tooltip', () => {
 		expect(layer.getElement().getAttribute('aria-describedby')).to.equal('my-help');
 	});
 
+	it('preserves existing descriptions when opening and closing', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		const element = layer.getElement();
+		element.setAttribute('aria-describedby', 'first-help second-help');
+
+		layer.openTooltip();
+		const tooltipId = layer.getTooltip().getElement().id;
+		expect(element.getAttribute('aria-describedby')).to.equal(`first-help second-help ${tooltipId}`);
+
+		layer.closeTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal('first-help second-help');
+	});
+
+	it('removes only its own reference and does not duplicate it', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+		const element = layer.getElement();
+		layer.openTooltip();
+		const tooltipId = layer.getTooltip().getElement().id;
+
+		element.setAttribute('aria-describedby', `${tooltipId} my-help`);
+		layer.closeTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal('my-help');
+
+		element.setAttribute('aria-describedby', `my-help ${tooltipId}`);
+		layer.openTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal(`my-help ${tooltipId}`);
+	});
+
 	it('stays open on marker when permanent', () => {
 		const layer = new Marker(center).addTo(map);
 
@@ -263,6 +291,18 @@ describe('Tooltip', () => {
 		expect(spy.calledOnce).to.be.true;
 	});
 
+	it('does not mirror a Point offset in place', () => {
+		const offset = new Point(20, 0);
+		const layer = new Marker(map.containerPointToLatLng([300, 200])).addTo(map);
+
+		layer.bindTooltip('Tooltip', {permanent: true, offset});
+		expect(offset.x).to.equal(20);
+
+		const pos = DomUtil.getPosition(layer.getTooltip().getElement());
+		layer.getTooltip().update();
+		expect(DomUtil.getPosition(layer.getTooltip().getElement())).to.eql(pos);
+	});
+
 	it('can be forced on top direction', () => {
 		const layer = new CircleMarker(center).addTo(map);
 		const spy = sinon.spy();
@@ -291,7 +331,7 @@ describe('Tooltip', () => {
 		const spy = sinon.spy();
 		layer.on('click', spy);
 
-		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true});
+		layer.bindTooltip('A tooltip that should be displayed on the bottom', {permanent: true, direction: 'bottom', interactive: true});
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 		UIEventSimulator.fireAt('click', 200, 220);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be.true;
@@ -302,7 +342,7 @@ describe('Tooltip', () => {
 		const spy = sinon.spy();
 		layer.on('click', spy);
 
-		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true, offset: [20, 20]});
+		layer.bindTooltip('A tooltip that should be displayed on the bottom', {permanent: true, direction: 'bottom', interactive: true, offset: [20, 20]});
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 		UIEventSimulator.fireAt('click', 200, 220);
 		expect(spy.calledOnce).to.be.false;
@@ -383,19 +423,19 @@ describe('Tooltip', () => {
 		expect(layer._tooltip._container.style.opacity).to.eql('0.57');
 	});
 
-	it('it should use a tooltip with a function as content with a FeatureGroup', () => {
+	it('uses a function as tooltip content with a FeatureGroup', () => {
 		const marker1 = new Marker([55.8, 37.6], {description: 'I\'m marker 1.'});
 		const marker2 = new Marker([54.6, 38.2], {description: 'I\'m marker 2.'});
 		const group = new FeatureGroup([marker1, marker2]).addTo(map);
 
 		group.bindTooltip(layer => layer.options.description);
 
-		// toggle popup on marker1
+		// open tooltip on marker1
 		UIEventSimulator.fire('pointerover', marker1._icon, {relatedTarget: map._container});
 		expect(map.hasLayer(group._tooltip)).to.be.true;
 		expect(group._tooltip._container.innerHTML).to.equal('I\'m marker 1.');
 
-		// toggle popup on marker2
+		// open tooltip on marker2
 		UIEventSimulator.fire('pointerover', marker2._icon, {relatedTarget: map._container});
 		expect(map.hasLayer(group._tooltip)).to.be.true;
 		expect(group._tooltip._container.innerHTML).to.equal('I\'m marker 2.');

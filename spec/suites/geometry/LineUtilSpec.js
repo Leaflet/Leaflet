@@ -159,19 +159,6 @@ describe('LineUtil', () => {
 			}).to.throw('latlngs not passed');
 		});
 
-
-		it('throws error if latlngs not passed', () => {
-			expect(() => {
-				LineUtil.polylineCenter(null, crs);
-			}).to.throw('latlngs not passed');
-		});
-
-		it('throws error if latlng array is empty', () => {
-			expect(() => {
-				LineUtil.polylineCenter([], crs);
-			}).to.throw('latlngs not passed');
-		});
-
 		it('shows warning if latlngs is not flat', () => {
 			const latlngs = [
 				[[80, 0], [80, 90]]
@@ -186,11 +173,15 @@ describe('LineUtil', () => {
 		it('iterates only over the array values', () => {
 			// eslint-disable-next-line
 			Array.prototype.foo = 'ABC';
-			const latlngs = [
-				[[80, 0], [80, 90]]
-			];
-			const center = LineUtil.polylineCenter(latlngs, crs);
-			expect(center).to.be.nearLatLng([80, 45]);
+			try {
+				const latlngs = [
+					[[80, 0], [80, 90]]
+				];
+				const center = LineUtil.polylineCenter(latlngs, crs);
+				expect(center).to.be.nearLatLng([80, 45]);
+			} finally {
+				delete Array.prototype.foo;
+			}
 		});
 	});
 });

@@ -19,12 +19,12 @@ describe('BoxZoomHandler', () => {
 	});
 
 	afterEach(() => {
+		sinon.restore();
 		removeMapContainer(map, container);
 	});
 
 
 	it('cancel boxZoom by pressing ESC and re-enable click event on the map', async () => {
-		// let mapClick = false;
 		let clickSpy = sinon.spy();
 		map.once('click', clickSpy);
 
@@ -56,8 +56,6 @@ describe('BoxZoomHandler', () => {
 		UIEventSimulator.fire('keydown', document, {
 			code: 'Escape'
 		});
-
-		await (new Promise((res) => { setTimeout(res, 1); }));
 
 		expect(map.getContainer().classList.contains('leaflet-crosshair')).to.be.false;
 		expect(map.getContainer().querySelectorAll('.leaflet-zoom-box').length).to.equal(0);
@@ -162,7 +160,6 @@ describe('BoxZoomHandler', () => {
 		});
 
 		expect(clearSpy.calledWith(resetTimeout)).to.be.true;
-		clearSpy.restore();
 
 		// cleanup pointerdown - because it breaks other tests
 		await finger.down().up();
@@ -213,5 +210,23 @@ describe('BoxZoomHandler', () => {
 
 		expect(log.length).to.be.greaterThan(2);
 		expect(log.every(ev => ev?.type === 'pointerup')).to.be.true;
+	});
+
+	it('cancels a box being drawn when disabled', async () => {
+		const boxEndSpy = sinon.spy();
+		map.on('boxzoomend', boxEndSpy);
+
+		finger.moveTo(100, 100).down(shift);
+		await finger.moveBy(100, 100, shift);
+		expect(map.getContainer().querySelectorAll('.leaflet-zoom-box').length).to.equal(1);
+
+		map.boxZoom.disable();
+		expect(map.getContainer().querySelectorAll('.leaflet-zoom-box').length).to.equal(0);
+		expect(map.getContainer().classList.contains('leaflet-crosshair')).to.be.false;
+		expect(map.boxZoom.moved()).to.be.false;
+
+		await finger.up();
+		expect(boxEndSpy.called).to.be.false;
+		expect(map.getZoom()).to.equal(3);
 	});
 });

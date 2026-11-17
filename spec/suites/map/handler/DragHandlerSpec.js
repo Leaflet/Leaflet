@@ -1,4 +1,4 @@
-import {DomUtil, GridLayer, LatLng, LeafletMap, Marker, Point} from 'leaflet';
+import {DomUtil, GridLayer, LatLng, LatLngBounds, LeafletMap, Marker, Point, SimpleCRS} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
@@ -12,6 +12,7 @@ describe('DragHandler', () => {
 	});
 
 	afterEach(() => {
+		sinon.restore();
 		removeMapContainer(map, container);
 	});
 
@@ -24,6 +25,7 @@ describe('DragHandler', () => {
 			expect(map.dragging.enabled()).to.be.true;
 			map.setView([0, 0], 0);
 			expect(map.dragging.enabled()).to.be.true;
+			expect(map.dragging._draggable.listens('predrag', map.dragging._onPreDragWrap, map.dragging)).to.be.false;
 		});
 
 		it('calls the map with dragging and worldCopyJump enabled', () => {
@@ -35,6 +37,7 @@ describe('DragHandler', () => {
 			expect(map.dragging.enabled()).to.be.true;
 			map.setView([0, 0], 0);
 			expect(map.dragging.enabled()).to.be.true;
+			expect(map.dragging._draggable.listens('predrag', map.dragging._onPreDragWrap, map.dragging)).to.be.true;
 		});
 
 		it('calls the map with dragging disabled and worldCopyJump enabled; ' +
@@ -48,6 +51,7 @@ describe('DragHandler', () => {
 			map.setView([0, 0], 0);
 			map.dragging.enable();
 			expect(map.dragging.enabled()).to.be.true;
+			expect(map.dragging._draggable.listens('predrag', map.dragging._onPreDragWrap, map.dragging)).to.be.true;
 		});
 	});
 
@@ -151,8 +155,8 @@ describe('DragHandler', () => {
 			const scale = new Point(2, 1.5);
 
 			beforeEach(() => {
-				container.style.webkitTransformOrigin = 'top left';
-				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
+				container.style.transformOrigin = 'top left';
+				container.style.transform = `scale(${scale.x}, ${scale.y})`;
 			});
 
 			it('change the center of the map, compensating for CSS scale', async () => {
@@ -520,6 +524,28 @@ describe('DragHandler', () => {
 		});
 	});
 
+	describe('maxBoundsViscosity', () => {
+		it('limits the drag by all four corners when the projection rotates the axes (#7650)', () => {
+			// SimpleCRS with the axes rotated by 30°
+			const cos = Math.cos(Math.PI / 6), sin = Math.sin(Math.PI / 6);
+			class RotatedCRS extends SimpleCRS {
+				static projection = {
+					project: ll => new Point(cos * ll.lng - sin * ll.lat, sin * ll.lng + cos * ll.lat),
+					unproject: p => new LatLng(cos * p.y - sin * p.x, cos * p.x + sin * p.y)
+				};
+			}
+			const bounds = new LatLngBounds([0, 0], [10, 2]);
+			map = new LeafletMap(container, {crs: RotatedCRS, maxBounds: bounds, maxBoundsViscosity: 1});
+			map.setView([5, 1], 7);
+
+			map.dragging._onDragStart();
+			// each corner can be dragged to the top left of the map
+			for (const corner of [bounds.getNorthWest(), bounds.getNorthEast(), bounds.getSouthEast(), bounds.getSouthWest()]) {
+				expect(map.dragging._offsetLimit.contains(map.latLngToContainerPoint(corner).multiplyBy(-1))).to.be.true;
+			}
+		});
+	});
+
 	describe('inertia', () => {
 		let panBy;
 
@@ -552,10 +578,6 @@ describe('DragHandler', () => {
 				const matchMedia = window.matchMedia.bind(window);
 				const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
 				sinon.stub(window, 'matchMedia').callsFake(reduced);
-			});
-
-			afterEach(() => {
-				window.matchMedia.restore();
 			});
 
 			it('shortens the coast to half the map size with the same deceleration', async () => {
@@ -669,14 +691,13 @@ describe('DragHandler', () => {
 				// a stalled CI runner can push all but the last drag position out of the 50ms inertia window, so make
 				// time advance per call instead of per wall clock; it still moves forward for the inertia animation
 				let now = Date.now();
-				const clock = sinon.stub(Date, 'now').callsFake(() => (now += 5));
+				sinon.stub(Date, 'now').callsFake(() => (now += 5));
 
 				const finger = new Finger();
 				await finger.moveTo(200, 200).down().moveBy(20, 0).moveBy(60, 0);
 				finger.dispatch('move', 360, 200);
 				finger.dispatch('up', 360, 200);
 				await moveend;
-				clock.restore();
 
 				expect(panBy.called).to.equal(inertia);
 				expect(log.length).to.be.greaterThan(2);

@@ -1,6 +1,7 @@
 import {FullscreenControl, LeafletMap} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
+import {userEvent} from 'vitest/browser';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('FullscreenControl', () => {
@@ -92,5 +93,31 @@ describe('FullscreenControl', () => {
 		control = new FullscreenControl({container: parent, pseudo: true}).addTo(map).toggle();
 		expect(parent.classList.contains('leaflet-pseudo-fullscreen')).to.equal(true);
 		control.toggle();
+	});
+	describe('native', () => {
+		// a detached fullscreen element exits fullscreen right away, but fullscreenchange only reaches the document,
+		// and in WebKit not even that when the target is in an iframe (as in tests)
+		async function enterAndDetach() {
+			const control = new FullscreenControl().addTo(map),
+			entered = new Promise((resolve) => { map.once('enterfullscreen', resolve); });
+			await userEvent.click(control.getContainer().querySelector('a'));
+			await entered;
+			container.remove();
+			return control;
+		}
+
+		it('resets a stale state on exit after the target left the document', async () => {
+			const control = await enterAndDetach();
+			control.setFullscreen(false);
+			expect(control.isFullscreen()).to.equal(false);
+			document.body.append(container);
+		});
+
+		it('removes cleanly after the target left the document', async () => {
+			const control = await enterAndDetach();
+			control.remove();
+			expect(control.isFullscreen()).to.equal(false);
+			document.body.append(container);
+		});
 	});
 });

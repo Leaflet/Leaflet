@@ -1674,8 +1674,9 @@ export class LeafletMap extends Evented {
 		this._controlCorners = {};
 		cancelAnimationFrame(this._resizeRequest);
 
-		for (const handler of this._handlers) {
-			handler.disable();
+		// in reverse, so a plugin handler that re-enables a built-in one on disable (e.g. scrollWheelZoom) goes first
+		for (let i = this._handlers.length - 1; i >= 0; i--) {
+			this._handlers[i].disable();
 		}
 
 		clearTimeout(this._sizeTimer);
@@ -2489,9 +2490,19 @@ export class LeafletMap extends Evented {
 		hovered = this._hoveredCanvasLayer,
 		skip = type === 'pointerover' || type === 'pointerout' || type.startsWith('key') ||
 			this._animatingZoom || move && this.dragging?.moving(),
-		layer = skip ? undefined : this._canvasLayerAt(ev, type === 'click'),
 		related = /** @type {Node | null} */ (ev.relatedTarget),
 		leftMap = type === 'pointerout' && !this._container.contains(related);
+		let layer = skip ? undefined : this._canvasLayerAt(ev, type === 'click');
+
+		// a click is fired on what both the press and the release were on, but for canvas layers the browser only sees
+		// the map, so a pointer click goes to a canvas layer only if the press was on that layer too (#7105)
+		if (type === 'pointerdown') {
+			/** @type {Path | null | undefined} */
+			this._pressedCanvasLayer = skip ? undefined : layer ?? null;
+		} else if (type === 'click' && ev.detail > 0 && this._pressedCanvasLayer !== undefined) {
+			if (layer !== this._pressedCanvasLayer) { layer = undefined; }
+			this._pressedCanvasLayer = undefined;
+		}
 
 		if (layer !== hovered && (move && !skip || leftMap)) {
 			if (hovered) { this._fireDOMEvent(ev, 'pointerout', [hovered]); }
@@ -2696,10 +2707,9 @@ export class LeafletMap extends Evented {
 	_getBoundsOffset(pxBounds, maxBounds, zoom) {
 		// `setMaxBounds` makes the option a `LatLngBounds`
 		const bounds = /** @type {LatLngBounds} */ (maxBounds),
-		projectedMaxBounds = new Bounds(
-			this.project(bounds.getNorthEast(), zoom),
-			this.project(bounds.getSouthWest(), zoom)
-		),
+		// any corner can be an extreme when the projection rotates the axes (#5246)
+		corners = [bounds.getNorthWest(), bounds.getNorthEast(), bounds.getSouthEast(), bounds.getSouthWest()],
+		projectedMaxBounds = new Bounds(corners.map(c => this.project(c, zoom))),
 		minOffset = projectedMaxBounds.min.subtract(pxBounds.min),
 		maxOffset = projectedMaxBounds.max.subtract(pxBounds.max),
 

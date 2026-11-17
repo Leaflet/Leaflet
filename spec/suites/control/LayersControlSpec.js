@@ -1,4 +1,4 @@
-import {LayersControl, LeafletMap, Marker, TileLayer, Util} from 'leaflet';
+import {LayerGroup, LayersControl, LeafletMap, Marker, TileLayer, Util} from 'leaflet';
 import sinon from 'sinon';
 import {userEvent} from 'vitest/browser';
 import UIEventSimulator from 'ui-event-simulator';
@@ -21,7 +21,7 @@ describe('LayersControl', () => {
 	describe('baselayerchange event', () => {
 		it('is fired on input that changes the base layer', () => {
 			const baseLayers = {'Layer 1': new TileLayer(''), 'Layer 2': new TileLayer('')},
-			layers = new LayersControl(baseLayers).addTo(map),
+			layers = new LayersControl(baseLayers).addTo(map).expand(),
 			spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
@@ -44,6 +44,7 @@ describe('LayersControl', () => {
 
 			map.removeControl(layers);
 			map.addControl(layers);
+			layers.expand();
 
 			UIEventSimulator.fire('click', layers._baseLayersList.getElementsByTagName('input')[0]);
 			expect(spy.called).to.be.true;
@@ -57,7 +58,7 @@ describe('LayersControl', () => {
 
 		it('is not fired on input that doesn\'t change the base layer', () => {
 			const overlays = {'Marker 1': new Marker([0, 0]), 'Marker 2': new Marker([0, 0])},
-			layers = new LayersControl({}, overlays).addTo(map),
+			layers = new LayersControl({}, overlays).addTo(map).expand(),
 			spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
@@ -71,7 +72,7 @@ describe('LayersControl', () => {
 		it('respects a layer removed from within the handler (#9747)', () => {
 			const overlays = {'Layer 1': new Marker([0, 0]), 'Layer 2': new Marker([0, 0])};
 			map.addLayer(overlays['Layer 1']).addLayer(overlays['Layer 2']);
-			const layers = new LayersControl({}, overlays).addTo(map),
+			const layers = new LayersControl({}, overlays).addTo(map).expand(),
 			inputs = layers._overlaysList.getElementsByTagName('input');
 
 			expect(inputs[0].checked).to.be.true;
@@ -94,7 +95,7 @@ describe('LayersControl', () => {
 		it('keeps a layer re-added from within the handler (#9747)', () => {
 			const overlays = {'Layer 1': new Marker([0, 0])};
 			map.addLayer(overlays['Layer 1']);
-			const layers = new LayersControl({}, overlays).addTo(map);
+			const layers = new LayersControl({}, overlays).addTo(map).expand();
 
 			map.on('overlayremove', (e) => {
 				if (e.layer === overlays['Layer 1']) {
@@ -127,7 +128,7 @@ describe('LayersControl', () => {
 		it('when an included layer is added or removed from the map, it\'s (un)checked', () => {
 			const baseLayer = new TileLayer(),
 			overlay = new Marker([0, 0]);
-			new LayersControl({'Baselayer': baseLayer}, {'Overlay': overlay}).addTo(map);
+			new LayersControl({'Baselayer': baseLayer}, {'Overlay': overlay}).addTo(map).expand();
 
 			function isChecked() {
 				return !!(map._container.querySelector('.leaflet-control-layers-overlays input').checked);
@@ -156,11 +157,156 @@ describe('LayersControl', () => {
 		it('updates when an included layer is removed from the control', () => {
 			const baseLayer = new TileLayer(),
 			overlay = new Marker([0, 0]),
-			layers = new LayersControl({'Base': baseLayer}, {'Overlay': overlay}).addTo(map);
+			layers = new LayersControl({'Base': baseLayer}, {'Overlay': overlay}).addTo(map).expand();
 
 			layers.removeLayer(overlay);
 			expect(map._container.querySelector('.leaflet-control-layers-overlays').children.length)
 				.to.be.equal(0);
+		});
+
+		describe('when layers change while collapsed (#10266)', () => {
+			const names = list => Array.from(list.querySelectorAll('label span span'), el => el.innerHTML.trim());
+
+			it('defers rebuilding the list until expanded', () => {
+				const overlay = new Marker([0, 0]).addTo(map),
+				layers = new LayersControl().addTo(map),
+				spy = sinon.spy(layers, '_addItem');
+
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				layers.addOverlay(overlay, 'Two');
+				expect(spy.called).to.be.false;
+
+				layers.expand();
+				expect(spy.callCount).to.equal(2);
+				expect(names(layers._overlaysList)).to.eql(['One', 'Two']);
+				const inputs = layers._overlaysList.getElementsByTagName('input');
+				expect(inputs[0].checked).to.be.false;
+				expect(inputs[1].checked).to.be.true;
+			});
+
+			it('rebuilds the list on expand only once', () => {
+				const layers = new LayersControl().addTo(map);
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				layers.expand();
+
+				const spy = sinon.spy(layers, '_update');
+				layers.collapse();
+				layers.expand();
+				expect(spy.called).to.be.false;
+			});
+
+			it('updates the list right away when expanded', () => {
+				const layers = new LayersControl().addTo(map).expand();
+
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				expect(names(layers._overlaysList)).to.eql(['One']);
+			});
+
+			it('updates the list right away when collapsed: false', () => {
+				const layers = new LayersControl(null, null, {collapsed: false}).addTo(map);
+
+				layers.addBaseLayer(new TileLayer(''), 'Base');
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				expect(names(layers._baseLayersList)).to.eql(['Base']);
+				expect(names(layers._overlaysList)).to.eql(['One']);
+				expect(layers._separator.style.display).to.equal('');
+			});
+
+			it('keeps sorting, the separator and hideSingleBase', () => {
+				const layers = new LayersControl(null, null, {sortLayers: true, hideSingleBase: true}).addTo(map);
+
+				layers.addBaseLayer(new TileLayer(''), 'Base');
+				layers.addOverlay(new Marker([0, 0]), 'C');
+				layers.addOverlay(new Marker([0, 0]), 'A');
+				layers.addOverlay(new Marker([0, 0]), 'B');
+				layers.expand();
+
+				expect(names(layers._overlaysList)).to.eql(['A', 'B', 'C']);
+				expect(layers._baseLayersList.style.display).to.equal('none');
+				expect(layers._separator.style.display).to.equal('none');
+			});
+
+			it('disables layers out of the zoom range once expanded', () => {
+				const layers = new LayersControl().addTo(map);
+
+				layers.addOverlay(new Marker([0, 0], {minZoom: 18}), 'Hidden');
+				layers.addOverlay(new Marker([0, 0]), 'Shown');
+				layers.expand();
+
+				const inputs = layers._overlaysList.getElementsByTagName('input');
+				expect(inputs[0].disabled).to.be.true;
+				expect(inputs[1].disabled).to.be.false;
+			});
+
+			it('defers rebuilding when a listed layer is added to or removed from the map', () => {
+				const overlay = new Marker([0, 0]),
+				layers = new LayersControl().addTo(map),
+				spy = sinon.spy(layers, '_addItem');
+
+				layers.addOverlay(overlay, 'Overlay');
+				overlay.addTo(map);
+				overlay.remove();
+				overlay.addTo(map);
+				expect(spy.called).to.be.false;
+
+				layers.expand();
+				expect(spy.calledOnce).to.be.true;
+				expect(layers._overlaysList.getElementsByTagName('input')[0].checked).to.be.true;
+			});
+
+			it('defers rebuilding when a layer is removed from the control', () => {
+				const overlay = new Marker([0, 0]),
+				layers = new LayersControl(null, {'Overlay': overlay}).addTo(map),
+				spy = sinon.spy(layers, '_addItem');
+
+				layers.addOverlay(new Marker([0, 0]), 'Pending');
+				layers.removeLayer(overlay);
+				expect(spy.called).to.be.false;
+
+				layers.expand();
+				expect(names(layers._overlaysList)).to.eql(['Pending']);
+			});
+
+			it('checks a pending layer when it is added to the map', () => {
+				const overlay = new Marker([0, 0]),
+				layers = new LayersControl().addTo(map);
+
+				layers.addOverlay(overlay, 'Overlay');
+				map.addLayer(overlay);
+				layers.expand();
+				expect(layers._overlaysList.getElementsByTagName('input')[0].checked).to.be.true;
+			});
+
+			it('lists pending layers after removing and re-adding the control', () => {
+				const layers = new LayersControl().addTo(map);
+
+				layers.addOverlay(new Marker([0, 0]), 'One');
+				map.removeControl(layers);
+				map.addControl(layers);
+				layers.expand();
+				expect(names(layers._overlaysList)).to.eql(['One']);
+			});
+
+			it('lets the keyboard expand the control and toggle a pending layer', async () => {
+				const overlay = new Marker([0, 0]),
+				layers = new LayersControl().addTo(map);
+				layers.addOverlay(overlay, 'Overlay');
+
+				layers._layersLink.focus();
+				await userEvent.keyboard('{Enter}');
+				expect(document.activeElement).to.equal(layers._section);
+
+				// clicks are ignored for a tick after expanding, see `_expandSafely`
+				await new Promise((resolve) => { setTimeout(resolve); });
+				// focus directly: WebKit doesn't Tab to checkboxes by default
+				const input = layers._overlaysList.getElementsByTagName('input')[0];
+				input.focus();
+				expect(document.activeElement).to.equal(input);
+
+				await userEvent.keyboard(' ');
+				expect(map.hasLayer(overlay)).to.be.true;
+				expect(layers._overlaysList.getElementsByTagName('input')[0].checked).to.be.true;
+			});
 		});
 
 		it('silently returns when trying to remove a non-existing layer from the control', () => {
@@ -176,7 +322,7 @@ describe('LayersControl', () => {
 		it('having repeated layers works as expected', () => {
 			const layerA = new TileLayer(''), layerB = new TileLayer(''),
 			baseLayers = {'Layer 1': layerA, 'Layer 2': layerB, 'Layer 3': layerA},
-			layers = new LayersControl(baseLayers).addTo(map);
+			layers = new LayersControl(baseLayers).addTo(map).expand();
 
 			function checkInputs(idx) {
 				const inputs = map._container.querySelectorAll('.leaflet-control-layers-base input');
@@ -475,6 +621,40 @@ describe('LayersControl', () => {
 		});
 	});
 
+	describe('autoZIndex', () => {
+		it('keeps tile layers in control order when they are switched on in another order', () => {
+			const lower = new TileLayer('');
+			const upper = new TileLayer('');
+
+			new LayersControl(null, {Lower: lower, Upper: upper}).addTo(map);
+
+			map.addLayer(upper);
+			map.addLayer(lower);
+
+			expect(+lower._container.style.zIndex).to.be.lessThan(+upper._container.style.zIndex);
+		});
+
+		it('assigns zIndexes to layers inside a layer group', () => {
+			const tileLayer = new TileLayer('');
+			const group = new LayerGroup([new TileLayer('')]);
+
+			new LayersControl(null, {Tiles: tileLayer, Group: group}).addTo(map);
+
+			expect(tileLayer.options.zIndex).to.equal(1);
+			expect(group.getLayers()[0].options.zIndex).to.equal(2);
+		});
+
+		it('does not assign zIndexes when it is false', () => {
+			const first = new TileLayer('', {zIndex: 5});
+			const second = new TileLayer('', {zIndex: 7});
+
+			new LayersControl(null, {First: first, Second: second}, {autoZIndex: false}).addTo(map);
+
+			expect(first.options.zIndex).to.equal(5);
+			expect(second.options.zIndex).to.equal(7);
+		});
+	});
+
 	describe('sortLayers', () => {
 		it('keeps original order by default', () => {
 			const baseLayerOne = new TileLayer('').addTo(map);
@@ -490,7 +670,7 @@ describe('LayersControl', () => {
 				'Marker C': markerC,
 				'Marker B': markerB,
 				'Marker A': markerA
-			}).addTo(map);
+			}).addTo(map).expand();
 
 			const elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
@@ -516,7 +696,7 @@ describe('LayersControl', () => {
 				'Marker B': markerB
 			}, {
 				sortLayers: true
-			}).addTo(map);
+			}).addTo(map).expand();
 
 			const elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
@@ -543,7 +723,7 @@ describe('LayersControl', () => {
 			}, {
 				sortLayers: true,
 				sortFunction(a, b) { return a.options.customOption - b.options.customOption; }
-			}).addTo(map);
+			}).addTo(map).expand();
 
 			const elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base Two');

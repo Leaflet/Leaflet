@@ -44,7 +44,7 @@ describe('MercatorProjection', () => {
 
 		it('unprojects other points', () => {
 			// from https://github.com/Leaflet/Leaflet/issues/1578
-			expect(pr(new Point(8918060.964088084, 6755099.410887127)));
+			expect(pr(new Point(8918060.964088084, 6755099.410887127))).near([8918060.964088084, 6755099.410887127]);
 		});
 	});
 });
@@ -93,7 +93,7 @@ describe('SphericalMercatorProjection', () => {
 
 		it('unprojects other points', () => {
 			// from https://github.com/Leaflet/Leaflet/issues/1578
-			expect(pr(new Point(8918060.964088084, 6755099.410887127)));
+			expect(pr(new Point(8918060.964088084, 6755099.410887127))).near([8918060.964088084, 6755099.410887127]);
 		});
 	});
 });

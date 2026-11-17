@@ -19,6 +19,18 @@ describe('VideoOverlay', () => {
 		removeMapContainer(map, container);
 	});
 
+	it('keeps its size despite a max-width on videos in the page (#4600)', () => {
+		const style = document.createElement('style');
+		style.textContent = 'video { max-width: 10px; max-height: 10px; }';
+		document.head.append(style);
+
+		const videoOverlay = new VideoOverlay(videoUrls, videoBounds).addTo(map);
+		const {maxWidth, maxHeight} = getComputedStyle(videoOverlay.getElement());
+		style.remove();
+
+		expect([maxWidth, maxHeight]).to.eql(['none', 'none']);
+	});
+
 	it('create VideoOverlay', () => {
 		const videoOverlay = new VideoOverlay(videoUrls, videoBounds).addTo(map);
 

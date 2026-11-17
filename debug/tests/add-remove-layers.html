@@ -46,7 +46,7 @@
 			}
 
 			for (let i = 0; i < 50; i++) {
-				const myCircle = new Circle(new LatLng(lat, long), 3);
+				const myCircle = new Circle(new LatLng(lat, long), {radius: 3});
 				myCircle.on('click', onClick);
 
 				layerGroup.addLayer(myCircle);

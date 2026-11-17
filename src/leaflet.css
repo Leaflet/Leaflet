@@ -59,7 +59,9 @@
 
 /* !important to survive host-page resets like `img, svg { max-width: 100% }`, which break the map */
 
-.leaflet-container .leaflet-overlay-pane svg {
+.leaflet-container .leaflet-overlay-pane svg,
+.leaflet-container .leaflet-pane > svg,
+.leaflet-container .leaflet-image-layer {
 	max-width: none !important;
 	max-height: none !important;
 }

@@ -17,8 +17,6 @@ describe('Path', () => {
 		removeMapContainer(map, container);
 	});
 
-	// The following two tests are skipped, as the ES6-ifycation of Leaflet
-	// means that Path is no longer visible.
 	describe('#bringToBack', () => {
 		it('is a no-op for layers not on a map', () => {
 			const path = new Polyline([[1, 2], [3, 4], [5, 6]]);

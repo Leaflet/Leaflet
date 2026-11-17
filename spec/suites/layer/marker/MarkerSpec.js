@@ -109,11 +109,11 @@ describe('Marker', () => {
 			expect(marker.dragging.enabled()).to.be.true;
 
 			map.removeLayer(marker);
-			// Dragging is still enabled, we should be able to disable it,
-			// even if marker is off the map.
+			// We should be able to disable dragging while off the map
 			expect(marker.dragging).to.equal(undefined);
 			marker.options.draggable = false;
 			map.addLayer(marker);
+			expect(marker.dragging.enabled()).to.be.false;
 
 			map.removeLayer(marker);
 
