@@ -86,7 +86,8 @@ export class FullscreenControl extends Control {
 			DomEvent.stop(e);
 			this.toggle();
 		});
-		DomEvent.on(this._target, 'fullscreenchange', this._onFullscreenChange, this);
+		// a detached target exits fullscreen, but the event then only reaches the document
+		DomEvent.on(document, 'fullscreenchange', this._onFullscreenChange, this);
 
 		return container;
 	}
@@ -96,7 +97,7 @@ export class FullscreenControl extends Control {
 		// a native exit fires fullscreenchange after the listener below is gone, so reset the state synchronously
 		this.setFullscreen(false);
 		this._setPseudo(false);
-		DomEvent.off(this._target, 'fullscreenchange', this._onFullscreenChange, this);
+		DomEvent.off(document, 'fullscreenchange', this._onFullscreenChange, this);
 	}
 
 	/** Returns `true` if the map is in fullscreen mode. */
@@ -116,7 +117,11 @@ export class FullscreenControl extends Control {
 	setFullscreen(on) {
 		if (on === this._fullscreen) { return this; }
 		if (!on) {
-			if (this._pseudo) { this._setPseudo(false); } else { document.exitFullscreen(); }
+			if (this._pseudo) {
+				this._setPseudo(false);
+			} else if (document.fullscreenElement === this._target) {
+				document.exitFullscreen();
+			}
 		} else if (this.options.pseudo || !document.fullscreenEnabled) {
 			this._setPseudo(true);
 		} else {
