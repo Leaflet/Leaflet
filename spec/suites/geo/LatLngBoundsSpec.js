@@ -21,14 +21,8 @@ describe('LatLngBounds', () => {
 			expect(b.getNorthWest()).to.eql(new LatLng(30, 12));
 		});
 
-		it('returns an empty bounds when not argument is given', () => {
-			const bounds = new LatLngBounds();
-			expect(bounds instanceof LatLngBounds).to.be.true;
-		});
-
-		it('returns an empty bounds when not argument is given to factory', () => {
-			const bounds = new LatLngBounds();
-			expect(bounds instanceof LatLngBounds).to.be.true;
+		it('returns an empty bounds when no argument is given', () => {
+			expect(new LatLngBounds().isValid()).to.be.false;
 		});
 
 	});
@@ -61,6 +55,12 @@ describe('LatLngBounds', () => {
 
 		it('extend the bounds by an empty bounds object', () => {
 			expect(a.extend(new LatLngBounds())).to.eql(a);
+		});
+
+		it('ignores empty arrays', () => {
+			expect(a.extend([])).to.eql(new LatLngBounds([14, 12], [30, 40]));
+			expect(new LatLngBounds().extend([]).isValid()).to.be.false;
+			expect(new LatLngBounds([[[10, 20], [30, 40]], []]).getNorthEast()).to.eql(new LatLng(30, 40));
 		});
 	});
 
@@ -176,7 +176,7 @@ describe('LatLngBounds', () => {
 	describe('#intersects', () => {
 		it('returns true if intersects the given bounds', () => {
 			expect(a.intersects([[16, 20], [50, 60]])).to.eql(true);
-			expect(a.contains([[40, 50], [50, 60]])).to.eql(false);
+			expect(a.intersects([[40, 50], [50, 60]])).to.eql(false);
 		});
 
 		it('returns true if just touches the boundary of the given bounds', () => {

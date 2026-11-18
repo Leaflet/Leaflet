@@ -170,6 +170,7 @@ describe('TileLayer', () => {
 	});
 
 	afterEach(() => {
+		sinon.restore();
 		removeMapContainer(map, container);
 	});
 
@@ -218,12 +219,8 @@ describe('TileLayer', () => {
 			};
 
 			kittenLayer.on('tileload tileunload tileerror tileloadstart', (ev) => {
-				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-			// grid.on('tileunload', function (ev) {
-			// 	console.log(ev.type, ev.coords, counts);
-			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -444,7 +441,7 @@ describe('TileLayer', () => {
 		it('adds OSM attribution if none are provided and is using OSM tiles', () => {
 			// Uses OSM tiles without providing attribution
 			const layer = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
-			expect(layer.options.attribution).to.eql('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+			expect(layer.options.attribution).to.eql('&copy; <a href="https://www.openstreetmap.org/copyright" lang="en">OpenStreetMap contributors</a>');
 		});
 
 		it('doesn\'t add OSM attribution if it\'s specifically set as empty', () => {
@@ -700,7 +697,8 @@ describe('TileLayer', () => {
 				}, 10);
 			});
 
-			layer.setUrl(placeKitten);
+			// redraw with the same URL while the first tiles are still loading
+			layer.setUrl(placeKitten, false);
 		});
 	});
 });

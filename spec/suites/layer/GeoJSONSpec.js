@@ -110,6 +110,23 @@ describe('GeoJSON', () => {
 			expect(layer2.options.weight).to.equal(7);
 			expect(layer2.options.color).to.equal('chocolate');
 		});
+
+		it('should reset a layer added with addLayer to its own options', () => {
+			const geojson = new GeoJSON(null, {style: {color: 'chocolate'}});
+			const layer = new Polyline([[51.38, -2.35], [51.38, -2.38]], {weight: 7, dashArray: '4'});
+			geojson.addLayer(layer);
+			geojson.setStyle({weight: 22, color: 'coral'});
+			geojson.resetStyle();
+			expect(layer.options.weight).to.equal(7);
+			expect(layer.options.dashArray).to.equal('4');
+			expect(layer.options.color).to.equal('chocolate');
+
+			// and again, now that the layer has been reset once
+			layer.setStyle({weight: 22});
+			geojson.resetStyle(layer);
+			expect(layer.options.weight).to.equal(7);
+			expect(layer.options.stroke).to.be.true;
+		});
 	});
 
 	describe('GeoJSON#addTo', () => {
@@ -294,8 +311,8 @@ describe('Polygon#toGeoJSON', () => {
 	});
 
 	it('returns a 2D Polygon object from a simple GeoJSON like input', () => {
-		const multiPolygon = new Polygon([[[1, 2], [3, 4], [5, 6]]]);
-		expect(multiPolygon.toGeoJSON().geometry).to.eql({
+		const polygon = new Polygon([[[1, 2], [3, 4], [5, 6]]]);
+		expect(polygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
 			coordinates: [
 				[[2, 1], [4, 3], [6, 5], [2, 1]]
@@ -303,9 +320,9 @@ describe('Polygon#toGeoJSON', () => {
 		});
 	});
 
-	it('returns a 3D MultiPolygon object from a simple GeoJSON like input', () => {
-		const multiPolygon = new Polygon([[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]);
-		expect(multiPolygon.toGeoJSON().geometry).to.eql({
+	it('returns a 3D Polygon object from a simple GeoJSON like input', () => {
+		const polygon = new Polygon([[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]);
+		expect(polygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
 			coordinates: [
 				[[2, 1, 3], [5, 4, 6], [8, 7, 9], [2, 1, 3]]
@@ -698,7 +715,7 @@ describe('GeoJSON functions', () => {
 
 		it('returns nothing if feature does not have a geometry property', () => {
 			const ret = GeoJSON.geometryToLayer({type: 'Feature'});
-			expect(ret).not.to.be.true;
+			expect(ret).to.be.null;
 		});
 
 		it('creates a Layer using pointToLayer option (Point)', () => {
@@ -721,10 +738,12 @@ describe('GeoJSON functions', () => {
 			}, {
 				pointToLayer: customPointToLayer
 			});
-			layer.eachLayer((lyr) => {
+			const layers = layer.getLayers();
+			expect(layers).to.have.length(2);
+			for (const lyr of layers) {
 				expect(lyr).to.be.instanceOf(Circle);
 				expect(lyr.options.radius).to.equal(100);
-			});
+			}
 		});
 
 		it('creates a Layer using coordsToLatLng option (Point)', () => {
@@ -765,7 +784,7 @@ describe('GeoJSON functions', () => {
 			expect(latLng).to.be.instanceOf(LatLng);
 			expect(latLngWithAlt).to.be.instanceOf(LatLng);
 			expect(latLng.equals(new LatLng(2, 1))).to.be.true;
-			expect(latLngWithAlt.equals(new LatLng(4, 3, 5)));
+			expect(latLngWithAlt.equals(new LatLng(4, 3, 5))).to.be.true;
 		});
 	});
 
@@ -778,9 +797,9 @@ describe('GeoJSON functions', () => {
 		it('creates a multidimensional array of LatLngs', () => {
 			const latLngs = GeoJSON.coordsToLatLngs([[1, 2], [3, 4], [5, 6]]);
 
-			expect(latLngs[0].equals(new LatLng(1, 2)));
-			expect(latLngs[1].equals(new LatLng(3, 4)));
-			expect(latLngs[2].equals(new LatLng(5, 6)));
+			expect(latLngs[0].equals(new LatLng(2, 1))).to.be.true;
+			expect(latLngs[1].equals(new LatLng(4, 3))).to.be.true;
+			expect(latLngs[2].equals(new LatLng(6, 5))).to.be.true;
 
 			latLngs.forEach((latLng) => {
 				expect(latLng).to.be.instanceOf(LatLng);
@@ -793,13 +812,13 @@ describe('GeoJSON functions', () => {
 				[[5, 6], [7, 8], [9, 10]]
 			], 1);
 
-			expect(latLngs[0][0].equals(new LatLng(1, 2)));
-			expect(latLngs[0][1].equals(new LatLng(3, 4)));
-			expect(latLngs[0][2].equals(new LatLng(5, 6)));
+			expect(latLngs[0][0].equals(new LatLng(2, 1))).to.be.true;
+			expect(latLngs[0][1].equals(new LatLng(4, 3))).to.be.true;
+			expect(latLngs[0][2].equals(new LatLng(6, 5))).to.be.true;
 
-			expect(latLngs[1][0].equals(new LatLng(5, 6)));
-			expect(latLngs[1][1].equals(new LatLng(7, 8)));
-			expect(latLngs[1][2].equals(new LatLng(9, 10)));
+			expect(latLngs[1][0].equals(new LatLng(6, 5))).to.be.true;
+			expect(latLngs[1][1].equals(new LatLng(8, 7))).to.be.true;
+			expect(latLngs[1][2].equals(new LatLng(10, 9))).to.be.true;
 
 			latLngs.forEach((arr) => {
 				arr.forEach((latlng) => {
@@ -812,9 +831,9 @@ describe('GeoJSON functions', () => {
 			const coords = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 			const latLngs = GeoJSON.coordsToLatLngs(coords, 0, customCoordsToLatLng);
 
-			expect(latLngs[0].equals(new LatLng(3, 2, 4)));
-			expect(latLngs[1].equals(new LatLng(6, 5, 7)));
-			expect(latLngs[2].equals(new LatLng(9, 8, 10)));
+			expect(latLngs[0].equals(new LatLng(3, 2, 4))).to.be.true;
+			expect(latLngs[1].equals(new LatLng(6, 5, 7))).to.be.true;
+			expect(latLngs[2].equals(new LatLng(9, 8, 10))).to.be.true;
 		});
 
 		it('creates a multidimensional array of LatLngs with custom coordsToLatLng (levelDeep=1)', () => {
@@ -824,11 +843,11 @@ describe('GeoJSON functions', () => {
 			];
 			const latLngs = GeoJSON.coordsToLatLngs(coords, 1, customCoordsToLatLng);
 
-			expect(latLngs[0][0].equals(new LatLng(3, 2, 4)));
-			expect(latLngs[0][1].equals(new LatLng(6, 5, 7)));
+			expect(latLngs[0][0].equals(new LatLng(3, 2, 4))).to.be.true;
+			expect(latLngs[0][1].equals(new LatLng(6, 5, 7))).to.be.true;
 
-			expect(latLngs[1][0].equals(new LatLng(14, 13, 15)));
-			expect(latLngs[1][1].equals(new LatLng(17, 16, 18)));
+			expect(latLngs[1][0].equals(new LatLng(14, 13, 15))).to.be.true;
+			expect(latLngs[1][1].equals(new LatLng(17, 16, 18))).to.be.true;
 		});
 	});
 

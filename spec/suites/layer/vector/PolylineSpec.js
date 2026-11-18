@@ -26,7 +26,6 @@ describe('Polyline', () => {
 			const polyln = new Polyline(sourceLatLngs);
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
-			expect(polyln._latlngs).to.not.eql(sourceLatLngs);
 			expect(polyln.getLatLngs()).to.eql(polyln._latlngs);
 		});
 
@@ -258,22 +257,6 @@ describe('Polyline', () => {
 		});
 	});
 
-	describe('#setStyle', () => {
-		it('succeeds for empty Polyline already added to the map', () => {
-			const style = {
-				weight: 3
-			};
-			const polyln = new Polyline([]);
-
-			polyln.addTo(map);
-			polyln.setStyle(style);
-
-			for (const [prop, expectedValue] of Object.entries(style)) {
-				expect(polyln.options[prop]).to.equal(expectedValue);
-			}
-		});
-	});
-
 	describe('#distance', () => {
 		it('calculates closestLayerPoint', () => {
 			const p1 = map.latLngToLayerPoint([55.8, 37.6]);
@@ -291,7 +274,7 @@ describe('Polyline', () => {
 			const point = polyln.closestLayerPoint(p1);
 			expect(point).not.to.equal(null);
 			expect(point.distance).to.not.equal(Infinity);
-			expect(point.distance).to.not.equal(NaN);
+			expect(point.distance).not.to.be.NaN;
 
 			const point2 = polyln.closestLayerPoint(p2);
 

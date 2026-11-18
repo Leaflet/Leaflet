@@ -41,7 +41,7 @@
 				renderer: canvas
 			};
 
-			const circle = new Circle(circleLocation, 500000, circleOptions);
+			const circle = new Circle(circleLocation, {...circleOptions, radius: 500000});
 			const circleMarker = new CircleMarker(circleLocation, {fillColor: 'blue', fillOpacity: 1, stroke: false});
 
 			group.addLayer(circle).addLayer(circleMarker);

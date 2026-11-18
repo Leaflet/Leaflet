@@ -70,7 +70,7 @@ export class Canvas extends Renderer {
 		// the map hit-tests canvas renderers topmost first: by pane z-index, then DOM order
 		const z = (/** @type {Canvas} */ r) => +getComputedStyle(/** @type {Element} */ (r._container.parentNode)).zIndex || 0;
 		map._canvases.push(this);
-		map._canvases.sort((a, b) => z(b) - z(a) || (a._container.compareDocumentPosition(b._container) & 2) - 1);
+		map._canvases.sort((a, b) => z(b) - z(a) || 1 - (a._container.compareDocumentPosition(b._container) & 2));
 
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
@@ -331,7 +331,7 @@ export class Canvas extends Renderer {
 			ctx.fill(options.fillRule || 'evenodd');
 		}
 
-		if (options.stroke && options.weight !== 0) {
+		if (options.stroke && +options.weight !== 0) {
 			ctx.lineDashOffset = Number(options.dashOffset ?? 0);
 			ctx.setLineDash(layer._dashArray ?? []);
 			ctx.globalAlpha = options.opacity;

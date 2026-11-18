@@ -2,7 +2,7 @@
 layout: v2
 ---
 
-<div class="announcement">Nov 10, 2026 — Leaflet 2.0 beta 3 is out! See <a href="https://github.com/Leaflet/Leaflet/releases">what's new in the 2.0 betas</a> and <a href="https://github.com/Leaflet/Leaflet/blob/main/MIGRATION.md">how to migrate from 1.x</a>.</div>
+<div class="announcement">Nov 12, 2026 — Leaflet 2.0 beta 4 is out! See <a href="https://github.com/Leaflet/Leaflet/releases">what's new in the 2.0 betas</a> and <a href="https://github.com/Leaflet/Leaflet/blob/main/MIGRATION.md">how to migrate from 1.x</a>.</div>
 
 Leaflet is the leading open-source JavaScript library for building powerful interactive maps.
 Weighing just about <abbr title="40 KB gzipped &mdash; that's 140 KB minified, with 9 KB of CSS (2.4 KB gzipped).">40 KB of JS</abbr>,

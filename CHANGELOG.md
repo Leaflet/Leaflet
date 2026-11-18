@@ -3,6 +3,54 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 2.0.0-beta.4 (2026-11-12)
+
+The fourth beta of Leaflet 2.0 fixes **zoom animations getting cut short on pages with many markers**, makes the **layers control work from the keyboard**, and fixes **jitter during `flyTo`**, along with over a dozen other fixes.
+
+### ⚡️ Performance
+
+* Fix zoom animations getting cut short on pages with many markers, where a 250 ms fallback timer ended them before the browser got to run them, and stop forcing a style recalc of every marker when a zoom animation adds a tile level or a pointer moves during it
+* Make animated panning (drag inertia, keyboard panning, `panBy` / `panTo`) with many markers several times faster in Chrome, which re-rendered every marker on every frame of the animation
+
+### ✨ Improvements
+
+* Hide a layer's attribution while the map zoom is outside the layer's `minZoom` / `maxZoom` ([#5253](https://github.com/Leaflet/Leaflet/issues/5253), [#7716](https://github.com/Leaflet/Leaflet/issues/7716))
+* Use `detectRetina` only at a device pixel ratio of 1.5 or higher, so tile labels stay readable on screens scaled to 125% ([#6721](https://github.com/Leaflet/Leaflet/issues/6721) by [@vpithart](https://github.com/vpithart))
+* Don't capture pointers that start on form controls inside the map, so native widgets like the clear button of a search input work ([#10567](https://github.com/Leaflet/Leaflet/pull/10567) by [@Misyuk-T](https://github.com/Misyuk-T), [#10565](https://github.com/Leaflet/Leaflet/issues/10565))
+* Show tiles fully opaque when printing, even if they're still fading in ([#3202](https://github.com/Leaflet/Leaflet/issues/3202))
+
+### ♿️ Accessibility
+
+* Make the layers control work from the keyboard: opening it moves focus into the list, Escape closes it and returns focus to the toggle, and moving focus out of it collapses it ([#10560](https://github.com/Leaflet/Leaflet/pull/10560) by [@ogchicken](https://github.com/ogchicken))
+
+### 🐞 Bug fixes
+
+* Fix tiles, markers and overlays jittering during `flyTo` ([#3194](https://github.com/Leaflet/Leaflet/issues/3194))
+* Fix marker tooltips with `direction` set to `top`, `bottom`, `left` or `center` attaching to the wrong side of the icon ([#7302](https://github.com/Leaflet/Leaflet/issues/7302), [#7519](https://github.com/Leaflet/Leaflet/issues/7519))
+* Fix icons in zoom and other bar control buttons not being centered, a regression in beta.3 ([#10554](https://github.com/Leaflet/Leaflet/issues/10554))
+* Fix `LatLngBounds` and `Bounds` throwing on empty arrays, such as an empty ring, a regression in beta.3 ([#10569](https://github.com/Leaflet/Leaflet/pull/10569) by [@ogchicken](https://github.com/ogchicken))
+* Fix clicks on overlapping shapes from canvas renderers in panes with the same z-index going to the shape underneath, a regression in beta.3 ([#10570](https://github.com/Leaflet/Leaflet/pull/10570) by [@ogchicken](https://github.com/ogchicken))
+* Fix circle radii and `fitBounds` / `getBoundsZoom` with projections that rotate the axes ([#5246](https://github.com/Leaflet/Leaflet/issues/5246))
+* Fix `getCenter()` of a polygon with all points on one line returning its first point ([#10555](https://github.com/Leaflet/Leaflet/pull/10555) by [@kevin9327](https://github.com/kevin9327))
+* Fix `distanceTo()` returning `NaN` for some antipodal points ([#10561](https://github.com/Leaflet/Leaflet/pull/10561) by [@SwastikTripathi](https://github.com/SwastikTripathi))
+* Fix URL templates throwing on a space before the closing brace, like `{x }` ([#10562](https://github.com/Leaflet/Leaflet/pull/10562) by [@Kernel-Hunter](https://github.com/Kernel-Hunter))
+
+### 📝 Docs
+
+* List the keyboard shortcuts and the core `FullscreenControl` in the accessibility tutorial ([#10558](https://github.com/Leaflet/Leaflet/pull/10558) by [@ogchicken](https://github.com/ogchicken))
+* Fix the contrast and an invalid `alt` on the Translatable badge ([#10556](https://github.com/Leaflet/Leaflet/pull/10556) by [@ogchicken](https://github.com/ogchicken))
+
+### 🔧 Workflow
+
+* Fix the build and check scripts on Windows ([#10559](https://github.com/Leaflet/Leaflet/pull/10559) by [@ogchicken](https://github.com/ogchicken))
+* Fix GeoJSON specs that asserted nothing ([#10564](https://github.com/Leaflet/Leaflet/pull/10564) by [@dylanpulver](https://github.com/dylanpulver))
+
+### ⚠️ Breaking changes
+
+* `detectRetina` needs a device pixel ratio of 1.5 or higher, up from anything above 1 ([#6721](https://github.com/Leaflet/Leaflet/issues/6721))
+* `tooltipAnchor` is mirrored for tooltips with `direction: 'left'` (not only `auto` ones that open to the left), is ignored for `top` and `bottom` tooltips, which attach to the middle of the icon's top or bottom edge, and only its `y` applies to `center` ones ([#7302](https://github.com/Leaflet/Leaflet/issues/7302), [#7519](https://github.com/Leaflet/Leaflet/issues/7519))
+* Marker icons and shadows have `will-change: transform`, and a tile layer's container has the `leaflet-zoom-animated` class
+
 ## 2.0.0-beta.3 (2026-11-10)
 
 The third beta of Leaflet 2.0 makes **chained view changes** like `setView(c).setZoom(z)` or `panTo(c).panBy(o)` end where you'd expect, makes adding and removing **event listeners up to hundreds of times faster** on busy maps, and **validates coordinates** so bad data fails where it's created instead of somewhere deep in rendering. It also brings a round of **keyboard and screen reader** fixes for markers, popups and controls, along with over 15 bug fixes.

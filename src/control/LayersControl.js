@@ -31,8 +31,12 @@ const defaultOptions = {
 	title: 'Layers',
 
 	/**
-	 * If `true`, the control will assign zIndexes in increasing order to all of
-	 * its layers so that the order is preserved when switching them on/off.
+	 * If `true`, the control will assign zIndexes in increasing order to its layers that have
+	 * a `setZIndex` method (such as tile layers and image overlays, including those inside a
+	 * layer group), so that their order is preserved when switching them on/off.
+	 * Other layers, such as markers and vector layers, are not affected: they are stacked in the
+	 * order they are added to the map. Put them in [custom map panes](https://leafletjs.com/examples/map-panes/)
+	 * to control their order.
 	 */
 	autoZIndex: true,
 
@@ -40,8 +44,9 @@ const defaultOptions = {
 	hideSingleBase: false,
 
 	/**
-	 * Whether to sort the layers. When `false`, layers will keep
-	 * the order in which they were added to the control.
+	 * Whether to sort the layers in the control's list. When `false`, layers will keep
+	 * the order in which they were added to the control. This only changes the list, not the
+	 * order in which the layers are stacked on the map (see [`autoZIndex`](#layerscontrol-autozindex)).
 	 */
 	sortLayers: false,
 
@@ -131,6 +136,7 @@ export class LayersControl extends Control {
 		this._lastZIndex = 0;
 		this._handlingClick = false;
 		this._preventClick = false;
+		this._needsUpdate = false;
 
 		for (const [name, layer] of Object.entries(baseLayers ?? {})) {
 			this._addLayer(layer, name);
@@ -218,6 +224,7 @@ export class LayersControl extends Control {
 		clearTimeout(this._collapseDelayTimeout);
 
 		this._container.classList.add('leaflet-control-layers-expanded');
+		if (this._needsUpdate) { this._update(); }
 		this._section.style.height = '';
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
 		if (acceptableHeight < this._section.clientHeight) {
@@ -232,6 +239,7 @@ export class LayersControl extends Control {
 
 	/** Collapse the control container if expanded. */
 	collapse() {
+		clearTimeout(this._collapseDelayTimeout);
 		if (this.options.collapseDelay > 0) {
 			this._collapseDelayTimeout = setTimeout(() => {
 				this._container.classList.remove('leaflet-control-layers-expanded');
@@ -254,6 +262,21 @@ export class LayersControl extends Control {
 		/** @type {HTMLFieldSetElement} */
 		this._section = section;
 
+		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
+		link.href = '#';
+		link.title = this._map.translate(this.options.title);
+		link.setAttribute('role', 'button');
+		clickOnSpace(link);
+		section.setAttribute('aria-label', link.title);
+		section.tabIndex = -1;
+
+		DomEvent.on(link, 'click', (e) => {
+			e.preventDefault();
+			const focused = document.activeElement === link;
+			this._expandSafely();
+			if (focused) { section.focus(); }
+		});
+
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
 
@@ -265,21 +288,17 @@ export class LayersControl extends Control {
 					if (e.pointerType !== 'touch') { this.collapse(); }
 				}
 			}, this);
-		}
 
-		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
-		link.href = '#';
-		link.title = this._map.translate(this.options.title);
-		link.setAttribute('role', 'button');
-		clickOnSpace(link);
-		section.setAttribute('aria-label', link.title);
-
-		DomEvent.on(link, 'click', (e) => {
-			e.preventDefault();
-			this._expandSafely();
-		});
-
-		if (!collapsed) {
+			// the list only takes focus while expanded; skip `collapseDelay`, as the toggle is hidden until then
+			DomEvent.on(section, 'keydown', (e) => {
+				if (e.key === 'Escape') {
+					clearTimeout(this._collapseDelayTimeout);
+					container.classList.remove(`${className}-expanded`);
+					link.focus();
+					e.preventDefault();
+				}
+			});
+		} else {
 			this.expand();
 		}
 
@@ -324,6 +343,14 @@ export class LayersControl extends Control {
 	_update() {
 		if (!this._container) { return this; }
 
+		// Rebuilding on every layer change makes adding n layers O(n²) (#10266).
+		// The list is hidden while collapsed, so leave it until `expand()` shows it.
+		if (!this._container.classList.contains('leaflet-control-layers-expanded')) {
+			this._needsUpdate = true;
+			return this;
+		}
+		this._needsUpdate = false;
+
 		this._baseLayersList.replaceChildren();
 		this._overlaysList.replaceChildren();
 
@@ -344,6 +371,9 @@ export class LayersControl extends Control {
 		}
 
 		this._separator.style.display = overlaysPresent && baseLayersPresent ? '' : 'none';
+
+		// once for the whole list, as it loops over every input
+		this._checkDisabledLayers();
 
 		return this;
 	}
@@ -394,7 +424,6 @@ export class LayersControl extends Control {
 
 		(obj.overlay ? this._overlaysList : this._baseLayersList).append(label);
 
-		this._checkDisabledLayers();
 		return label;
 	}
 
@@ -470,5 +499,4 @@ export class LayersControl extends Control {
 			this._preventClick = false;
 		});
 	}
-
 }

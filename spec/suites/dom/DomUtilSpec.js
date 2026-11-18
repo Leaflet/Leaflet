@@ -102,7 +102,7 @@ describe('DomUtil', () => {
 			DomUtil.create('div', 'test1', el);
 			DomUtil.create('div', 'test2', el);
 			expect(el.firstChild).to.equal(e1);
-			DomUtil.toBack(el);
+			DomUtil.toBack(e1);
 			expect(el.firstChild).to.equal(e1);
 		});
 
@@ -132,7 +132,7 @@ describe('DomUtil', () => {
 			const scale = 10;
 			DomUtil.setTransform(el, offset, scale);
 			const transform = el.style.transform;
-			expect(el.style.transform).to.be.equal(transform);
+			expect(transform).to.equal('translate3d(200px, 200px, 0px) scale(10)');
 
 			const newScale = 20;
 			const newOffset = new Point(400, 400);
@@ -218,28 +218,14 @@ describe('DomUtil', () => {
 			childEl.style.padding = '15px';
 			childEl.style.margin = '25px';
 			el.appendChild(childEl);
-			const scale = {
-				x: 1,
-				y: 1,
-				boundingClientRect: {
-					x: 25,
-					y: 25,
-					width: 280,
-					height: 280,
-					top: 25,
-					right: 305,
-					bottom: 305,
-					left: 25,
-				}
-			};
-			// Not all browsers contain x y inside boundclientRect, always contains top, right, bottom and left properties
-			expect(DomUtil.getScale(childEl).boundingClientRect.top).to.be.equal(scale.boundingClientRect.top);
-			expect(DomUtil.getScale(childEl).boundingClientRect.right).to.be.equal(scale.boundingClientRect.right);
-			expect(DomUtil.getScale(childEl).boundingClientRect.bottom).to.be.equal(scale.boundingClientRect.bottom);
-			expect(DomUtil.getScale(childEl).boundingClientRect.left).to.be.equal(scale.boundingClientRect.left);
+			const rect = {top: 25, right: 305, bottom: 305, left: 25};
+			expect(DomUtil.getScale(childEl).boundingClientRect.top).to.be.equal(rect.top);
+			expect(DomUtil.getScale(childEl).boundingClientRect.right).to.be.equal(rect.right);
+			expect(DomUtil.getScale(childEl).boundingClientRect.bottom).to.be.equal(rect.bottom);
+			expect(DomUtil.getScale(childEl).boundingClientRect.left).to.be.equal(rect.left);
 
 			childEl.style.padding = '400px';
-			expect(DomUtil.getScale(childEl).boundingClientRect.bottom).to.not.be.equal(scale.boundingClientRect.bottom);
+			expect(DomUtil.getScale(childEl).boundingClientRect.bottom).to.not.be.equal(rect.bottom);
 		});
 
 		it('returns x and y to 1 with all boundingClientRect\'s values to 0 for empty element not added yet to the body', () => {
@@ -279,6 +265,7 @@ describe('DomUtil', () => {
 			DomUtil.enableImageDrag();
 			UIEventSimulator.fire('dragstart', child);
 			expect(selectionPrevented).to.be.false;
+			window.removeEventListener('dragstart', checkPrevented);
 		});
 	});
 });

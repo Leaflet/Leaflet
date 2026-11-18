@@ -46,6 +46,20 @@ describe('Marker.Drag', () => {
 			expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 		});
 
+		it('passes the pointer event in movestart, dragstart and drag', async () => {
+			const marker = new Marker([0, 0], {draggable: true}).addTo(map);
+			const events = [];
+			marker.on('movestart dragstart drag', e => events.push(e));
+
+			await new Finger(pointerType).moveTo(300, 280).down().moveBy(5, 0).moveBy(50, 30).up();
+
+			expect(events.slice(0, 2).map(e => e.type)).to.eql(['movestart', 'dragstart']);
+			expect(events.length).to.be.greaterThan(2);
+			for (const e of events) {
+				expect(e.originalEvent).to.be.an.instanceof(PointerEvent);
+			}
+		});
+
 		it('keeps the altitude of the dragged marker', async () => {
 			const marker = new Marker([0, 0, 123], {draggable: true}).addTo(map);
 			const alts = [];
@@ -113,6 +127,15 @@ describe('Marker.Drag', () => {
 			// small margin of error allowed
 			expect(map.getCenter()).to.be.nearLatLng([0, 11.25]);
 			expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 419.0625]);
+		});
+
+		it('pans map when autoPanPadding is 0 on one axis', async () => {
+			new Marker([0, 0], {draggable: true, autoPan: true, autoPanPadding: [0, 50]}).addTo(map);
+
+			const finger = new Finger(pointerType);
+			await finger.moveTo(300, 280).down().moveBy(5, 0).moveTo(300, 580).up();
+
+			expect(map.getCenter().lat).to.be.below(0);
 		});
 
 		// https://github.com/Leaflet/Leaflet/issues/6219
@@ -247,6 +270,20 @@ describe('Marker.Drag', () => {
 			expect(marker.getOffset()).to.eql(new Point(10, 30));
 			expect(marker.getLatLng()).to.be.nearLatLng(map.layerPointToLatLng(marker._getPosition()));
 			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
+		});
+
+		it('passes the key event in movestart, dragstart and drag', () => {
+			const marker = new Marker([0, 0], {draggable: true}).addTo(map);
+			const events = [];
+			marker.on('movestart dragstart drag', e => events.push(e));
+
+			key(marker, 'keydown', 'ArrowRight');
+
+			expect(events.map(e => e.type)).to.eql(['movestart', 'dragstart', 'drag']);
+			for (const e of events) {
+				expect(e.originalEvent).to.be.an.instanceof(KeyboardEvent);
+				expect(e.originalEvent.key).to.equal('ArrowRight');
+			}
 		});
 
 		it('fires click on Enter after moving', () => {

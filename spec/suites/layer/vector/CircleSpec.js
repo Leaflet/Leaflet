@@ -48,15 +48,6 @@ describe('Circle', () => {
 		});
 	});
 
-	describe('Legacy factory', () => {
-		it('returns same bounds as 1.0 factory', () => {
-			const bounds = circle.getBounds();
-
-			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
-			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
-		});
-	});
-
 	describe('CRS Simple', () => {
 		it('returns a positive radius if the x axis of SimpleCRS is inverted', () => {
 			map.remove();
@@ -120,8 +111,7 @@ describe('Circle', () => {
 	describe('#_radius', () => {
 
 		beforeEach(() => {
-			container = createContainer();
-
+			map.remove();
 			map = new LeafletMap(container, {
 				crs: SimpleCRS
 			});

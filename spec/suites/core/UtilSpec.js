@@ -138,15 +138,18 @@ describe('Util', () => {
 		});
 
 		it('throws when a template token is not given', () => {
-			expect(() => {
-				Util.template(undefined, {foo: 'bar'});
-			}).to.throw();
+			expect(() => Util.template('{foo} {bar}', {foo: 'bar'})).to.throw('No value provided for variable {bar}');
 		});
 
 		it('allows underscores, dashes and spaces in placeholders', () => {
 			expect(Util.template('{nice_stuff}', {'nice_stuff': 'foo'})).to.eql('foo');
 			expect(Util.template('{-y}', {'-y': 1})).to.eql('1');
 			expect(Util.template('{Day Of Month}', {'Day Of Month': 30})).to.eql('30');
+		});
+
+		it('ignores spaces around a placeholder name', () => {
+			expect(Util.template('{ x}/{y }/{ z }', {x: 1, y: 2, z: 3})).to.eql('1/2/3');
+			expect(Util.template('{ Day Of Month }', {'Day Of Month': 30})).to.eql('30');
 		});
 	});
 });

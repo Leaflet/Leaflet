@@ -4,7 +4,7 @@ import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {Point} from '../../geometry/Point.js';
 
-/** @import {DragEndEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
+/** @import {DragEndEvent, DragStartEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
 /** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {Marker} from './Marker.js' */
 
@@ -80,8 +80,9 @@ export class MarkerDrag extends Handler {
 
 		if (dx || dy) {
 			// pan faster the deeper the icon goes into the padding, but not past maxBounds
-			const movement = map._limitOffset(new Point(dx / padding.x * speed, dy / padding.y * speed),
-				map.options.maxBounds)._round();
+			const movement = map._limitOffset(new Point(
+				padding.x ? dx / padding.x * speed : Math.sign(dx) * speed,
+				padding.y ? dy / padding.y * speed : Math.sign(dy) * speed), map.options.maxBounds)._round();
 
 			if (!movement.x && !movement.y) { return; }
 
@@ -98,16 +99,18 @@ export class MarkerDrag extends Handler {
 		}
 	}
 
-	_onDragStart() {
+	/** @param {DragStartEvent} e */
+	_onDragStart(e) {
 		/** @type {LatLng} */
 		this._oldLatLng = this._marker.getLatLng();
 
 		// When using ES6 imports it could not be set when `Popup` was not imported as well
 		this._marker.closePopup?.();
 
+		const {originalEvent} = e;
 		this._marker
-			.fire('movestart')
-			.fire('dragstart');
+			.fire('movestart', {originalEvent})
+			.fire('dragstart', {originalEvent});
 	}
 
 	/** @param {LeafletEvent} e */
@@ -171,7 +174,7 @@ export class MarkerDrag extends Handler {
 				Draggable._dragging = draggable;
 				draggable._startPos = draggable._newPos = DomUtil.getPosition(draggable._element);
 				draggable._moved = draggable._moving = this._keyDrag = true;
-				draggable.fire('dragstart');
+				draggable.fire('dragstart', {originalEvent: k});
 			}
 
 			// not through _updatePosition, whose predrag would start the pointer autoPan loop

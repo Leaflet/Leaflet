@@ -1,6 +1,7 @@
 import {DomEvent, LeafletMap, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
+import {userEvent} from 'vitest/browser';
 
 describe('DomEvent', () => {
 	let el, listener;
@@ -33,163 +34,159 @@ describe('DomEvent', () => {
 	});
 
 	describe('#on', () => {
-		it('throws when type is undefined and context is falseFn', () => {
+		it('throws when type is undefined and fn is falseFn', () => {
 			expect(() => DomEvent.on(el, undefined, Util.falseFn)).to.throw();
 		});
 
-		it('throws when type is null and context is falseFn', () => {
+		it('throws when type is null and fn is falseFn', () => {
 			expect(() => DomEvent.on(el, null, Util.falseFn)).to.throw();
 		});
 
-		it('throws when type is false and context is falseFn', () => {
-			expect(() => DomEvent.on((el, false, Util.falseFn))).to.throw();
+		it('throws when type is false and fn is falseFn', () => {
+			expect(() => DomEvent.on(el, false, Util.falseFn)).to.throw();
 		});
 
-		it('throws when type is "click" and context is undefined', () => {
+		it('throws when type is "click" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'click', undefined)).to.throw();
 		});
 
-		it('throws when type is "click" and context is null', () => {
+		it('throws when type is "click" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'click', null)).to.throw();
 		});
 
-		it('throws when type is "click" and context is false', () => {
+		it('throws when type is "click" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'click', false)).to.throw();
 		});
 
-		it('throws when type is "click" and context is undefined', () => {
-			expect(() => DomEvent.on(el, 'click', undefined)).to.throw();
-		});
-
-		it('throws when type is "dblclick" and context is null', () => {
+		it('throws when type is "dblclick" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'dblclick', null)).to.throw();
 		});
 
-		it('throws when type is "dblclick" and context is false', () => {
+		it('throws when type is "dblclick" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'dblclick', false)).to.throw();
 		});
 
-		it('throws when type is "dblclick" and context is undefined', () => {
+		it('throws when type is "dblclick" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'dblclick', undefined)).to.throw();
 		});
 
-		it('throws when type is "pointerdown" and context is null', () => {
+		it('throws when type is "pointerdown" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'pointerdown', null)).to.throw();
 		});
 
-		it('throws when type is "pointerdown" and context is false', () => {
+		it('throws when type is "pointerdown" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'pointerdown', false)).to.throw();
 		});
 
-		it('throws when type is "pointerdown" and context is undefined', () => {
+		it('throws when type is "pointerdown" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'pointerdown', undefined)).to.throw();
 		});
 
-		it('throws when type is "pointerup" and context is null', () => {
+		it('throws when type is "pointerup" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'pointerup', null)).to.throw();
 		});
 
-		it('throws when type is "pointerup" and context is false', () => {
+		it('throws when type is "pointerup" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'pointerup', false)).to.throw();
 		});
 
-		it('throws when type is "pointerup" and context is undefined', () => {
+		it('throws when type is "pointerup" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'pointerup', undefined)).to.throw();
 		});
 
-		it('throws when type is "pointerover" and context is null', () => {
+		it('throws when type is "pointerover" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'pointerover', null)).to.throw();
 		});
 
-		it('throws when type is "pointerover" and context is false', () => {
+		it('throws when type is "pointerover" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'pointerover', false)).to.throw();
 		});
 
-		it('throws when type is "pointerover" and context is undefined', () => {
+		it('throws when type is "pointerover" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'pointerover', undefined)).to.throw();
 		});
 
-		it('throws when type is "pointerout" and context is null', () => {
+		it('throws when type is "pointerout" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'pointerout', null)).to.throw();
 		});
 
-		it('throws when type is "pointerout" and context is false', () => {
+		it('throws when type is "pointerout" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'pointerout', false)).to.throw();
 		});
 
-		it('throws when type is "pointerout" and context is undefined', () => {
+		it('throws when type is "pointerout" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'pointerout', undefined)).to.throw();
 		});
 
-		it('throws when type is "pointermove" and context is null', () => {
+		it('throws when type is "pointermove" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'pointermove', null)).to.throw();
 		});
 
-		it('throws when type is "pointermove" and context is false', () => {
+		it('throws when type is "pointermove" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'pointermove', false)).to.throw();
 		});
 
-		it('throws when type is "pointermove" and context is undefined', () => {
+		it('throws when type is "pointermove" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'pointermove', undefined)).to.throw();
 		});
 
-		it('throws when type is "contextmenu" and context is null', () => {
+		it('throws when type is "contextmenu" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'contextmenu', null)).to.throw();
 		});
 
-		it('throws when type is "contextmenu" and context is false', () => {
+		it('throws when type is "contextmenu" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'contextmenu', false)).to.throw();
 		});
 
-		it('throws when type is "contextmenu" and context is undefined', () => {
+		it('throws when type is "contextmenu" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'contextmenu', undefined)).to.throw();
 		});
 
-		it('throws when type is "keyup" and context is null', () => {
+		it('throws when type is "keyup" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'keyup', null)).to.throw();
 		});
 
-		it('throws when type is "keyup" and context is false', () => {
+		it('throws when type is "keyup" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'keyup', false)).to.throw();
 		});
 
-		it('throws when type is "keyup" and context is undefined', () => {
+		it('throws when type is "keyup" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'keyup', undefined)).to.throw();
 		});
 
-		it('throws when type is "keypress" and context is null', () => {
+		it('throws when type is "keypress" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'keypress', null)).to.throw();
 		});
 
-		it('throws when type is "keypress" and context is false', () => {
+		it('throws when type is "keypress" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'keypress', false)).to.throw();
 		});
 
-		it('throws when type is "keypress" and context is undefined', () => {
+		it('throws when type is "keypress" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'keypress', undefined)).to.throw();
 		});
 
-		it('throws when type is "keydown" and context is null', () => {
+		it('throws when type is "keydown" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'keydown', null)).to.throw();
 		});
 
-		it('throws when type is "keydown" and context is false', () => {
+		it('throws when type is "keydown" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'keydown', false)).to.throw();
 		});
 
-		it('throws when type is "keydown" and context is undefined', () => {
+		it('throws when type is "keydown" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'keydown', undefined)).to.throw();
 		});
 
-		it('throws when type is "keydown and click" and context is null', () => {
+		it('throws when type is "keydown and click" and fn is null', () => {
 			expect(() => DomEvent.on(el, 'keydown click', null)).to.throw();
 		});
 
-		it('throws when type is "keydown and click" and context is false', () => {
+		it('throws when type is "keydown and click" and fn is false', () => {
 			expect(() => DomEvent.on(el, 'keydown click', false)).to.throw();
 		});
 
-		it('throws when type is "keydown and click" and context is undefined', () => {
+		it('throws when type is "keydown and click" and fn is undefined', () => {
 			expect(() => DomEvent.on(el, 'keydown click', undefined)).to.throw();
 		});
 
@@ -212,8 +209,8 @@ describe('DomEvent', () => {
 			UIEventSimulator.fire('click', el);
 			UIEventSimulator.fire('keypress', el);
 
-			expect(listener.called).to.be.true;
-			expect(listener2.called).to.be.true;
+			expect(listener.calledTwice).to.be.true;
+			expect(listener2.calledOnce).to.be.true;
 		});
 
 		it('adds a listener when passed an event map', () => {
@@ -254,7 +251,8 @@ describe('DomEvent', () => {
 			UIEventSimulator.fire('click', el);
 			UIEventSimulator.fire('keypress', el);
 
-			expect(listener.calledOn(obj)).to.be.true;
+			expect(listener.calledTwice).to.be.true;
+			expect(listener.alwaysCalledOn(obj)).to.be.true;
 		});
 
 		it('binds "this" to the given context when passed an event map', () => {
@@ -317,6 +315,7 @@ describe('DomEvent', () => {
 			UIEventSimulator.fire('click', el);
 			UIEventSimulator.fire('keypress', el);
 
+			expect(listener.calledOnce).to.be.true;
 			expect(listener.lastCall.args[0].type).to.eql('keypress');
 		});
 
@@ -546,11 +545,10 @@ describe('DomEvent', () => {
 		it('stops wheel events from propagation to parent elements', () => {
 			const child = document.createElement('div');
 			el.appendChild(child);
-			const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
-			DomEvent.on(el, wheel, listener);
+			DomEvent.on(el, 'wheel', listener);
 
 			DomEvent.disableScrollPropagation(child);
-			UIEventSimulator.fire(wheel, child);
+			UIEventSimulator.fire('wheel', child);
 
 			expect(listener.notCalled).to.be.true;
 		});
@@ -598,6 +596,60 @@ describe('DomEvent', () => {
 			expect(mapClickListener.notCalled).to.be.true;
 
 			map.remove();
+		});
+	});
+
+	describe('pointer capture', () => {
+		let map;
+
+		beforeEach(() => {
+			el.style.width = el.style.height = '200px';
+			map = new LeafletMap(el).setView([0, 0], 0);
+		});
+
+		afterEach(() => {
+			map.remove();
+		});
+
+		// the pointer is released again on pointerup, so the capture has to be read while handling pointerdown
+		function trackPointerdown(target) {
+			const state = {};
+			DomEvent.on(target, 'pointerdown', (e) => {
+				state.captured = e.target.hasPointerCapture(e.pointerId);
+			});
+			return state;
+		}
+
+		it('captures the pointer on the map container', async () => {
+			const state = trackPointerdown(el);
+
+			await userEvent.click(el, {position: {x: 5, y: 5}});
+
+			expect(state.captured).to.be.true;
+		});
+
+		it('does not capture the pointer on a search input in a control', async () => {
+			const control = document.createElement('div');
+			const input = Object.assign(document.createElement('input'), {type: 'search', value: 'abc'});
+			control.appendChild(input);
+			el.appendChild(control);
+			DomEvent.disableClickPropagation(control);
+			const state = trackPointerdown(input);
+
+			await userEvent.click(input);
+
+			expect(state.captured).to.be.false;
+		});
+
+		it('does not capture the pointer on popup content', async () => {
+			const content = document.createElement('div');
+			content.style.width = content.style.height = '30px';
+			map.openPopup(content, [0, 0]);
+			const state = trackPointerdown(content);
+
+			await userEvent.click(content);
+
+			expect(state.captured).to.be.false;
 		});
 	});
 

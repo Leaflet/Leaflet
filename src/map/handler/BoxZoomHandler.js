@@ -24,6 +24,9 @@ export class BoxZoomHandler extends Handler {
 	removeHooks() {
 		DomEvent.off(this._map._container, 'pointerdown', this._onPointerDown, this);
 		this._map._container.classList.remove('leaflet-box-zoom');
+		// cancel a box being drawn, as Escape does
+		this._finish();
+		this._resetState();
 	}
 
 	/** Returns `true` if a box is being drawn or was just drawn, e.g. to ignore the click that ends it. */

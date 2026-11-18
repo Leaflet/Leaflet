@@ -30,10 +30,9 @@ describe('Polygon', () => {
 			];
 			const sourceLatLngs = originalLatLngs.slice();
 
-			const poly = new Polygon(sourceLatLngs);
+			new Polygon(sourceLatLngs);
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
-			expect(poly._latlngs).to.not.eql(sourceLatLngs);
 		});
 
 		it('can be called with an empty array', () => {

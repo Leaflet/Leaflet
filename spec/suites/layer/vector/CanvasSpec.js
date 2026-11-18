@@ -181,6 +181,24 @@ describe('Canvas', () => {
 			expect(bottomSpy.calledOnce).to.be.true;
 		});
 
+		it('hit-tests canvas renderers at the same z-index in DOM order, topmost first', () => {
+			const samePane = new Polygon(latLngs, {renderer: new Canvas()}).addTo(map);
+			map.createPane('custom'); // same z-index as the overlay pane, later in the DOM
+			const customPane = new Polygon(latLngs, {renderer: new Canvas({pane: 'custom'})}).addTo(map);
+			const spies = [layer, samePane, customPane].map((l) => {
+				const spy = sinon.spy();
+				l.on('click', spy);
+				return spy;
+			});
+
+			UIEventSimulator.fireAt('click', 50, 50);
+			expect(spies.map(spy => spy.callCount)).to.eql([0, 0, 1]);
+
+			customPane.remove();
+			UIEventSimulator.fireAt('click', 50, 50);
+			expect(spies.map(spy => spy.callCount)).to.eql([0, 1, 1]);
+		});
+
 		it('changes the cursor and fires pointerout when moving onto a marker', () => {
 			const marker = new Marker(p2ll(150, 150)).addTo(map);
 			const outSpy = sinon.spy();
@@ -236,6 +254,35 @@ describe('Canvas', () => {
 			expect(preclickSpy.called).to.be.false;
 		});
 
+		it('fires click on a layer pressed and released on', async () => {
+			const spy = sinon.spy();
+			layer.on('click', spy);
+			map.dragging.disable();
+			await new Finger().moveTo(50, 50).down().moveBy(2, 2).up();
+			expect(spy.callCount).to.eql(1);
+		});
+
+		it('does not fire click on a layer the press started outside of', async () => { // #7105
+			const layerSpy = sinon.spy();
+			const otherSpy = sinon.spy();
+			const mapSpy = sinon.spy();
+			const other = new Polygon([p2ll(200, 0), p2ll(200, 100), p2ll(300, 100), p2ll(300, 0)]).addTo(map);
+			layer.on('click', layerSpy);
+			other.on('click', otherSpy);
+			map.on('click', mapSpy);
+			map.dragging.disable();
+
+			// Finger doesn't click after a drag, but browsers click on the map, so simulate it
+			await new Finger().moveTo(150, 150).down().moveTo(50, 50).up();
+			UIEventSimulator.fireAt('click', 50, 50, {detail: 1});
+			await new Finger().moveTo(250, 50).down().moveTo(50, 50).up();
+			UIEventSimulator.fireAt('click', 50, 50, {detail: 1});
+
+			expect(layerSpy.called).to.be.false;
+			expect(otherSpy.called).to.be.false;
+			expect(mapSpy.callCount).to.eql(2);
+		});
+
 		it('does fire pointerdown on layer after dragging map', async () => { // #7775
 			const spy = sinon.spy();
 			const center = p2ll(300, 300);
@@ -266,9 +313,10 @@ describe('Canvas', () => {
 
 	describe('#dashArray', () => {
 		it('can add polyline with dashArray', () => {
-			new Polygon(latLngs, {
+			const layer = new Polygon(latLngs, {
 				dashArray: '5,5'
 			}).addTo(map);
+			expect(layer._dashArray).to.eql([5, 5]);
 		});
 
 		it('can setStyle with dashArray', () => {
@@ -276,10 +324,11 @@ describe('Canvas', () => {
 			layer.setStyle({
 				dashArray: '5,5'
 			});
+			expect(layer._dashArray).to.eql([5, 5]);
 		});
 	});
 
-	it('removes vector on next animation frame', (done) => {
+	it('removes vector from the renderer', () => {
 		const layer = new Circle([0, 0]).addTo(map),
 		layerId = Util.stamp(layer),
 		canvas = map.getRenderer(layer);
@@ -287,11 +336,7 @@ describe('Canvas', () => {
 		expect(canvas._layers).to.have.property(layerId);
 
 		map.removeLayer(layer);
-		// Defer check due to how Canvas renderer manages layer removal.
-		requestAnimationFrame(() => {
-			expect(canvas._layers).to.not.have.property(layerId);
-			done();
-		});
+		expect(canvas._layers).to.not.have.property(layerId);
 	});
 
 	it('adds vectors even if they have been removed just before', (done) => {
@@ -304,7 +349,7 @@ describe('Canvas', () => {
 		map.removeLayer(layer);
 		map.addLayer(layer);
 		expect(canvas._layers).to.have.property(layerId);
-		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
+		// still there after the redraw on the next frame
 		requestAnimationFrame(() => {
 			expect(canvas._layers).to.have.property(layerId);
 			done();
@@ -342,12 +387,19 @@ describe('Canvas', () => {
 		});
 	});
 
-	describe('#bringToBack', () => {
-		it('is a no-op for layers not on a map', () => {
-			const path = new Polyline([[1, 2], [3, 4], [5, 6]]);
-			expect(path.bringToBack()).to.equal(path);
+	describe('#_fillStroke', () => {
+		it('skips the stroke for a string weight of 0', () => {
+			const ctx = {stroke: sinon.spy(), setLineDash() {}};
+			const renderer = map.getRenderer(new Polyline([]));
+			renderer._fillStroke(ctx, new Polyline([], {weight: 0}));
+			renderer._fillStroke(ctx, new Polyline([], {weight: '0'}));
+			expect(ctx.stroke.called).to.be.false;
+			renderer._fillStroke(ctx, new Polyline([], {weight: '2'}));
+			expect(ctx.stroke.calledOnce).to.be.true;
 		});
+	});
 
+	describe('#bringToBack', () => {
 		it('is a no-op for layers no longer in a LayerGroup', () => {
 			const group = new LayerGroup().addTo(map);
 			const path = new Polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
@@ -359,11 +411,6 @@ describe('Canvas', () => {
 	});
 
 	describe('#bringToFront', () => {
-		it('is a no-op for layers not on a map', () => {
-			const path = new Polyline([[1, 2], [3, 4], [5, 6]]);
-			expect(path.bringToFront()).to.equal(path);
-		});
-
 		it('is a no-op for layers no longer in a LayerGroup', () => {
 			const group = new LayerGroup().addTo(map);
 			const path = new Polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);

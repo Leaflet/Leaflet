@@ -1,4 +1,8 @@
-import {CRS, EPSG3395, EPSG3857, EPSG4326, EarthCRS, SimpleCRS, Util, LatLng, LatLngBounds, Point} from 'leaflet';
+import {
+	CRS, EPSG3395, EPSG3857, EPSG4326, EarthCRS, ProjectedCRS, SimpleCRS, Transformation, Util, Bounds, LatLng, LatLngBounds,
+	LeafletMap, Point
+} from 'leaflet';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('EPSG3857', () => {
 	const crs = EPSG3857;
@@ -145,7 +149,7 @@ describe('EPSG3857', () => {
 describe('EPSG4326', () => {
 	const crs = EPSG4326;
 
-	describe('#getSize', () => {
+	describe('#getProjectedBounds', () => {
 		it('gives correct size', () => {
 			let i,
 			worldSize = 256,
@@ -226,6 +230,80 @@ describe('SimpleCRS', () => {
 	});
 });
 
+describe('ProjectedCRS', () => {
+	class TestCRS extends ProjectedCRS {
+		static resolutions = [100, 50, 20, 10];
+		static transformation = new Transformation(1, 1000, -1, 2000);
+		static projection = {
+			bounds: new Bounds([-1000, -2000], [1000, 2000]),
+			project: ({lat, lng}) => new Point(lng * 10, lat * 10),
+			unproject: ({x, y}) => new LatLng(y / 10, x / 10)
+		};
+	}
+
+	describe('#scale', () => {
+		it('returns the inverse resolution at integer zooms', () => {
+			expect([0, 1, 2, 3].map(z => TestCRS.scale(z))).to.eql([0.01, 0.02, 0.05, 0.1]);
+		});
+
+		it('interpolates between and extrapolates beyond resolutions geometrically', () => {
+			expect(TestCRS.scale(0.5)).to.be.closeTo(Math.sqrt(0.01 * 0.02), 1e-12);
+			expect(TestCRS.scale(1.5)).to.be.closeTo(Math.sqrt(0.02 * 0.05), 1e-12);
+			expect(TestCRS.scale(-1)).to.be.closeTo(0.005, 1e-12);
+			expect(TestCRS.scale(4)).to.be.closeTo(0.2, 1e-12);
+		});
+	});
+
+	describe('#zoom', () => {
+		it('is the inverse of scale', () => {
+			for (const z of [-2, -0.5, 0, 0.25, 1, 1.5, 2, 2.75, 3, 4.5]) {
+				expect(TestCRS.zoom(TestCRS.scale(z))).to.be.closeTo(z, 1e-12);
+			}
+		});
+	});
+
+	describe('#latLngToPoint & #pointToLatLng', () => {
+		it('use the projection, transformation and resolutions', () => {
+			expect(TestCRS.latLngToPoint(new LatLng(100, -50), 1)).near([10, 20]);
+			expect(TestCRS.pointToLatLng(new Point(10, 20), 1)).nearLatLng([100, -50]);
+		});
+	});
+
+	describe('#getProjectedBounds', () => {
+		it('scales the projection bounds', () => {
+			const bounds = TestCRS.getProjectedBounds(3);
+			expect(bounds.min).near([0, 0]);
+			expect(bounds.max).near([200, 400]);
+		});
+	});
+
+	describe('#wrapLatLng', () => {
+		it('does not wrap longitude', () => {
+			expect(TestCRS.wrapLatLng(new LatLng(0, 270)).lng).to.eql(270);
+		});
+	});
+
+	describe('in a map', () => {
+		let container, map;
+
+		beforeEach(() => {
+			container = createContainer();
+			map = new LeafletMap(container, {crs: TestCRS});
+		});
+
+		afterEach(() => {
+			removeMapContainer(map, container);
+		});
+
+		it('fits bounds to the resolution that fits them', () => {
+			map.fitBounds([[-150, -75], [150, 75]], {animate: false});
+			expect(map.getZoom()).to.eql(3);
+			expect(map.getZoomScale(2, 1)).to.be.closeTo(2.5, 1e-12);
+			expect(map.getScaleZoom(2.5, 1)).to.be.closeTo(2, 1e-12);
+		});
+	});
+});
+
 describe('CRS', () => {
 	const crs = CRS;
 
@@ -235,35 +313,6 @@ describe('CRS', () => {
 			const scale = crs.scale(zoom);
 			const zoom2 = crs.zoom(scale);
 			expect(Util.formatNum(zoom2)).to.eql(zoom);
-		});
-	});
-});
-
-describe('CRS.ZoomNotPowerOfTwo', () => {
-	const crs = {
-		...CRS,
-		scale(zoom) {
-			return 256 * 1.5 ** zoom;
-		},
-		zoom(scale) {
-			return Math.log(scale / 256) / Math.log(1.5);
-		}
-	};
-
-	describe('#scale', () => {
-		it('of zoom levels are related by a power of 1.5', () => {
-			const zoom = 5;
-			const scale = crs.scale(zoom);
-			expect(crs.scale(zoom + 1)).to.eql(1.5 * scale);
-			expect(crs.zoom(1.5 * scale)).to.eql(zoom + 1);
-		});
-	});
-
-	describe('#zoom && #scale', () => {
-		it('convert zoom to scale and vice-versa and return the same values', () => {
-			const zoom = 2;
-			const scale = crs.scale(zoom);
-			expect(crs.zoom(scale)).to.eql(zoom);
 		});
 	});
 });

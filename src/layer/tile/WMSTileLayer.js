@@ -138,6 +138,7 @@ export class WMSTileLayer extends TileLayer {
 			[min.x, min.y, max.x, max.y]).join(',');
 		const url = new URL(super.getTileUrl(coords), document.baseURI);
 		for (const [k, v] of Object.entries({...this.wmsParams, bbox})) {
+			if (v == null) { continue; } // unset, e.g. cleared with `setParams`
 			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, `${v}`);
 		}
 		return url.toString();
@@ -146,6 +147,7 @@ export class WMSTileLayer extends TileLayer {
 	/**
 	 * Merges an object with the new parameters and re-requests tiles
 	 * on the current screen (unless `noRedraw` was set to true).
+	 * Set a parameter to `undefined` or `null` to leave it out of the requests.
 	 * @param {Partial<WMSParams>} params
 	 * @param {boolean} [noRedraw]
 	 */

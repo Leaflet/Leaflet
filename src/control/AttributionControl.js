@@ -21,7 +21,7 @@ const defaultOptions = {
 	 * The HTML text shown before the attributions. Pass `false` to disable.
 	 * @type {string | false}
 	 */
-	prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
+	prefix: `<a target="_blank" href="https://leafletjs.com" lang="en" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
 };
 
 /** @typedef {typeof defaultOptions} AttributionControlDefaultsValues */
@@ -113,7 +113,7 @@ export class AttributionControl extends Control {
 	 */
 	_updateLayer(layer) {
 		const {minZoom = -Infinity, maxZoom = Infinity} = /** @type {{minZoom?: number, maxZoom?: number}} */ (layer.options);
-		const zoom = /** @type {LeafletMap} */ (this._map).getZoom();
+		const zoom = this._map.getZoom();
 		const show = zoom >= minZoom && zoom <= maxZoom;
 		if (show === this._shownLayers.has(layer)) { return; }
 

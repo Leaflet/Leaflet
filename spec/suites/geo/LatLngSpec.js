@@ -103,6 +103,12 @@ describe('LatLng', () => {
 			expect(a.equals(b)).to.eql(false);
 		});
 
+		it('returns false if compared objects differ by more than the default margin', () => {
+			const a = new LatLng(10, 20);
+			const b = new LatLng(10, 20 + 1.0E-6);
+			expect(a.equals(b)).to.eql(false);
+		});
+
 		it('returns false if passed non-valid object', () => {
 			const a = new LatLng(10, 20);
 			expect(a.equals(null)).to.eql(false);
@@ -130,6 +136,17 @@ describe('LatLng', () => {
 
 			expect(a.distanceTo(b)).to.eql(0);
 		});
+		it('does not return NaN for antipodal points', () => {
+			// Rounding can push the haversine term slightly above 1 for some of these pairs.
+			const halfCircumference = Math.PI * 6371000;
+
+			for (let lat = -89; lat <= 89; lat++) {
+				for (let lng = -180; lng < 0; lng += 15) {
+					const distance = new LatLng(lat, lng).distanceTo(new LatLng(-lat, lng + 180));
+					expect(distance, `${lat}, ${lng}`).to.be.closeTo(halfCircumference, 1);
+				}
+			}
+		});
 	});
 
 	describe('LatLng creation', () => {
@@ -146,13 +163,16 @@ describe('LatLng', () => {
 			expect(new LatLng([50, 30, 100])).to.eql(new LatLng(50, 30, 100));
 		});
 
-		it('passes null or undefined as is', () => {
+		it('throws on null or undefined', () => {
 			expect(() => new LatLng(undefined)).to.throw();
 			expect(() => new LatLng(null)).to.throw();
 		});
 
 		it('creates a LatLng object from two coordinates', () => {
-			expect(new LatLng(50, 30)).to.eql(new LatLng(50, 30));
+			const latlng = new LatLng(50, 30);
+			expect(latlng.lat).to.equal(50);
+			expect(latlng.lng).to.equal(30);
+			expect(latlng.alt).to.be.undefined;
 		});
 
 		it('accepts an object with lat/lng', () => {
@@ -163,12 +183,12 @@ describe('LatLng', () => {
 			expect(new LatLng({lat: 50, lon: 30})).to.eql(new LatLng(50, 30));
 		});
 
-		it('returns null if lng not specified', () => {
+		it('throws if lng not specified', () => {
 			expect(() => new LatLng(50)).to.throw();
 		});
 
 		it('accepts altitude as third parameter', () => {
-			expect(new LatLng(50, 30, 100)).to.eql(new LatLng(50, 30, 100));
+			expect(new LatLng(50, 30, 100).alt).to.equal(100);
 		});
 
 		it('accepts an object with alt', () => {

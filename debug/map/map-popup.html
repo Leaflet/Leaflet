@@ -31,7 +31,8 @@
 				.addTo(map)
 				.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
 
-			new Circle([51.508, -0.11], 500, {
+			new Circle([51.508, -0.11], {
+				radius: 500,
 				color: 'red',
 				fillColor: '#f03',
 				fillOpacity: 0.5

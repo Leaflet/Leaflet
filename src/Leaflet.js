@@ -7,7 +7,7 @@
  * console.log(version); // "2.0.0", or whatever version is in use
  * ```
  */
-export const version = '2.0.0-beta.3';
+export const version = '2.0.0-beta.4';
 
 // control
 export {AttributionControl} from './control/AttributionControl.js';
@@ -46,6 +46,7 @@ export {EarthCRS} from './geo/crs/EarthCRS.js';
 export {EPSG3395} from './geo/crs/EPSG3395.js';
 export {EPSG3857, EPSG900913} from './geo/crs/EPSG3857.js';
 export {EPSG4326} from './geo/crs/EPSG4326.js';
+export {ProjectedCRS} from './geo/crs/ProjectedCRS.js';
 export {SimpleCRS} from './geo/crs/SimpleCRS.js';
 
 // layer

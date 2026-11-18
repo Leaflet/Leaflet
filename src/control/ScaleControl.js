@@ -136,14 +136,17 @@ export class ScaleControl extends Control {
 
 	/** @param {number} num */
 	_getRoundNum(num) {
-		const pow10 = 10 ** ((`${Math.floor(num)}`).length - 1);
-		let d = num / pow10;
+		// Below 1, count the zeros after the decimal point instead, so that 0.35 gives 0.3 rather than 1
+		// (which would draw the scale wider than maxWidth)
+		const exponent = num < 1 ? Math.floor(Math.log10(num)) : (`${Math.floor(num)}`).length - 1;
+		let d = num / 10 ** exponent;
 
 		d = d >= 10 ? 10 :
 			d >= 5 ? 5 :
 			d >= 3 ? 3 :
 			d >= 2 ? 2 : 1;
 
-		return pow10 * d;
+		// dividing by a power of ten keeps 0.3 exact, where 3 * 0.1 gives 0.30000000000000004
+		return exponent < 0 ? d / 10 ** -exponent : d * 10 ** exponent;
 	}
 }

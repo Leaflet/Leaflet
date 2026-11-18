@@ -51,11 +51,11 @@
 	},
 	"miniclasses": {
 		"LeafletMap": ["ZoomOptions", "PanOptions", "ZoomPanOptions", "InvalidateSizeOptions", "PaddingOptions", "PanInsideOptions", "FitBoundsOptions", "LocateOptions"],
-		"Event objects": ["LeafletEvent", "LeafletKeyboardEvent", "LeafletPointerEvent", "LocationEvent", "ErrorEvent", "LayerEvent", "LayersControlEvent", "TileEvent", "TileErrorEvent", "ResizeEvent", "GeoJSONEvent", "PopupEvent", "TooltipEvent", "DragEndEvent", "BoxZoomEvent", "MarkerMoveEvent", "ZoomAnimEvent", "ViewChangeEvent", "ViewPreResetEvent", "WorldCopyJumpEvent"]
+		"Event objects": ["LeafletEvent", "LeafletKeyboardEvent", "LeafletPointerEvent", "LocationEvent", "ErrorEvent", "LayerEvent", "LayersControlEvent", "TileEvent", "TileErrorEvent", "ResizeEvent", "GeoJSONEvent", "PopupEvent", "TooltipEvent", "DragStartEvent", "DragEndEvent", "BoxZoomEvent", "MarkerMoveEvent", "ZoomAnimEvent", "ViewChangeEvent", "ViewPreResetEvent", "WorldCopyJumpEvent"]
 	},
 	"tables": {
 		"Projection": {"projection": ["LonLatProjection", "MercatorProjection", "SphericalMercatorProjection"]},
-		"CRS": {"crs": ["EPSG3395", "EPSG3857", "EPSG900913", "EPSG4326", "EarthCRS", "SimpleCRS"]},
+		"CRS": {"crs": ["EPSG3395", "EPSG3857", "EPSG900913", "EPSG4326", "EarthCRS", "ProjectedCRS", "SimpleCRS"]},
 		"Handler": {"handler": ["DragHandler", "BoxZoomHandler", "DoubleClickZoomHandler", "ScrollWheelZoomHandler", "KeyboardHandler", "PinchZoomHandler", "TapHoldHandler"]}
 	},
 	"categoryOrder": {

@@ -33,7 +33,7 @@
 		{%- if c.default %}
 		<td>{{ item.default | literal }}</td>
 		{%- endif %}
-		<td>{{ item.comments | markdown: c.block }}{% if item.translatable %}<a class='translatable-badge' href='#map-translate' alt='Link to translate option'>Translatable</a>{% endif %}</td>
+		<td>{{ item.comments | markdown: c.block }}{% if item.translatable %}<a class='translatable-badge' href='#map-translate'>Translatable</a>{% endif %}</td>
 	</tr>
 	{%- endfor %}
 </tbody></table>

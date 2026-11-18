@@ -108,7 +108,9 @@ export class Tooltip extends DivOverlay {
 
 		if (this._source) {
 			this.addEventParent(this._source);
-			this._source.getElement?.()?.setAttribute('aria-describedby', this._container.id);
+			/** @type {Element | null | undefined} */
+			this._ariaSource = this._source.getElement?.();
+			if (this._ariaSource) { updateDescribedBy(this._ariaSource, this._container.id, true); }
 
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}
@@ -122,6 +124,9 @@ export class Tooltip extends DivOverlay {
 
 		if (this._source) {
 			this.removeEventParent(this._source);
+
+			if (this._ariaSource) { updateDescribedBy(this._ariaSource, this._container.id, false); }
+			this._ariaSource = null;
 
 			this._source.fire('tooltipclose', {tooltip: this}, true);
 		}
@@ -154,7 +159,7 @@ export class Tooltip extends DivOverlay {
 	/** @param {Point} pos */
 	_setPosition(pos) {
 		const container = this._container,
-		offset = new Point(this.options.offset);
+		offset = new Point(this.options.offset).clone();
 		let direction = this.options.direction;
 
 		if (!(direction in directions)) { // auto: open away from the map center, mirroring the offset
@@ -203,4 +208,12 @@ export class Tooltip extends DivOverlay {
 		return new Point(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor(direction) : [0, 0]);
 	}
 
+}
+
+// aria-describedby is a whitespace-separated ID list that the app may also be using
+/** @param {Element} el @param {string} id @param {boolean} add */
+function updateDescribedBy(el, id, add) {
+	const ids = Util.splitWords(el.getAttribute('aria-describedby') ?? '').filter(s => s && s !== id);
+	if (add) { ids.push(id); }
+	if (ids.length) { el.setAttribute('aria-describedby', ids.join(' ')); } else { el.removeAttribute('aria-describedby'); }
 }

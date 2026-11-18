@@ -214,7 +214,8 @@ export function haversineDistance(latlng1, latlng2, R) {
 	lat2 = latlng2.lat * rad,
 	sinDLat = Math.sin((latlng2.lat - latlng1.lat) * rad / 2),
 	sinDLon = Math.sin((latlng2.lng - latlng1.lng) * rad / 2),
-	a = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon,
+	// clamp, since rounding can push this slightly above 1 for antipodal points and make `sqrt(1 - a)` NaN
+	a = Math.min(sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon, 1),
 	c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	return R * c;
 }
