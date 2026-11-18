@@ -197,7 +197,8 @@ export class Bounds {
 
 	/**
 	 * Returns bounds created by extending or retracting the current bounds by a given ratio in each direction. For
-	 * example, a ratio of 0.5 extends the bounds by 50% in each direction. Negative values will retract the bounds.
+	 * example, a ratio of 0.5 extends the bounds by 50% in each direction. Negative values down to -0.5 will retract
+	 * the bounds, and -0.5 shrinks them to their center. Below -0.5 the sides cross, so the bounds grow again.
 	 * @param {number} bufferRatio
 	 */
 	pad(bufferRatio) {
