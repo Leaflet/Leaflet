@@ -399,6 +399,18 @@ describe('Canvas', () => {
 		});
 	});
 
+	describe('#setStyle', () => {
+		it('makes the whole stroke clickable when it turns the stroke on', () => {
+			const line = new Polyline([p2ll(0, 50), p2ll(100, 50)], {stroke: false, weight: 10}).addTo(map),
+			spy = sinon.spy();
+			line.on('click', spy);
+
+			line.setStyle({stroke: true});
+			UIEventSimulator.fireAt('click', 50, 54);
+			expect(spy.calledOnce).to.be.true;
+		});
+	});
+
 	describe('#bringToBack', () => {
 		it('is a no-op for layers no longer in a LayerGroup', () => {
 			const group = new LayerGroup().addTo(map);
