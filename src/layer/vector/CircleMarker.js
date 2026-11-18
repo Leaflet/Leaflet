@@ -142,6 +142,10 @@ export class CircleMarker extends Path {
 	// Needed by the `Canvas` renderer for interactivity
 	/** @param {Point} p */
 	_containsPoint(p) {
-		return p.distanceTo(this._point) <= this._pxRadius + this._clickTolerance();
+		const w = this._clickTolerance(),
+		rx = this._pxRadius + w,
+		ry = (this._pxRadiusY ?? this._pxRadius) + w,
+		{x, y} = p.subtract(this._point);
+		return (x * ry) ** 2 + (y * rx) ** 2 <= (rx * ry) ** 2;
 	}
 }

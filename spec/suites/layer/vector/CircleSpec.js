@@ -90,6 +90,21 @@ describe('Circle', () => {
 		});
 	});
 
+	describe('drawn as an ellipse', () => {
+		it('is only hit within the ellipse', () => {
+			map.remove();
+			map = new LeafletMap(container, {crs: EPSG4326, preferCanvas: true}).setView([60, 0], 4);
+			const circle = new Circle([60, 0], {radius: 100000, weight: 0}).addTo(map),
+			{_point: c, _pxRadius: rx, _pxRadiusY: ry} = circle;
+
+			expect(rx).to.be.above(ry * 1.5);
+			expect(circle._containsPoint(c.add([rx - 1, 0]))).to.be.true;
+			expect(circle._containsPoint(c.add([0, ry - 1]))).to.be.true;
+			expect(circle._containsPoint(c.add([0, ry + 2]))).to.be.false;
+			expect(circle._containsPoint(c.subtract([0, ry + 2]))).to.be.false;
+		});
+	});
+
 	describe('with a small radius', () => {
 		// Web Mercator is conformal, so a small circle away from the projection limits stays round on the screen.
 		// Radii below about a metre used to come out as ellipses, because acos() lost precision there.
