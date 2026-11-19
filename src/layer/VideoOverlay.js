@@ -64,7 +64,7 @@ export class VideoOverlay extends ImageOverlay {
 		wasElementSupplied = video instanceof HTMLVideoElement,
 		vid = this._image = wasElementSupplied ? video : DomUtil.create('video');
 
-		vid.classList.add('leaflet-image-layer', 'leaflet-zoom-animated');
+		vid.classList.add('leaflet-image-layer');
 		if (this.options.className) { vid.classList.add(...Util.splitWords(this.options.className)); }
 
 		DomEvent.on(vid, 'pointerdown', (e) => {
