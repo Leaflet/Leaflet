@@ -3,6 +3,67 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 2.0.0-beta.5 (2026-11-19)
+
+The fifth beta of Leaflet 2.0 adds **`ProjectedCRS`**, a core replacement for the Proj4Leaflet plugin for maps in national grids and other projected coordinate systems, along with over 20 bug fixes.
+
+### ❇️ New features
+
+* Add `ProjectedCRS` for maps in national grids, WMTS tile matrix sets and other projected coordinate systems, replacing the unmaintained [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin. Hooking up proj4 (or any other projection library) takes a few lines, zooming works smoothly past the defined zoom levels, and it adds nothing to your bundle unless imported ([#10591](https://github.com/Leaflet/Leaflet/pull/10591))
+
+### ⚡️ Performance
+
+* Make adding many layers to a collapsed layers control much faster ([#10585](https://github.com/Leaflet/Leaflet/pull/10585) by [@TheNetherWatcher](https://github.com/TheNetherWatcher), [#10266](https://github.com/Leaflet/Leaflet/issues/10266))
+
+### ✨ Improvements
+
+* Allow clearing a `WMSTileLayer` param by setting it to `undefined` or `null` with `setParams` ([#10590](https://github.com/Leaflet/Leaflet/pull/10590) by [@ogchicken](https://github.com/ogchicken), [#3441](https://github.com/Leaflet/Leaflet/issues/3441))
+* Add `originalEvent` to marker `dragstart` and `movestart` events, so you can check the pointer type or modifier keys that started the drag ([#10574](https://github.com/Leaflet/Leaflet/pull/10574) by [@ogchicken](https://github.com/ogchicken), [#6953](https://github.com/Leaflet/Leaflet/issues/6953))
+* Show distances under a meter (like `0.3 m`) in the scale control instead of an oversized `1 m` bar ([#10583](https://github.com/Leaflet/Leaflet/pull/10583) by [@SwastikTripathi](https://github.com/SwastikTripathi))
+* Accept arrays and plain objects in `Point#scaleBy` and `Point#unscaleBy` ([#10573](https://github.com/Leaflet/Leaflet/pull/10573) by [@Kernel-Hunter](https://github.com/Kernel-Hunter))
+
+### ♿️ Accessibility
+
+* Mark the "Leaflet" and "OpenStreetMap" attribution links as English, so screen readers pronounce them correctly on non-English maps ([#10580](https://github.com/Leaflet/Leaflet/pull/10580) by [@nfreear](https://github.com/nfreear), [#10579](https://github.com/Leaflet/Leaflet/issues/10579))
+* Stop tooltips from overwriting other descriptions in their source's `aria-describedby` ([#10596](https://github.com/Leaflet/Leaflet/pull/10596) by [@xiaoyao-666-coder](https://github.com/xiaoyao-666-coder))
+* Stop closed tooltips from staying in their source's `aria-describedby` ([#10578](https://github.com/Leaflet/Leaflet/pull/10578) by [@ogchicken](https://github.com/ogchicken))
+
+### 🐞 Bug fixes
+
+* Fix CSS resets like Tailwind's shrinking video overlays and vector layers in custom panes ([#10589](https://github.com/Leaflet/Leaflet/pull/10589) by [@ogchicken](https://github.com/ogchicken), [#4600](https://github.com/Leaflet/Leaflet/issues/4600))
+* Fix canvas layers getting a `click` when the press started elsewhere on the map ([#10588](https://github.com/Leaflet/Leaflet/pull/10588) by [@b84330808](https://github.com/b84330808), [#7105](https://github.com/Leaflet/Leaflet/issues/7105))
+* Fix tooltips with a `Point` offset jumping around on zoom when they open to the left, a regression in beta.4 ([#10605](https://github.com/Leaflet/Leaflet/pull/10605) by [@SudeepGowda55](https://github.com/SudeepGowda55))
+* Fix rebinding a popup with `bindPopup` leaving the old one open with no way to close it ([#10606](https://github.com/Leaflet/Leaflet/pull/10606) by [@SudeepGowda55](https://github.com/SudeepGowda55))
+* Fix `LayerGroup#toGeoJSON` missing layers in plugins that extend layer groups, a regression in 2.0
+* Fix `setMinZoom` / `setMaxZoom` called during a zoom animation leaving the map outside the new limits ([#10571](https://github.com/Leaflet/Leaflet/pull/10571) by [@ogchicken](https://github.com/ogchicken), [#9226](https://github.com/Leaflet/Leaflet/issues/9226))
+* Fix part of `maxBounds` being unreachable with some projections, such as conic ones ([#10584](https://github.com/Leaflet/Leaflet/pull/10584) by [@ogchicken](https://github.com/ogchicken), [#7650](https://github.com/Leaflet/Leaflet/issues/7650))
+* Fix `GeoJSON#resetStyle` throwing for layers added with `addLayer` ([#10598](https://github.com/Leaflet/Leaflet/pull/10598) by [@Chen1098](https://github.com/Chen1098))
+* Fix dragging a marker with `autoPan` throwing when `autoPanPadding` is 0 on either axis ([#10607](https://github.com/Leaflet/Leaflet/pull/10607) by [@SudeepGowda55](https://github.com/SudeepGowda55))
+* Fix the map not zooming out when a layer with `maxZoom: 0` is added ([#10572](https://github.com/Leaflet/Leaflet/pull/10572) by [@ogchicken](https://github.com/ogchicken))
+* Fix disabling box zoom mid-drag leaving the box on the map and still zooming on release ([#10587](https://github.com/Leaflet/Leaflet/pull/10587) by [@ogchicken](https://github.com/ogchicken))
+* Fix `FullscreenControl` getting stuck in fullscreen mode when the map is removed from the page while fullscreen
+* Fix `off()` called from a listener not stopping the remaining listeners of that event ([#10597](https://github.com/Leaflet/Leaflet/pull/10597) by [@Chen1098](https://github.com/Chen1098))
+* Fix `map.remove()` leaving built-in handlers like `scrollWheelZoom` enabled when a plugin handler re-enables them ([#6474](https://github.com/Leaflet/Leaflet/issues/6474))
+* Fix canvas paths with `weight: '0'` (as a string) still being drawn ([#10581](https://github.com/Leaflet/Leaflet/pull/10581) by [@ogchicken](https://github.com/ogchicken))
+* Fix `ZoomControl#enable` / `#disable` throwing when the control isn't on a map ([#10582](https://github.com/Leaflet/Leaflet/pull/10582) by [@ogchicken](https://github.com/ogchicken))
+
+### 📝 Docs
+
+* Clarify that `LayersControl`'s `autoZIndex` keeps the order of tile layers and overlays, but not of markers and vectors ([#10594](https://github.com/Leaflet/Leaflet/pull/10594) by [@deepujain](https://github.com/deepujain), [#5201](https://github.com/Leaflet/Leaflet/issues/5201))
+* Complete the keyboard shortcuts table in the accessibility tutorial ([#10575](https://github.com/Leaflet/Leaflet/pull/10575) by [@ogchicken](https://github.com/ogchicken))
+* Fix missing OpenTopoMap tiles past zoom 17 in the layers control tutorial ([#10576](https://github.com/Leaflet/Leaflet/pull/10576) by [@ogchicken](https://github.com/ogchicken))
+* Fix the favicon on tutorial example pages ([#10577](https://github.com/Leaflet/Leaflet/pull/10577) by [@ogchicken](https://github.com/ogchicken))
+
+### 🔧 Workflow
+
+* Fix debug pages broken by the v2 API changes ([#10586](https://github.com/Leaflet/Leaflet/pull/10586) by [@ogchicken](https://github.com/ogchicken))
+* Add a test for the `LatLng#equals` default margin ([#10608](https://github.com/Leaflet/Leaflet/pull/10608) by [@ksir0601](https://github.com/ksir0601), [#10603](https://github.com/Leaflet/Leaflet/issues/10603))
+
+### ⚠️ Breaking changes
+
+* `WMSTileLayer` no longer sends params set to `undefined` or `null` (previously sent as the strings `"undefined"` and `"null"`)
+* A collapsed layers control updates its list only when it expands, so code reading the list's DOM while it's collapsed may see it out of date
+
 ## 2.0.0-beta.4 (2026-11-12)
 
 The fourth beta of Leaflet 2.0 fixes **zoom animations getting cut short on pages with many markers**, makes the **layers control work from the keyboard**, and fixes **jitter during `flyTo`**, along with over a dozen other fixes.
