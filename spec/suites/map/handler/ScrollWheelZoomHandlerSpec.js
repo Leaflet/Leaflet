@@ -125,6 +125,56 @@ describe('ScrollWheelZoomHandler', () => {
 		expect(map.getZoom() - zoom).to.equal(1);
 	});
 
+	it('zooms three times as far with Shift held', () => {
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
+		map.setZoom(10, {animate: false});
+		clock.tick(300);
+
+		UIEventSimulator.fire('wheel', container, scrollIn);
+		clock.tick(100);
+		expect(map.getZoom()).to.equal(11);
+
+		clock.tick(300);
+		UIEventSimulator.fire('wheel', container, {...scrollIn, shiftKey: true});
+		clock.tick(100);
+		expect(map.getZoom()).to.equal(14);
+
+		clock.tick(300);
+		UIEventSimulator.fire('wheel', container, {...scrollOut, shiftKey: true});
+		clock.tick(100);
+		expect(map.getZoom()).to.equal(11);
+	});
+
+	it('zooms with Shift held when the browser turns the wheel into a horizontal scroll', () => {
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
+		map.setZoom(10, {animate: false});
+		clock.tick(300);
+
+		UIEventSimulator.fire('wheel', container, {deltaX: -120, deltaMode: 0});
+		clock.tick(100);
+		expect(map.getZoom()).to.equal(10);
+
+		UIEventSimulator.fire('wheel', container, {deltaX: -120, deltaMode: 0, shiftKey: true});
+		clock.tick(100);
+		expect(map.getZoom()).to.equal(13);
+	});
+
+	it('zooms the same with and without Shift with shiftWheelZoom: false', () => {
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
+		map.options.shiftWheelZoom = false;
+		map.setZoom(10, {animate: false});
+		clock.tick(300);
+
+		UIEventSimulator.fire('wheel', container, {...scrollIn, shiftKey: true});
+		clock.tick(100);
+		expect(map.getZoom()).to.equal(11);
+
+		clock.tick(300);
+		UIEventSimulator.fire('wheel', container, {deltaX: -120, deltaMode: 0, shiftKey: true});
+		clock.tick(100);
+		expect(map.getZoom()).to.equal(12);
+	});
+
 	it('ignores wheel zooms right after a zoom without animation, like an animated zoom does', () => {
 		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
 		const zoom = map.getZoom();

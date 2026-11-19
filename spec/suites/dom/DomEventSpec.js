@@ -672,6 +672,12 @@ describe('DomEvent', () => {
 			expect(DomEvent.getWheelDelta(new WheelEvent('wheel', {deltaX: 100, deltaMode: 0}))).to.equal(0);
 			expect(DomEvent.getWheelDelta(new WheelEvent('wheel', {deltaZ: 3, deltaMode: 1}))).to.equal(0);
 		});
+
+		it('reads a horizontal scroll with Shift held when there is no vertical one', () => {
+			expect(DomEvent.getWheelDelta(new WheelEvent('wheel', {deltaX: 3, deltaMode: 1, shiftKey: true}))).to.equal(-60);
+			expect(DomEvent.getWheelDelta(new WheelEvent('wheel', {deltaX: 1, deltaY: 3, deltaMode: 1, shiftKey: true})))
+				.to.equal(-60);
+		});
 	});
 
 	describe('#preventDefault', () => {

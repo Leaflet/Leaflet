@@ -280,6 +280,13 @@ const defaultOptions = {
 	wheelPxPerZoomLevel: 60,
 
 	/**
+	 * Whether the mouse wheel zooms three times as much while Shift is held, as the
+	 * [zoom buttons](#zoomcontrol) and the `+`/`-` keys do.
+	 * @category Mouse wheel options
+	 */
+	shiftWheelZoom: true,
+
+	/**
 	 * Fires a `contextmenu` event on a long touch press. iOS Safari doesn't fire one natively.
 	 * @category Touch interaction options
 	 */

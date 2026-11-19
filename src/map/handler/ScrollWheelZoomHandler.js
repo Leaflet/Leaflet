@@ -51,7 +51,9 @@ export class ScrollWheelZoomHandler extends Handler {
 		d4 = snap ? Math.ceil(d3 / snap) * snap : d3,
 		// with reduced motion, only zooms by up to one level are animated, so a hard scroll is capped to that
 		d5 = map._prefersReducedMotion() ? Math.min(d4, 1) : d4,
-		delta = map._limitZoom(zoom + (this._delta > 0 ? d5 : -d5)) - zoom;
+		// Shift zooms three times as much, like with the zoom buttons and the keyboard
+		d6 = this._lastEvent.shiftKey && map.options.shiftWheelZoom ? 3 * d5 : d5,
+		delta = map._limitZoom(zoom + (this._delta > 0 ? d6 : -d6)) - zoom;
 
 		this._delta = 0;
 		this._startTime = null;
