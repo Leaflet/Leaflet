@@ -237,20 +237,25 @@ describe('GridLayer', () => {
 		beforeEach(() => { clock = createClock(); });
 		afterEach(() => { clock.restore(); });
 
-		it('zooms the container as a whole and resets it when the animation ends', () => {
+		it('zooms the container as a whole and resets it when the animation ends', (done) => {
 			const grid = new GridLayer().addTo(map.setView([0, 0], 10));
-			const oldTransform = grid._levels[10].el.style.transform;
 
-			map._moveStart(true, false);
-			map._animateZoom(map.getCenter(), 11);
-			expect(grid._container.style.transform).to.contain('scale(2)');
-			expect(grid._levels[10].el.style.transform).to.equal(oldTransform);
-			expect(grid._levels[11].el.style.transform).to.contain('scale(0.5)');
+			// loaded, so the z10 tiles stay under the z11 ones still loading at the end
+			grid.once('load', () => {
+				const oldTransform = grid._levels[10].el.style.transform;
 
-			clock.tick(1000);
-			expect(grid._container.style.transform).to.equal('');
-			expect(grid._levels[10].el.style.transform).to.contain('scale(2)');
-			expect(grid._levels[11].el.style.transform).to.contain('scale(1)');
+				map._moveStart(true, false);
+				map._animateZoom(map.getCenter(), 11);
+				expect(grid._container.style.transform).to.contain('scale(2)');
+				expect(grid._levels[10].el.style.transform).to.equal(oldTransform);
+				expect(grid._levels[11].el.style.transform).to.contain('scale(0.5)');
+
+				clock.tick(1000);
+				expect(grid._container.style.transform).to.equal('');
+				expect(grid._levels[10].el.style.transform).to.contain('scale(2)');
+				expect(grid._levels[11].el.style.transform).to.contain('scale(1)');
+				done();
+			});
 		});
 
 		it('resets the container when the animation ends at the same zoom', () => {
@@ -822,40 +827,26 @@ describe('GridLayer', () => {
 					// Date.now() is 301.
 
 					grid.once('load', () => {
-						expect(counts.tileload).to.equal(20);
-						// No tile should be unloaded yet.
+						expect(counts.tileload).to.equal(32);
+						// No tile should be unloaded during the zoom animation.
 						expect(counts.tileunload).to.equal(0);
 
-						// Wait for the zoom animation to end on the map's 1s fallback timer,
-						// which triggers the tile pruning, but there are no
-						// tiles to prune yet (z11 tiles are all in bounds).
+						// Wait for the zoom animation to end on the map's 1s fallback timer. The z10 tiles
+						// finished fading in during the animation, so the prune at its end unloads all 16
+						// tiles from z11 they cover.
 						clock.tick(1000);
-						// Date.now() is 1301.
-
-						// At the end of the animation, all 16 tiles from z10
-						// are loading.
 						expect(counts.tileloadstart).to.equal(32);
-						expect(counts.tileload).to.equal(20);
-
-						// Now that the zoom animation is complete, the grid is ready to fire a new "load"
-						// event on next frame, so prepare its listener now. The 4 central tiles from z10
-						// finished fading in during the zoom animation, so the pruneTile at its end already
-						// unloaded all 16 tiles from z11 they cover.
-						grid.once('load', () => {
-							expect(counts.tileload).to.equal(32);
-							expect(counts.tileunload).to.equal(16);
-							done();
-						});
+						expect(counts.tileunload).to.equal(16);
+						done();
 					});
 				});
 
 				map.setZoom(10, {animate: true});
 				// Animation (and new tiles loading) starts after 1 frame.
 				requestAnimationFrame(() => {
-					// We're one frame into the zoom animation, there are
-					// 16 tiles for z11 plus 4 tiles for z10 covering the
-					// bounds at the *beginning* of the zoom-*out* anim
-					expect(counts.tileloadstart).to.equal(20);
+					// We're one frame into the zoom animation, there are 16 tiles for z11 plus 16 tiles for
+					// z10 covering the bounds at the *end* of the zoom-*out* anim
+					expect(counts.tileloadstart).to.equal(32);
 				});
 			});
 
@@ -890,6 +881,41 @@ describe('GridLayer', () => {
 
 			map.addLayer(grid).setView([0, 0], 18);
 			clock.tick(250);
+		});
+
+		it('keeps the old tiles on screen while zooming in', (done) => {
+			grid.once('load', () => {
+				// by two levels, so the tile zoom stays at z10 until the animation ends (on the map's 1s fallback timer
+				// under fake timers), with the z10 tiles outside the target view no longer current
+				map.setZoom(12, {animate: true});
+				requestAnimationFrame(() => {
+					clock.tick(500);
+					expect(counts.tileunload).to.equal(0);
+					done();
+				});
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
+		});
+
+		it('prunes after a pinch when the move ends, not when new tiles fade in during it', (done) => {
+			grid.once('load', () => {
+				map._moveStart(true, false);
+				map._move(map.getCenter(), 9.4, {pinch: true});
+
+				grid.once('load', () => {
+					clock.tick(300); // fade-in
+					requestAnimationFrame(() => {
+						expect(counts.tileunload).to.equal(0);
+
+						map._moveEnd(true);
+						expect(counts.tileunload).to.be.greaterThan(0);
+						done();
+					});
+				});
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
 		});
 
 		it('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', (done) => {
