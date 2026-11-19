@@ -49,6 +49,64 @@ describe('Util', () => {
 	});
 
 	describe('#throttle', () => {
+		it('defers a reentrant call from the leading invocation', () => {
+			const clock = sinon.useFakeTimers();
+			try {
+				const calls = [];
+				const fn = Util.throttle((value) => {
+					calls.push(value);
+					if (value === 1) { fn(2); }
+				}, 20);
+				fn(1);
+				expect(calls).to.eql([1]);
+				clock.tick(20);
+				expect(calls).to.eql([1, 2]);
+			} finally {
+				clock.restore();
+			}
+		});
+
+		it('preserves reentrant calls queued by a trailing invocation', () => {
+			const clock = sinon.useFakeTimers();
+			try {
+				const calls = [];
+				const fn = Util.throttle((value) => {
+					calls.push(value);
+					if (value === 2) { fn(3); }
+				}, 20);
+				fn(1);
+				fn(2);
+				clock.tick(20);
+				expect(calls).to.eql([1, 2]);
+				clock.tick(20);
+				expect(calls).to.eql([1, 2, 3]);
+				clock.tick(40);
+				expect(calls).to.eql([1, 2, 3]);
+			} finally {
+				clock.restore();
+			}
+		});
+
+		it('keeps the latest reentrant arguments and the supplied context', () => {
+			const clock = sinon.useFakeTimers();
+			try {
+				const context = {};
+				const calls = [];
+				const fn = Util.throttle(function (value, suffix) {
+					calls.push([this, value, suffix]);
+					if (value === 1) {
+						fn(2, 'discard');
+						fn(3, 'latest');
+					}
+				}, 20, context);
+				fn(1, 'first');
+				expect(calls).to.eql([[context, 1, 'first']]);
+				clock.tick(20);
+				expect(calls).to.eql([[context, 1, 'first'], [context, 3, 'latest']]);
+			} finally {
+				clock.restore();
+			}
+		});
 		it('limits execution to not more often than specified time interval', (done) => {
 			const spy = sinon.spy();
 
