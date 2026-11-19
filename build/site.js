@@ -269,7 +269,9 @@ function treeDir(sha) {
 	if (!sha) { return '.'; }
 	const dir = join(CACHE_DIR, sha);
 	if (!existsSync(dir)) {
-		const tmp = `${dir}.tmp`;
+		// a temp dir of its own, so builds running at once (e.g. the watcher and a manual one) don't extract into each
+		// other's and cache a partial tree
+		const tmp = `${dir}.${process.pid}.tmp`;
 		rmSync(tmp, {recursive: true, force: true});
 		mkdirSync(tmp, {recursive: true});
 		// no shell pipe: its exit status is tar's, so a failed git archive would cache an empty dir for good
@@ -280,7 +282,13 @@ function treeDir(sha) {
 			throw new Error(`Can't read pinned commit ${sha}; fetch the branch it's on (e.g. \`git fetch origin v1\`).\n${err.stderr}`, {cause: err});
 		}
 		execFileSync('tar', ['-x'], {input: archive, cwd: tmp});
-		renameSync(tmp, dir);
+		try {
+			renameSync(tmp, dir);
+		} catch (err) {
+			// another build got there first
+			rmSync(tmp, {recursive: true, force: true});
+			if (!existsSync(dir)) { throw err; }
+		}
 	}
 	return dir;
 }
