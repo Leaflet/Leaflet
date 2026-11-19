@@ -35,7 +35,7 @@
 			{"name": "FullscreenControl", "label": "Fullscreen"}
 		]},
 		{"label": "Basic Types", "entries": ["LatLng", "LatLngBounds", "Point", "Bounds"]},
-		{"label": "Coordinate Systems", "entries": ["CRS", "Projection", "Transformation"]},
+		{"label": "Coordinate Systems", "entries": ["CRS", "EarthCRS", "ProjectedCRS", "Projection", "Transformation"]},
 		{"label": "Utility", "entries": ["Util", "LineUtil", "PolyUtil", "DomEvent", "DomUtil", "Draggable", "version"]},
 		{"label": "Base Classes", "entries": ["Class", "Evented", "Event objects", "Layer", "Interactive layer", "Handler", "BlanketOverlay"]}
 	],
@@ -55,7 +55,7 @@
 	},
 	"tables": {
 		"Projection": {"projection": ["LonLatProjection", "MercatorProjection", "SphericalMercatorProjection"]},
-		"CRS": {"crs": ["EPSG3395", "EPSG3857", "EPSG900913", "EPSG4326", "EarthCRS", "ProjectedCRS", "SimpleCRS"]},
+		"CRS": {"crs": ["EPSG3395", "EPSG3857", "EPSG900913", "EPSG4326", "SimpleCRS"]},
 		"Handler": {"handler": ["DragHandler", "BoxZoomHandler", "DoubleClickZoomHandler", "ScrollWheelZoomHandler", "KeyboardHandler", "PinchZoomHandler", "TapHoldHandler"]}
 	},
 	"categoryOrder": {

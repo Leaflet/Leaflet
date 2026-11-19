@@ -110,7 +110,7 @@ From a GIS point of view, WMS handling in Leaflet is quite basic. There's no `Ge
 
 `WMSTileLayer` has extra options, which can be found in [Leaflet's API documentation](/reference.html#wmstilelayer). Any option not described there will be passed to the WMS server in the `GetMap` URLs.
 
-Also note that Leaflet supports very few [coordinate systems](https://en.wikipedia.org/wiki/Spatial_reference_system): `EPSG3857`, `EPSG3395` and `EPSG4326` (see the documentation for `CRS`). If your WMS service doesn't serve images in those coordinate systems, you might need to use [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) to use a different coordinate system in Leaflet. Other than that, just use the right CRS when initializing your map, and any WMS layers added will use it:
+Also note that Leaflet defines only the most common [coordinate systems](https://en.wikipedia.org/wiki/Spatial_reference_system): `EPSG3857`, `EPSG3395` and `EPSG4326`. If your WMS service doesn't serve images in those, you can define your own by extending `ProjectedCRS` with a projection library like [proj4js](https://github.com/proj4js/proj4js) (see the [`CRS` documentation](/reference.html#crs)). Either way, just use the right CRS when initializing your map, and any WMS layers added will use it:
 
 	const map = new LeafletMap('map', {
 		crs: EPSG4326
