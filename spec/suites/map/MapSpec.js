@@ -369,7 +369,7 @@ describe('Map', () => {
 
 			beforeEach(() => {
 				map.setView([0, 0], 13);
-				clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout']});
+				clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'cancelAnimationFrame']});
 				map._animateZoom(new LatLng(0.0005, 0.0005), 14);
 			});
 
@@ -380,14 +380,14 @@ describe('Map', () => {
 			it('applies the latest view after the animation', () => {
 				map.setView([0.001, 0.001], 15, {animate: false});
 				map.setView([0.002, 0.002], 16, {animate: false});
-				clock.tick(1000);
+				clock.tick(1100);
 				expect(map.getZoom()).to.equal(16);
 				expect(map.getCenter()).to.be.nearLatLng([0.002, 0.002]);
 			});
 
 			it('applies a new center after the animation', () => {
 				map.setView([0.001, 0.001], undefined, {animate: false});
-				clock.tick(1000);
+				clock.tick(1100);
 				expect(map.getZoom()).to.equal(14);
 				expect(map.getCenter()).to.be.nearLatLng([0.001, 0.001]);
 			});
@@ -398,6 +398,22 @@ describe('Map', () => {
 				clock.tick(250);
 				expect(map.getZoom()).to.equal(14);
 				expect(map.getCenter()).to.be.nearLatLng([0.0005, 0.0005]);
+			});
+
+			it('applies the waiting view a frame after the animation ends', () => {
+				map.setView([0.001, 0.001], 15, {animate: false});
+				map._onZoomTransitionEnd();
+				expect(map.getZoom()).to.equal(14);
+				clock.tick(20);
+				expect(map.getZoom()).to.equal(15);
+			});
+
+			it('drops the waiting view when stopped after the animation ends', () => {
+				map.setView([0.001, 0.001], 15, {animate: false});
+				map._onZoomTransitionEnd();
+				map.stop();
+				clock.tick(20);
+				expect(map.getZoom()).to.equal(14);
 			});
 		});
 	});

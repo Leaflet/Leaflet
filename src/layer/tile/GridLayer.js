@@ -763,7 +763,7 @@ export class GridLayer extends Layer {
 	_update(center) {
 		const map = this._map;
 		if (!map) { return; }
-		const zoom = this._clampZoom(map.getZoom());
+		const zoom = this._clampZoom(map._animatingZoom ? map._animateToZoom : map.getZoom());
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom

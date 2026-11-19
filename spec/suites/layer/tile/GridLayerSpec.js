@@ -975,12 +975,26 @@ describe('GridLayer', () => {
 
 		it('keeps the old tiles on screen while zooming in', (done) => {
 			grid.once('load', () => {
-				// by two levels, so the tile zoom stays at z10 until the animation ends (on the map's 1s fallback timer
-				// under fake timers), with the z10 tiles outside the target view no longer current
+				// the animation ends on the map's 1s fallback timer under fake timers
 				map.setZoom(12, {animate: true});
 				requestAnimationFrame(() => {
 					clock.tick(500);
 					expect(counts.tileunload).to.equal(0);
+					done();
+				});
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
+		});
+
+		it('loads tiles only at the target zoom when animating by more than one level', (done) => {
+			grid.once('load', () => {
+				const zooms = new Set();
+				grid.on('tileloadstart', ({coords}) => zooms.add(coords.z));
+				map.setZoom(7, {animate: true});
+				requestAnimationFrame(() => {
+					expect(grid._tileZoom).to.equal(7);
+					expect([...zooms]).to.eql([7]);
 					done();
 				});
 			});
