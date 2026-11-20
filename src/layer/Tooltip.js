@@ -28,7 +28,11 @@ const defaultOptions = {
 	/** Whether to open the tooltip permanently or only on pointerover. */
 	permanent: false,
 
-	/** If true, the tooltip will follow the pointer instead of being fixed at the feature center. */
+	/**
+	 * If true, the tooltip follows the pointer. If false, a tooltip opened by a pointer on a
+	 * layer with `getCenter()` opens at that center when it's inside the map view, or at the
+	 * pointer location when the center is outside.
+	 */
 	sticky: false,
 
 	/** Tooltip container opacity. */
