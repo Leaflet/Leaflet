@@ -6,7 +6,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 /** @import {Defaults, GridLayerDefaults, GridLayerEventMap, GridLayerOptions, LatLngBoundsExpression, LeafletEvent,
- *    MapListeners, TileErrorEvent, TileEvent, ViewPreResetEvent, WorldCopyJumpEvent, ZoomAnimEvent}
+ *    MapListeners, TileErrorEvent, TileEvent, ViewPreResetEvent, WorldCopyJumpEvent}
  *    from '../../types.js' */
 /** @import {LatLng} from '../../geo/LatLng.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
@@ -326,8 +326,7 @@ export class GridLayer extends Layer {
 			viewreset: this._resetView,
 			zoom: this._resetView,
 			moveend: this._onMoveEnd,
-			worldcopyjump: this._onWorldCopyJump,
-			zoomanim: this._animateZoom
+			worldcopyjump: this._onWorldCopyJump
 		};
 
 		if (!this.options.updateWhenIdle) {
@@ -403,7 +402,7 @@ export class GridLayer extends Layer {
 		if (this._container) { return; }
 
 		/** @type {HTMLElement} */
-		this._container = DomUtil.create('div', `leaflet-layer leaflet-zoom-animated ${this.options.className ?? ''}`);
+		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className ?? ''}`);
 		this._updateZIndex();
 
 		if (this.options.opacity < 1) {
@@ -578,23 +577,9 @@ export class GridLayer extends Layer {
 		return tile?.active;
 	}
 
-	/** @param {LeafletEvent & {pinch?: boolean, flyTo?: boolean}} [e] */
-	_resetView(e) {
-		const animating = e && (e.pinch || e.flyTo);
+	_resetView() {
+		const animating = this._map._subpixelOrigin;
 		this._setView(this._map.getCenter(), this._map.getZoom(), animating, animating);
-	}
-
-	/** @param {ZoomAnimEvent} e */
-	_animateZoom(e) {
-		const map = this._map, center = map.getCenter(), zoom = map.getZoom(), scale = map.getZoomScale(e.zoom, zoom);
-
-		this._setView(e.center, e.zoom, true, e.noUpdate);
-
-		// the levels stay put and the container zooms as a whole, since a level created just now would only
-		// transition after a forced style recalc, which covers every pending style change on the page
-		this._setZoomTransforms(center, zoom);
-		DomUtil.setTransform(this._container, map._getNewPixelOrigin(center, zoom).multiplyBy(scale)
-			.subtract(map._getNewPixelOrigin(e.center, e.zoom)), scale);
 	}
 
 	/** @param {number} zoom */
@@ -631,7 +616,8 @@ export class GridLayer extends Layer {
 		/** @type {boolean} */
 		this._noPrune = !!noPrune;
 
-		const tileZoom = this._getTileZoom(zoom);
+		// an animated zoom loads tiles for its target rather than for each level it passes
+		const tileZoom = this._getTileZoom(this._map._zoomAnim?.to ?? zoom);
 		const tileZoomChanged = this.options.updateWhenZooming && (tileZoom !== this._tileZoom);
 
 		if (!noUpdate || tileZoomChanged) {
@@ -661,7 +647,6 @@ export class GridLayer extends Layer {
 	 * @param {number} zoom
 	 */
 	_setZoomTransforms(center, zoom) {
-		if (this._container.style.transform) { this._container.style.transform = ''; }
 		for (const level of Object.values(this._levels)) {
 			this._setZoomTransform(level, center, zoom);
 		}
@@ -710,9 +695,6 @@ export class GridLayer extends Layer {
 		const map = this._map;
 		if (!map || map._animatingZoom) { return; }
 
-		// a zoom animation that ends at the same zoom (e.g. a pinch snapping back) fires no zoom event
-		if (this._container.style.transform) { this._setZoomTransforms(map.getCenter(), map.getZoom()); }
-
 		this._update();
 
 		// also called on move, throttled
@@ -751,7 +733,7 @@ export class GridLayer extends Layer {
 	/** @param {LatLng} center */
 	_getTiledPixelBounds(center) {
 		const map = this._map,
-		mapZoom = map._animatingZoom ? map._animateToZoom : map.getZoom(),
+		mapZoom = map._zoomAnim?.to ?? map.getZoom(),
 		scale = map.getZoomScale(mapZoom, this._tileZoom),
 		pixelCenter = map.project(center, this._tileZoom).floor(),
 		halfSize = map.getSize().divideBy(scale * 2);
@@ -764,7 +746,7 @@ export class GridLayer extends Layer {
 	_update(center) {
 		const map = this._map;
 		if (!map) { return; }
-		const zoom = this._clampZoom(map._animatingZoom ? map._animateToZoom : map.getZoom());
+		const zoom = this._clampZoom(map._zoomAnim?.to ?? map.getZoom());
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom

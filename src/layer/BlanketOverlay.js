@@ -4,7 +4,7 @@ import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import {Bounds} from '../geometry/Bounds.js';
 
-/** @import {BlanketOverlayDefaults, BlanketOverlayOptions, Defaults, LayerEventMap, LeafletEvent, MapListeners, ZoomAnimEvent} from '../types.js' */
+/** @import {BlanketOverlayDefaults, BlanketOverlayOptions, Defaults, LayerEventMap, LeafletEvent, MapListeners} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 /** @import {Point} from '../geometry/Point.js' */
@@ -78,18 +78,12 @@ export class BlanketOverlay extends Layer {
 			zoom: this._onZoom,
 			moveend: this._onMoveEnd,
 			resize: this._resizeContainer,
-			zoomend: this._onZoomEnd,
-			zoomanim: this._onAnimZoom
+			zoomend: this._onZoomEnd
 		};
 		if (this.options.continuous) {
 			events.move = this._onMoveEnd;
 		}
 		return events;
-	}
-
-	/** @param {ZoomAnimEvent} ev */
-	_onAnimZoom(ev) {
-		this._updateTransform(ev.center, ev.zoom);
 	}
 
 	_onZoom() {

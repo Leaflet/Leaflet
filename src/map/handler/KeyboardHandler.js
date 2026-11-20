@@ -118,8 +118,9 @@ export class KeyboardHandler extends Handler {
 				map.panBy(offset, {originalEvent: e});
 			}
 		} else if (dz) {
-			if (!map._zoomInputBlocked()) {
-				map.setZoom(map.getZoom() + k * dz * map.options.zoomDelta, {originalEvent: e});
+			// presses add up from where a running zoom is heading, but the repeats of a held key wait for it to end
+			if (!map._zoomInputBlocked() && !(e.repeat && map._animatingZoom)) {
+				map.zoomIn(k * dz * map.options.zoomDelta, {originalEvent: e});
 			}
 
 		} else {

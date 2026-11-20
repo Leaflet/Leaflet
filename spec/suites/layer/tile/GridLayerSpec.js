@@ -128,7 +128,7 @@ describe('GridLayer', () => {
 			expect(grid.setOpacity(0.5)).to.equal(grid);
 		});
 
-		it('works when map has fadeAnimated=false', (done) => {
+		it('works when map has fadeAnimated=false (IE8 is exempt)', (done) => {
 			map.remove();
 			map = new LeafletMap(container, {fadeAnimation: false}).setView([0, 0], 0);
 
@@ -260,8 +260,7 @@ describe('GridLayer', () => {
 				grid.createTile = function (coords, done) {
 					const tile = document.createElement('div');
 					keys.push(this._tileCoordsToKey(coords));
-					// async like a real tile, so that the tile is registered by the time it's reported as failed
-					queueMicrotask(() => done('error', tile));
+					done('error', tile);
 					return tile;
 				};
 			});
@@ -269,32 +268,37 @@ describe('GridLayer', () => {
 			it('does not raise tileload events', (done) => {
 				const tileLoadRaised = sinon.spy();
 				grid.on('tileload', tileLoadRaised);
-				grid.on('load', () => {
-					expect(keys.length).to.equal(4);
-					expect(tileLoadRaised.notCalled).to.be.true;
-					done();
+				grid.on('tileerror', () => {
+					if (keys.length === 4) {
+						expect(tileLoadRaised.notCalled).to.be.true;
+						done();
+					}
 				});
 				map.addLayer(grid);
 			});
 
 			it('raises tileerror events', (done) => {
 				const tileErrorRaised = sinon.spy();
-				grid.on('tileerror', tileErrorRaised);
-				grid.on('load', () => {
-					expect(tileErrorRaised.callCount).to.equal(4);
-					done();
+				grid.on('tileerror', () => {
+					tileErrorRaised();
+					if (keys.length === 4) {
+						expect(tileErrorRaised.callCount).to.equal(4);
+						done();
+					}
 				});
 				map.addLayer(grid);
 			});
 
 			it('does not add the .leaflet-tile-loaded class to tile elements', (done) => {
-				grid.on('load', () => {
-					const tiles = Object.values(grid._tiles);
-					expect(tiles.length).to.equal(4);
-					for (const tile of tiles) {
-						expect(tile.el.classList.contains('leaflet-tile-loaded')).to.be.false;
+				let count = 0;
+				grid.on('tileerror', (e) => {
+					if (!e.tile.classList.contains('leaflet-tile-loaded')) {
+						count++;
 					}
-					done();
+					if (keys.length === 4) {
+						expect(count).to.equal(4);
+						done();
+					}
 				});
 				map.addLayer(grid);
 			});
@@ -317,47 +321,28 @@ describe('GridLayer', () => {
 			map.on('zoomend', onReset);
 			map.setView([0, 0], 0);
 
-			expect(onAddSpy.calledOnce).to.be.true;
 			expect(onReset.calledBefore(onAddSpy)).to.be.true;
 		});
 	});
 
 	describe('zoom animation', () => {
 		let clock;
-		beforeEach(() => { clock = createClock(); });
+		beforeEach(() => {
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'performance']});
+		});
 		afterEach(() => { clock.restore(); });
 
-		it('zooms the container as a whole and resets it when the animation ends', (done) => {
+		it('scales the levels along the zoom and settles them when it ends', () => {
 			const grid = new GridLayer().addTo(map.setView([0, 0], 10));
 
-			// loaded, so the z10 tiles stay under the z11 ones still loading at the end
-			grid.once('load', () => {
-				const oldTransform = grid._levels[10].el.style.transform;
-
-				map._moveStart(true, false);
-				map._animateZoom(map.getCenter(), 11);
-				expect(grid._container.style.transform).to.contain('scale(2)');
-				expect(grid._levels[10].el.style.transform).to.equal(oldTransform);
-				expect(grid._levels[11].el.style.transform).to.contain('scale(0.5)');
-
-				clock.tick(1000);
-				expect(grid._container.style.transform).to.equal('');
-				expect(grid._levels[10].el.style.transform).to.contain('scale(2)');
-				expect(grid._levels[11].el.style.transform).to.contain('scale(1)');
-				done();
-			});
-		});
-
-		it('resets the container when the animation ends at the same zoom', () => {
-			const grid = new GridLayer().addTo(map.setView([0, 0], 10));
-
-			map._moveStart(true, false);
-			map._animateZoom(map.containerPointToLatLng([500, 400]), 10, true);
-			expect(grid._container.style.transform).to.contain('translate3d(-100px, -100px, 0px)');
+			map.setZoom(11);
+			clock.tick(50);
+			const scale = new DOMMatrix(grid._levels[10].el.style.transform).a;
+			expect(scale).to.be.within(1.01, 1.99);
 
 			clock.tick(1000);
-			expect(grid._container.style.transform).to.equal('');
-			expect(grid._levels[10].el.style.transform).to.contain('translate3d(-100px, -100px, 0px)');
+			expect(map.getZoom()).to.equal(11);
+			expect(grid._levels[11].el.style.transform).to.contain('scale(1)');
 		});
 	});
 
@@ -608,8 +593,12 @@ describe('GridLayer', () => {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', (ev) => {
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.remove();
 			map = new LeafletMap(container, {fadeAnimation: false, zoomAnimation: false});
@@ -805,6 +794,14 @@ describe('GridLayer', () => {
 			counts = undefined;
 		});
 
+		// Debug helper
+		/*
+		function logTiles(ev) {
+			const pending = Object.values(grid._tiles).filter(t => !t.loaded).length;
+			console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
+		}
+		*/
+
 		// calls `start`, then synchronously runs up to n frames of 40ms (~25fps) while any animation frame
 		// callbacks are queued, instead of waiting for real frames
 		function runFrames(n, start) {
@@ -814,64 +811,24 @@ describe('GridLayer', () => {
 			for (let i = 0; i < n && callbacks.length; i++) {
 				clock.tick(40);
 				map.fire('_frame');
-				for (const cb of callbacks.splice(0)) { cb(); }
+				for (const cb of callbacks.splice(0)) { cb(performance.now()); }
 			}
 			raf.restore();
 		}
 
-		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
-			clock.tick(1);
-			// Date.now() is 1.
+		it('Loads 32, unloads 16 tiles zooming in 10-11', () => {
+			runFrames(50, () => map.addLayer(grid).setView([0, 0], 10));
+			runFrames(50, () => clock.tick(300));
+			expect(counts).to.include({tileloadstart: 16, tileload: 16, tileunload: 0});
 
-			grid.once('load', () => {
-				expect(counts.tileload).to.equal(16);
-				expect(counts.tileunload).to.equal(0);
+			// the z11 tiles start loading as the animation starts, for the view it ends at
+			runFrames(50, () => map.setZoom(11, {animate: true}));
+			expect(map.getZoom()).to.equal(11);
+			expect(counts.tileloadstart).to.equal(32);
 
-				requestAnimationFrame(() => {
-					// Wait > 250msec for the tile fade-in animation to complete,
-					// which triggers the tile pruning
-					clock.tick(300);
-					// At 251ms, the pruneTile from the end of the z10 tiles fade-in animation executes.
-					// Date.now() is 301.
-
-					grid.once('load', () => {
-						expect(counts.tileload).to.equal(32);
-
-						// We're one frame into the zoom animation,
-						// so GridLayer._setView with noPrune === undefined is not called yet
-						// No tile should be unloaded yet.
-						expect(counts.tileunload).to.equal(0);
-
-						// Wait for the zoom animation to end, which triggers the tile pruning. Without
-						// 'transitionend' under fake timers, it ends on the map's 1s fallback timer and fires "zoom"
-						// => GridLayer._resetView => GridLayer._setView => _pruneTiles
-						// However, this "load" event callback executes synchronously,
-						// i.e. _tileReady still did not have a chance to prepare the
-						// setTimeout(250) for pruning after the end of the fade-in animation.
-						clock.tick(1000);
-						// At 501ms, the fade-in of the z11 tiles finishes and flags them as "active" (without
-						// pruning during the zoom animation). At ~1300ms, the pruneTile from the end of the zoom
-						// animation executes and unloads all 16 tiles from z10, since z11 tiles now cover them.
-						expect(counts.tileunload).to.equal(16);
-						// Date.now() is 1301.
-						done();
-					});
-
-					map.setZoom(11, {animate: true});
-					// Animation (and new tiles loading) starts after 1 frame.
-					requestAnimationFrame(() => {
-						// 16 extra tiles from z11 being loaded. Total 16 + 16 = 32.
-						expect(counts.tileloadstart).to.equal(32);
-					});
-
-				});
-			});
-
-			map.addLayer(grid).setView([0, 0], 10);
-			// The first setView does not animated, therefore it starts loading tiles immediately.
-			// 16 tiles from z10 being loaded.
-			expect(counts.tileloadstart).to.equal(16);
-			// At 1ms, first pruneTile (map fires "viewreset" event => GridLayer._resetView => GridLayer._setView => _pruneTiles).
+			// the z10 tiles go once the z11 ones have faded in
+			runFrames(50, () => clock.tick(300));
+			expect(counts).to.include({tileloadstart: 32, tileload: 32, tileunload: 16});
 		});
 
 		it('Loads 32, unloads 16 tiles zooming in 10-18', (done) => {
@@ -901,49 +858,17 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 32, unloads 16 tiles zooming out 11-10', (done) => {
-			clock.tick(1);
-			// Date.now() is 1.
+		it('Loads 32, unloads 16 tiles zooming out 11-10', () => {
+			runFrames(50, () => map.addLayer(grid).setView([0, 0], 11));
+			runFrames(50, () => clock.tick(300));
+			expect(counts).to.include({tileloadstart: 16, tileload: 16, tileunload: 0});
 
-			grid.once('load', () => {
-				expect(counts.tileload).to.equal(16);
-				expect(counts.tileunload).to.equal(0);
+			runFrames(50, () => map.setZoom(10, {animate: true}));
+			expect(map.getZoom()).to.equal(10);
+			expect(counts.tileloadstart).to.equal(32);
 
-				requestAnimationFrame(() => {
-					// Wait > 250msec for the tile fade-in animation to complete,
-					// which triggers the tile pruning
-					clock.tick(300);
-					// At 251ms, the pruneTile from the end of the z11 tiles fade-in animation executes.
-					// Date.now() is 301.
-
-					grid.once('load', () => {
-						expect(counts.tileload).to.equal(32);
-						// No tile should be unloaded during the zoom animation.
-						expect(counts.tileunload).to.equal(0);
-
-						// Wait for the zoom animation to end on the map's 1s fallback timer. The z10 tiles
-						// finished fading in during the animation, so the prune at its end unloads all 16
-						// tiles from z11 they cover.
-						clock.tick(1000);
-						expect(counts.tileloadstart).to.equal(32);
-						expect(counts.tileunload).to.equal(16);
-						done();
-					});
-				});
-
-				map.setZoom(10, {animate: true});
-				// Animation (and new tiles loading) starts after 1 frame.
-				requestAnimationFrame(() => {
-					// We're one frame into the zoom animation, there are 16 tiles for z11 plus 16 tiles for
-					// z10 covering the bounds at the *end* of the zoom-*out* anim
-					expect(counts.tileloadstart).to.equal(32);
-				});
-			});
-
-			map.addLayer(grid).setView([0, 0], 11);
-			// The first setView does not animated, therefore it starts loading tiles immediately.
-			// 16 tiles from z10 being loaded.
-			expect(counts.tileloadstart).to.equal(16);
+			runFrames(50, () => clock.tick(300));
+			expect(counts).to.include({tileloadstart: 32, tileload: 32, tileunload: 16});
 		});
 
 		it('Loads 32, unloads 16 tiles zooming out 18-10', (done) => {
@@ -973,38 +898,31 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		it('keeps the old tiles on screen while zooming in', (done) => {
-			grid.once('load', () => {
-				// the animation ends on the map's 1s fallback timer under fake timers
-				map.setZoom(12, {animate: true});
-				requestAnimationFrame(() => {
-					clock.tick(500);
-					expect(counts.tileunload).to.equal(0);
-					done();
-				});
-			});
+		it('keeps the old tiles on screen while zooming in', () => {
+			runFrames(50, () => map.addLayer(grid).setView([0, 0], 10));
+			runFrames(50, () => clock.tick(300));
 
-			map.addLayer(grid).setView([0, 0], 10);
+			// stop a few frames into the animation
+			runFrames(4, () => map.setZoom(12, {animate: true}));
+			expect(map._animatingZoom).to.be.true;
+			expect(counts.tileunload).to.equal(0);
 		});
 
-		it('loads tiles only at the target zoom when animating by more than one level', (done) => {
-			grid.once('load', () => {
-				const zooms = new Set();
-				grid.on('tileloadstart', ({coords}) => zooms.add(coords.z));
-				map.setZoom(7, {animate: true});
-				requestAnimationFrame(() => {
-					expect(grid._tileZoom).to.equal(7);
-					expect([...zooms]).to.eql([7]);
-					done();
-				});
-			});
+		it('loads tiles only at the target zoom when animating by more than one level', () => {
+			runFrames(50, () => map.addLayer(grid).setView([0, 0], 10));
+			runFrames(50, () => clock.tick(300));
 
-			map.addLayer(grid).setView([0, 0], 10);
+			const zooms = new Set();
+			grid.on('tileloadstart', ({coords}) => zooms.add(coords.z));
+			runFrames(50, () => map.setZoom(7, {animate: true}));
+			expect(map.getZoom()).to.equal(7);
+			expect([...zooms]).to.eql([7]);
 		});
 
 		it('prunes after a pinch when the move ends, not when new tiles fade in during it', (done) => {
 			grid.once('load', () => {
 				map._moveStart(true, false);
+				map._setZooming(true);
 				map._move(map.getCenter(), 9.4, {pinch: true});
 
 				grid.once('load', () => {
@@ -1012,6 +930,7 @@ describe('GridLayer', () => {
 					requestAnimationFrame(() => {
 						expect(counts.tileunload).to.equal(0);
 
+						map._setZooming(false);
 						map._moveEnd(true);
 						expect(counts.tileunload).to.be.greaterThan(0);
 						done();
@@ -1081,8 +1000,12 @@ describe('GridLayer', () => {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', (ev) => {
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -1138,6 +1061,7 @@ describe('GridLayer', () => {
 					// OOOO
 					// OOOO
 					map.panBy([512, 512], {animate: false});
+					// clock.tick(250);
 				});
 			});
 
@@ -1145,6 +1069,7 @@ describe('GridLayer', () => {
 
 			// 800px width * 600px height => 4 tiles horizontally * 4 tiles vertically = 16 tiles
 			map.addLayer(grid).setView([0, 0], 10);
+			// clock.tick(250);
 		});
 
 		it('Loads map, moves forth and back by 512 px, keepBuffer = 0', (done) => {

@@ -5,7 +5,7 @@ import {Bounds} from '../geometry/Bounds.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /** @import {Defaults, ImageOverlayDefaults, ImageOverlayEventMap, ImageOverlayOptions, LatLngBoundsExpression,
- *    LeafletEvent, ZoomAnimEvent} from '../types.js' */
+ *    LeafletEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
@@ -194,8 +194,7 @@ export class ImageOverlay extends Layer {
 	getEvents() {
 		return {
 			zoom: this._reset,
-			viewreset: this._reset,
-			zoomanim: this._animateZoom
+			viewreset: this._reset
 		};
 	}
 
@@ -250,14 +249,6 @@ export class ImageOverlay extends Layer {
 
 		img.src = url;
 		img.alt = this.options.alt;
-	}
-
-	/** @param {ZoomAnimEvent} e */
-	_animateZoom(e) {
-		const scale = this._map.getZoomScale(e.zoom),
-		offset = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center);
-
-		DomUtil.setTransform(this._image, offset, scale);
 	}
 
 	_reset() {

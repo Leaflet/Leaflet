@@ -10,7 +10,7 @@ import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 /** @import {Feature, Point as GeoJSONPoint} from 'geojson' */
 /** @import {Defaults, DragEndEvent, DragStartEvent, LatLngExpression, LeafletEvent, MapListeners, MarkerDefaults,
- *    MarkerEventMap, MarkerMoveEvent, MarkerOptions, PointExpression, ZoomAnimEvent} from '../../types.js' */
+ *    MarkerEventMap, MarkerMoveEvent, MarkerOptions, PointExpression} from '../../types.js' */
 /** @import {LeafletMap} from '../../map/Map.js' */
 /** @import {Icon} from './Icon.js' */
 
@@ -174,14 +174,7 @@ export class Marker extends Layer {
 		this.callInitHooks();
 	}
 
-	/** @param {LeafletMap} map */
-	onAdd(map) {
-		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
-
-		if (this._zoomAnimated) {
-			map.on('zoomanim', this._animateZoom, this);
-		}
-
+	onAdd() {
 		this._initIcon();
 		this.update();
 	}
@@ -194,10 +187,6 @@ export class Marker extends Layer {
 			if (this.options.draggable) { this.dragging.removeHooks(); }
 		}
 		delete this.dragging;
-
-		if (this._zoomAnimated) {
-			map.off('zoomanim', this._animateZoom, this);
-		}
 
 		this._removeIcon();
 		this._removeShadow();
@@ -271,9 +260,10 @@ export class Marker extends Layer {
 
 	/** Updates the marker position on the map, e.g. after changing its `zIndexOffset` option directly. */
 	update() {
-
-		if (this._icon && this._map) {
-			const pos = this._map._snapLayerPoint(this._map.latLngToLayerPoint(this._latlng));
+		const map = this._map;
+		// a marker hidden for the zoom catches up at its end
+		if (this._icon && map && !(map._subpixelOrigin && !map.options.markerZoomAnimation)) {
+			const pos = map._snapLayerPoint(map.latLngToLayerPoint(this._latlng));
 			this._setPos(pos);
 		}
 
@@ -282,7 +272,7 @@ export class Marker extends Layer {
 
 	_initIcon() {
 		const options = this.options,
-		classToAdd = `leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
+		classToAdd = `leaflet-zoom-${this._map.options.markerZoomAnimation ? 'animated' : 'hide'}`;
 
 		const icon = options.icon.createIcon(this._icon);
 		let addIcon = false;
@@ -370,6 +360,7 @@ export class Marker extends Layer {
 		this.removeInteractiveTarget(icon);
 
 		this._icon = null;
+		this._iconZIndex = undefined;
 	}
 
 	_removeShadow() {
@@ -381,8 +372,14 @@ export class Marker extends Layer {
 	_setPos(pos) {
 		this._positionElements(pos);
 
+		// while the zoom changes continuously (pinch, flyTo), rounding flips markers less than a pixel apart between
+		// a tie, which falls back to DOM order, and their latitude order, so keep the order until the zoom settles
+		if (!this._map._subpixelOrigin || this._zIndexY === undefined) {
+			/** @type {number | undefined} */
+			this._zIndexY = Math.round(pos.y);
+		}
 		/** @type {number} */
-		this._zIndex = Math.round(pos.y) + this.options.zIndexOffset;
+		this._zIndex = this._zIndexY + this.options.zIndexOffset;
 
 		this._updateRise();
 	}
@@ -406,16 +403,13 @@ export class Marker extends Layer {
 
 	/** @param {number} offset */
 	_updateZIndex(offset) {
-		if (this._icon) {
-			this._icon.style.zIndex = `${this._zIndex + offset}`;
+		const zIndex = this._zIndex + offset;
+		// this runs for every marker on every frame of a zoom, so skip the style write when nothing changed
+		if (this._icon && zIndex !== this._iconZIndex) {
+			/** @type {number | undefined} */
+			this._iconZIndex = zIndex;
+			this._icon.style.zIndex = `${zIndex}`;
 		}
-	}
-
-	/** @param {ZoomAnimEvent} opt */
-	_animateZoom(opt) {
-		const pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
-
-		this._setPos(pos);
 	}
 
 	_initInteraction() {
@@ -465,8 +459,7 @@ export class Marker extends Layer {
 	 */
 	setRotation(rotation) {
 		this.options.rotation = rotation;
-		// mid-zoom, the icon is transitioning to a position that update() can't compute yet; the zoom end applies it
-		if (this._icon && !this._map._animatingZoom) {
+		if (this._icon) {
 			this._positionElements(DomUtil.getPosition(this._icon));
 			this._popup?._updatePosition();
 			this._tooltip?._updatePosition();

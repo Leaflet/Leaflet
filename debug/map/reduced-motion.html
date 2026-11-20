@@ -125,7 +125,7 @@
 			}
 
 			// log user-driven zoom animations too
-			map.on('zoomanim', e => log(`zoomanim to ${e.zoom}`));
+			map.on('zoomstart', () => log(`zoom to ${map._targetZoom()}`));
 
 			// log how far and how long the map coasts after a fling
 			map.on('dragend', () => {
