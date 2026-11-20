@@ -49,7 +49,7 @@ describe('VideoOverlay', () => {
 
 		expect(map.hasLayer(videoOverlay)).to.be.true;
 		expect(videoOverlay.getElement()).to.equal(video);
-		expect(video.parentNode).to.equal(map.getPane('overlayPane'));
+		expect(video.parentNode.parentNode).to.equal(map.getPane('overlayPane'));
 		expect(video.getElementsByTagName('source').length).to.equal(2);
 		expect(videoOverlay._url).to.eql(videoUrls);
 	});
@@ -75,12 +75,12 @@ describe('VideoOverlay', () => {
 
 	it('uses the z-index specified in options', () => {
 		const overlay = new VideoOverlay(videoUrl, videoBounds, {zIndex: 20}).addTo(map);
-		expect(overlay.getElement().style.zIndex).to.equal('20');
+		expect(overlay.getElement().parentNode.style.zIndex).to.equal('20');
 	});
 
 	it('sets the z-index when added to the map, e.g. by the layers control', () => {
 		const overlay = new VideoOverlay(videoUrl, videoBounds).setZIndex(10).addTo(map);
-		expect(overlay.getElement().style.zIndex).to.equal('10');
+		expect(overlay.getElement().parentNode.style.zIndex).to.equal('10');
 	});
 
 	async function dragOverVideo(controls) {
