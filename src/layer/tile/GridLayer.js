@@ -62,7 +62,8 @@ const defaultOptions = {
 
 	/**
 	 * Minimum zoom number the tile source has available. If it is specified, the tiles on all zoom levels
-	 * lower than `minNativeZoom` will be loaded from `minNativeZoom` level and auto-scaled.
+	 * lower than `minNativeZoom` will be loaded from `minNativeZoom` level and auto-scaled. Each zoom level below
+	 * `minNativeZoom` loads 4 times as many tiles, so set `minZoom` to limit how far out the layer is shown.
 	 * @type {number | undefined}
 	 */
 	minNativeZoom: undefined,
