@@ -4,7 +4,7 @@ import {Transformation} from '../../geometry/Transformation.js';
 
 /**
  * The most common CRS for online maps, used by almost all free and commercial tile providers. Uses Spherical Mercator
- * projection. Set in by default in Map's `crs` option.
+ * projection. Set by default in Map's `crs` option.
  */
 export class EPSG3857 extends EarthCRS {
 	static code = 'EPSG:3857';

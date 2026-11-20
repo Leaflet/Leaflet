@@ -103,6 +103,12 @@ describe('LatLng', () => {
 			expect(a.equals(b)).to.eql(false);
 		});
 
+		it('returns false if compared objects differ by more than the default margin', () => {
+			const a = new LatLng(10, 20);
+			const b = new LatLng(10, 20 + 1.0E-6);
+			expect(a.equals(b)).to.eql(false);
+		});
+
 		it('returns false if passed non-valid object', () => {
 			const a = new LatLng(10, 20);
 			expect(a.equals(null)).to.eql(false);

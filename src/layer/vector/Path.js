@@ -136,7 +136,7 @@ export class Path extends Layer {
 		Util.setOptions(this, style);
 		if (this._renderer) {
 			this._renderer._updateStyle(this);
-			if (this.options.stroke && style && Object.hasOwn(style, 'weight')) {
+			if (style && (Object.hasOwn(style, 'weight') || Object.hasOwn(style, 'stroke'))) {
 				this._updateBounds();
 			}
 		}

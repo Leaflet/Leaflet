@@ -1,12 +1,12 @@
 {
 	"refs": {
 		"v1": "0412763d42ebba1da6f153e4073f6654e5de8a21",
-		"v2": "0ead6a008e36df51700ceea438400aff17c8dc16"
+		"v2": "b5e01ae760ed28fc9d8fd501e3e22fdbe2374c48"
 	},
 	"site": {
 		"cartocdn_key": "cb1_2i38_1_bb6349bf813f7d7c3fe79a8c"
 	},
-	"version": "2.0.0-beta.4",
+	"version": "2.0.0-beta.5",
 	"versions": {
 		"1.9.4": {
 			"latest_leaflet_version": "1.9.4",
@@ -14,11 +14,11 @@
 			"integrity_hash_source": "sha256-tPonvXioSHRQt1+4ztWR5mz/1KG1X3yHNzVXprP2gLo=",
 			"integrity_hash_uglified": "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 		},
-		"2.0.0-beta.4": {
-			"latest_leaflet_version": "2.0.0-beta.4",
-			"integrity_hash_css": "sha256-AWTc12F4bU4GqRtfkaV/Tgn6ZxlRNjBJnTsXVNtP4XM=",
-			"integrity_hash_uglified": "sha256-fRxwnl7F1oxlc3UchsWMQTaexLgt14hIMYKEjoeSdZ8=",
-			"integrity_hash_global_uglified": "sha256-RAg1WVHJMiikHAPWDtL+8xis7x/b51cbe7usb3VfQ7k="
+		"2.0.0-beta.5": {
+			"latest_leaflet_version": "2.0.0-beta.5",
+			"integrity_hash_css": "sha256-LJzbbQFquR1Trwrwy++9x2Pl6ipfBZUR8Da0GGJ8Wfo=",
+			"integrity_hash_uglified": "sha256-wtAeAyJwpxq8jkj3LfBxdh3sPS3xw9kViJv+AtdXLDE=",
+			"integrity_hash_global_uglified": "sha256-nl7XkKmiNbIIlFaAzV6sKcwMkspAqOxnm90ogLJ7Duo="
 		}
 	},
 	"mounts": [

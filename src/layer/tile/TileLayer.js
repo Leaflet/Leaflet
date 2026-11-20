@@ -302,6 +302,7 @@ export class TileLayer extends GridLayer {
 			if (coords.z !== this._tileZoom && !tile.complete) {
 				tile.setAttribute('src', '');
 				tile.remove();
+				this._removeStaleTile(this._tiles[key]);
 				delete this._tiles[key];
 				this.fire('tileabort', {tile, coords});
 			}

@@ -30,6 +30,96 @@ describe('GridLayer', () => {
 			grid.redraw();
 			expect(grid._tileZoom).to.equal(2);
 		});
+
+		describe('keeping the old tiles', () => {
+			let grid, pending, clock;
+
+			// tiles load only when the spec says so
+			class ManualGridLayer extends GridLayer {
+				createTile(coords, done) {
+					const tile = document.createElement('div');
+					pending.push(() => done(null, tile));
+					return tile;
+				}
+			}
+
+			function loadAll() {
+				const callbacks = pending;
+				pending = [];
+				for (const fn of callbacks) { fn(); }
+			}
+
+			const tileEls = () => [...grid._container.querySelectorAll('.leaflet-tile')];
+
+			beforeEach(() => {
+				pending = [];
+				map.remove();
+				map = new LeafletMap(container, {fadeAnimation: false}).setView([0, 0], 10);
+				grid = new ManualGridLayer().addTo(map);
+				loadAll();
+			});
+
+			afterEach(() => { clock?.restore(); clock = undefined; });
+
+			it('keeps them under the new ones until each new tile loads', () => {
+				const oldEls = tileEls(), unloaded = [];
+				grid.on('tileunload', e => unloaded.push(e.tile));
+
+				grid.redraw();
+				expect(tileEls()).to.have.length(oldEls.length * 2);
+				expect(oldEls.every(el => el.isConnected)).to.be.true;
+				expect(unloaded).to.have.length(0);
+
+				pending.shift()();
+				expect(unloaded).to.eql([oldEls[0]]);
+				expect(oldEls[0].isConnected).to.be.false;
+
+				loadAll();
+				expect(unloaded).to.have.length(oldEls.length);
+				expect(tileEls()).to.have.length(oldEls.length);
+			});
+
+			it('keeps the loaded tiles on repeated redraws', () => {
+				const oldEls = tileEls();
+
+				grid.redraw();
+				grid.redraw();
+				expect(tileEls()).to.have.length(oldEls.length * 2);
+				expect(oldEls.every(el => el.isConnected)).to.be.true;
+
+				loadAll();
+				expect(tileEls()).to.have.length(oldEls.length);
+				expect(oldEls.some(el => el.isConnected)).to.be.false;
+			});
+
+			it('removes them with the new tiles that leave the view', () => {
+				const oldEls = tileEls();
+
+				grid.redraw();
+				map.panBy([2000, 0], {animate: false});
+				loadAll();
+				expect(oldEls.some(el => el.isConnected)).to.be.false;
+				expect(tileEls()).to.have.length(Object.keys(grid._tiles).length);
+			});
+
+			it('removes them when the new tiles fade in', () => {
+				clock = createClock();
+				map.remove();
+				map = new LeafletMap(container).setView([0, 0], 10);
+				grid = new ManualGridLayer().addTo(map);
+				loadAll();
+				clock.tick(250);
+				const oldEls = tileEls();
+
+				grid.redraw();
+				loadAll();
+				expect(oldEls.every(el => el.isConnected)).to.be.true;
+
+				clock.tick(250);
+				expect(oldEls.some(el => el.isConnected)).to.be.false;
+				expect(tileEls()).to.have.length(oldEls.length);
+			});
+		});
 	});
 
 	describe('#setOpacity', () => {
@@ -731,7 +821,7 @@ describe('GridLayer', () => {
 			runFrames(50, () => clock.tick(300));
 			expect(counts).to.include({tileloadstart: 16, tileload: 16, tileunload: 0});
 
-			// the z11 tiles start loading once the zoom passes 10.5, for the view the animation ends at
+			// the z11 tiles start loading as the animation starts, for the view it ends at
 			runFrames(50, () => map.setZoom(11, {animate: true}));
 			expect(map.getZoom()).to.equal(11);
 			expect(counts.tileloadstart).to.equal(32);
@@ -806,6 +896,47 @@ describe('GridLayer', () => {
 
 			map.addLayer(grid).setView([0, 0], 18);
 			clock.tick(250);
+		});
+
+		it('keeps the old tiles on screen while zooming in', () => {
+			runFrames(50, () => map.addLayer(grid).setView([0, 0], 10));
+			runFrames(50, () => clock.tick(300));
+
+			// stop a few frames into the animation
+			runFrames(4, () => map.setZoom(12, {animate: true}));
+			expect(map._animatingZoom).to.be.true;
+			expect(counts.tileunload).to.equal(0);
+		});
+
+		it('loads tiles only at the target zoom when animating by more than one level', () => {
+			runFrames(50, () => map.addLayer(grid).setView([0, 0], 10));
+			runFrames(50, () => clock.tick(300));
+
+			const zooms = new Set();
+			grid.on('tileloadstart', ({coords}) => zooms.add(coords.z));
+			runFrames(50, () => map.setZoom(7, {animate: true}));
+			expect(map.getZoom()).to.equal(7);
+			expect([...zooms]).to.eql([7]);
+		});
+
+		it('prunes after a pinch when the move ends, not when new tiles fade in during it', (done) => {
+			grid.once('load', () => {
+				map._moveStart(true, false);
+				map._move(map.getCenter(), 9.4, {pinch: true});
+
+				grid.once('load', () => {
+					clock.tick(300); // fade-in
+					requestAnimationFrame(() => {
+						expect(counts.tileunload).to.equal(0);
+
+						map._moveEnd(true);
+						expect(counts.tileunload).to.be.greaterThan(0);
+						done();
+					});
+				});
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
 		});
 
 		it('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', (done) => {

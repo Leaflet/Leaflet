@@ -4,9 +4,9 @@ import {haversineDistance} from '../LatLng.js';
 /** @import {LatLng} from '../LatLng.js' */
 
 /**
- * Serves as the base for CRS that are global such that they cover the earth. Can only be used as the base for other
- * CRS and cannot be used directly, since it does not have a `code`, `projection` or `transformation`. `distance()`
- * returns meters.
+ * The base for CRSs that cover the whole earth, such as `EPSG3857` and `EPSG4326`: the longitude wraps around at
+ * ±180°, the scale doubles on each zoom level, and `distance()` returns meters. Extend it with your own `code`,
+ * `projection` and `transformation`.
  */
 export class EarthCRS extends CRS {
 	static wrapLng = /** @type {[number, number] | undefined} */ ([-180, 180]);

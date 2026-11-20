@@ -17,4 +17,7 @@ comments, so treat comments on public options, methods and events as user-facing
 - `npm run debug`: serve the repo for manual testing with the pages in `debug/`.
 
 Run lint, typecheck and the relevant specs before calling a change done; also run `lint:docs` when the public API
-changes. For work on the website (`docs/`) or releases, see `CONTRIBUTING.md`.
+changes.
+
+**Website and releases:** the steps and scripts (like `npm run pin-release`) are only in `CONTRIBUTING.md`, in
+"Improving Documentation" and "Releasing". Read those sections before any work on `docs/`, the changelog or a release.

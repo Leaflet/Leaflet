@@ -62,7 +62,8 @@ const defaultOptions = {
 
 	/**
 	 * Minimum zoom number the tile source has available. If it is specified, the tiles on all zoom levels
-	 * lower than `minNativeZoom` will be loaded from `minNativeZoom` level and auto-scaled.
+	 * lower than `minNativeZoom` will be loaded from `minNativeZoom` level and auto-scaled. Each zoom level below
+	 * `minNativeZoom` loads 4 times as many tiles, so set `minZoom` to limit how far out the layer is shown.
 	 * @type {number | undefined}
 	 */
 	minNativeZoom: undefined,
@@ -96,7 +97,7 @@ const defaultOptions = {
  * @property {LeafletEvent} load Fired when the grid layer loaded all visible tiles.
  */
 
-/** @typedef {{el: HTMLElement, coords: Coords, current: boolean, retain?: boolean, active?: boolean, loaded?: boolean}} GridTile */
+/** @typedef {{el: HTMLElement, coords: Coords, current: boolean, retain?: boolean, active?: boolean, loaded?: boolean, stale?: HTMLElement}} GridTile */
 /** @typedef {{el: HTMLElement, origin: Point, zoom: number}} GridLevel */
 
 /**
@@ -223,7 +224,6 @@ export class GridLayer extends Layer {
 		map._removeZoomLimit(this);
 		this._container = /** @type {any} */ (null);
 		this._tileZoom = undefined;
-		clearTimeout(this._pruneTimeout);
 		cancelAnimationFrame(this._fadePruneFrame);
 		/** @type {number} */
 		this._fadePruneFrame = 0;
@@ -281,16 +281,40 @@ export class GridLayer extends Layer {
 		return !!this._loading;
 	}
 
-	/** Causes the layer to clear all the tiles and request them again. */
+	/** Causes the layer to request all the tiles again. The old tiles stay on screen until the new ones replace them. */
 	redraw() {
 		if (this._map) {
-			this._removeAllTiles();
 			const tileZoom = this._getTileZoom(this._map.getZoom());
+			/** @type {{[key: string]: {el: HTMLElement, coords: Coords}}} */
+			const stale = {};
+
+			for (const [key, tile] of Object.entries(this._tiles)) {
+				// on repeated redraws, the tile that's on screen is the stale one until the newer tile loads
+				if (tile.stale) {
+					stale[key] = {el: tile.stale, coords: tile.coords};
+					tile.stale = undefined;
+				} else if (tile.loaded && tile.coords.z === tileZoom) {
+					stale[key] = tile;
+					delete this._tiles[key];
+				}
+			}
+			this._removeAllTiles();
+
 			if (tileZoom !== this._tileZoom) {
 				this._tileZoom = tileZoom;
 				this._updateLevels();
 			}
 			this._update();
+
+			for (const [key, {el, coords}] of Object.entries(stale)) {
+				const tile = this._tiles[key];
+				if (tile && !tile.active) {
+					tile.stale = el;
+				} else {
+					el.remove();
+					this.fire('tileunload', {tile: el, coords});
+				}
+			}
 		}
 		return this;
 	}
@@ -400,10 +424,7 @@ export class GridLayer extends Layer {
 				this._levels[z].el.style.zIndex = `${maxZoom - Math.abs(zoom - z)}`;
 				this._onUpdateLevel(z);
 			} else {
-				this._levels[z].el.remove();
-				this._removeTilesAtZoom(z);
-				this._onRemoveLevel(z);
-				delete this._levels[z];
+				this._removeLevel(z);
 			}
 		}
 
@@ -428,6 +449,14 @@ export class GridLayer extends Layer {
 		this._level = level;
 
 		return level;
+	}
+
+	/** @param {number} z */
+	_removeLevel(z) {
+		this._levels[z].el.remove();
+		this._removeTilesAtZoom(z);
+		this._onRemoveLevel(z);
+		delete this._levels[z];
 	}
 
 	/** @param {number} z */
@@ -466,6 +495,10 @@ export class GridLayer extends Layer {
 			if (!tile.retain) {
 				this._removeTile(key);
 			}
+		}
+
+		for (const [z, level] of Object.entries(this._levels)) {
+			if (!level.el.children.length && level !== this._level) { this._removeLevel(Number(z)); }
 		}
 	}
 
@@ -579,7 +612,13 @@ export class GridLayer extends Layer {
 	 * @param {boolean} [noUpdate]
 	 */
 	_setView(center, zoom, noPrune, noUpdate) {
-		const tileZoom = this._getTileZoom(zoom);
+		// during a zoom, tiles are current for its target, so old tiles still on screen around it would be pruned;
+		// pruning waits for the view to settle: a zoom without noPrune, or the moveend after the zoom
+		/** @type {boolean} */
+		this._noPrune = !!noPrune;
+
+		// an animated zoom loads tiles for its target rather than for each level it passes
+		const tileZoom = this._getTileZoom(this._map._zoomAnim?.to ?? zoom);
 		const tileZoomChanged = this.options.updateWhenZooming && (tileZoom !== this._tileZoom);
 
 		if (!noUpdate || tileZoomChanged) {
@@ -599,11 +638,6 @@ export class GridLayer extends Layer {
 			if (!noPrune) {
 				this._pruneTiles();
 			}
-
-			// Flag to prevent finished tile fades from pruning tiles during
-			// a zoom anim or a pinch gesture
-			/** @type {boolean} */
-			this._noPrune = !!noPrune;
 		}
 
 		this._setZoomTransforms(center, zoom);
@@ -657,11 +691,18 @@ export class GridLayer extends Layer {
 		];
 	}
 
-	_onMoveEnd() {
+	/** @param {LeafletEvent} [e] */
+	_onMoveEnd(e) {
 		const map = this._map;
 		if (!map || map._animatingZoom) { return; }
 
 		this._update();
+
+		// also called on move, throttled
+		if (e?.type === 'moveend' && this._noPrune) {
+			this._noPrune = false;
+			this._pruneTiles();
+		}
 	}
 
 	/** @param {WorldCopyJumpEvent} e */
@@ -680,7 +721,9 @@ export class GridLayer extends Layer {
 			// tiles can't be shifted by a fraction of a column, so leave those to be reloaded
 			if (dx % tileSize.x === 0) {
 				coords.x -= dx / tileSize.x;
-				DomUtil.setPosition(el, DomUtil.getPosition(el).subtract([dx, 0]), true);
+				const pos = DomUtil.getPosition(el).subtract([dx, 0]);
+				DomUtil.setPosition(el, pos, true);
+				if (tile.stale) { DomUtil.setPosition(tile.stale, pos, true); }
 			}
 			tiles[this._tileCoordsToKey(coords)] = tile;
 		}
@@ -691,7 +734,7 @@ export class GridLayer extends Layer {
 	/** @param {LatLng} center */
 	_getTiledPixelBounds(center) {
 		const map = this._map,
-		mapZoom = Math.max(map._zoomAnim?.to ?? -Infinity, map.getZoom()),
+		mapZoom = map._zoomAnim?.to ?? map.getZoom(),
 		scale = map.getZoomScale(mapZoom, this._tileZoom),
 		pixelCenter = map.project(center, this._tileZoom).floor(),
 		halfSize = map.getSize().divideBy(scale * 2);
@@ -704,7 +747,7 @@ export class GridLayer extends Layer {
 	_update(center) {
 		const map = this._map;
 		if (!map) { return; }
-		const zoom = this._clampZoom(map.getZoom());
+		const zoom = this._clampZoom(map._zoomAnim?.to ?? map.getZoom());
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
@@ -733,7 +776,7 @@ export class GridLayer extends Layer {
 
 		// _update just loads more tiles. If the tile zoom level differs too much
 		// from the map's, let _setView reset levels and prune old tiles.
-		if (Math.abs(zoom - this._tileZoom) > 1) { this._setView(center, zoom); return; }
+		if (Math.abs(zoom - this._tileZoom) > 1) { this._setView(center, zoom, this._noPrune); return; }
 
 		// create a queue of coordinates to load tiles from
 		for (let j = tileRange.min.y; j <= tileRange.max.y; j++) {
@@ -829,6 +872,7 @@ export class GridLayer extends Layer {
 		if (!tile) { return; }
 
 		tile.el.remove();
+		this._removeStaleTile(tile);
 
 		delete this._tiles[key];
 
@@ -836,6 +880,18 @@ export class GridLayer extends Layer {
 			tile: tile.el,
 			coords: tile.coords
 		});
+	}
+
+	/**
+	 * Removes the tile that a redraw left under this one.
+	 * @param {GridTile} tile
+	 */
+	_removeStaleTile(tile) {
+		const el = tile.stale;
+		if (!el) { return; }
+		tile.stale = undefined;
+		el.remove();
+		this.fire('tileunload', {tile: el, coords: tile.coords});
 	}
 
 	/** @param {HTMLElement} tile */
@@ -903,7 +959,8 @@ export class GridLayer extends Layer {
 
 		if (!this._map._fadeAnimated) {
 			tile.active = true;
-			this._pruneTiles();
+			this._removeStaleTile(tile);
+			if (!this._noPrune) { this._pruneTiles(); }
 		} else if (!tile.loaded) { // with errorTileUrl, a tile is ready twice (on error and on fallback load)
 			// while fading, the tile is a compositor layer of its own where plus-lighter would light up its
 			// antialiased edges, so it's blended normally until the fade ends
@@ -925,17 +982,6 @@ export class GridLayer extends Layer {
 		if (this._map && this._noTilesToLoad()) {
 			this._loading = false;
 			this.fire('load');
-
-			if (!this._map) { return; } // removed by a load listener
-
-			if (!this._map._fadeAnimated) {
-				requestAnimationFrame(this._pruneTiles.bind(this));
-			} else {
-				// Wait a bit more than 0.2 secs (the duration of the tile fade-in)
-				// to trigger a pruning.
-				/** @type {number | undefined} */
-				this._pruneTimeout = setTimeout(this._pruneTiles.bind(this), 250);
-			}
 		}
 	}
 
@@ -946,6 +992,7 @@ export class GridLayer extends Layer {
 		if (this._tiles[this._tileCoordsToKey(tile.coords)] !== tile) { return; }
 
 		tile.active = true;
+		this._removeStaleTile(tile);
 		this._onOpaqueTile(tile);
 
 		// one prune for all the tiles that finish fading in the same frame
