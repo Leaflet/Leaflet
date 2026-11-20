@@ -811,7 +811,7 @@ describe('GridLayer', () => {
 			for (let i = 0; i < n && callbacks.length; i++) {
 				clock.tick(40);
 				map.fire('_frame');
-				for (const cb of callbacks.splice(0)) { cb(Date.now()); }
+				for (const cb of callbacks.splice(0)) { cb(performance.now()); }
 			}
 			raf.restore();
 		}
