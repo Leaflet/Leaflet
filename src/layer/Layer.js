@@ -411,9 +411,17 @@ export class Layer extends LayerBase {
 			return;
 		}
 
-		this._tooltip._source = /** @type {Layer} */ (e.propagatedFrom ?? e.target);
+		const source = /** @type {Layer & {getCenter?: () => LatLng}} */ (e.propagatedFrom ?? e.target);
+		this._tooltip._source = source;
 
-		this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
+		let latlng;
+		if (this._tooltip.options.sticky) {
+			latlng = e.latlng;
+		} else if (e.latlng && source._map && source.getCenter) {
+			const center = source.getCenter();
+			latlng = this._map.getPixelBounds().contains(this._map.project(center)) ? center : e.latlng;
+		}
+		this.openTooltip(latlng);
 	}
 
 	/** @param {{latlng: LatLng, originalEvent?: PointerEvent | MouseEvent}} e */
