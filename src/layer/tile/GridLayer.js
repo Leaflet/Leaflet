@@ -91,6 +91,7 @@ const defaultOptions = {
  * @property {LeafletEvent} loading Fired when the grid layer starts loading tiles.
  * @property {TileEvent} tileunload Fired when a tile is removed (e.g. when a tile goes off the screen).
  * @property {TileEvent} tileloadstart Fired when a tile is requested and starts loading.
+ *   Register the listener before adding the layer to the map to receive events for the initial tiles.
  * @property {TileErrorEvent} tileerror Fired when there is an error loading a tile.
  * @property {TileEvent} tileload Fired when a tile loads.
  * @property {LeafletEvent} load Fired when the grid layer loaded all visible tiles.
