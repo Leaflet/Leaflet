@@ -262,7 +262,7 @@ describe('Map', () => {
 			map.panBy([37, 23], {animate: false});
 			const center = map.getCenter();
 
-			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame']});
+			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'performance']});
 			const zoomend = sinon.spy();
 			map.on('zoomend', zoomend);
 			for (const zoom of [13, 12, 11, 10, 9, 8, 7, 6, 7, 8, 9, 10, 11, 12, 13, 14]) {
@@ -353,7 +353,7 @@ describe('Map', () => {
 
 			beforeEach(() => {
 				map.setView([0, 0], 13);
-				clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+				clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'performance',
 					'cancelAnimationFrame']});
 				map.setView([0.0005, 0.0005], 14);
 				clock.tick(100);
@@ -624,7 +624,7 @@ describe('Map', () => {
 
 		it('stops a flight where it is', () => {
 			clock.restore();
-			clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'cancelAnimationFrame']});
+			clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'performance', 'cancelAnimationFrame']});
 			map.setView([0, 0], 10);
 			map.flyTo([1, 1], 12, {duration: 1});
 			clock.tick(300);
@@ -1876,7 +1876,7 @@ describe('Map', () => {
 					}
 				});
 
-				const clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'cancelAnimationFrame']});
+				const clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'performance', 'cancelAnimationFrame']});
 				const moveend = sinon.spy();
 				map.once('moveend', moveend);
 				map.flyTo([50.4502, 30.521], 14, {duration: 0.3});
@@ -1897,7 +1897,7 @@ describe('Map', () => {
 					}
 				});
 
-				const clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'cancelAnimationFrame']});
+				const clock = sinon.useFakeTimers({toFake: ['Date', 'requestAnimationFrame', 'performance', 'cancelAnimationFrame']});
 				map.flyTo([50.4502, 30.521], 15, {duration: 0.3});
 				clock.tick(200);
 				clock.restore();

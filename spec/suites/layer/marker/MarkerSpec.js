@@ -445,7 +445,7 @@ describe('Marker', () => {
 			removeMapContainer(map, container);
 			container = createContainer();
 			map = new LeafletMap(container, {markerZoomAnimation: false}).setView([0, 0], 13);
-			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'performance',
 				'cancelAnimationFrame']});
 		});
 

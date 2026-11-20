@@ -113,7 +113,7 @@ describe('KeyboardHandler', () => {
 		});
 
 		it('adds up presses during a zoom animation, but not the repeats of a held key', () => {
-			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'performance',
 				'cancelAnimationFrame']});
 			try {
 				map.remove();

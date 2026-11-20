@@ -227,7 +227,10 @@ export interface MapOptions extends Partial<MapDefaults> {
 	touchZoom?: boolean | 'center';
 }
 export interface MapEventMap extends MapLayerEvents, MapPopupEvents, MapTooltipEvents, MapStateEvents,
-	MapLocationEvents, MapInteractionEvents, MapHandlerEvents, MapOtherEvents {}
+	MapLocationEvents, MapInteractionEvents, MapHandlerEvents, MapOtherEvents {
+	/** @deprecated No longer fired: animated zooms fire `zoom` on every frame instead. */
+	zoomanim: ZoomAnimEvent;
+}
 /** Listeners of map events, as returned by [`getEvents`](#layer-getevents). */
 export type MapListeners = {[K in keyof MapEventMap]?: Listener<K, MapEventMap, LeafletMap>};
 
@@ -355,6 +358,12 @@ export interface BoxZoomEvent extends LeafletEvent, BoxZoomEventProps {}
 export interface MarkerMoveEvent extends LeafletEvent, MarkerMoveEventProps {}
 /** The event object of the map's `movestart`, `move`, `moveend`, `zoomstart`, `zoom` and `zoomend` events. */
 export interface ViewChangeEvent extends LeafletEvent, ViewChangeEventProps {}
+/** @deprecated The event object of the map's `zoomanim` event, which is no longer fired. */
+export interface ZoomAnimEvent extends LeafletEvent {
+	center: LatLng;
+	zoom: number;
+	noUpdate: boolean;
+}
 /** The event object of the map's `viewprereset` event. */
 export interface ViewPreResetEvent extends LeafletEvent, ViewPreResetEventProps {}
 /** The event object of the map's `worldcopyjump` event. */

@@ -328,7 +328,7 @@ describe('GridLayer', () => {
 	describe('zoom animation', () => {
 		let clock;
 		beforeEach(() => {
-			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame']});
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'performance']});
 		});
 		afterEach(() => { clock.restore(); });
 
@@ -922,6 +922,7 @@ describe('GridLayer', () => {
 		it('prunes after a pinch when the move ends, not when new tiles fade in during it', (done) => {
 			grid.once('load', () => {
 				map._moveStart(true, false);
+				map._setZooming(true);
 				map._move(map.getCenter(), 9.4, {pinch: true});
 
 				grid.once('load', () => {
@@ -929,6 +930,7 @@ describe('GridLayer', () => {
 					requestAnimationFrame(() => {
 						expect(counts.tileunload).to.equal(0);
 
+						map._setZooming(false);
 						map._moveEnd(true);
 						expect(counts.tileunload).to.be.greaterThan(0);
 						done();

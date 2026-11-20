@@ -2805,12 +2805,13 @@ export class LeafletMap extends Evented {
 	_tryAnimatedZoom(center, zoom, options) {
 		options ??= {};
 
-		// don't animate if disabled, not supported or the zoom step is too large (over 1 with reduced motion, unless
-		// animate: true is specified); a running zoom counts from its target, so fast input adding up doesn't jump
+		// don't animate if disabled, unsupported, in a hidden tab (no frames) or the step is too large (over 1 with
+		// reduced motion, unless animate: true); a running zoom counts from its target, so fast input doesn't jump
 		const threshold = this.options.zoomAnimationThreshold,
 		maxZoomDiff = this._prefersReducedMotion() && options.animate !== true ? Math.min(threshold, 1) : threshold,
 		fromZoom = this._zoomAnim?.to ?? this._zoom;
-		if (!this._zoomAnimated || options.animate === false || Math.abs(zoom - fromZoom) > maxZoomDiff) {
+		if (!this._zoomAnimated || options.animate === false || document.hidden ||
+			Math.abs(zoom - fromZoom) > maxZoomDiff) {
 			return false;
 		}
 
@@ -2881,12 +2882,13 @@ export class LeafletMap extends Evented {
 			duration = slope / velocity;
 		}
 
-		// timed by frames, starting from the last one drawn, which the current zoom is at
+		// a retarget starts from the last frame drawn, which the current zoom is at
+		const now = running?.time ?? performance.now();
 		/** @type {{latlng: LatLng, offset: Point, center?: LatLng, from: number, to: number, slope: number,
-		 *   start?: number, time?: number, duration: number, panePos: Point} | null} */
+		 *   start: number, time: number, duration: number, panePos: Point} | null} */
 		this._zoomAnim = {
 			latlng, offset, center: options.center, from: this._zoom, to: zoom, slope, duration,
-			start: running?.time, time: running?.time, panePos: this._getMapPanePos()
+			start: now, time: now, panePos: this._getMapPanePos()
 		};
 		this._animatingZoom = true;
 		// layers round their positions against the pixel origin, and would jitter against the zoom (#3194)
@@ -2902,7 +2904,7 @@ export class LeafletMap extends Evented {
 
 	/** @param {NonNullable<LeafletMap['_zoomAnim']>} a */
 	_zoomAnimVelocity(a) {
-		const t = a.start === undefined ? 0 : Math.min((/** @type {number} */ (a.time) - a.start) / a.duration, 1);
+		const t = Math.min((a.time - a.start) / a.duration, 1);
 		return ((a.to - a.from) * 6 * t * (1 - t) + a.slope * (1 - t) * (1 - 3 * t)) / a.duration;
 	}
 
@@ -2910,9 +2912,9 @@ export class LeafletMap extends Evented {
 	_zoomAnimStep(time) {
 		const a = /** @type {NonNullable<LeafletMap['_zoomAnim']>} */ (this._zoomAnim);
 
-		a.start ??= time;
-		a.time = time;
-		const t = (time - a.start) / a.duration;
+		// a frame can be timed before the call that started the animation
+		a.time = Math.max(time, a.start);
+		const t = (a.time - a.start) / a.duration;
 		this._followPane(a);
 
 		if (t >= 1) {
@@ -2922,9 +2924,8 @@ export class LeafletMap extends Evented {
 		this._zoomAnimFrame = requestAnimationFrame(next => this._zoomAnimStep(next));
 
 		// a cubic from the start zoom at the start slope to the target zoom at rest
-		if (!t) { return; }
 		const zoom = a.from + (a.to - a.from) * t * t * (3 - 2 * t) + a.slope * t * (1 - t) * (1 - t);
-		this._move(this._centerAround(a.latlng, a.offset, zoom), zoom, {flyTo: true});
+		this._move(this._centerAround(a.latlng, a.offset, zoom), zoom);
 	}
 
 	/**

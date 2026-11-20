@@ -577,9 +577,8 @@ export class GridLayer extends Layer {
 		return tile?.active;
 	}
 
-	/** @param {LeafletEvent & {pinch?: boolean, flyTo?: boolean}} [e] */
-	_resetView(e) {
-		const animating = e && (e.pinch || e.flyTo);
+	_resetView() {
+		const animating = this._map._subpixelOrigin;
 		this._setView(this._map.getCenter(), this._map.getZoom(), animating, animating);
 	}
 

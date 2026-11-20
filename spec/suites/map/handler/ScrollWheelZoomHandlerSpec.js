@@ -167,7 +167,7 @@ describe('ScrollWheelZoomHandler', () => {
 	});
 
 	it('adds up notches that come during the zoom animation into one motion', () => {
-		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'performance',
 			'cancelAnimationFrame']});
 		map.remove();
 		map = new LeafletMap(container, {center: [0, 0], zoom: 3});
@@ -187,7 +187,7 @@ describe('ScrollWheelZoomHandler', () => {
 	});
 
 	describe('trackpad scroll', () => {
-		const fakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'cancelAnimationFrame'];
+		const fakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'performance', 'cancelAnimationFrame'];
 
 		// a scroll that zooms out by `levels` at half the pinch rate, every 16 ms like a trackpad
 		function scroll(levels, steps = 10) {
@@ -316,7 +316,7 @@ describe('ScrollWheelZoomHandler', () => {
 	});
 
 	describe('trackpad pinch', () => {
-		const pinchFakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'cancelAnimationFrame'];
+		const pinchFakes = ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'performance', 'cancelAnimationFrame'];
 
 		// splits a pinch by `scale` into events the way browsers report it: deltaY is -100 * ln(scale step)
 		function pinch(scale, options = {}, steps = 10) {

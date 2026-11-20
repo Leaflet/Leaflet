@@ -14,8 +14,7 @@ export class PinchZoomHandler extends PinchGestureHandler {
 	removeHooks() {
 		this._map._container.classList.remove('leaflet-touch-zoom');
 		DomEvent.off(this._map._container, 'pointerdown', this._onPointerStart, this);
-		DomEvent.off(this._map._container, 'pointermove', this._onPointerMove, this);
-		DomEvent.off(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
+		this._onPointerEnd();
 	}
 
 	/** @param {PointerEvent} e */
@@ -90,7 +89,7 @@ export class PinchZoomHandler extends PinchGestureHandler {
 		return new Point(e.clientX, e.clientY)._subtract(this._containerOrigin).unscaleBy(this._containerScale);
 	}
 
-	/** @param {PointerEvent} e */
+	/** @param {PointerEvent} [e] none when the handler is disabled mid-pinch */
 	_onPointerEnd(e) {
 		DomEvent.off(this._map._container, 'pointermove', this._onPointerMove, this);
 		DomEvent.off(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
@@ -103,7 +102,7 @@ export class PinchZoomHandler extends PinchGestureHandler {
 		this._zooming = false;
 
 		// keep the location between the fingers in place while snapping, carrying on at the pinch's speed
-		const now = e.timeStamp;
+		const now = e?.timeStamp ?? performance.now();
 		this._snapPinch(now, pinchVelocity(this._zoomSamples, now));
 	}
 }

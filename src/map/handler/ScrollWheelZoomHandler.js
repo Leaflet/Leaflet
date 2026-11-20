@@ -29,13 +29,7 @@ export class ScrollWheelZoomHandler extends PinchGestureHandler {
 		DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
 		DomEvent.off(this._map._container, 'gestureend', this._onGestureEnd, this);
 		clearTimeout(this._timer);
-		clearTimeout(this._pinchTimer);
-		cancelAnimationFrame(this._endRequest);
-		if (this._pinching) {
-			cancelAnimationFrame(this._map._pinchFrame);
-			this._map._setZooming(false);
-		}
-		this._pinching = false;
+		if (this._pinching) { this._endPinch(); }
 	}
 
 	/** @param {WheelEvent} e */

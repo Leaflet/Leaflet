@@ -600,7 +600,7 @@ describe('DragHandler', () => {
 		// zooms from 13 to 14 and grabs the map early on, at about 13.2
 		function grabDuringZoom(options) {
 			map = new LeafletMap(container, options).setView([0, 0], 13);
-			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame',
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date', 'requestAnimationFrame', 'performance',
 				'cancelAnimationFrame']});
 			log = [];
 			map.on('movestart moveend zoomstart zoomend', (e) => {
@@ -651,7 +651,7 @@ describe('DragHandler', () => {
 
 		it('makes a zoom that starts during a drag part of the drag\'s move', () => {
 			map = new LeafletMap(container, {inertia: false}).setView([0, 0], 13);
-			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame',
+			clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'performance',
 				'cancelAnimationFrame']});
 			const types = [];
 			map.on('movestart moveend zoomstart zoomend', e => types.push(e.type));

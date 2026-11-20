@@ -152,7 +152,7 @@ describe('Path', () => {
 			}
 
 			it('stay aligned with other paths during zoom animation', () => {
-				const clock = sinon.useFakeTimers({toFake: ['requestAnimationFrame']});
+				const clock = sinon.useFakeTimers({toFake: ['requestAnimationFrame', 'performance']});
 				map.setZoom(6);
 				clock.tick(100);
 				moveAndCheck();

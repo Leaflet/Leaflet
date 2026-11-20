@@ -11,6 +11,9 @@ const directionWindow = 100;
 // a snap going on in the gesture's direction eases out from its speed, for at most this long
 const maxEaseOut = 500;
 
+// any other snap takes this long for half a level or more, and less for smaller ones, down to the minimum
+const snapDuration = 250, minSnapDuration = 120;
+
 /**
  * Records the zoom of a gesture for its speed and direction, dropping samples too old to matter.
  * @param {ZoomSample[]} samples
@@ -88,7 +91,8 @@ export class PinchGestureHandler extends Handler {
 		zoom = map._limitZoom(zoom);
 
 		const dz = zoom - map._zoom,
-		duration = velocity * dz > 0 ? Math.min(3 * dz / velocity, maxEaseOut) : Math.min(Math.max(250 * Math.sqrt(Math.abs(dz) / 0.5), 120), 250);
+		sizedDuration = Math.max(snapDuration * Math.min(Math.sqrt(2 * Math.abs(dz)), 1), minSnapDuration),
+		duration = velocity * dz > 0 ? Math.min(3 * dz / velocity, maxEaseOut) : sizedDuration;
 		map._animateZoom(this._pinchLatLng, this._pinchOffset, zoom, {continued: true, velocity, duration});
 	}
 }
