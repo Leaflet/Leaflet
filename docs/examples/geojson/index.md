@@ -54,6 +54,19 @@ title: Using GeoJSON with Leaflet
 myLayer.addData(geojsonFeature);
 </code></pre>
 
+<h4>Loading GeoJSON from a file</h4>
+
+<p>The <a href="example.html">example map</a> loads its Coors Field marker from a <a href="coors-field.geojson">GeoJSON file</a>. In a module script, you can use <code>fetch</code> to request the file, check the HTTP response, and pass the parsed feature to <code>addData</code>:</p>
+
+<pre><code>const myLayer = new GeoJSON().addTo(map);
+const response = await fetch('coors-field.geojson');
+if (!response.ok) {
+	throw new Error(`Could not load Coors Field (HTTP ${response.status})`);
+}
+myLayer.addData(await response.json());</code></pre>
+
+<p>When trying this locally, serve the page and the GeoJSON file from the same directory on a local web server.</p>
+
 <h3>Options</h3>
 
 <h4>style</h4>

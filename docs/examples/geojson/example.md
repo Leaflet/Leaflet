@@ -31,7 +31,7 @@ title: GeoJSON Example
 		layer.bindPopup(popupContent);
 	}
 
-	/* global campus, bicycleRental, freeBus, coorsField */
+	/* global campus, bicycleRental, freeBus */
 	const bicycleRentalLayer = new GeoJSON([bicycleRental, campus], {
 
 		style(feature) {
@@ -65,7 +65,7 @@ title: GeoJSON Example
 		onEachFeature
 	}).addTo(map);
 
-	const coorsLayer = new GeoJSON(coorsField, {
+	const coorsLayer = new GeoJSON(null, {
 
 		pointToLayer(feature, latlng) {
 			return new Marker(latlng, {icon: baseballIcon});
@@ -73,4 +73,10 @@ title: GeoJSON Example
 
 		onEachFeature
 	}).addTo(map);
+
+	const response = await fetch('coors-field.geojson');
+	if (!response.ok) {
+		throw new Error(`Could not load Coors Field (HTTP ${response.status})`);
+	}
+	coorsLayer.addData(await response.json());
 </script>
