@@ -1,6 +1,42 @@
-import {GeoJSON, Layer, Marker, LayerGroup} from 'leaflet';
+import {GeoJSON, GridLayer, Layer, LayerGroup, LayersControl, LeafletMap, Marker} from 'leaflet';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('LayerGroup', () => {
+	describe('grouped base layer zoom limits', () => {
+		let map, container;
+
+		beforeEach(() => {
+			container = createContainer();
+			map = new LeafletMap(container, {zoomAnimation: false});
+		});
+
+		afterEach(() => removeMapContainer(map, container));
+
+		function checkSwitch(zoom, lowFirst, expected) {
+			map.setView([0, 0], zoom);
+			const original = new GridLayer({maxZoom: 22}).addTo(map);
+
+			const low = new GridLayer({minZoom: 2, maxZoom: 15});
+			const high = new GridLayer({minZoom: 16, maxZoom: 19});
+			const [first, second] = lowFirst ? [low, high] : [high, low];
+			const group = new LayerGroup([new LayerGroup([first]), second]);
+			const control = new LayersControl({original, group}).addTo(map).expand();
+			const zooms = [];
+			map.on('zoomend', () => zooms.push(map.getZoom()));
+
+			control.getContainer().querySelectorAll('input')[1].click();
+
+			expect(map.hasLayer(group)).to.be.true;
+			expect(map.getZoom()).to.equal(expected);
+			expect(zooms).to.eql(zoom === expected ? [] : [expected]);
+		}
+
+		it('keeps the zoom when the low-zoom layer is added first', () => checkSwitch(18, true, 18));
+		it('keeps the zoom when the high-zoom layer is added first', () => checkSwitch(10, false, 10));
+		it('zooms out to the group maximum', () => checkSwitch(20, true, 19));
+		it('zooms in to the group minimum', () => checkSwitch(1, false, 2));
+	});
+
 	describe('#hasLayer', () => {
 		it('throws when called without proper argument', () => {
 			const lg = new LayerGroup();

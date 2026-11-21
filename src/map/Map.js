@@ -638,6 +638,7 @@ export class LeafletMap extends Evented {
 		this._layers = {};
 		/** @type {{[id: number]: GridLayer}} */
 		this._zoomBoundLayers = {};
+		this._deferZoomClamp = false;
 		/** @type {Canvas[]} canvas renderers on the map, topmost first */
 		this._canvases = [];
 		this._sizeChanged = true;
@@ -2375,6 +2376,14 @@ export class LeafletMap extends Evented {
 			this.fire('zoomlevelschange');
 		}
 
+		if (this._deferZoomClamp) {
+			this._zoomClampPending = true;
+		} else {
+			this._clampZoomToLayers();
+		}
+	}
+
+	_clampZoomToLayers() {
 		if (this.options.maxZoom === undefined && this._layersMaxZoom !== undefined && this.getZoom() > this._layersMaxZoom) {
 			this.setZoom(this._layersMaxZoom);
 		}
