@@ -152,7 +152,7 @@ export class GeoJSON extends FeatureGroup {
 	/**
 	 * Creates a `Layer` from a given GeoJSON feature. Can use a custom [`pointToLayer`](#geojson-pointtolayer)
 	 * and/or [`coordsToLatLng`](#geojson-coordstolatlng) functions if provided as options. Returns `null` for a
-	 * feature without a geometry.
+	 * feature without a geometry or with an empty `Point`.
 	 * @param {GeoJSONData} geojson
 	 * @param {Partial<GeoJSONOptions>} [options]
 	 * @returns {Layer | null}
@@ -173,6 +173,8 @@ export class GeoJSON extends FeatureGroup {
 
 		switch (geometry.type) {
 		case 'Point':
+			// an empty Point (PostGIS `POINT EMPTY`) has no position, so treat it like a null geometry (RFC 7946 §3.1)
+			if (coords?.length === 0) { return null; }
 			latlng = _coordsToLatLng(coords);
 			return GeoJSON._pointToLayer(pointToLayer, geojson, latlng, options);
 
