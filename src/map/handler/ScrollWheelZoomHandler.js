@@ -43,17 +43,21 @@ export class ScrollWheelZoomHandler extends PinchGestureHandler {
 		/** @type {number} */
 		this._lastTime = time;
 
+		// Firefox gives a notch in lines (6 on Windows by default) if deltaMode is read before deltaY, and in pixels
+		// otherwise, so read deltaY first to keep the smaller pixel deltas that the wheel zoom rate is tuned for
+		const deltaY = e.deltaY;
+
 		// a pinch comes as small fractional pixel deltas, while ctrl+wheel on a mouse gives whole notches of 100+ px
-		if (e.ctrlKey && !e.deltaMode && (this._pinching || e.deltaY % 1 && Math.abs(e.deltaY) < 50)) {
+		if (e.ctrlKey && !e.deltaMode && (this._pinching || deltaY % 1 && Math.abs(deltaY) < 50)) {
 			// Safari sends one more tiny wheel event right after gestureend, which would start a new pinch
 			if (!this._pinching && time - this._gestureEndTime < 50) { return; }
-			this._onPinch(e, e.deltaY / 100);
+			this._onPinch(e, deltaY / 100);
 			return;
 		}
 
-		const deltaY = this._classify(e);
+		const pixels = this._classify(e);
 		if (this._kind === 'trackpad') {
-			this._onScroll(e, deltaY);
+			this._onScroll(e, pixels);
 			return;
 		}
 
