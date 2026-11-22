@@ -27,7 +27,7 @@ export class SVGOverlay extends ImageOverlay {
 	_initImage() {
 		const el = this._image = /** @type {SVGElement} */ (this._url);
 
-		el.classList.add('leaflet-image-layer', 'leaflet-zoom-animated');
+		el.classList.add('leaflet-image-layer');
 		if (this.options.className) { el.classList.add(...Util.splitWords(this.options.className)); }
 	}
 }

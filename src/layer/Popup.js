@@ -20,10 +20,10 @@ const defaultOptions = {
 	 */
 	offset: [0, 7],
 
-	/** Max width of the popup, in pixels. */
+	/** Max width of the popup content in pixels, measured inside the popup's margins and padding. */
 	maxWidth: 300,
 
-	/** Min width of the popup, in pixels. */
+	/** Min width of the popup content in pixels, measured inside the popup's margins and padding. */
 	minWidth: 50,
 
 	/**

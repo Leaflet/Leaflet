@@ -51,18 +51,6 @@ export class Canvas extends Renderer {
 	/** @type {Defaults<CanvasOptions>} */
 	static defaultOptions = defaultOptions;
 
-	getEvents() {
-		const events = super.getEvents();
-		events.viewprereset = this._onViewPreReset;
-		return events;
-	}
-
-	_onViewPreReset() {
-		// Set a flag so that a viewprereset+moveend+viewreset only updates&redraws once
-		/** @type {boolean} */
-		this._postponeUpdatePaths = true;
-	}
-
 	/** @param {LeafletMap} map */
 	onAdd(map) {
 		super.onAdd(map);
@@ -133,15 +121,6 @@ export class Canvas extends Renderer {
 
 		// Tell paths to redraw themselves
 		this.fire('update');
-	}
-
-	_reset() {
-		super._reset();
-
-		if (this._postponeUpdatePaths) {
-			this._postponeUpdatePaths = false;
-			this._updatePaths();
-		}
 	}
 
 	/** @param {Path} layer */

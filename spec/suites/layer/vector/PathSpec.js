@@ -170,5 +170,66 @@ describe('Path', () => {
 				moveAndCheck();
 			});
 		});
+
+		describe(`view reset (${Renderer.name})`, () => {
+			const a = [1, 1], b = [-1, -1];
+			let renderer;
+
+			beforeEach(() => {
+				map.setView([0, 0], 5);
+				renderer = new Renderer();
+			});
+
+			it('projects and updates each path once', () => {
+				const path = new Polyline([a, b], {renderer}).addTo(map);
+				const project = sinon.spy(path, '_project'),
+				update = sinon.spy(path, '_update');
+
+				// a zoom change too large to animate
+				map.setView([1, 1], 12);
+				expect([project.callCount, update.callCount]).to.eql([1, 1]);
+
+				// a pan too far to animate
+				map.setView([-1, -1], 12);
+				expect([project.callCount, update.callCount]).to.eql([2, 2]);
+			});
+
+			it('puts paths changed or added in zoomend and moveend listeners at the new view', () => {
+				const still = new Polyline([a, b], {renderer}).addTo(map),
+				moving = new Polyline([b, a], {renderer}).addTo(map);
+				let added;
+				map.once('zoomend', () => moving.setLatLngs([a, b]));
+				map.once('moveend', () => { added = new Polyline([a, b], {renderer}).addTo(map); });
+
+				map.setView([1, 1], 12);
+
+				expect([moving._rings, moving._parts, added._rings, added._parts])
+					.to.eql([still._rings, still._parts, still._rings, still._parts]);
+				expect(still._rings[0][0]).to.eql(map.latLngToLayerPoint(a));
+			});
+
+			it('keeps updating paths after the renderer is removed during a view reset', () => {
+				const path = new Polyline([a, b], {renderer}).addTo(map);
+				map.once('moveend', () => map.removeLayer(renderer));
+				map.setView([1, 1], 12);
+				map.addLayer(renderer);
+
+				const update = sinon.spy(path, '_update');
+				map.panBy([200, 0], {animate: false});
+				expect(update.callCount).to.equal(1);
+			});
+
+			it('reprojects paths on a viewreset fired by hand', () => {
+				const path = new Polyline([a, b], {renderer}).addTo(map);
+				const ring = path._rings[0];
+				renderer._pathOrigin = renderer._pathOrigin.add([10, 0]);
+				path.redraw();
+				expect(path._rings[0]).not.to.eql(ring);
+
+				map.fire('viewreset');
+				expect(path._rings[0]).to.eql(ring);
+				expect(path._parts[0]).to.eql(ring);
+			});
+		});
 	});
 });

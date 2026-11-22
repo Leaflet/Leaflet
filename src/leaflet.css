@@ -9,6 +9,7 @@
 .leaflet-pane > canvas,
 .leaflet-zoom-box,
 .leaflet-image-layer,
+.leaflet-image-layer-clip,
 .leaflet-layer,
 .leaflet-tooltip {
 	position: absolute;
@@ -228,6 +229,11 @@ svg.leaflet-zoom-animated {
 	will-change: transform;
 }
 
+.leaflet-image-layer-clip {
+	overflow: hidden;
+	will-change: transform;
+}
+
 .leaflet-zoom-anim .leaflet-zoom-hide {
 	visibility: hidden;
 }
@@ -264,6 +270,7 @@ svg.leaflet-zoom-animated {
 .leaflet-marker-icon,
 .leaflet-marker-shadow,
 .leaflet-image-layer,
+.leaflet-image-layer-clip,
 .leaflet-pane > svg path,
 .leaflet-pane > canvas,
 .leaflet-tile-container {

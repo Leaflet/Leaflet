@@ -19,21 +19,21 @@ describe('SVGOverlay', () => {
 	it('uses the supplied element', () => {
 		const overlay = new SVGOverlay(svg, bounds).addTo(map);
 		expect(overlay.getElement()).to.equal(svg);
-		expect(svg.parentNode).to.equal(map.getPane('overlayPane'));
+		expect(svg.parentNode.parentNode).to.equal(map.getPane('overlayPane'));
 	});
 
 	describe('#setZIndex', () => {
 		it('uses the z-index specified in options', () => {
 			const overlay = new SVGOverlay(svg, bounds, {zIndex: 20}).addTo(map);
-			expect(svg.style.zIndex).to.equal('20');
+			expect(svg.parentNode.style.zIndex).to.equal('20');
 
 			overlay.setZIndex(30);
-			expect(svg.style.zIndex).to.equal('30');
+			expect(svg.parentNode.style.zIndex).to.equal('30');
 		});
 
 		it('sets the z-index when added to the map', () => {
 			new SVGOverlay(svg, bounds).setZIndex(10).addTo(map);
-			expect(svg.style.zIndex).to.equal('10');
+			expect(svg.parentNode.style.zIndex).to.equal('10');
 		});
 	});
 });
