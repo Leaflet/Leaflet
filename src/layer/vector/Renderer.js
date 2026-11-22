@@ -51,9 +51,25 @@ export class Renderer extends BlanketOverlay {
 	onRemove(map) {
 		super.onRemove(map);
 		this.off('update', this._updatePaths, this);
+		// removed during a view reset, it won't get the viewreset that ends the postponing
+		this._postponeUpdatePaths = false;
+	}
+
+	getEvents() {
+		const events = super.getEvents();
+		events.viewprereset = this._onViewPreReset;
+		return events;
+	}
+
+	// A view reset fires zoomend and moveend before viewreset, so leave projecting and updating paths to viewreset,
+	// which does each once
+	_onViewPreReset() {
+		/** @type {boolean} */
+		this._postponeUpdatePaths = true;
 	}
 
 	_onZoomEnd() {
+		if (this._postponeUpdatePaths) { return; }
 		this._setPathView();
 		for (const layer of Object.values(this._layers)) {
 			layer._project();
@@ -75,15 +91,22 @@ export class Renderer extends BlanketOverlay {
 	}
 
 	_updatePaths() {
+		if (this._postponeUpdatePaths) { return; }
 		for (const layer of Object.values(this._layers)) {
 			layer._update();
 		}
 	}
 
+	_reset() {
+		super._reset();
+		this._postponeUpdatePaths = false;
+		this._updatePaths();
+	}
+
 	_onViewReset() {
 		this._setPathView();
 		for (const layer of Object.values(this._layers)) {
-			layer._reset();
+			layer._project();
 		}
 	}
 
