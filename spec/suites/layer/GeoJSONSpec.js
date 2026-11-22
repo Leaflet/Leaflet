@@ -35,6 +35,16 @@ describe('GeoJSON', () => {
 			expect(layer.getLayers().length).to.eql(0);
 		});
 
+		it('skips a Point with empty coordinates like a null geometry', () => {
+			const emptyPoint = {type: 'Feature', properties: {}, geometry: {type: 'Point', coordinates: []}};
+			const layer = new GeoJSON({type: 'FeatureCollection', features: [emptyPoint, geojson]});
+			expect(layer.getLayers().length).to.eql(1);
+			expect(layer.getLayers()[0].feature).to.eql(geojson);
+
+			const collection = new GeoJSON({type: 'GeometryCollection', geometries: [{type: 'Point', coordinates: []}, geojson.geometry]});
+			expect(collection.getLayers()[0].getLayers().length).to.eql(1);
+		});
+
 		it('passes features to filter and onEachFeature, skipping null geometries', () => {
 			const filter = sinon.spy(() => true);
 			const onEachFeature = sinon.spy();
