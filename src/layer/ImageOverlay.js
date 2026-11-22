@@ -1,7 +1,7 @@
 import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
-import {Bounds} from '../geometry/Bounds.js';
+import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /** @import {Defaults, ImageOverlayDefaults, ImageOverlayEventMap, ImageOverlayOptions, LatLngBoundsExpression,
@@ -46,7 +46,14 @@ const defaultOptions = {
 	 * the image overlay is flickering when being added/removed, set this option to `'sync'`.
 	 * @type {'sync' | 'async' | 'auto'}
 	 */
-	decoding: 'auto'
+	decoding: 'auto',
+
+	/**
+	 * How much to extend the clip area around the map view (relative to its size), e.g. 0.5 would be 50% of map
+	 * view in each direction. Higher values show less of the overlay's clipped edges when panning or zooming out,
+	 * but use more memory, which can crash mobile browsers with many overlays.
+	 */
+	padding: 0.5
 };
 
 /** @typedef {typeof defaultOptions} ImageOverlayDefaultsValues */
@@ -101,6 +108,11 @@ export class ImageOverlay extends Layer {
 	onAdd(map) {
 		if (!this._image) {
 			this._initImage();
+
+			// clips the element to the view, so the browser never composites an element far larger than the screen
+			/** @type {HTMLDivElement} */
+			this._clip = DomUtil.create('div', 'leaflet-image-layer-clip leaflet-zoom-animated');
+			this._clip.append(this._image);
 			this._updateZIndex();
 
 			if (this.options.opacity < 1) {
@@ -113,13 +125,13 @@ export class ImageOverlay extends Layer {
 			this.addInteractiveTarget(this._image);
 		}
 
-		this.getPane().append(this._image);
+		this.getPane().append(this._clip);
 		this._reset();
 	}
 
 	/** @param {LeafletMap} map */
 	onRemove(map) {
-		this._image.remove();
+		this._clip.remove();
 		if (this.options.interactive) {
 			this.removeInteractiveTarget(this._image);
 		}
@@ -152,7 +164,7 @@ export class ImageOverlay extends Layer {
 	/** Brings the layer to the top of all overlays. */
 	bringToFront() {
 		if (this._map) {
-			DomUtil.toFront(this._image);
+			DomUtil.toFront(this._clip);
 		}
 		return this;
 	}
@@ -160,7 +172,7 @@ export class ImageOverlay extends Layer {
 	/** Brings the layer to the bottom of all overlays. */
 	bringToBack() {
 		if (this._map) {
-			DomUtil.toBack(this._image);
+			DomUtil.toBack(this._clip);
 		}
 		return this;
 	}
@@ -195,6 +207,7 @@ export class ImageOverlay extends Layer {
 		return {
 			zoom: this._reset,
 			viewreset: this._reset,
+			moveend: this._reset,
 			zoomanim: this._animateZoom
 		};
 	}
@@ -230,7 +243,7 @@ export class ImageOverlay extends Layer {
 		/** @type {El} */
 		this._image = /** @type {any} */ (img);
 
-		img.classList.add('leaflet-image-layer', 'leaflet-zoom-animated');
+		img.classList.add('leaflet-image-layer');
 		if (this.options.className) { img.classList.add(...Util.splitWords(this.options.className)); }
 
 		img.onload = this.fire.bind(this, 'load');
@@ -257,21 +270,30 @@ export class ImageOverlay extends Layer {
 		const scale = this._map.getZoomScale(e.zoom),
 		offset = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center);
 
-		DomUtil.setTransform(this._image, offset, scale);
+		// the element's offset within the clip is the clip corner's offset from the overlay's corner, reversed
+		DomUtil.setTransform(this._clip, offset.subtract(DomUtil.getPosition(this._image).multiplyBy(scale)), scale);
 	}
 
 	_reset() {
 		const image = this._image,
+		clip = this._clip,
 		map = this._map,
-		bounds = new Bounds(
-			map._snapLayerPoint(map.latLngToLayerPoint(this._bounds.getNorthWest())),
-			map._snapLayerPoint(map.latLngToLayerPoint(this._bounds.getSouthEast()))),
-		size = bounds.getSize();
+		min = map._snapLayerPoint(map.latLngToLayerPoint(this._bounds.getNorthWest())),
+		max = map._snapLayerPoint(map.latLngToLayerPoint(this._bounds.getSouthEast())),
+		size = map.getSize(),
+		padding = this.options.padding,
+		viewMin = map.containerPointToLayerPoint(size.multiplyBy(-padding)).round(),
+		viewMax = viewMin.add(size.multiplyBy(1 + 2 * padding)).round(),
+		clipMin = new Point(Math.max(min.x, viewMin.x), Math.max(min.y, viewMin.y)),
+		clipMax = new Point(Math.min(max.x, viewMax.x), Math.min(max.y, viewMax.y));
 
-		DomUtil.setPosition(image, bounds.min);
+		DomUtil.setPosition(clip, clipMin);
+		clip.style.width  = `${Math.max(0, clipMax.x - clipMin.x)}px`;
+		clip.style.height = `${Math.max(0, clipMax.y - clipMin.y)}px`;
 
-		image.style.width  = `${size.x}px`;
-		image.style.height = `${size.y}px`;
+		DomUtil.setPosition(image, min.subtract(clipMin), true);
+		image.style.width  = `${max.x - min.x}px`;
+		image.style.height = `${max.y - min.y}px`;
 	}
 
 	_updateOpacity() {
@@ -279,8 +301,8 @@ export class ImageOverlay extends Layer {
 	}
 
 	_updateZIndex() {
-		if (this._image && this.options.zIndex != null) {
-			this._image.style.zIndex = `${this.options.zIndex}`;
+		if (this._clip && this.options.zIndex != null) {
+			this._clip.style.zIndex = `${this.options.zIndex}`;
 		}
 	}
 

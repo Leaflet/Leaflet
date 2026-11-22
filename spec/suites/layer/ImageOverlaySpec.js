@@ -96,6 +96,51 @@ describe('ImageOverlay', () => {
 		});
 	});
 
+	describe('clipping', () => {
+		const bigBounds = [[40, 20], [70, 60]];
+
+		function expectAt(el, point) {
+			const rect = el.getBoundingClientRect(), mapRect = container.getBoundingClientRect();
+			expect(rect.left - mapRect.left).to.be.closeTo(point.x, 1);
+			expect(rect.top - mapRect.top).to.be.closeTo(point.y, 1);
+		}
+
+		it('clips an overlay larger than the view to the view with padding', () => {
+			const overlay = new ImageOverlay('', bigBounds).addTo(map),
+			size = map.getSize(),
+			nw = map.latLngToContainerPoint([70, 20]),
+			se = map.latLngToContainerPoint([40, 60]);
+
+			expect(overlay._clip.offsetWidth).to.be.closeTo(size.x * 2, 1);
+			expect(overlay._clip.offsetHeight).to.be.closeTo(size.y * 2, 1);
+			expectAt(overlay._clip, size.multiplyBy(-0.5));
+
+			expect(overlay.getElement().offsetWidth).to.be.closeTo(se.x - nw.x, 1);
+			expectAt(overlay.getElement(), nw);
+		});
+
+		it('moves the clip with the view', () => {
+			const overlay = new ImageOverlay('', bigBounds).addTo(map);
+			map.panBy([100, 50], {animate: false});
+
+			expectAt(overlay._clip, map.getSize().multiplyBy(-0.5));
+			expectAt(overlay.getElement(), map.latLngToContainerPoint([70, 20]));
+		});
+
+		it('respects the padding option', () => {
+			const overlay = new ImageOverlay('', bigBounds, {padding: 0.1}).addTo(map),
+			size = map.getSize();
+
+			expect(overlay._clip.offsetWidth).to.be.closeTo(size.x * 1.2, 1);
+			expectAt(overlay._clip, size.multiplyBy(-0.1));
+		});
+
+		it('hides an overlay outside the view', () => {
+			const overlay = new ImageOverlay('', [[-10, -10], [-5, -5]]).addTo(map);
+			expect(overlay._clip.offsetWidth * overlay._clip.offsetHeight).to.equal(0);
+		});
+	});
+
 	describe('#setZIndex', () => {
 		it('sets the z-index of the image', () => {
 			const overlay = new ImageOverlay();
@@ -106,29 +151,29 @@ describe('ImageOverlay', () => {
 		it('should update the z-index of the image if it has already been added to the map', () => {
 			const overlay = new ImageOverlay('', imageBounds);
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('1');
+			expect(overlay._clip.style.zIndex).to.eql('1');
 
 			overlay.setZIndex('10');
-			expect(overlay._image.style.zIndex).to.eql('10');
+			expect(overlay._clip.style.zIndex).to.eql('10');
 		});
 
 		it('should set the z-index of the image when it is added to the map', () => {
 			const overlay = new ImageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('10');
+			expect(overlay._clip.style.zIndex).to.eql('10');
 		});
 
 		it('should use the z-index specified in options', () => {
 			const overlay = new ImageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('20');
+			expect(overlay._clip.style.zIndex).to.eql('20');
 		});
 
 		it('should use a z-index of 0 specified in options', () => {
 			const overlay = new ImageOverlay('', imageBounds, {zIndex: 0});
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('0');
+			expect(overlay._clip.style.zIndex).to.eql('0');
 		});
 
 		it('should be fluent', () => {
