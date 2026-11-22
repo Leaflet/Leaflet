@@ -46,7 +46,14 @@ const defaultOptions = {
 	 * the image overlay is flickering when being added/removed, set this option to `'sync'`.
 	 * @type {'sync' | 'async' | 'auto'}
 	 */
-	decoding: 'auto'
+	decoding: 'auto',
+
+	/**
+	 * How much to extend the clip area around the map view (relative to its size), e.g. 0.5 would be 50% of map
+	 * view in each direction. Higher values show less of the overlay's clipped edges when panning or zooming out,
+	 * but use more memory, which can crash mobile browsers with many overlays.
+	 */
+	padding: 0.5
 };
 
 /** @typedef {typeof defaultOptions} ImageOverlayDefaultsValues */
@@ -274,8 +281,9 @@ export class ImageOverlay extends Layer {
 		min = map._snapLayerPoint(map.latLngToLayerPoint(this._bounds.getNorthWest())),
 		max = map._snapLayerPoint(map.latLngToLayerPoint(this._bounds.getSouthEast())),
 		size = map.getSize(),
-		viewMin = map.containerPointToLayerPoint(size.multiplyBy(-0.1)).round(),
-		viewMax = viewMin.add(size.multiplyBy(1.2)).round(),
+		padding = this.options.padding,
+		viewMin = map.containerPointToLayerPoint(size.multiplyBy(-padding)).round(),
+		viewMax = viewMin.add(size.multiplyBy(1 + 2 * padding)).round(),
 		clipMin = new Point(Math.max(min.x, viewMin.x), Math.max(min.y, viewMin.y)),
 		clipMax = new Point(Math.min(max.x, viewMax.x), Math.min(max.y, viewMax.y));
 

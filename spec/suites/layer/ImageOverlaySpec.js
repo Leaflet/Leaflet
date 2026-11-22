@@ -111,9 +111,9 @@ describe('ImageOverlay', () => {
 			nw = map.latLngToContainerPoint([70, 20]),
 			se = map.latLngToContainerPoint([40, 60]);
 
-			expect(overlay._clip.offsetWidth).to.be.closeTo(size.x * 1.2, 1);
-			expect(overlay._clip.offsetHeight).to.be.closeTo(size.y * 1.2, 1);
-			expectAt(overlay._clip, size.multiplyBy(-0.1));
+			expect(overlay._clip.offsetWidth).to.be.closeTo(size.x * 2, 1);
+			expect(overlay._clip.offsetHeight).to.be.closeTo(size.y * 2, 1);
+			expectAt(overlay._clip, size.multiplyBy(-0.5));
 
 			expect(overlay.getElement().offsetWidth).to.be.closeTo(se.x - nw.x, 1);
 			expectAt(overlay.getElement(), nw);
@@ -123,8 +123,16 @@ describe('ImageOverlay', () => {
 			const overlay = new ImageOverlay('', bigBounds).addTo(map);
 			map.panBy([100, 50], {animate: false});
 
-			expectAt(overlay._clip, map.getSize().multiplyBy(-0.1));
+			expectAt(overlay._clip, map.getSize().multiplyBy(-0.5));
 			expectAt(overlay.getElement(), map.latLngToContainerPoint([70, 20]));
+		});
+
+		it('respects the padding option', () => {
+			const overlay = new ImageOverlay('', bigBounds, {padding: 0.1}).addTo(map),
+			size = map.getSize();
+
+			expect(overlay._clip.offsetWidth).to.be.closeTo(size.x * 1.2, 1);
+			expectAt(overlay._clip, size.multiplyBy(-0.1));
 		});
 
 		it('hides an overlay outside the view', () => {
