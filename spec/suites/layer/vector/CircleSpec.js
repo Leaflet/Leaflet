@@ -1,4 +1,4 @@
-import {Circle, EPSG4326, LatLng, LeafletMap, Point, SimpleCRS, Transformation} from 'leaflet';
+import {Circle, EPSG3857, EPSG4326, LatLng, LeafletMap, Point, SimpleCRS, Transformation} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Circle', () => {
@@ -87,6 +87,23 @@ describe('Circle', () => {
 
 			expect(rotated._pxRadius).to.be.closeTo(plain._pxRadius, 1e-6);
 			expect(rotated._pxRadiusY).to.be.closeTo(plain._pxRadiusY, 1e-6);
+		});
+	});
+
+	describe('with a CRS that sets its own radius', () => {
+		it('measures the radius with that CRS', () => {
+			class MoonCRS extends EPSG3857 {
+				static R = 1737400;
+			}
+
+			for (const crs of [EPSG3857, MoonCRS]) {
+				map.remove();
+				map = new LeafletMap(container, {crs}).setView([0, 0], 4);
+				const circle = new Circle([0, 0], {radius: 100000}).addTo(map),
+				edge = map.layerPointToLatLng(circle._point.add([circle._pxRadius, 0]));
+
+				expect(map.distance([0, 0], edge), crs.R).to.be.closeTo(100000, 1);
+			}
 		});
 	});
 

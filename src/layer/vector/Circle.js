@@ -57,7 +57,8 @@ export class Circle extends CircleMarker {
 
 		if (crs.distance === EarthCRS.distance) {
 			const d = Math.PI / 180,
-			latR = (this._radius / EarthCRS.R) / d,
+			// the radius of the CRS rather than Earth's, so it matches `map.distance()` on CRSs that set their own `R`
+			latR = (this._radius / /** @type {typeof EarthCRS} */ (crs).R) / d,
 			top = map.project([lat + latR, lng], zoom),
 			bottom = map.project([lat - latR, lng], zoom),
 			p = top.add(bottom).divideBy(2),
