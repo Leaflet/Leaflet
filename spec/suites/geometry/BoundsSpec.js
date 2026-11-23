@@ -78,6 +78,11 @@ describe('Bounds', () => {
 		it('pads the bounds by a given ratio', () => {
 			expect(a.pad(0.5)).to.eql(new Bounds([[6, -2], [38, 54]]));
 		});
+
+		it('retracts the bounds with a negative ratio, down to their center at -0.5', () => {
+			expect(a.pad(-0.25)).to.eql(new Bounds([[18, 19], [26, 33]]));
+			expect(a.pad(-0.5)).to.eql(new Bounds([[22, 26], [22, 26]]));
+		});
 	});
 
 	describe('#contains', () => {
