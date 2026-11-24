@@ -1705,7 +1705,15 @@ export class LeafletMap extends Evented {
 		}
 
 		for (const layer of Object.values(this._layers)) {
-			layer.remove();
+			// `removeLayer`, not `layer.remove()`, so that the layers stay in their groups: a group keeps them when
+			// the map it was on is destroyed, so that it can be added to another map intact. A layer that a
+			// `layerremove` handler re-added during this loop is in `_layers` without a `_map`: it has already been
+			// removed, and the list is dropped below.
+			if (layer._map === this) {
+				this.removeLayer(layer);
+			} else {
+				layer._mapToAdd = null;
+			}
 		}
 		for (const pane of Object.values(this._panes)) {
 			pane.remove();

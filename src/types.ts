@@ -362,6 +362,15 @@ export interface ViewPreResetEvent extends LeafletEvent, ViewPreResetEventProps 
 /** The event object of the map's `worldcopyjump` event. */
 export interface WorldCopyJumpEvent extends LeafletEvent, WorldCopyJumpEventProps {}
 
+/**
+ * What a layer needs from a group it was added to: the ability to remove itself from it. Declared here, instead of
+ * importing `LayerGroup`, so that the base layer does not depend on the group that extends it.
+ */
+export interface GroupMembership {
+	/** Removes the given layer from the group. */
+	removeLayer(layer: any): unknown;
+}
+
 // Members the classes can't declare in JS, added through `./Leaflet.js`, which plugins augment as `'leaflet'`:
 // once a class is augmented through its own module, augmenting it through a re-export no longer merges. The one
 // exception is `LayerBase`, which isn't exported, so plugins can't augment it either way.
@@ -369,6 +378,11 @@ declare module './layer/LayerBase.js' {
 	interface LayerBase {
 		_map: LeafletMap;
 		_mapToAdd?: LeafletMap | null;
+		/**
+		 * The groups the layer was added to, so that [`remove()`](#layer-remove) can detach it from all of them.
+		 * Only present once the layer has been added to a group.
+		 */
+		_layerGroups?: Set<GroupMembership>;
 
 		/**
 		 * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should

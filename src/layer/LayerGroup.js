@@ -70,6 +70,8 @@ export class LayerGroup extends Layer {
 		const id = this.getLayerId(layer);
 
 		this._layers[id] = layer;
+		layer._layerGroups ??= new Set();
+		layer._layerGroups.add(this);
 
 		this._map?.addLayer(layer);
 
@@ -82,11 +84,13 @@ export class LayerGroup extends Layer {
 	 */
 	removeLayer(layer) {
 		const id = typeof layer === 'number' ? layer : this.getLayerId(layer);
+		const member = this._layers[id];
 
-		if (this._map && this._layers[id]) {
-			this._map.removeLayer(this._layers[id]);
+		if (this._map && member) {
+			this._map.removeLayer(member);
 		}
 
+		member?._layerGroups?.delete(this);
 		delete this._layers[id];
 
 		return this;

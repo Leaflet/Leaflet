@@ -71,9 +71,25 @@ export class LayerBase extends Evented {
 		return this;
 	}
 
-	/** Removes the layer from the map it is currently active on. */
+	/**
+	 * Removes the layer from the map it is currently active on, and from every
+	 * [`LayerGroup`](#layergroup) it was added to.
+	 */
 	remove() {
-		return this.removeFrom(this._map || this._mapToAdd);
+		const map = this._map ?? this._mapToAdd;
+
+		if (map) {
+			this.removeFrom(map);
+		}
+
+		if (this._layerGroups) {
+			// copy, because `removeLayer` removes the group from the set
+			for (const group of [...this._layerGroups]) {
+				group.removeLayer(this);
+			}
+		}
+
+		return this;
 	}
 
 	/**

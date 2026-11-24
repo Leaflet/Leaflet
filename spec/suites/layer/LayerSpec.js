@@ -1,4 +1,4 @@
-import {DivOverlay, Evented, FeatureGroup, Layer, LeafletMap, Marker, Polygon, Popup, Tooltip} from 'leaflet';
+import {DivOverlay, Evented, FeatureGroup, Layer, LayerGroup, LeafletMap, Marker, Polygon, Popup, Tooltip} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -125,6 +125,109 @@ describe('Layer', () => {
 			group.bindTooltip('Hi', {permanent: false}).openTooltip();
 			expect(group.getTooltip()._source).to.equal(shown);
 			expect(group.getTooltip().getLatLng()).to.eql(shown.getLatLng());
+		});
+	});
+
+	describe('#remove', () => {
+		it('removes the layer from the group it was added to', () => {
+			const group = new LayerGroup().addTo(map);
+			const marker = new Marker([0, 0]).addTo(group);
+
+			expect(map.hasLayer(marker)).to.be.true;
+
+			marker.remove();
+
+			expect(map.hasLayer(marker)).to.be.false;
+			expect(group.hasLayer(marker)).to.be.false;
+		});
+
+		it('removes the layer from every group it was added to', () => {
+			const first = new LayerGroup().addTo(map);
+			const second = new LayerGroup().addTo(map);
+			const marker = new Marker([0, 0]).addTo(first).addTo(second);
+
+			marker.remove();
+
+			expect(map.hasLayer(marker)).to.be.false;
+			expect(first.hasLayer(marker)).to.be.false;
+			expect(second.hasLayer(marker)).to.be.false;
+		});
+
+		it('does not bring the layer back when its group is re-added to the map', () => {
+			const group = new LayerGroup().addTo(map);
+			const marker = new Marker([0, 0]).addTo(group);
+
+			marker.remove();
+			group.removeFrom(map);
+			group.addTo(map);
+
+			expect(map.hasLayer(marker)).to.be.false;
+			expect(group.hasLayer(marker)).to.be.false;
+		});
+
+		it('removes the layer from a group that is not on a map', () => {
+			const group = new LayerGroup();
+			const marker = new Marker([0, 0]).addTo(group);
+
+			marker.remove();
+			group.addTo(map);
+
+			expect(map.hasLayer(marker)).to.be.false;
+			expect(group.hasLayer(marker)).to.be.false;
+		});
+
+		it('removes a group from its parent group but keeps its own layers', () => {
+			const parent = new LayerGroup().addTo(map);
+			const child = new LayerGroup().addTo(parent);
+			const marker = new Marker([0, 0]).addTo(child);
+
+			child.remove();
+
+			expect(parent.hasLayer(child)).to.be.false;
+			expect(map.hasLayer(child)).to.be.false;
+			expect(map.hasLayer(marker)).to.be.false;
+			expect(child.hasLayer(marker)).to.be.true;
+		});
+
+		it('fires layerremove on a feature group it was removed from', () => {
+			const group = new FeatureGroup().addTo(map);
+			const marker = new Marker([0, 0]).addTo(group);
+			const layerremove = sinon.spy();
+			group.on('layerremove', layerremove);
+
+			marker.remove();
+
+			expect(group.hasLayer(marker)).to.be.false;
+			expect(layerremove.calledOnce).to.be.true;
+		});
+
+		it('keeps the layers of a group that is removed from the map', () => {
+			const group = new LayerGroup().addTo(map);
+			const marker = new Marker([0, 0]).addTo(group);
+
+			group.removeFrom(map);
+
+			expect(map.hasLayer(marker)).to.be.false;
+			expect(group.hasLayer(marker)).to.be.true;
+
+			group.addTo(map);
+
+			expect(map.hasLayer(marker)).to.be.true;
+		});
+
+		it('keeps the layers of a group when the map is removed', () => {
+			const otherContainer = createContainer();
+			const otherMap = new LeafletMap(otherContainer);
+			otherMap.setView([0, 0], 1);
+			const group = new LayerGroup().addTo(otherMap);
+			const marker = new Marker([0, 0]).addTo(group);
+
+			otherMap.remove();
+
+			expect(otherMap.hasLayer(marker)).to.be.false;
+			expect(group.hasLayer(marker)).to.be.true;
+
+			document.body.removeChild(otherContainer);
 		});
 	});
 });
