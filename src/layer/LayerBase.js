@@ -71,7 +71,10 @@ export class LayerBase extends Evented {
 		return this;
 	}
 
-	/** Removes the layer from the map it is currently active on. */
+	/**
+	 * Removes the layer from the map it is currently active on. The layer stays in any layer groups it was added to,
+	 * so it reappears when they're re-added; use [`removeFrom(group)`](#layer-removefrom) to remove it from a group.
+	 */
 	remove() {
 		return this.removeFrom(this._map || this._mapToAdd);
 	}
