@@ -231,6 +231,22 @@ describe('DragHandler', () => {
 			expect(preclickSpy.called).to.be.false;
 		});
 
+		it('does not trigger click after a pinch (#10629)', async () => {
+			map = new LeafletMap(container, {zoomAnimation: false});
+			map.setView([0, 0], 1);
+			const clickSpy = sinon.spy();
+			map.on('click', clickSpy);
+
+			await Promise.all([
+				new Finger('touch').moveTo(200, 200).down().moveBy(-50, 0).up(),
+				new Finger('touch').moveTo(250, 200).down().moveBy(50, 0).up()
+			]);
+
+			// iOS Safari sometimes fires a click after a pinch
+			UIEventSimulator.fire('click', container, {detail: 1});
+			expect(clickSpy.called).to.be.false;
+		});
+
 		it('does not trigger preclick nor click when dragging on top of a static marker', async () => {
 			container.style.width = container.style.height = '600px';
 			map = new LeafletMap(container, {

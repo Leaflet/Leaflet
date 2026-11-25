@@ -112,16 +112,19 @@ export class Draggable extends Evented {
 
 	/** @param {PointerEvent} e */
 	_onDown(e) {
-		this._moved = false;
-
 		const pointers = getPointers().length;
 		if (pointers > 1) {
 			// Finish dragging to avoid conflict with touchZoom
 			if (Draggable._dragging === this) {
 				this.finishDrag();
 			}
+			// a second pointer makes this a pinch rather than a tap, so count it as moved to cancel the click that
+			// browsers (like iOS Safari) may fire after it
+			this._moved = true;
 			return;
 		}
+
+		this._moved = false;
 
 		const boxZoom = e.shiftKey && this._element.closest('.leaflet-container')?.classList.contains('leaflet-box-zoom');
 		if (Draggable._dragging || boxZoom || (e.button !== 0 && e.pointerType !== 'touch')) { return; }
