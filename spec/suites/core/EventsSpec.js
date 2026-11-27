@@ -3,6 +3,63 @@ import sinon from 'sinon';
 
 describe('Events', () => {
 	describe('#fire', () => {
+		it('reports listener errors without interrupting dispatch or the caller', () => {
+			const obj = new Evented();
+			const error = new Error('listener failed');
+			const listener = sinon.spy();
+			const report = sinon.stub(window, 'reportError');
+			try {
+				obj.on('test', () => { throw error; });
+				obj.on('test', listener);
+
+				expect(obj.fire('test')).to.equal(obj);
+				expect(listener.calledOnce).to.be.true;
+				expect(report.calledOnceWithExactly(error)).to.be.true;
+			} finally {
+				report.restore();
+			}
+		});
+
+		it('removes a throwing once listener before subsequent events', () => {
+			const obj = new Evented();
+			const listener = sinon.stub().throws(new Error('once listener failed'));
+			const report = sinon.stub(window, 'reportError');
+			try {
+				obj.once('test', listener);
+				obj.fire('test');
+				obj.fire('test');
+
+				expect(listener.calledOnce).to.be.true;
+				expect(obj.listens('test')).to.be.false;
+				expect(report.calledOnceWithExactly(listener.firstCall.exception)).to.be.true;
+			} finally {
+				report.restore();
+			}
+		});
+
+		it('continues propagation when child and parent listeners throw', () => {
+			const child = new Evented();
+			const parent = new Evented();
+			const otherParent = new Evented();
+			const childError = new Error('child listener failed');
+			const parentError = new Error('parent listener failed');
+			const listener = sinon.spy();
+			const report = sinon.stub(window, 'reportError');
+			try {
+				child.addEventParent(parent).addEventParent(otherParent);
+				child.on('test', () => { throw childError; });
+				parent.on('test', () => { throw parentError; });
+				otherParent.on('test', listener);
+				child.fire('test', undefined, true);
+
+				expect(listener.calledOnce).to.be.true;
+				expect(listener.firstCall.args[0].sourceTarget).to.equal(child);
+				expect(report.args).to.eql([[childError], [parentError]]);
+			} finally {
+				report.restore();
+			}
+		});
+
 		it('fires all listeners added through #on', () => {
 			const obj = new Evented(),
 			spy1 = sinon.spy(),
