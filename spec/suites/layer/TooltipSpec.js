@@ -449,9 +449,33 @@ describe('Tooltip', () => {
 		UIEventSimulator.fire('pointerover', layer._path, {relatedTarget: map._container});
 
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
+		expect(layer.getTooltip().getLatLng()).to.be.eqlLatLng(layer.getCenter());
 
 		UIEventSimulator.fire('pointerout', layer._path, {relatedTarget: map._container});
 		expect(map.hasLayer(layer._tooltip)).to.be.false;
+	});
+
+	it('uses the pointer when a polygon tooltip center is outside the map', () => {
+		map.setView([0, 0], 4);
+		const layer = new Polygon([[-5, 0], [5, 0], [5, 150], [-5, 150]]).addTo(map).bindTooltip('Tooltip');
+		const pointer = map.latLngToContainerPoint([0, 10]);
+
+		UIEventSimulator.fireAt('pointerover', pointer.x, pointer.y);
+
+		const tooltip = layer.getTooltip();
+		expect(tooltip.isOpen()).to.be.true;
+		expect(tooltip.getLatLng()).to.be.eqlLatLng(map.containerPointToLatLng(pointer));
+	});
+
+	it('ignores a polygon removed during pointerover propagation', () => {
+		const layer = new Polygon([[55, 37], [56, 37], [56, 38]]);
+		const group = new FeatureGroup([layer]).addTo(map);
+		group.on('pointerover', () => group.removeLayer(layer));
+		group.bindTooltip('Tooltip');
+
+		expect(() => layer.fire('pointerover', {latlng: map.getCenter()}, true)).to.not.throw();
+		expect(map.hasLayer(layer)).to.be.false;
+		expect(group.getTooltip().isOpen()).to.be.false;
 	});
 
 	it('stays open on polygon when permanent', () => {
