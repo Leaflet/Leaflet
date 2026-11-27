@@ -277,10 +277,12 @@ export function getPointerPosition(e, container) {
 /**
  * Gets normalized wheel delta from a wheel DOM event, in vertical pixels scrolled (negative if scrolling down).
  * Events from pointing devices without precise scrolling are mapped to a best guess of 60 pixels.
+ * With Shift held, a horizontal scroll counts too, as browsers often turn the wheel into one then.
  * @param {WheelEvent} e
  */
 export function getWheelDelta(e) {
+	const delta = e.deltaY || (e.shiftKey ? e.deltaX : 0);
 	// scale per delta mode (pixels, lines, pages); a wheel notch gives 100-120px in most browsers,
 	// so pixels are halved to fit the default 60px per zoom level (see #7403)
-	return -e.deltaY * (e.deltaMode ? e.deltaMode === 1 ? 20 : 60 : 0.5 / window.devicePixelRatio) || 0;
+	return -delta * (e.deltaMode ? e.deltaMode === 1 ? 20 : 60 : 0.5 / window.devicePixelRatio) || 0;
 }
