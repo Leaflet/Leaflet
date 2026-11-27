@@ -16,6 +16,36 @@ describe('GridLayer', () => {
 		removeMapContainer(map, container);
 	});
 
+	async function expectImmediateTileCompletion(error) {
+		class ImmediateGridLayer extends GridLayer {
+			createTile(coords, done) {
+				const tile = document.createElement('div');
+				done(error, tile);
+				return tile;
+			}
+		}
+
+		const grid = new ImmediateGridLayer();
+		const started = new Set(), finished = new Set();
+		grid.on('tileloadstart', ({tile}) => started.add(tile));
+		grid.on(error ? 'tileerror' : 'tileload', ({tile, error: reportedError}) => {
+			expect(started.has(tile)).to.be.true;
+			if (error) { expect(reportedError).to.equal(error); }
+			finished.add(tile);
+		});
+
+		grid.addTo(map.setView([0, 0], 2));
+		await new Promise((resolve) => { requestAnimationFrame(resolve); });
+
+		expect(started.size).to.be.greaterThan(0);
+		expect(finished).to.eql(started);
+		expect(grid.isLoading()).to.be.false;
+	}
+
+	it('reports synchronous tile completion after tileloadstart', () => expectImmediateTileCompletion(null));
+
+	it('reports synchronous tile errors after tileloadstart', () => expectImmediateTileCompletion(new Error('tile creation failed')));
+
 	describe('#redraw', () => {
 		it('can be called before map.setView', () => {
 			const grid = new GridLayer().addTo(map);

@@ -929,7 +929,18 @@ export class GridLayer extends Layer {
 		const tilePos = this._getTilePos(coords),
 		key = this._tileCoordsToKey(coords);
 
-		const tile = this.createTile(this._wrapCoords(coords), this._tileReady.bind(this, coords));
+		let creatingTile = true;
+		const tile = this.createTile(this._wrapCoords(coords), (err, el) => {
+			if (creatingTile) {
+				// A cached tile can finish before createTile returns. Wait until it has been registered.
+				requestAnimationFrame(() => {
+					if (this._tiles[this._tileCoordsToKey(coords)]?.el === tile) { this._tileReady(coords, err, el); }
+				});
+			} else {
+				this._tileReady(coords, err, el);
+			}
+		});
+		creatingTile = false;
 
 		this._initTile(tile);
 
