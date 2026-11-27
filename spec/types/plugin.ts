@@ -1,6 +1,6 @@
 // Typings of a plugin: `declare module 'leaflet'` merges into the classes, options and event maps it augments.
 import {Control, FeatureGroup, GeoJSON, Layer, LayerGroup, LineUtil, Map, Marker, Polygon, Polyline, Popup, Tooltip} from 'leaflet';
-import type {LeafletEvent, LeafletPointerEvent, MarkerEventMap, MarkerOptions, ZoomAnimEvent} from 'leaflet';
+import type {LeafletEvent, LeafletPointerEvent, MarkerEventMap, MarkerOptions, ViewChangeEvent} from 'leaflet';
 
 declare module 'leaflet' {
 	interface Map {
@@ -56,10 +56,10 @@ new PulseMarker([0, 0]).pulse(map);
 // map listeners of a layer are checked against the map events, including the augmented ones
 class DrawLayer extends Layer {
 	getEvents() {
-		return {'pm:create': this._onCreate, zoomanim: this._onZoomAnim};
+		return {'pm:create': this._onCreate, zoom: this._onZoom};
 	}
 	_onCreate(e: {shape: string}) { void e.shape; }
-	_onZoomAnim(e: ZoomAnimEvent) { void e.center; }
+	_onZoom(e: ViewChangeEvent) { void e.originalEvent; }
 }
 class BadLayer extends Layer {
 	// @ts-expect-error not a zoomend event

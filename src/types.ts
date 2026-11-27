@@ -50,7 +50,7 @@ import type {ErrorEventProps, FitBoundsProps, InvalidateSizeProps, LayerEventPro
 	LeafletMap, LeafletPointerEventProps, LocateProps, LocationEventProps, MapDefaultsValues, MapHandlerEvents,
 	MapInteractionEvents, MapLayerEvents, MapLocationEvents, MapOtherEvents, MapPopupEvents, MapStateEvents,
 	MapTooltipEvents, PaddingProps, PanProps, ResizeEventProps, ViewChangeEventProps, ViewPreResetEventProps,
-	WorldCopyJumpEventProps, ZoomAnimEventProps, ZoomPanProps, ZoomProps} from './map/Map.js';
+	WorldCopyJumpEventProps, ZoomPanProps, ZoomProps} from './map/Map.js';
 
 export type {Defaults} from './core/Class.js';
 export type {LeafletEventHandlerFn, Listener, ListenerMap} from './core/Events.js';
@@ -227,7 +227,10 @@ export interface MapOptions extends Partial<MapDefaults> {
 	touchZoom?: boolean | 'center';
 }
 export interface MapEventMap extends MapLayerEvents, MapPopupEvents, MapTooltipEvents, MapStateEvents,
-	MapLocationEvents, MapInteractionEvents, MapHandlerEvents, MapOtherEvents {}
+	MapLocationEvents, MapInteractionEvents, MapHandlerEvents, MapOtherEvents {
+	/** @deprecated No longer fired: animated zooms fire `zoom` on every frame instead. */
+	zoomanim: ZoomAnimEvent;
+}
 /** Listeners of map events, as returned by [`getEvents`](#layer-getevents). */
 export type MapListeners = {[K in keyof MapEventMap]?: Listener<K, MapEventMap, LeafletMap>};
 
@@ -353,10 +356,14 @@ export interface DragEndEvent extends LeafletEvent, DragEndEventProps {}
 export interface BoxZoomEvent extends LeafletEvent, BoxZoomEventProps {}
 /** The event object of `move` on markers and circle markers, and of `drag` on markers. */
 export interface MarkerMoveEvent extends LeafletEvent, MarkerMoveEventProps {}
-/** The event object of the map's `zoomanim` event. */
-export interface ZoomAnimEvent extends LeafletEvent, ZoomAnimEventProps {}
 /** The event object of the map's `movestart`, `move`, `moveend`, `zoomstart`, `zoom` and `zoomend` events. */
 export interface ViewChangeEvent extends LeafletEvent, ViewChangeEventProps {}
+/** @deprecated The event object of the map's `zoomanim` event, which is no longer fired. */
+export interface ZoomAnimEvent extends LeafletEvent {
+	center: LatLng;
+	zoom: number;
+	noUpdate: boolean;
+}
 /** The event object of the map's `viewprereset` event. */
 export interface ViewPreResetEvent extends LeafletEvent, ViewPreResetEventProps {}
 /** The event object of the map's `worldcopyjump` event. */
@@ -443,7 +450,6 @@ declare module './Leaflet.js' {
 		_initLayout(): void;
 		_updateLayout(): void;
 		_adjustPan(): void;
-		_animateZoom(e: ZoomAnimEvent): void;
 	}
 }
 

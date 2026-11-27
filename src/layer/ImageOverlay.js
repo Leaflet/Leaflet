@@ -5,7 +5,7 @@ import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /** @import {Defaults, ImageOverlayDefaults, ImageOverlayEventMap, ImageOverlayOptions, LatLngBoundsExpression,
- *    LeafletEvent, ZoomAnimEvent} from '../types.js' */
+ *    LeafletEvent} from '../types.js' */
 /** @import {LatLng} from '../geo/LatLng.js' */
 /** @import {LeafletMap} from '../map/Map.js' */
 
@@ -207,8 +207,7 @@ export class ImageOverlay extends Layer {
 		return {
 			zoom: this._reset,
 			viewreset: this._reset,
-			moveend: this._reset,
-			zoomanim: this._animateZoom
+			moveend: this._reset
 		};
 	}
 
@@ -263,15 +262,6 @@ export class ImageOverlay extends Layer {
 
 		img.src = url;
 		img.alt = this.options.alt;
-	}
-
-	/** @param {ZoomAnimEvent} e */
-	_animateZoom(e) {
-		const scale = this._map.getZoomScale(e.zoom),
-		offset = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center);
-
-		// the element's offset within the clip is the clip corner's offset from the overlay's corner, reversed
-		DomUtil.setTransform(this._clip, offset.subtract(DomUtil.getPosition(this._image).multiplyBy(scale)), scale);
 	}
 
 	_reset() {

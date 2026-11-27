@@ -26,7 +26,7 @@ export function removeMapContainer(map, container) {
 // turned off so that its real `transitionend` can't end a zoom before the faked timeout does on a slow runner
 export function createClock() {
 	const clock = sinon.useFakeTimers({
-		toFake: ['setTimeout', 'clearTimeout', 'Date']
+		toFake: ['setTimeout', 'clearTimeout', 'Date', 'performance']
 	});
 	const animate = sinon.stub(Element.prototype, 'animate').callsFake((keyframes, duration) => {
 		const animation = {};
