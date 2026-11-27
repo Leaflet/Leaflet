@@ -108,7 +108,18 @@ export class LayerGroup extends Layer {
 
 	/** @param {LeafletMap} map */
 	onAdd(map) {
-		this.eachLayer(map.addLayer, map);
+		// Apply the zoom limits of the whole group, including nested groups (#6557).
+		const nested = map._deferZoomClamp;
+		map._deferZoomClamp = true;
+		try {
+			this.eachLayer(map.addLayer, map);
+		} finally {
+			map._deferZoomClamp = nested;
+			if (!nested && map._zoomClampPending) {
+				map._zoomClampPending = false;
+				map._clampZoomToLayers();
+			}
+		}
 	}
 
 	/** @param {LeafletMap} map */
