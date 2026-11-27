@@ -14,7 +14,12 @@ export class PosAnimation extends Evented {
 	 * @param {number} [easeLinearity]
 	 */
 	run(el, newPos, duration, easeLinearity) {
+		// Event listeners can stop or replace this run before control returns.
+		/** @type {number} */
+		this._runId = (this._runId || 0) + 1;
+		const runId = this._runId;
 		this.stop();
+		if (this._runId !== runId) { return; }
 
 		/** @type {HTMLElement} */
 		this._el = el;
@@ -33,33 +38,40 @@ export class PosAnimation extends Evented {
 
 		this.fire('start');
 
-		this._animate();
+		this._animate(runId);
 	}
 
 	stop() {
 		if (!this._inProgress) { return; }
 
+		const runId = this._runId;
+		this._inProgress = false;
+		cancelAnimationFrame(this._animId);
 		this._step(true);
-		this._complete();
+		if (this._runId === runId) { this._complete(); }
 	}
 
-	_animate() {
+	/** @param {number} runId */
+	_animate(runId) {
+		if (!this._inProgress || this._runId !== runId) { return; }
+
 		// animation loop
 		/** @type {number} */
-		this._animId = requestAnimationFrame(this._animate.bind(this));
+		this._animId = requestAnimationFrame(this._animate.bind(this, runId));
 		this._step();
 	}
 
 	/** @param {boolean} [round] */
 	_step(round) {
-		const elapsed = (Date.now()) - this._startTime,
+		const runId = this._runId,
+		elapsed = (Date.now()) - this._startTime,
 		duration = this._duration * 1000;
 
 		if (elapsed < duration) {
 			this._runFrame(this._easeOut(elapsed / duration), round);
 		} else {
 			this._runFrame(1);
-			this._complete();
+			if (this._inProgress && this._runId === runId) { this._complete(); }
 		}
 	}
 
