@@ -69,6 +69,28 @@ map.fitBounds(latLngBounds);
 
 You can find other options of `ImageOverlay` in the [documentation](/reference.html#imageoverlay).
 
+#### Adjusting the Image Overlay Opacity
+
+Use [`setOpacity()`](/reference.html#imageoverlay-setopacity) to change the overlay after adding it to the map.
+In this example, a slider lets you compare the historic map with the current basemap. An opacity of `0` makes
+the image fully transparent, and `1` makes it fully opaque.
+
+Add a slider outside the map container. Its initial value matches the overlay's `opacity` option above:
+
+```html
+<label for="overlay-opacity">Image overlay opacity</label>
+<input id="overlay-opacity" type="range" min="0" max="1" step="0.01" value="0.8">
+```
+
+After creating `imageOverlay`, listen for `input` events so the overlay updates as the slider moves:
+
+```js
+const opacity = document.getElementById('overlay-opacity');
+opacity.addEventListener('input', () => {
+	imageOverlay.setOpacity(opacity.valueAsNumber);
+});
+```
+
 {% include frame.html url="example-image.html" %}
 
 ### `VideoOverlay`
